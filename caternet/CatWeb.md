@@ -26,7 +26,7 @@ Since my Kingly grandeur hunting performance information need to be protected wi
 You will build a system that is
 
 - using cloud technologies best practices and tools, so that the glory of my kingdom is shown to all
-- resilient and guarantee recovery whatever the incident, be it my subjects having eating all the cables or not
+- resilient and guarantee recovery whatever the incident, be it my subjects having eaten all the cables or not
 - preserve data-locality in specific case, so that my Canadian perfection will not be corrupted by the pretentions of French or British Duches' cats
 - allow for our human-developer-slave to deploy part, or the entirety of our Catweb on their local machin without ever leaking any production information and configuration
 - allow the deployment of our multi-mouse-trap application in multiple location at the same time, cause these beast-toys are everywhere!
