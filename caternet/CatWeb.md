@@ -1,6 +1,7 @@
 # Our Overlords Demands
 
-*Humanity has at last stopped believing of having any kind of control over Cats and we are now fully committed to do the bidding of our furry Overlords. The following correspondance has been sent to us by his Highness Miaou XII*  
+*Humanity has, at last, stopped believing to have any kind of control over Cats and we are now fully committed to do the bidding of our furry Overlords. *
+*The following correspondance has been sent to us by his Highness **Miaou XII***  
 
 
 
@@ -31,7 +32,7 @@ You will build a system that is
 - allow for our human-developer-slave to deploy part, or the entirety of our Catweb on their local machin without ever leaking any production information and configuration
 - allow the deployment of our multi-mouse-trap application in multiple location at the same time, cause these beast-toys are everywhere!
 - ensure the constant use of HTTPC: HTTPS for cats, which is just the same than with human, but better
-- is entirely automated, because we will not lower ourselves to spend less time naping
+- entirely automated, because we will not lower ourselves to spend less time naping
 
 
 

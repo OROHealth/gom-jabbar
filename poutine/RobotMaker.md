@@ -26,7 +26,7 @@ Now, since we are a smart company, we built Robot that are capable to individual
 - Nordo: boil potatoes and give their current softness level
 - Bizar: fry potatoes with mutiple oil choices
 - Oldoporto: keep things at a specific temperature in a pot
-- Pierre: mix ingredient in a cardboax, allow the box to be send to needy user
+- Pierre: mix ingredient in a cardboax, allow the box to be sent to needy user
 
 
 
@@ -34,7 +34,7 @@ You are in charge of integrating all of this together.
 
 The robot making team will take care of making sure the robot answer to the RESTful APIs as specified.
 
-Now, we need to ensure the utmost quality and be also able to validate that when we improve the design of the robots, by, for example, adding new oil choices, the whole process is still working correctly.
+Now, we need to ensure the utmost quality and also be able to validate when we improve the design of the robots. For example, if we add a new oil choice, the whole process should still work perfectly.
 
 
 

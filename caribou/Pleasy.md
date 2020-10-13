@@ -13,7 +13,7 @@ To help them, we, the Assembly of Inter-Human-Caribou Harmony  (IHCH), have deci
   - is highly secured
 - a Single Page Application that 
   - display a map of the current vincinity and display the zone where human are currently actively trashing the world
-  - signal when a human has quite the zone 
+  - signal when a human has quit the zone 
   - allows them to signal the presence of human and rate its trashing level
   - present a live-chat to allow Antler-exchange using the highly secure Caribou algorithm: every voyel is replaced by 'muu' and every consonants is replaced by 'grm'
   - is secured to only allow signing up with adresses that are Cariboued (they contain 'carib' at the end of the user name, like bruno-carib@orohealth.me is my Caribou adress, yes, I am a secret Caribou agent)
