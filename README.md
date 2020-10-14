@@ -19,9 +19,9 @@ You do ***NOT*** need to:
 
 
 
-## Base requirement
+## Basic requirement
 
-To facilitate ***our*** life 💁‍♂️while reviewing everybody's challenges, it would be immensily appreciated if you can:
+To facilitate ***our*** life 💁‍♂️while reviewing everybody's challenges, it would be immensily appreciated if you could:
 
 - *ensure we can build it*: even if it's unfinished, we should always commit working code, shouldn't we? 
   So if your component is unfinished, it's fine, but let's make sure it displays logs/empty space but do not crash or reboot our smart cat feeder (🐈😻). Also do not expect us to have the planet installed locally. Make sure to list what's needed to be able to build your project. 

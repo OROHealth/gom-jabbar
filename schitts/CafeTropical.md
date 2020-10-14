@@ -14,11 +14,11 @@ To make sure that Twyla is not mixing up David's drinks with Alexis' salad and t
 
 This API will be able to efficiently
 
-- store all customer info
+- store all customer's info
   - type of customer: out of town, in town, or part of the Rose's familly
   - their drinks preference
   - their food preference
-- store all customer orders
+- store all customer's orders
   - the hour at which the order was made
   - the menu item
   - the tone at which the order was passed: angry, happy, overwhelmed, pregnant, moody, bored, excited
@@ -27,7 +27,7 @@ This API will be able to efficiently
     - per group
     - per person
     - with ratios
-- store all the menu item available
+- store all the menu items available
   - the price
   - the level of acceptable over-cookedness by Twyla in a scale from 1 to 10
   - the last date where the item was made
@@ -42,9 +42,9 @@ This API will be able to efficiently
 
 - simulate the insertion of 10.000 customer making between 2 to 14 orders per year on a span of 2 years
 - optimize/find solution for the following question:
-  - how many 8-rated overcooked diner did Twyla served in the last 6 month, how much money has been earned from those and what where the median ratings of these meals
+  - how many 8-rated overcooked diner did Twyla serve	 in the last 6 month, how much money has been earned from those and what where the median ratings of these meals
   - what is the evolution of the the number of drinks that Alexis and David have taken alone compared to the number together over time
-  -  the evolution of Moira's mocktails choices compared to her review overt time
+  -  the evolution of Moira's mocktails choices compared to her review over time
   - search an out of town customer's name
 
 

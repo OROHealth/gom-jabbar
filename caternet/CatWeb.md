@@ -1,6 +1,6 @@
 # Our Overlords Demands
 
-*Humanity has, at last, stopped believing to have any kind of control over Cats and we are now fully committed to do the bidding of our furry Overlords. *
+*It is the year 20142. Humanity has, at last, stopped believing to have any kind of control over Cats and we are now fully committed to do the bidding of our furry Overlords.*
 *The following correspondance has been sent to us by his Highness **Miaou XII***  
 
 
@@ -18,7 +18,7 @@ As part of our dominion, I order you to build us a secure Catweb, which for you,
 
 Part of our mouse/rats cadaver exchange system will be based on a message bus. You will also reward us with a full complement of a search engine, a database and CatNodeJS application. 
 
-Since my Kingly grandeur hunting performance information need to be protected with all the care in the world, you will use any technic you know to protect my divine data.
+Since my Kingly grandeur hunting performance information need to be protected with all the care in the world, you will use any technique you know to protect my divine data.
 
 
 
