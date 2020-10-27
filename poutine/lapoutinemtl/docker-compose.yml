@@ -1,0 +1,7 @@
+version: "3.8"
+
+services:
+  bonjour:
+    image: "bonjour:dev"
+    ports:
+      - "1616:1616"
