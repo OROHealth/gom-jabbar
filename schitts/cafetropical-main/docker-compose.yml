@@ -1,0 +1,22 @@
+version: "3"
+services:
+  node_backend:
+    container_name: "api"
+    build: ./api/
+    ports:
+      - "3001:3001"
+    restart: on-failure   
+  pg:
+    image: "postgres:12"
+    container_name: "postgres"
+    environment:
+      - POSTGRES_PASSWORD=12356
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/db_data:/var/lib/postgresql/data 
+  ui:
+    container_name: "cafetropicalui"
+    build: ./ui/
+    ports:
+      - "3000:80" 

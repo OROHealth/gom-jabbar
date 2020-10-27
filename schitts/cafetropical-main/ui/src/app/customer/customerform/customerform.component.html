@@ -1,0 +1,54 @@
+<div class="card">
+    <div class="card-header">
+      New Customer
+    </div>
+    <div class="card-body">
+      <form [formGroup]="customerForm" (ngSubmit)="onSubmit()" >
+        <div class="form-group">
+          <label for="my-input">Name</label>
+          <input id="my-input" class="form-control" type="text" placeholder="Name" name="">
+        </div>
+        <div class="form-group">
+            <label for="my-select">Type</label>
+            <select formControlName="type"  id="my-select" class="form-control" name="">
+              <option>In town</option>
+              <option>Part of the Rose's family</option>
+              <option>Out of town</option> 
+          </select>
+           </div>
+        <div class="form-group">
+          <label for="my-input">Drink preference</label>
+          <select id="my-select" class="form-control" name="">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+        </select>
+        </div>
+        <div class="form-group">
+          <label for="my-input">Food preference</label>
+          <select id="my-select" class="form-control" name="">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+        </select>
+        </div>
+       
+   
+      </form>
+    </div>
+  </div>
+  

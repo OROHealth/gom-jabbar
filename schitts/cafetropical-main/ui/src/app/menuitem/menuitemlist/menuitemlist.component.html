@@ -1,0 +1,22 @@
+
+<table class="table table-light text-light">
+  <thead class="thead-light">
+      <tr>
+          <th>Name</th> 
+          <th>Actions</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let menuitem of menuitemlist">
+          <td>{{menuitem['menuitem_name']}}</td>     
+          <td *ngIf="!selectMode"><button type="button" class="btn btn-danger">Delete</button></td>
+          <td *ngIf="selectMode"><button (click)="selectMenuitem(menuitem)" type="button" class="btn btn-success">Select</button></td>
+          
+      </tr>
+  </tbody>
+  <tfoot>
+      <tr>
+          <th></th>
+      </tr>
+  </tfoot>
+</table>

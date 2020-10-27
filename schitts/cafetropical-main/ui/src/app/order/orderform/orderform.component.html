@@ -1,0 +1,24 @@
+<div class="card">
+    <div class="card-header">
+      New Order
+    </div>
+    <div class="card-body">
+        <nav class="nav nav-tabs nav-stacked">
+            <a class="nav-link" [ngClass]="{'active': panels['customer']}" (click)="changePanel('customer')" >Customers</a>
+            <a class="nav-link" [ngClass]="{'active': panels['menuitem']}" (click)="changePanel('menuitem')">Menu Item</a>
+            <a class="nav-link" [ngClass]="{'active': panels['confirm']}" (click)="changePanel('confirm')">Confirm</a>
+        </nav>
+        <span *ngIf="panels['customer']">
+            <app-customerlist [selectMode]="true" ></app-customerlist>
+        </span>
+        <span *ngIf="panels['menuitem']">
+            <app-menuitemlist [selectMode]="true" ></app-menuitemlist>
+        </span>
+        <span *ngIf="panels['confirm']">
+            confirm
+        </span>
+        
+    </div>
+
+  </div>
+  

@@ -1,0 +1,29 @@
+
+<table class="table table-light">
+    <thead class="thead-light">
+        <tr>
+            <th>Name</th>
+            <th>Prefered Drink</th>
+            <th>Prefered Food</th>
+            <th>Type</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let customer of customerlist">
+            <td>{{customer['customer_name']}}</td>
+            <td>{{customer['customer_prefereddrink']}}</td> 
+            <td>{{customer['customer_preferedfood']}}</td> 
+            <td>{{customer['customer_type']}}</td> 
+            <td *ngIf="!selectMode"><button type="button" class="btn btn-danger">Delete</button></td>
+            <td *ngIf="selectMode"><button type="button" class="btn btn-success">Select</button></td>
+            
+
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th></th>
+        </tr>
+    </tfoot>
+</table>
