@@ -20,3 +20,5 @@
 
 # vendor
 **/node_modules/*
+
+services/bonjour/bonjour
