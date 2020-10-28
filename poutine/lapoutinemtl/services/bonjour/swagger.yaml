@@ -10,7 +10,7 @@ info:
     name: "MIT OpenSource"
     url: "https://opensource.org/licenses/MIT"
 host: "lapoutinemtl.com"
-basePath: "/"
+basePath: "/test"
 paths:
   /bonjour:
     get:
@@ -21,6 +21,18 @@ paths:
       operationId: ""
       produces:
         - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+  /swagger:
+    get:
+      tags:
+        - "swagger.yaml"
+      summary: "swagger file"
+      description: ""
+      operationId: ""
+      produces:
+        - "text/plain"
       responses:
         "200":
           description: "successful operation"
