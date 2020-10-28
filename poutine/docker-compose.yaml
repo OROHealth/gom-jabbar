@@ -1,0 +1,106 @@
+version: '3'
+networks:
+    local:
+        driver: bridge
+services:
+    orderservice:
+        image: orderservice
+        build:  .
+        container_name: orderservice
+        ports: 
+            - 4000:4000
+        networks:
+            - local
+        env_file:
+            - ./env.env
+    bizargateway:
+        image: bizargateway
+        build: ./bizar
+        container_name: bizargateway
+        ports:
+            - 3333:3333 
+            - 4005:4005
+        networks:
+            - local
+        env_file:
+            - ./env.env
+    verduny:
+        image: verduny
+        build: ./verduny
+        container_name: verduny
+        ports: 
+            - 4003:4003
+        networks:
+            - local
+        env_file:
+            - ./env.env
+    nordo:
+        image: nordo
+        build: ./nordo
+        container_name: nordo
+        ports: 
+            - 4004:4004
+        networks:
+            - local
+        env_file:
+            - ./env.env
+    bizar:
+        image: bizar-oil
+        build: ./bizar/bizaroil
+        container_name: bizar-olive
+        ports: 
+            - 5001:5001
+        depends_on: 
+            - bizargateway
+        environment: 
+            - OIL_TYPE=olive
+            - BIZAR_PORT=5001
+        networks:
+            - local
+        env_file:
+            - ././env.env
+    bizar-2:
+        image: bizar-oil
+        build: ./bizar/bizaroil
+        container_name: bizar-penaut
+        ports: 
+            - 5002:5002
+        depends_on: 
+                - bizargateway
+        environment: 
+            - OIL_TYPE=penaut
+            - BIZAR_PORT=5002
+        networks:
+            - local
+        env_file:
+            - ././env.env
+    oldoporto:
+        image: oldoporto
+        build: ./oldoporto
+        container_name: oldoporto
+        ports: 
+            - 4007:4007
+        networks: 
+            - local
+        env_file:
+            - ./env.env
+    outremona:
+        image: outremona
+        build: ./outremona
+        container_name: outremona
+        ports: 
+            - 4008:4008
+        networks: 
+            - local
+        env_file:
+            - ./env.env
+    pierre:
+        image: pierre
+        build: ./pierre
+        container_name: pierre
+        ports: 
+            - 4009:4009
+        networks: 
+            - local
+        env_file:
+            - ./env.env

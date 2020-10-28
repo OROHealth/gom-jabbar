@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package protos;
+
+service Gateway{
+    rpc ServiceRegistration (RegistrationRequest) returns (RegistrationResponse);
+}
+
+message RegistrationRequest{
+    string address = 1;
+    string oiltype = 2;
+}
+
+message RegistrationResponse{
+    bool registered = 1;
+}
