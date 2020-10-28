@@ -1,0 +1,26 @@
+swagger: "2.0"
+info:
+  description: "Bonjour Service"
+  version: "1.0.0"
+  title: "La Poutine Mtl"
+  termsOfService: ""
+  contact:
+    email: "jshn.singh1@gmail.com"
+  license:
+    name: "MIT OpenSource"
+    url: "https://opensource.org/licenses/MIT"
+host: "lapoutinemtl.com"
+basePath: "/v1"
+paths:
+  /bonjour:
+    get:
+      tags:
+        - "bonjour"
+      summary: "friendly greetings and test service"
+      description: ""
+      operationId: ""
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
