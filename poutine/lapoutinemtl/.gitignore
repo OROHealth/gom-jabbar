@@ -22,3 +22,4 @@
 **/node_modules/*
 
 services/bonjour/bonjour
+services/outremona/outremona
