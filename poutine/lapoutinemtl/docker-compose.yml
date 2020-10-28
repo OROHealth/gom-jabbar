@@ -5,3 +5,7 @@ services:
     image: "bonjour:dev"
     ports:
       - "1616:1616"
+  outremona:
+    image: "outremona:dev"
+    ports:
+      - "5141:5141"
