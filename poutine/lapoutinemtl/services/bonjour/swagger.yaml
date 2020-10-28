@@ -10,7 +10,7 @@ info:
     name: "MIT OpenSource"
     url: "https://opensource.org/licenses/MIT"
 host: "lapoutinemtl.com"
-basePath: "/v1"
+basePath: "/"
 paths:
   /bonjour:
     get:

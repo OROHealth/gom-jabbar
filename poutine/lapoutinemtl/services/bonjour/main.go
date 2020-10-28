@@ -12,8 +12,12 @@ func main() {
 	// Middleware
 	e.Use(middleware.Logger())
 
+	//
+	g := e.Group("/test")
+
 	// Route
-	e.GET("/bonjour", Bonjour)
+	g.GET("/bonjour", Bonjour)
+	g.File("/swagger", "swagger.yaml")
 
 	// Serve
 	e.Logger.Fatal(e.Start(":1616"))
