@@ -18,6 +18,7 @@ func main() {
 
 	// Route
 	outremona.GET("/cheese", getCheese)
+	outremona.File("/swagger", "swagger.yaml")
 
 	// Serve
 	e.Logger.Fatal(e.Start(":5141"))

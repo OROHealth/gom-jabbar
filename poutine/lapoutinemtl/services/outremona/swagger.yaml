@@ -1,0 +1,26 @@
+swagger: "2.0"
+info:
+  description: "Robot Outremona"
+  version: "1.0.0"
+  title: "La Poutine Mtl"
+  termsOfService: ""
+  contact:
+    email: "jshn.singh1@gmail.com"
+  license:
+    name: "MIT OpenSource"
+    url: "https://opensource.org/licenses/MIT"
+host: "lapoutinemtl.com"
+basePath: "/outremona"
+paths:
+  /cheese:
+    get:
+      tags:
+      - "outremona"
+      summary: "take cheese from the box and squeeze it"
+      description: ""
+      operationId: ""
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
