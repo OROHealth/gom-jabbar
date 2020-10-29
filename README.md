@@ -30,6 +30,7 @@ To facilitate ***our*** life 💁‍♂️while reviewing everybody's challenges
 - *submit your result as a PR*: yup, in Github and ideally with nice wit-filled commit message. 
   Put your answer for a specific challenge inside it's own directory, avoid deleting the other challenge folders! Also, we <u>will</u> reject it in the end...<u>Don't panic!</u> 
   It means we made a decision and we want to keep our repo clean for the next candidates. Your submission will always be in our heart, especially if it's good.
+- *we are interested in how you got to your final solution*: we want to see how you split your work and how you chunk it so that its easy to work, collaborate on and review, so please, do not squash your branch when you send the PR, we want to see it all, even if you’re not super proud of it! You can of course re-organise your commits after the fact if you are into that sort of thing...
 - *test your submission*: put yourself in our shoes. double-check.👓
   Git clone the repo under a different name locally, then make sure everything is squeaky when it's building. Unfortunatly, we will spend exactly 5 min trying to make it work if it doesn't. Make the best of those 5 min👸🏻 
 - ***<u>have fun!</u>***
