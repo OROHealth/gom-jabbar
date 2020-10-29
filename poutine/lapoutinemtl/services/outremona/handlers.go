@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"errors"
 	"github.com/labstack/echo/v4"
 	"lapoutinemtl.com/utils"
 	"net/http"
@@ -9,11 +9,10 @@ import (
 
 func getCheese(c echo.Context) error {
 
-	const onePortion = 80
-	cheese := utils.CheddarEnGrains {
-		IsFresh: true,
-		IsSqueaky: false,
-		Portion: fmt.Sprintf("%dgms", onePortion),
+	cheese := utils.OneSqueakyCheesePortion()
+	err := cheese.Squeeze()
+	if err != nil {
+		return errors.New("cannot squeeze cheese apparently")
 	}
 	return c.JSON(http.StatusOK, cheese)
 }
