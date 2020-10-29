@@ -2,13 +2,28 @@ package utils
 
 import "errors"
 
-//
-func (c CheddarEnGrains) squeeze() error {
+func OneSqueakyCheesePortion() *CheddarEnGrains {
+	poutineCheese := &CheddarEnGrains{IsSqueakyAndFresh: false}
+	return poutineCheese
+}
 
-	if c.IsFresh {
-		c.IsSqueaky = true
+func OnePotatoFriesPortion() *PotatoFries {
+	fries := &PotatoFries{AreHotAndCrispy: false}
+	return fries
+}
+
+func OnePoutineSaucePortion() *SaucePoutine {
+	sauce := &SaucePoutine{IsHotAndFresh: false}
+	return sauce
+}
+
+
+//
+func (c *CheddarEnGrains) Squeeze() error {
+	if c != nil {
+		c.IsSqueakyAndFresh = true
 		return nil
 	} else {
-		return errors.New("this cheese ain't no fresh like them tim-bits")
+		return errors.New("c is nil")
 	}
 }
