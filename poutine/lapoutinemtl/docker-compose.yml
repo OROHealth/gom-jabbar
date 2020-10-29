@@ -9,3 +9,27 @@ services:
     image: "outremona:dev"
     ports:
       - "5141:5141"
+  montroyashi:
+    image: "montroyashi:dev"
+    ports:
+      - "5142:5142"
+  verduny:
+    image: "verduny:dev"
+    ports:
+      - "5143:5143"
+  nordo:
+    image: "nordo:dev"
+    ports:
+      - "5144:5144"
+  bizar:
+    image: "bizar:dev"
+    ports:
+      - "5145:5145"
+  oldoporto:
+    image: "oldoporto:dev"
+    ports:
+      - "5146:5146"
+  pierre:
+    image: "pierre:dev"
+    ports:
+      - "5147:5147"
