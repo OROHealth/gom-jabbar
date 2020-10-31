@@ -1,0 +1,26 @@
+swagger: "2.0"
+info:
+  description: "Robot Nordo"
+  version: "1.0.0"
+  title: "La Poutine Mtl"
+  termsOfService: ""
+  contact:
+    email: "jshn.singh1@gmail.com"
+  license:
+    name: "MIT OpenSource"
+    url: "https://opensource.org/licenses/MIT"
+host: "lapoutinemtl.com"
+basePath: "/nordo/potatoes"
+paths:
+  /boil:
+    post:
+      tags:
+      - "boil potatoes"
+      summary: "boil potatoes until cooked soft"
+      description: ""
+      operationId: ""
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
