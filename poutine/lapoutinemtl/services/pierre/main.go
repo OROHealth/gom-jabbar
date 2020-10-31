@@ -14,7 +14,9 @@ func main() {
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
 
-	e.GET("/mixAll", MixAll)
+	pierre := e.Group("/pierre")
+
+	pierre.GET("/mixAll", MixAll)
 
 	// Serve
 	e.Logger.Fatal(e.Start(":5147"))
