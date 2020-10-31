@@ -7,6 +7,7 @@ import (
 // Pierre is one such robot that is programmed to emulate a talented
 // Montréal cook who learned from the great Le Chef Chiffre and can put
 // together a true poutine.
+// todo: you are writing go code, pierre must return errors too, if any.
 type Pierre struct {
 	poutine utils.TruePoutine
 }
