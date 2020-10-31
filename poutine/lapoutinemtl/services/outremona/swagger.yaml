@@ -15,7 +15,7 @@ paths:
   /cheese:
     get:
       tags:
-      - "outremona"
+      - "get cheese"
       summary: "take cheese from the box and squeeze it"
       description: ""
       operationId: ""
