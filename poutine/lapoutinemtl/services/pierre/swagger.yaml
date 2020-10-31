@@ -1,0 +1,38 @@
+swagger: "2.0"
+info:
+  description: "Robot Pierre"
+  version: "1.0.0"
+  title: "La Poutine Mtl"
+  termsOfService: ""
+  contact:
+    email: "jshn.singh1@gmail.com"
+  license:
+    name: "MIT OpenSource"
+    url: "https://opensource.org/licenses/MIT"
+host: "lapoutinemtl.com"
+basePath: "/pierre"
+paths:
+  /mix:
+    get:
+      tags:
+      - "mix ingredients"
+      summary: "pierre mixes poutine ingredients in a box"
+      description: ""
+      operationId: ""
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+  /qualitycheck:
+    get:
+      tags:
+        - "quality check the poutine"
+      summary: "checks if everything is good for the box to be sent to drunks after few cans of Molson's Dry 10.1"
+      description: ""
+      operationId: ""
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
