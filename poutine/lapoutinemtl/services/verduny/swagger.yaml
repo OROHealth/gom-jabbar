@@ -1,0 +1,38 @@
+swagger: "2.0"
+info:
+  description: "Robot Verduny"
+  version: "1.0.0"
+  title: "La Poutine Mtl"
+  termsOfService: ""
+  contact:
+    email: "jshn.singh1@gmail.com"
+  license:
+    name: "MIT OpenSource"
+    url: "https://opensource.org/licenses/MIT"
+host: "lapoutinemtl.com"
+basePath: "/verduny"
+paths:
+  /cut:
+    post:
+      tags:
+      - "cut potatoes"
+      summary: "cut potatoes in a dynamically sized cube"
+      description: ""
+      operationId: ""
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+  /dip:
+    post:
+      tags:
+        - "dip potatoes"
+      summary: "dip potatoes in maple syrup"
+      description: ""
+      operationId: ""
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
