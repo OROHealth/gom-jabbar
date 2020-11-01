@@ -1,3 +1,3 @@
-SERVICE_NAME=verduny
+SERVICE_NAME=montroyashi
 
 include ../Makefile

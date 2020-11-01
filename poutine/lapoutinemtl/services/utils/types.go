@@ -2,9 +2,7 @@ package utils
 
 // du fromage
 type CheddarEnGrains struct {
-	IsFresh   bool 	 `json:"isFresh"`
-	IsSqueaky bool 	 `json:"isSqueaky"`
-	Portion   string `json:"portion"`
+	IsSqueakyAndFresh bool `json:"isSqueakyAndFresh"`
 }
 
 // la patate
@@ -18,6 +16,11 @@ type Potatoes struct {
 	potatoes []Potato
 }
 
+// potato fries
+type PotatoFries struct {
+	AreHotAndCrispy bool `json:"areHotAndCrispy"`
+}
+
 // l'huile
 type Oil interface {
 	isCookingOil() bool
@@ -26,6 +29,5 @@ type Oil interface {
 
 // sauce poutine
 type SaucePoutine struct {
-	isHot bool
-	isFresh bool
+	IsHotAndFresh bool `json:"isHotAndFresh"`
 }
