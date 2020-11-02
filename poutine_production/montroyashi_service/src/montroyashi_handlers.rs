@@ -1,8 +1,12 @@
 use rand::Rng;
+use std::time::{Duration, SystemTime};
 use warp::http::StatusCode;
+use warp::reply::json;
 use warp::{Rejection, Reply};
 
-const lyrics: [&'static str; 8] = [
+use crate::montroyashi_models::{DrunkPeopleAround, DrunkPeopleAroundResponse};
+
+const LYRICS: [&'static str; 8] = [
     "
     Maybe there’s a God above
     But all I’ve ever learned from love
@@ -57,8 +61,8 @@ impl MontroyashiHandlers {
     /// The success message of an http status code of 200
     pub async fn display_leonard_cohen_lyrics() -> Result<impl Reply, Rejection> {
         let mut rng = rand::thread_rng();
-        let index = rng.gen_range(0, lyrics.len());
-        let selected_lyrics = lyrics[index];
+        let index = rng.gen_range(0, LYRICS.len());
+        let selected_lyrics = LYRICS[index];
         println!("{}", selected_lyrics);
         Ok(StatusCode::OK)
     }
@@ -69,12 +73,38 @@ impl MontroyashiHandlers {
     ///
     /// ## Returns
     /// The success message of an http status code of 200
-    pub async fn noise_heard() {}
+    pub async fn noise_heard(
+        drunk_people_around: DrunkPeopleAround,
+    ) -> Result<impl Reply, Rejection> {
+        let mut drunk_people_around = drunk_people_around.write().await;
+        drunk_people_around.status = true;
+        drunk_people_around.time_logged = SystemTime::now();
+        Ok(StatusCode::OK)
+    }
 
     /// This function responds to the client on whether there are
-    /// Drunk people around
+    /// Drunk people around.
+    ///
+    /// If more than 15 minutes have elapsed since the last time noise was heard from another robot,
+    /// The system assumes that no drunk people are around and the system returns false;
     ///
     /// ## Returns
     /// A response on whether there are drunk people around
-    pub async fn check_for_drunk_people() {}
+    pub async fn check_for_drunk_people(
+        drunk_people_around: DrunkPeopleAround,
+    ) -> Result<impl Reply, Rejection> {
+        let mut response = DrunkPeopleAroundResponse {
+            drunk_people_around: false,
+        };
+        let drunk_people_around = drunk_people_around.read().await;
+        // if the last time a drunk person was detected is more than 15 minutes ago
+        if drunk_people_around.time_logged.elapsed().unwrap() > Duration::new(900, 0) {
+            return Ok(json(&response));
+        } else if drunk_people_around.status {
+            println!("Drunk Person Detected");
+            response.drunk_people_around = true;
+            return Ok(json(&response));
+        }
+        Ok(json(&response))
+    }
 }
