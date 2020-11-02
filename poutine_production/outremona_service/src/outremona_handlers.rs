@@ -23,3 +23,17 @@ impl OutremonaHandlers {
         Ok(StatusCode::OK)
     }
 }
+
+#[tokio::test]
+async fn test_taking_cheese() {
+    let response = OutremonaHandlers::get_cheese().await;
+    assert!(response.is_ok());
+    assert_eq!(response.unwrap().into_response().status(), StatusCode::OK);
+}
+
+#[tokio::test]
+async fn test_squeezing_cheese() {
+    let response = OutremonaHandlers::squeeze_cheese().await;
+    assert!(response.is_ok());
+    assert_eq!(response.unwrap().into_response().status(), StatusCode::OK);
+}
