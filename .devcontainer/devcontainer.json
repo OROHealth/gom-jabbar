@@ -1,0 +1,42 @@
+{
+    "name": "Rust",
+    "dockerFile": "Dockerfile",
+    "forwardPorts": [
+        8000,
+        8010,
+        8020,
+        8030,
+        8040,
+        8050,
+        8060,
+        8070,
+        8080,
+    ],
+    "runArgs": [
+        "--cap-add=SYS_PTRACE",
+        "--security-opt",
+        "seccomp=unconfined"
+    ],
+    "settings": {
+        "workbench.colorTheme": "Solarized Dark",
+        "lldb.executable": "/usr/bin/lldb",
+        "files.watcherExclude": {
+            "**/target/**": true,
+            "**/node_modules/**": true,
+        },
+        "search.exclude": {
+            "**/target": true
+        },
+        "lldb.verboseLogging": true,
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "matklad.rust-analyzer",
+	    "rust-analyzer.cargo.allFeatures": true,
+    },
+    "extensions": [
+        "matklad.rust-analyzer",
+        "bungcip.better-toml",
+        "vadimcn.vscode-lldb",
+        "mutantdino.resourcemonitor",
+        "pkief.material-icon-theme",
+    ]
+}
