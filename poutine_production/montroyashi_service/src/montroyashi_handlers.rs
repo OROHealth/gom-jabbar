@@ -6,6 +6,8 @@ use warp::{Rejection, Reply};
 
 use crate::montroyashi_models::{DrunkPeopleAround, DrunkPeopleAroundResponse};
 
+const WAIT_TIME: u64 = 900;
+
 const LYRICS: [&'static str; 8] = [
     "
     Maybe there’s a God above
@@ -71,6 +73,9 @@ impl MontroyashiHandlers {
     /// (Making the assumption that the noise heard is a drunk person)
     /// Updates the state of drunk people around.
     ///
+    /// ## Arguments
+    /// `drunk_people_around` - The current status of drunk people being around
+    ///
     /// ## Returns
     /// The success message of an http status code of 200
     pub async fn noise_heard(
@@ -88,17 +93,40 @@ impl MontroyashiHandlers {
     /// If more than 15 minutes have elapsed since the last time noise was heard from another robot,
     /// The system assumes that no drunk people are around and the system returns false;
     ///
+    /// ## Arguments
+    /// `drunk_people_around` - The current status of drunk people being around
+    ///
     /// ## Returns
     /// A response on whether there are drunk people around
     pub async fn check_for_drunk_people(
         drunk_people_around: DrunkPeopleAround,
     ) -> Result<impl Reply, Rejection> {
+        MontroyashiHandlers::get_drunk_people_status(WAIT_TIME, drunk_people_around).await
+    }
+
+    /// This function is the handler for the caller on whether there are
+    /// Drunk people around.
+    ///
+    /// If more than the provided seconds have elapsed since the last time noise was heard from another robot,
+    /// The system assumes that no drunk people are around and the system returns false;
+    ///
+    /// ## Arguments
+    /// `max_wait_time` - the maximum amount of time accepted since the last noise complaint
+    /// `drunk_people_around` - The current status of drunk people being around
+    ///
+    /// ## Returns
+    /// A response on whether there are drunk people around
+    async fn get_drunk_people_status(
+        max_wait_time: u64,
+        drunk_people_around: DrunkPeopleAround,
+    ) -> Result<impl Reply, Rejection> {
         let mut response = DrunkPeopleAroundResponse {
             drunk_people_around: false,
         };
-        let drunk_people_around = drunk_people_around.read().await;
+        let mut drunk_people_around = drunk_people_around.write().await;
         // if the last time a drunk person was detected is more than 15 minutes ago
-        if drunk_people_around.time_logged.elapsed().unwrap() > Duration::new(900, 0) {
+        if drunk_people_around.time_logged.elapsed().unwrap() > Duration::new(max_wait_time, 0) {
+            drunk_people_around.status = false;
             return Ok(json(&response));
         } else if drunk_people_around.status {
             println!("Drunk Person Detected");
@@ -107,4 +135,35 @@ impl MontroyashiHandlers {
         }
         Ok(json(&response))
     }
+}
+
+#[tokio::test]
+async fn test_lyrics_request() {
+    let response = MontroyashiHandlers::display_leonard_cohen_lyrics().await;
+    assert!(response.is_ok());
+    assert_eq!(response.unwrap().into_response().status(), StatusCode::OK);
+}
+
+#[tokio::test]
+async fn test_drunk_status_update() {
+    let drunk_people_state = std::sync::Arc::new(tokio::sync::RwLock::new(
+        crate::montroyashi_models::DrunkPeopleAroundStatus {
+            status: false,
+            time_logged: std::time::SystemTime::now(),
+        },
+    ));
+
+    // no drunk people detected!!
+    assert!(!drunk_people_state.read().await.status);
+    let response = MontroyashiHandlers::noise_heard(drunk_people_state.clone()).await;
+    assert!(response.is_ok());
+    // drunk people detected!!
+    assert!(drunk_people_state.read().await.status);
+
+    // No wait time - resets the status to no drunk people around
+    let response =
+        MontroyashiHandlers::get_drunk_people_status(0, drunk_people_state.clone()).await;
+    assert!(response.is_ok());
+    // no drunk people detected!!
+    assert!(!drunk_people_state.read().await.status);
 }

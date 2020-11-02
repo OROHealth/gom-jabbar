@@ -47,6 +47,7 @@ async fn main() {
     warp::serve(routes).run(SocketAddr::new(HOST, PORT)).await;
 }
 
+/// Copies the read write locked status of drunk people around
 fn with_status(
     status: DrunkPeopleAround,
 ) -> impl Filter<Extract = (DrunkPeopleAround,), Error = Infallible> + Clone {
