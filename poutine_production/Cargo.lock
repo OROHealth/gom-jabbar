@@ -572,6 +572,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "montroyashi_service"
+version = "0.1.0"
+dependencies = [
+ "futures",
+ "serde",
+ "serde_json",
+ "tokio",
+ "warp",
+]
+
+[[package]]
 name = "multipart"
 version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
