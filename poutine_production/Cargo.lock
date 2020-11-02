@@ -576,6 +576,7 @@ name = "montroyashi_service"
 version = "0.1.0"
 dependencies = [
  "futures",
+ "rand 0.7.3",
  "serde",
  "serde_json",
  "tokio",
