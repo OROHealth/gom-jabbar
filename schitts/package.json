@@ -1,0 +1,14 @@
+{
+  "name": "schitts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "client": "cd client && yarn install",
+    "server": "cd server && nodemon index.js",
+    "start": "yarn server",
+    "full-install": "yarn install && concurrently \"cd server && yarn install \" \"cd client && yarn install \""
+  }
+}
+
+
