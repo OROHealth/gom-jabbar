@@ -3,4 +3,5 @@
 members = [
     "outremona_service",
     "montroyashi_service",
+    "shared_models",
 ]
