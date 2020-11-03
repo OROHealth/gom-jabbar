@@ -1,4 +1,6 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 /// Shared Models between multiple services
-#[derive(Debug, Clone, Serialize)]
-pub struct Potato {}
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Potato {
+    pub size: usize,
+}
