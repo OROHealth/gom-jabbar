@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use shared_models::Potato;
+use shared_models::{OilTypes, Potato};
 use std::sync::Arc;
 use std::time::SystemTime;
 use tokio::sync::RwLock;
@@ -10,6 +10,7 @@ pub type FryingState = Arc<RwLock<Frying>>;
 pub struct Frying {
     pub time: Option<SystemTime>,
     pub potatoes: Option<Vec<Potato>>,
+    pub oil: Option<OilTypes>,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -20,6 +21,7 @@ pub struct FriesResponse {
 #[derive(Debug, Clone, Deserialize)]
 pub struct FryRequest {
     pub potatoes: Vec<shared_models::Potato>,
+    pub oil: OilTypes,
 }
 
 #[derive(Serialize, Debug)]

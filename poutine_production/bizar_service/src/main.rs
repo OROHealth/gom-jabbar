@@ -19,6 +19,7 @@ async fn main() {
     let frying_status = Arc::new(RwLock::new(Frying {
         potatoes: None,
         time: None,
+        oil: None,
     }));
 
     // routes for the bizar service
