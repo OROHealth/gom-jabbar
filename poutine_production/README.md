@@ -1,18 +1,56 @@
-## Install
+## Requirements
 
+### VSCode and Docker
+
+### OR
+### On debian
+```
+RUN apt-get update && apt-get upgrade -y && apt-get install sudo build-essential curl gnupg -y
+RUN apt-get update -y && apt-get install -y git procps nano pkg-config libssl-dev
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+```
+
+## Install
     cargo build
 
-## Run the app
+## Run all servers
+    cd scripts && sudo sh ./start_servers.sh
 
-    cd server && cargo run
+## Stop all servers
+    cd scripts && sudo sh ./stop_servers.sh
+
+## Simulate poutine making
+    cd scripts
+    sudo sh ./start_servers.sh
+    sudo sh ./make_poutine.sh
+    sudo sh ./stop_servers.sh
 
 ## Run the tests
-
     cargo test
 
 # REST API
-
 The REST API to the app is described below.
+
+# All services except montroyashi
+
+## Hear noise to notify montroyashi
+
+### Request
+
+`GET /noise-heard/`
+
+    curl -H 'Accept: application/json' http://localhost:8000/noise-heard
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:30 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 2
+
+    []
 
 # Outremona Service
 
