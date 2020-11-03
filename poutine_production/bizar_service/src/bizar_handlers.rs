@@ -125,8 +125,8 @@ async fn test_fries_state_change() {
 
     assert!(BizarHandlers::start_frying_potatoes(
         FryRequest {
-            oil: shared_models::OilTypes::Sunflower,
-            potatoes: vec![shared_models::Potato {
+            oil: shared::OilTypes::Sunflower,
+            potatoes: vec![shared::Potato {
                 size: 9,
                 oil_used: None,
                 boiled: false,

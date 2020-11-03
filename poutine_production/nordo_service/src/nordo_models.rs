@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use shared_models::Potato;
+use shared::Potato;
 use std::sync::Arc;
 use std::time::SystemTime;
 use tokio::sync::RwLock;
@@ -33,7 +33,7 @@ pub struct BoiledPotatoesResponse {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct BoilRequest {
-    pub potatoes: Vec<shared_models::Potato>,
+    pub potatoes: Vec<shared::Potato>,
 }
 
 #[derive(Serialize, Debug)]

@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use shared_models::{OilTypes, Potato};
+use shared::{OilTypes, Potato};
 use std::sync::Arc;
 use std::time::SystemTime;
 use tokio::sync::RwLock;
@@ -20,7 +20,7 @@ pub struct FriesResponse {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct FryRequest {
-    pub potatoes: Vec<shared_models::Potato>,
+    pub potatoes: Vec<shared::Potato>,
     pub oil: OilTypes,
 }
 

@@ -6,5 +6,5 @@ members = [
     "verduny_service",
     "nordo_service",
     "bizar_service",
-    "shared_models",
+    "shared",
 ]
