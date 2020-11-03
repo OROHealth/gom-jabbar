@@ -24,6 +24,12 @@ impl OutremonaHandlers {
     }
 }
 
+impl shared::NotifyMontroyashi for OutremonaHandlers {
+    fn get_robot_name() -> &'static str {
+        "Outremona Service"
+    }
+}
+
 #[tokio::test]
 async fn test_taking_cheese() {
     let response = OutremonaHandlers::get_cheese().await;

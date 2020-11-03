@@ -18,10 +18,13 @@ pub enum OilTypes {
 }
 
 pub trait NotifyMontroyashi {
+    const PORT: u16 = 8010;
+    fn get_robot_name() -> &'static str;
     fn notify_montroyashi_of_noise() {
-        const Robot: &str;
-        match DefaultHttpRequest::post("http://localhost:8010/noise-heard").send() {
-            Ok(_) => println!("Message from {}, Successfully Notified Montroyashi", + Robot),
+        match DefaultHttpRequest::post("http://localhost:" + PORT + "/noise-heard").send() {
+            Ok(_) => {
+                println!("Message from {}, Successfully Notified Montroyashi", + Self::get_robot_name())
+            }
             Err(e) => println!(
                 "Message from {}, Error sending to Montroyashi: {:?}" + Robot,
                 e

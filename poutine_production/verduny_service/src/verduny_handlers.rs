@@ -71,3 +71,9 @@ impl VerdunyHandlers {
         }))
     }
 }
+
+impl shared::NotifyMontroyashi for VerdunyHandlers {
+    fn get_robot_name() -> &'static str {
+        "Verduny Service"
+    }
+}

@@ -115,6 +115,12 @@ impl BizarHandlers {
     }
 }
 
+impl shared::NotifyMontroyashi for BizarHandlers {
+    fn get_robot_name() -> &'static str {
+        "Bizar Service"
+    }
+}
+
 #[tokio::test]
 async fn test_fries_state_change() {
     let state = std::sync::Arc::new(tokio::sync::RwLock::new(crate::bizar_models::Frying {

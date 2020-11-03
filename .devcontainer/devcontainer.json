@@ -1,6 +1,6 @@
 {
     "name": "Rust",
-    "dockerFile": "Dockerfile",
+    "dockerFile": "DockerFile",
     "forwardPorts": [
         8000,
         8010,

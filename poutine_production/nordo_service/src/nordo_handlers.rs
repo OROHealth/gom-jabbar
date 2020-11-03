@@ -119,3 +119,9 @@ impl NordoHandlers {
         }
     }
 }
+
+impl shared::NotifyMontroyashi for NordoHandlers {
+    fn get_robot_name() -> &'static str {
+        "Nordo Service"
+    }
+}
