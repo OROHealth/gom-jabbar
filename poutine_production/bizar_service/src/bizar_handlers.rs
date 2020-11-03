@@ -44,7 +44,7 @@ impl BizarHandlers {
         ))
     }
 
-    /// Returns the fried potatoes if they are done
+    /// Returns the fried potatoes if they are done frying
     ///
     /// ## Arguments
     /// `frying_status` - The status
@@ -52,10 +52,27 @@ impl BizarHandlers {
     /// ## Returns
     /// The fried potatoes or a message saying they are not done frying
     pub async fn get_fries(state: FryingState) -> Result<impl Reply, Rejection> {
-        let state = state.read().await;
-        if let (Some(mut potatoes), Some(oil), Some(time)) =
-            (state.potatoes.clone(), state.oil.clone(), state.time)
-        {
+        Self::get_fries_helper(state, FRY_TIME).await
+    }
+
+    /// Returns the fried potatoes if they are done frying
+    ///
+    /// ## Arguments
+    /// `frying_status` - The status
+    /// `max_fry_time` - The amount of time that is required to fry
+    ///
+    /// ## Returns
+    /// The fried potatoes or a message saying they are not done frying
+    async fn get_fries_helper(
+        state: FryingState,
+        max_fry_time: u64,
+    ) -> Result<impl Reply, Rejection> {
+        let mut state = state.write().await;
+        if let (Some(mut potatoes), Some(oil), Some(time)) = (
+            state.potatoes.clone(),
+            state.oil.clone(),
+            state.time.clone(),
+        ) {
             let time = if let Ok(time) = time.elapsed() {
                 time
             } else {
@@ -66,7 +83,7 @@ impl BizarHandlers {
                     StatusCode::INTERNAL_SERVER_ERROR,
                 ));
             };
-            if time < Duration::new(FRY_TIME, 0) {
+            if time < Duration::new(max_fry_time, 0) {
                 return Ok(warp::reply::with_status(
                     json(&FryingErrorResponse {
                         error: String::from("The potatoes have not finished frying"),
@@ -74,6 +91,10 @@ impl BizarHandlers {
                     StatusCode::OK,
                 ));
             }
+
+            state.potatoes = None;
+            state.time = None;
+            state.oil = None;
 
             potatoes
                 .iter_mut()
@@ -92,4 +113,36 @@ impl BizarHandlers {
             ));
         }
     }
+}
+
+#[tokio::test]
+async fn test_fries_state_change() {
+    let state = std::sync::Arc::new(tokio::sync::RwLock::new(crate::bizar_models::Frying {
+        oil: None,
+        time: None,
+        potatoes: None,
+    }));
+
+    assert!(BizarHandlers::start_frying_potatoes(
+        FryRequest {
+            oil: shared_models::OilTypes::Sunflower,
+            potatoes: vec![shared_models::Potato {
+                size: 9,
+                oil_used: None,
+                boiled: false,
+                coated_in_maple_syrup: false,
+                fried: false,
+            }],
+        },
+        state.clone(),
+    )
+    .await
+    .is_ok());
+
+    assert!(state.read().await.potatoes.is_some());
+
+    assert!(BizarHandlers::get_fries_helper(state.clone(), 0)
+        .await
+        .is_ok());
+    assert!(state.read().await.potatoes.is_none());
 }
