@@ -21,7 +21,7 @@ impl VerdunyHandlers {
         cut_potato_request: CutPotatoRequest,
     ) -> Result<impl Reply, Rejection> {
         println!(
-            "Cutting {} Potatoes into pieces of size {}",
+            "Message from Verduny Service: Cutting {} Potatoes into pieces of size {}",
             cut_potato_request.potatoes.len(),
             cut_potato_request.size
         );
@@ -63,6 +63,10 @@ impl VerdunyHandlers {
     pub async fn dip_potatoes_in_maple_syrup(
         mut dip_potato_request: MSDipPotatoRequest,
     ) -> Result<impl Reply, Rejection> {
+        println!(
+            "Message from Verduny Service: Dipping {} Potatoes in maple syrup",
+            dip_potato_request.potatoes.len(),
+        );
         for i in 0..dip_potato_request.potatoes.len() {
             dip_potato_request.potatoes[i].coated_in_maple_syrup = true;
         }
@@ -76,4 +80,36 @@ impl shared::NotifyMontroyashi for VerdunyHandlers {
     fn get_robot_name() -> &'static str {
         "Verduny Service"
     }
+}
+
+#[tokio::test]
+async fn test_cutting() {
+    assert!(VerdunyHandlers::cut_potatoes(CutPotatoRequest {
+        size: 2,
+        potatoes: vec![shared::Potato {
+            size: 9,
+            oil_used: None,
+            boiled: false,
+            coated_in_maple_syrup: false,
+            fried: false,
+        }],
+    })
+    .await
+    .is_ok())
+}
+#[tokio::test]
+async fn test_maple_syrup_dipping() {
+    assert!(
+        VerdunyHandlers::dip_potatoes_in_maple_syrup(MSDipPotatoRequest {
+            potatoes: vec![shared::Potato {
+                size: 9,
+                oil_used: None,
+                boiled: false,
+                coated_in_maple_syrup: false,
+                fried: false,
+            }],
+        })
+        .await
+        .is_ok()
+    )
 }

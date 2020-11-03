@@ -165,7 +165,7 @@ date: Tue, 03 Nov 2020 06:18:54 GMT
 
 # Nordo Service
 
-On Port 8020
+On Port 8030
 
 ## Start boiling potatoes
 
@@ -223,3 +223,49 @@ On Port 8020
     {"potatoes": [
      {"size": 9, "coated_in_maple_syrup": false, "boiled": true, "fried": false,"oil_used":null}
     ]}
+
+# Bizar Service
+
+On Port 8040
+
+## Start boiling potatoes
+
+### Request
+
+`POST /start-frying/`
+
+    curl -i -X POST 'http://localhost:8040/start-frying' -H 'Content-Type: application/json' -d '{"potatoes": [{"size": 9, "coated_in_maple_syrup": false, "boiled": false, "fried": false}], "oil": "Sunflower" }'
+
+
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:30 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 2
+
+    []
+
+## Get Fried potatoes
+
+### Request
+
+`POST /get-fries/`
+
+    curl -i -X POST 'http://localhost:8040/get-fries'
+
+
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:30 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 2
+
+    {potatoes: [{"size": 9, "coated_in_maple_syrup": false, "boiled": false, "fried": true, ", "oil": "Sunflower"} ]}'
