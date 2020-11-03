@@ -26,6 +26,11 @@ pub struct BoilingStatusResponse {
     pub status: BoilingStatus,
 }
 
+#[derive(Debug, Clone, Serialize)]
+pub struct BoiledPotatoesResponse {
+    pub potatoes: Vec<Potato>,
+}
+
 #[derive(Debug, Clone, Deserialize)]
 pub struct BoilRequest {
     pub potatoes: Vec<shared_models::Potato>,

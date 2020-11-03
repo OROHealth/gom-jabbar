@@ -4,7 +4,8 @@ use warp::reply::json;
 use warp::{Rejection, Reply};
 
 use crate::nordo_models::{
-    BoilRequest, BoilingErrorResponse, BoilingState, BoilingStatus, BoilingStatusResponse,
+    BoilRequest, BoiledPotatoesResponse, BoilingErrorResponse, BoilingState, BoilingStatus,
+    BoilingStatusResponse,
 };
 
 const BOIL_TIME: u64 = 900;
@@ -86,7 +87,35 @@ impl NordoHandlers {
     ///
     /// ## Returns
     /// The boiled potatoes or a message giving them their status
-    pub async fn get_boiled_potatoes() -> Result<impl Reply, Rejection> {
-        Ok(warp::http::StatusCode::OK)
+    pub async fn get_boiled_potatoes(state: BoilingState) -> Result<impl Reply, Rejection> {
+        let state = state.read().await;
+        if let (Some(mut potatoes), Some(time)) = (state.potatoes.clone(), state.time) {
+            let time = if let Ok(time) = time.elapsed() {
+                time
+            } else {
+                return Ok(warp::reply::with_status(
+                    json(&String::from(
+                        "Could not unwrap time elapsed for boiling potatoes",
+                    )),
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                ));
+            };
+            if time < Duration::new(BOIL_TIME, 0) {
+                return Ok(warp::reply::with_status(
+                    json(&String::from("The potatoes have not finished boiling")),
+                    StatusCode::OK,
+                ));
+            }
+            potatoes.iter_mut().for_each(|mut p| p.boiled = true);
+            return Ok(warp::reply::with_status(
+                json(&BoiledPotatoesResponse { potatoes }),
+                StatusCode::OK,
+            ));
+        } else {
+            return Ok(warp::reply::with_status(
+                json(&String::from("Nothing is boiling at the moment")),
+                StatusCode::OK,
+            ));
+        }
     }
 }
