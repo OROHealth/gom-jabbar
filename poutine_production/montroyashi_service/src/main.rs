@@ -26,6 +26,7 @@ async fn main() {
     let lyrics_route = warp::path!("leonard-cohen-lyrics")
         .and_then(MontroyashiHandlers::display_leonard_cohen_lyrics);
     let noise_heard_route = warp::path!("noise-heard")
+        .and(warp::post())
         .and(with_status(drunk_people_state.clone()))
         .and_then(MontroyashiHandlers::noise_heard);
 
