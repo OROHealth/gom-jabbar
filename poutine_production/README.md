@@ -1,6 +1,11 @@
 ## Requirements
 
-### VSCode and Docker
+### VSCode with the Remote Containers extension and Docker
+
+```
+Open VSCode
+On the bottom right, press the green button to open VSCode in the container environment.
+```
 
 ### OR
 ### On debian
