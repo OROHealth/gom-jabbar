@@ -1,5 +1,4 @@
-use crate::verduny_models::{CutPotatoRequest, CutPotatoResponse};
-use shared_models::Potato;
+use crate::verduny_models::{CutPotatoRequest, MSDipPotatoRequest, PotatoResponse};
 use warp::reply::json;
 use warp::{Rejection, Reply};
 
@@ -34,23 +33,41 @@ impl VerdunyHandlers {
                 let mut potato_pieces = Vec::new();
                 let mut remaining_size = potato.size;
                 while remaining_size > cut_potato_request.size {
-                    potato_pieces.push(Potato {
-                        size: cut_potato_request.size,
-                    });
+                    let mut piece = potato.clone();
+                    piece.size = cut_potato_request.size;
+                    potato_pieces.push(piece);
                     remaining_size -= cut_potato_request.size;
                 }
                 // no waste of potatoes
                 if remaining_size != 0 {
-                    potato_pieces.push(Potato {
-                        size: remaining_size,
-                    })
+                    let mut piece = potato.clone();
+                    piece.size = remaining_size;
+                    potato_pieces.push(piece)
                 }
                 potato_pieces
             })
             .collect();
 
-        Ok(json(&CutPotatoResponse {
+        Ok(json(&PotatoResponse {
             potatoes: cut_potatoes,
+        }))
+    }
+
+    /// Dips every potatoe in maple syrup
+    ///
+    /// ## Arguments
+    /// `coat_potato_request` - Potatoes to be dipped
+    ///
+    /// ## Returns
+    /// The collection of potatoes all dipped in maple syrup
+    pub async fn dip_potatoes_in_maple_syrup(
+        mut dip_potato_request: MSDipPotatoRequest,
+    ) -> Result<impl Reply, Rejection> {
+        for i in 0..dip_potato_request.potatoes.len() {
+            dip_potato_request.potatoes[i].coated_in_maple_syrup = true;
+        }
+        Ok(json(&PotatoResponse {
+            potatoes: dip_potato_request.potatoes,
         }))
     }
 }

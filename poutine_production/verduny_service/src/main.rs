@@ -18,12 +18,20 @@ async fn main() {
         .and(warp::body::json())
         .and_then(verduny_handlers::VerdunyHandlers::cut_potatoes);
 
+    let dip_potatoes_route = warp::path!("dip-potatoes-in-maple-syrup")
+        .and(warp::post())
+        .and(warp::body::json())
+        .and_then(verduny_handlers::VerdunyHandlers::dip_potatoes_in_maple_syrup);
+
     let cors = warp::cors()
         .allow_any_origin()
         .allow_header("content-type")
         .allow_methods(&[Method::GET, Method::POST, Method::DELETE]);
 
-    let routes = health_route.or(cut_potatoes_route).with(cors);
+    let routes = health_route
+        .or(cut_potatoes_route)
+        .or(dip_potatoes_route)
+        .with(cors);
 
     warp::serve(routes).run(SocketAddr::new(HOST, PORT)).await;
 }

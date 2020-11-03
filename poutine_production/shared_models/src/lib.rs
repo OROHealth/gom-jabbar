@@ -3,4 +3,5 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Potato {
     pub size: usize,
+    pub coated_in_maple_syrup: bool,
 }

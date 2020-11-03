@@ -6,7 +6,12 @@ pub struct CutPotatoRequest {
     pub size: usize,
 }
 
+#[derive(Debug, Clone, Deserialize)]
+pub struct MSDipPotatoRequest {
+    pub potatoes: Vec<shared_models::Potato>,
+}
+
 #[derive(Debug, Clone, Serialize)]
-pub struct CutPotatoResponse {
+pub struct PotatoResponse {
     pub potatoes: Vec<shared_models::Potato>,
 }
