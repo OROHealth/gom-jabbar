@@ -12,9 +12,12 @@ pub const PORT: u16 = 8000;
 async fn main() {
     // routes for the outremona service
     let health_route = warp::path!("health").map(|| warp::reply());
-    let take_cheese_route = warp::path!("take-cheese").and_then(OutremonaHandlers::get_cheese);
-    let squeeze_cheese_route =
-        warp::path!("take-cheese").and_then(OutremonaHandlers::squeeze_cheese);
+    let take_cheese_route = warp::path!("take-cheese")
+        .and(warp::post())
+        .and_then(OutremonaHandlers::get_cheese);
+    let squeeze_cheese_route = warp::path!("squeeze-cheese")
+        .and(warp::post())
+        .and_then(OutremonaHandlers::squeeze_cheese);
 
     let cors = warp::cors()
         .allow_any_origin()
