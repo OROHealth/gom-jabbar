@@ -3,7 +3,9 @@ use warp::http::StatusCode;
 use warp::reply::json;
 use warp::{Rejection, Reply};
 
-use crate::nordo_models::{BoilRequest, BoilingErrorResponse, BoilingState};
+use crate::nordo_models::{
+    BoilRequest, BoilingErrorResponse, BoilingState, BoilingStatus, BoilingStatusResponse,
+};
 
 const BOIL_TIME: u64 = 900;
 
@@ -43,8 +45,40 @@ impl NordoHandlers {
     ///
     /// ## Returns
     /// The status of the potatoes as a response
-    pub async fn get_potatoes_status() -> Result<impl Reply, Rejection> {
-        Ok(warp::http::StatusCode::OK)
+    pub async fn get_potatoes_status(state: BoilingState) -> Result<impl Reply, Rejection> {
+        if let Some(time) = state.read().await.time {
+            let time = if let Ok(time) = time.elapsed() {
+                time
+            } else {
+                return Ok(warp::reply::with_status(
+                    json(&String::from(
+                        "Could not unwrap time elapsed for boiling potatoes",
+                    )),
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                ));
+            };
+
+            let status = if time > Duration::new(BOIL_TIME, 0) {
+                BoilingStatus::DamnThatsHot
+            } else if time > Duration::new(BOIL_TIME / 5 * 4, 0) {
+                BoilingStatus::BoilingMore
+            } else if time > Duration::new(BOIL_TIME / 5 * 3, 0) {
+                BoilingStatus::StartingToBoil
+            } else if time > Duration::new(BOIL_TIME / 5 * 2, 0) {
+                BoilingStatus::SoCold
+            } else {
+                BoilingStatus::Freezing
+            };
+            return Ok(warp::reply::with_status(
+                json(&BoilingStatusResponse { status }),
+                StatusCode::OK,
+            ));
+        } else {
+            return Ok(warp::reply::with_status(
+                json(&String::from("Nothing is boiling at the moment")),
+                StatusCode::OK,
+            ));
+        }
     }
 
     /// If the potatoes are boiled, they are then returned, otherwise the status

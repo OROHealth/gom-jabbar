@@ -30,12 +30,20 @@ async fn main() {
         .and(with_boiling_status(boiling_status.clone()))
         .and_then(NordoHandlers::start_boiling_potatoes);
 
+    let boiling_status_route = warp::path!("start-boiling")
+        .and(warp::post())
+        .and(with_boiling_status(boiling_status.clone()))
+        .and_then(NordoHandlers::get_potatoes_status);
+
     let cors = warp::cors()
         .allow_any_origin()
         .allow_header("content-type")
         .allow_methods(&[Method::GET, Method::POST, Method::DELETE]);
 
-    let routes = health_route.with(cors);
+    let routes = health_route
+        .or(start_boiling_route)
+        .or(boiling_status_route)
+        .with(cors);
 
     warp::serve(routes).run(SocketAddr::new(HOST, PORT)).await;
 }
