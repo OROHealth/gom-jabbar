@@ -1,3 +1,4 @@
+use shared::NotifyMontroyashi;
 use std::convert::Infallible;
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 use std::sync::Arc;
@@ -31,6 +32,9 @@ async fn main() {
         .and(with_frying_status(frying_status.clone()))
         .and_then(BizarHandlers::start_frying_potatoes);
 
+    let heard_sound_route =
+        warp::path!("sound-heard").and_then(BizarHandlers::notify_montroyashi_of_noise);
+
     let get_fries_route = warp::path!("get-fries")
         .and(warp::post())
         .and(with_frying_status(frying_status.clone()))
@@ -44,6 +48,7 @@ async fn main() {
     let routes = health_route
         .or(start_frying_route)
         .or(get_fries_route)
+        .or(heard_sound_route)
         .with(cors);
 
     warp::serve(routes).run(SocketAddr::new(HOST, PORT)).await;

@@ -9,3 +9,5 @@ edition = "2018"
 [dependencies]
 serde = { version = "1.0.105", features = ["derive"] }
 easy-http-request = "0.2.9"
+async-trait = "0.1.41"
+warp = "0.2.5"

@@ -7,9 +7,12 @@ RUN apt-get update && apt-get upgrade -y && apt-get install sudo build-essential
 RUN apt-get update -y && apt-get install -y \
     git \
     procps \
-    nano
+    nano \
+    pkg-config \
+    libssl-dev 
 
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+
 
 # Setup ENVs
 ENV PATH="/root/.cargo/bin:${PATH}"

@@ -65,7 +65,7 @@ impl MontroyashiHandlers {
         let mut rng = rand::thread_rng();
         let index = rng.gen_range(0, LYRICS.len());
         let selected_lyrics = LYRICS[index];
-        println!("{}", selected_lyrics);
+        println!("Message from Montroyashi: {}", selected_lyrics);
         Ok(StatusCode::OK)
     }
 
@@ -81,6 +81,7 @@ impl MontroyashiHandlers {
     pub async fn noise_heard(
         drunk_people_around: DrunkPeopleAround,
     ) -> Result<impl Reply, Rejection> {
+        println!("Message from Montroyashi: A sound was heard by another machine");
         let mut drunk_people_around = drunk_people_around.write().await;
         drunk_people_around.status = true;
         drunk_people_around.time_logged = SystemTime::now();
@@ -127,12 +128,14 @@ impl MontroyashiHandlers {
         // if the last time a drunk person was detected is more than 15 minutes ago
         if drunk_people_around.time_logged.elapsed().unwrap() > Duration::new(max_wait_time, 0) {
             drunk_people_around.status = false;
+            println!("Message from Montroyashi: Drunk People Not Detected");
             return Ok(json(&response));
         } else if drunk_people_around.status {
-            println!("Drunk Person Detected");
+            println!("Message from Montroyashi: Drunk People Detected");
             response.drunk_people_around = true;
             return Ok(json(&response));
         }
+        println!("Message from Montroyashi: Drunk People Not Detected");
         Ok(json(&response))
     }
 }
