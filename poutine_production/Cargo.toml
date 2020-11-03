@@ -4,5 +4,6 @@ members = [
     "outremona_service",
     "montroyashi_service",
     "verduny_service",
+    "norbo_service",
     "shared_models",
 ]
