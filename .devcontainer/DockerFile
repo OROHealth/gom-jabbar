@@ -1,0 +1,16 @@
+FROM debian:buster
+SHELL ["/bin/bash", "-c"]
+USER root
+
+# Install Environment
+RUN apt-get update && apt-get upgrade -y && apt-get install sudo build-essential curl gnupg -y
+RUN apt-get update -y && apt-get install -y \
+    git \
+    procps \
+    nano
+
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+
+# Setup ENVs
+ENV PATH="/root/.cargo/bin:${PATH}"
+RUN rustup component add rust-analysis rls rust-src rust-std
