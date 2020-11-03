@@ -1,5 +1,5 @@
 [package]
-name = "norbo_service"
+name = "nordo_service"
 version = "0.1.0"
 authors = ["Pierre <pseguin2011@protonmail.com>"]
 edition = "2018"

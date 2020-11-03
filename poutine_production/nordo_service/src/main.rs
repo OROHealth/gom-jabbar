@@ -4,9 +4,10 @@ use warp::{http::Method, Filter};
 pub const HOST: IpAddr = IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1));
 pub const PORT: u16 = 8030;
 
+/// Nordo Service: boil potatoes and give their current softness level
 #[tokio::main]
 async fn main() {
-    // routes for the  service
+    // routes for the Nordo service
     let health_route = warp::path!("health").map(|| warp::reply());
 
     let cors = warp::cors()
