@@ -1,9 +1,10 @@
 use serde::{Deserialize, Serialize};
+use shared_models::Potato;
 use std::sync::Arc;
 use std::time::SystemTime;
 use tokio::sync::RwLock;
 
-pub type LockedBoilingTime = Arc<RwLock<BoilingStatus>>;
+pub type BoilingState = Arc<RwLock<Boiling>>;
 
 #[derive(Debug, Clone, Serialize)]
 pub enum BoilingStatus {
@@ -15,8 +16,9 @@ pub enum BoilingStatus {
 }
 
 #[derive(Debug, Clone)]
-pub struct BoilingTime {
-    pub time: SystemTime,
+pub struct Boiling {
+    pub time: Option<SystemTime>,
+    pub potatoes: Option<Vec<Potato>>,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -26,7 +28,7 @@ pub struct BoilingStatusResponse {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct BoilRequest {
-    potatoes: Vec<shared_models::Potato>,
+    pub potatoes: Vec<shared_models::Potato>,
 }
 
 #[derive(Serialize, Debug)]
