@@ -1,5 +1,5 @@
 #!/bin/sh
 
-#Find the Process ID for syncapp running instance
+#Find the Process ID for all running services running instance
 
-ps -ef | grep service | grep -v grep | awk '{print $2}' | xargs kill
+ps -ef | grep ./target/debug | grep -v grep | awk '{print $2}' | xargs kill
