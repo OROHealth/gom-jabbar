@@ -6,6 +6,6 @@ import (
 )
 
 func regulateTemperature(c echo.Context) error {
-	return c.JSON(http.StatusOK, nil)
+	return c.JSON(http.StatusAccepted, nil)
 }
 
