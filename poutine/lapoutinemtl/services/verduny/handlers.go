@@ -6,10 +6,10 @@ import (
 )
 
 func cutPotatoes(c echo.Context) error {
-	return c.JSON(http.StatusOK, nil)
+	return c.JSON(http.StatusAccepted, nil)
 }
 
 func dipInMapleSyrup(c echo.Context) error {
-	return c.JSON(http.StatusOK, nil)
+	return c.JSON(http.StatusAccepted, nil)
 }
 

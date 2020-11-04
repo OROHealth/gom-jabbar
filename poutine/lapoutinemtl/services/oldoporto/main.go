@@ -17,8 +17,8 @@ func main() {
 	oldoporto := e.Group("/oldoporto")
 
 	// Route
-	oldoporto.GET("/temperature", regulateTemperature)
+	oldoporto.POST("/temperature", regulateTemperature)
 
 	// Serve
-	e.Logger.Fatal(e.Start(":5143"))
+	e.Logger.Fatal(e.Start(":5146"))
 }

@@ -16,7 +16,7 @@ func main() {
 
 	pierre := e.Group("/pierre")
 
-	pierre.GET("/mixAll", MixAll)
+	pierre.GET("/poutine", mixAll)
 
 	// Serve
 	e.Logger.Fatal(e.Start(":5147"))

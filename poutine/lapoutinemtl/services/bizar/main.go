@@ -17,7 +17,7 @@ func main() {
 	outremona := e.Group("/bizar/potatoes")
 
 	// Route
-	outremona.GET("/fry", fryPotatoes)
+	outremona.POST("/fry", fryPotatoes)
 
 	// Serve
 	e.Logger.Fatal(e.Start(":5145"))
