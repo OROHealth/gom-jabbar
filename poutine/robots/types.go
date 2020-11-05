@@ -1,28 +1,69 @@
 package robots
 
 import (
+	"fmt"
 	"strings"
-	"time"
+	"sync"
 )
 
 //RestaurantInventory represent the current inventory
 type RestaurantInventory struct {
-	CheeseBoxes map[CheeseKind][]*CheeseBox
-	PotatoBags  map[PotatoKind][]*PotatoBag
-	Cardbox     uint
+	AvailableCheeses  map[CheeseKind]uint
+	AvailablePotatoes map[PotatoKind]uint
+	AvailableCardbox  uint
 	//TODO: right now we assume unlimited sccops of gravy...its the chef secret's sauce after all!
+}
+
+var inventoryMut = &sync.Mutex{}
+
+func (i *RestaurantInventory) Check(o *PoutineOrder) error {
+	inventoryMut.Lock()
+	defer inventoryMut.Unlock()
+
+	template := o.Size.Template()
+	if i.AvailableCheeses[o.Cheese]-template.CurdsCount < 0 {
+		return fmt.Errorf("not enough cheese %s. (want: %d, got: %d)", o.Cheese, template.CurdsCount, i.AvailableCheeses[o.Cheese])
+	} else {
+		i.AvailableCheeses[o.Cheese] -= template.CurdsCount
+	}
+
+	if i.AvailablePotatoes[o.Potato]-template.PotatoCount < 0 {
+		return fmt.Errorf("not enough potatoes %s. (want: %d, got: %d)", o.Potato, template.PotatoCount, i.AvailablePotatoes[o.Potato])
+	} else {
+		i.AvailablePotatoes[o.Potato] -= template.PotatoCount
+	}
+
+	if i.AvailableCardbox-1 < 0 {
+		return fmt.Errorf("not enough cardbox (want: 1, got: %d)", i.AvailableCardbox)
+	} else {
+		i.AvailableCardbox--
+	}
+
+	return nil
 }
 
 //PoutineOrder is one order to we need to deliver promptly
 type PoutineOrder struct {
-	ID        string
-	Size      PoutineSize
-	Potato    PotatoKind
-	PotatoCut PotatoCutSize
-	Cheese    CheeseKind
-	Oil       FryingOilKind
-	Gravy     GravyKind
+	ID        string        `json:"id,omitempty"`
+	Status    OrderStatus   `json:"status,omitempty"`
+	Size      PoutineSize   `json:"size,omitempty"`
+	Potato    PotatoKind    `json:"potato,omitempty"`
+	PotatoCut PotatoCutSize `json:"potato_cut,omitempty"`
+	Cheese    CheeseKind    `json:"cheese,omitempty"`
+	Oil       FryingOilKind `json:"oil,omitempty"`
+	Gravy     GravyKind     `json:"gravy,omitempty"`
+
+	ingredients []Ingredient
+	poutine     Poutine
 }
+
+type OrderStatus string
+
+const (
+	StatusOrdered   = "ordered"
+	StatusCompleted = "completed"
+	StatusError     = "error"
+)
 
 //PoutineSize represent the size of a poutine
 type PoutineSize string
@@ -51,6 +92,14 @@ type PoutineSizeTemplate struct {
 //Poutine represent the sum of all its ingredients
 type Poutine []Ingredient
 
+func (p Poutine) String() string {
+	var parts []string
+	for _, i := range p {
+		parts = append(parts, i.Description())
+	}
+	return fmt.Sprintf("Poutine(\n%s\n)", strings.Join(parts, "\n"))
+}
+
 //CheeseKind is the current list of supported cheeses
 type CheeseKind string
 
@@ -61,18 +110,15 @@ const (
 	NotSoGoodCheese CheeseKind = "not-so-good"
 )
 
-//CheeseBox represent a cheese box
-type CheeseBox struct {
-	Brand         CheeseKind
-	CurdsQuantity uint
-	Expiration    time.Time
-}
-
 //CheeseCurds is a handful of cheese curd
 type CheeseCurds struct {
-	Brand    CheeseKind
-	Quantity uint
-	Squeezed bool
+	Kind     CheeseKind `json:"kind,omitempty"`
+	Quantity uint       `json:"quantity,omitempty"`
+	Squeezed bool       `json:"squeezed,omitempty"`
+}
+
+func (cc CheeseCurds) Description() string {
+	return fmt.Sprintf("%d curds of %s cheese", cc.Quantity, cc.Kind)
 }
 
 //PotatoKind is the current list of supported potatoes
@@ -89,18 +135,11 @@ const (
 	SweetPotato PotatoKind = "sweet"
 )
 
-//PotatoBag represent a potato bag
-type PotatoBag struct {
-	Brand      PotatoKind
-	Quantity   uint
-	Expiration time.Time
-}
-
 //PotatoCutSize represent the dynamic size of potato's cut
 type PotatoCutSize string
 
 const (
-	//SmallCut 1x1 inche potatos
+	//SmallCut 1x1 inch potatos
 	SmallCut PotatoCutSize = "1x1"
 	//MediumCut 2x2 inches potatos
 	MediumCut PotatoCutSize = "2x2"
@@ -132,6 +171,17 @@ const (
 	Valvoline FryingOilKind = "valvoline"
 )
 
+type FriedPotatoes struct {
+	Kind      PotatoKind    `json:"kind,omitempty"`
+	CutSize   PotatoCutSize `json:"cut_size,omitempty"`
+	FryingOil FryingOilKind `json:"frying_oil,omitempty"`
+	Quantity  uint          `json:"quantity,omitempty"`
+}
+
+func (fp FriedPotatoes) Description() string {
+	return fmt.Sprintf("%d %s potatoes cutted in %s and fried with %s", fp.Quantity, fp.Kind, fp.CutSize, fp.FryingOil)
+}
+
 //GravyKind is the kind of gravy
 type GravyKind string
 
@@ -144,4 +194,8 @@ const (
 type GravyScoops struct {
 	Kind     GravyKind
 	Quantity uint
+}
+
+func (gs GravyScoops) Description() string {
+	return fmt.Sprintf("%d scoops of %s sauce", gs.Quantity, gs.Kind)
 }

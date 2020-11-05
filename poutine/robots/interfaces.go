@@ -1,15 +1,17 @@
 package robots
 
+import "github.com/OROHealth/gom-jabbar/poutine/pubsub"
+
 type OrderTaker interface {
-	TakeOrder(PoutineOrder) error
+	TakeOrder(PoutineOrder) (id string, err error)
 }
 
 type CheesePicker interface {
-	PickCheese(CheeseBox, quantity uint) (CheeseCurds, error)
+	PickCheese(qty uint) CheeseCurds
 }
 
 type CheeseSqueezer interface {
-	SqueezeCheese(CheeseCurds) error
+	SqueezeCheese(CheeseCurds) CheeseCurds
 }
 
 type DrunkPeopleDetector interface {
@@ -20,8 +22,12 @@ type LeonardCohenLyricsDisplayer interface {
 	DisplayLeonardCohenLyrics() error
 }
 
+type LeonardCohenLyricsSinger interface {
+	SingLeonardCohenLyrics() error
+}
+
 type PotatoCutter interface {
-	CutPotato(PotatoBag, PotatoCutSize) error
+	CutPotato(PotatoCutSize) error
 }
 
 type PotatoDipper interface {
@@ -39,11 +45,11 @@ type PotatoFryer interface {
 }
 
 type NoiseEmitter interface {
-	EmitNoise() error
+	EmitNoise(noise string) error
 }
 
 type NoiseListener interface {
-	ListenToNoise() error
+	ListenToNoise(noiseHandler func(string)) error
 }
 
 type TemperatureHolder interface {
@@ -56,7 +62,7 @@ type GravyDispenser interface {
 }
 
 type IngredientMixer interface {
-	MixIngredients(...Ingredient) (Poutine, error)
+	MixIngredients(PoutineOrder) (Poutine, error)
 }
 
 type OrderDeliverer interface {
@@ -65,4 +71,16 @@ type OrderDeliverer interface {
 
 type Ingredient interface {
 	Description() string
+}
+
+type HTTPServer interface {
+	ListenAndServe(port string) error
+}
+
+type MessageSender interface {
+	Send(channel, msg string) error
+}
+
+type MessageListener interface {
+	Listen(channel string, handler pubsub.MessageHandler) error
 }
