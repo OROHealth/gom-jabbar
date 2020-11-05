@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"lapoutinemtl.com/utils"
 	"net/http"
@@ -26,7 +27,10 @@ func (p *Pierre) TakeSqueakyCheese() utils.TruePoutineProcess {
 	client := &http.Client{Transport: tr}
 
 	// Call the api
-	resp, err := client.Get("http://localhost:5141/outremona/cheese")
+	resp, err := client.Get("http://host.docker.internal:5141/outremona/cheese")
+	if err != nil {
+		fmt.Errorf("err is: %s", err)
+	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 
