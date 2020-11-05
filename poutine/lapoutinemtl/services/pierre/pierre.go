@@ -1,7 +1,10 @@
 package main
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"lapoutinemtl.com/utils"
+	"net/http"
 )
 
 // Pierre is one such robot that is programmed to emulate a talented
@@ -12,9 +15,26 @@ type Pierre struct {
 	poutine utils.TruePoutine
 }
 
+type Cheese struct {
+	utils.CheddarEnGrains `json:"squeakyCheese"`
+}
+
 //
 func (p *Pierre) TakeSqueakyCheese() utils.TruePoutineProcess {
-	p.poutine.CheddarEnGrains = *utils.OneSqueakyCheesePortion()
+
+	tr := &http.Transport{}
+	client := &http.Client{Transport: tr}
+
+	// Call the api
+	resp, err := client.Get("http://localhost:5141/outremona/cheese")
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+
+	var cheese Cheese
+	err = json.Unmarshal(body, &cheese)
+	if err != nil {}
+
+	p.poutine.CheddarEnGrains = cheese.CheddarEnGrains
 	return p
 }
 

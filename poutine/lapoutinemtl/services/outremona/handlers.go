@@ -14,6 +14,8 @@ func getCheese(c echo.Context) error {
 	if err != nil {
 		return errors.New("cannot squeeze cheese apparently")
 	}
-	return c.JSON(http.StatusOK, cheese)
+	return c.JSON(http.StatusOK, struct {
+		utils.CheddarEnGrains `json:"squeakyCheese"`
+	}{*cheese})
 }
 
