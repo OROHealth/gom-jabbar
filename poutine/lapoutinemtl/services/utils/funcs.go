@@ -18,6 +18,17 @@ func OnePoutineSaucePortion() *SaucePoutine {
 }
 
 
+func OnePortionCutPotatoes(cutSize string) Potatoes {
+
+	var potatoes Potatoes
+
+	potatoes.CutSize = cutSize
+	potatoes.Portion = "400gms"
+
+	return potatoes
+}
+
+
 //
 func (c *CheddarEnGrains) Squeeze() error {
 	if c != nil {

@@ -6,14 +6,10 @@ type CheddarEnGrains struct {
 }
 
 // la patate
-type Potato struct {
-	genus string
-	isEdible bool
-}
-
-// les patates
 type Potatoes struct {
-	potatoes []Potato
+	CutSize 	string `json:"cutSize"`
+	Portion 	string `json:"portion"`
+	DippedIn	string `json:"dippedIn"`
 }
 
 // potato fries
