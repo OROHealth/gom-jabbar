@@ -1,5 +1,7 @@
 package pubsub
 
+import "log"
+
 type MessageHandler func(string) error
 
 type Local struct {
@@ -7,6 +9,7 @@ type Local struct {
 }
 
 func (l *Local) Publish(channel, msg string) error {
+	log.Printf("%s : %s", channel, msg)
 	for _, mh := range l.subscribers[channel] {
 		go mh(msg)
 	}

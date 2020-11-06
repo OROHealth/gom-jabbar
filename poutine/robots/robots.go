@@ -1,55 +1,65 @@
 package robots
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/OROHealth/gom-jabbar/poutine/pubsub"
+	"github.com/OROHealth/gom-jabbar/poutine/resto"
 	"github.com/julienschmidt/httprouter"
 )
 
+type SenderListener interface {
+	Send(channel, msg string) error
+	Listen(channel string, handler pubsub.MessageHandler) error
+}
+
 type PierreRobot interface {
-	OrderTaker
-	IngredientMixer
-	OrderDeliverer
-	MessageSender
-	MessageListener
+	SenderListener
+	TakeOrder(*resto.PoutineOrder) (string, error)
+	MixIngredients(i []resto.Ingredient) (resto.Poutine, error)
+	DeliverOrder(id string) error
+	Order(id string) (*resto.PoutineOrder, error)
 }
 
 type OutremonaRobot interface {
-	CheesePicker
-	CheeseSqueezer
-	NoiseEmitter
+	SenderListener
+	PickCheese(qty uint) resto.CheeseCurds
+	SqueezeCheese(resto.CheeseCurds) resto.CheeseCurds
+	EmitNoise()
 }
 
 type MontroyashiRobot interface {
-	NoiseListener
-	LeonardCohenLyricsDisplayer
-	DrunkPeopleDetector
+	SenderListener
+	ListenNoise()
+	DisplayLeonardCohenLyrics() error
+	DetectDrunkPeople() error
 }
 
 type VerdunyRobot interface {
-	PotatoCutter
-	PotatoDipper
+	SenderListener
+	CutPotato(resto.PotatoCutSize) error
+	DipPotato() error
 }
 
 type NordoRobot interface {
-	PotatoBoiler
-	LeonardCohenLyricsSinger
+	SenderListener
+	BoilPotato() error
+	CurrentPotatoesSoftness() (resto.PotatoSoftness, error)
+	SingLeonardCohenLyrics() error
 }
 
 type BizarRobot interface {
-	PotatoFryer
+	SenderListener
+	SetOil(resto.FryingOilKind) error
+	FryPotato() error
 }
 
 type OldoportoRobot interface {
-	TemperatureHolder
-	GravyDispenser
-}
-
-type route struct {
-	method  string
-	path    string
-	handler http.HandlerFunc
+	SenderListener
+	HoldTemperature() error
+	SetTemperature(float64) error
+	DispenseGravy() (resto.GravyScoops, error)
 }
 
 type Robot struct {
@@ -65,10 +75,30 @@ func (r *Robot) ServeHTTP(port string) error {
 	return http.ListenAndServe(":"+port, router)
 }
 
+func (r *Robot) urlParam(req *http.Request, key string) string {
+	params := httprouter.ParamsFromContext(req.Context())
+	return params.ByName(key)
+}
+
 func (r *Robot) Send(channel, msg string) error {
 	return r.bus.Publish(channel, msg)
 }
 
 func (r *Robot) Listen(channel string, mh pubsub.MessageHandler) error {
 	return r.bus.Subscribe(channel, mh)
+}
+
+type route struct {
+	method  string
+	path    string
+	handler http.HandlerFunc
+}
+
+func ToJSON(i interface{}) string {
+	b, _ := json.Marshal(i)
+	return string(b)
+}
+
+func FromJSON(dst interface{}, val string) error {
+	return json.Unmarshal([]byte(val), dst)
 }

@@ -1,6 +1,4 @@
-package robots
-
-import "encoding/json"
+package resto
 
 type SqueezedCheeseCurdsReady struct {
 	OrderID     string `json:"order_id,omitempty"`
@@ -15,13 +13,4 @@ type GravyScoopsReady struct {
 type FriedPotatoesReady struct {
 	OrderID       string `json:"order_id,omitempty"`
 	FriedPotatoes `json:",inline"`
-}
-
-func ToJSON(i interface{}) string {
-	b, _ := json.Marshal(i)
-	return string(b)
-}
-
-func FromJSON(dst interface{}, val string) {
-	json.Unmarshal([]byte(val), &dst)
 }

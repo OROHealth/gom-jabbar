@@ -1,13 +1,14 @@
-package robots
+package resto
 
 import (
 	"fmt"
 	"strings"
 	"sync"
+	"time"
 )
 
-//RestaurantInventory represent the current inventory
-type RestaurantInventory struct {
+//Inventory represent the current inventory
+type Inventory struct {
 	AvailableCheeses  map[CheeseKind]uint
 	AvailablePotatoes map[PotatoKind]uint
 	AvailableCardbox  uint
@@ -16,7 +17,7 @@ type RestaurantInventory struct {
 
 var inventoryMut = &sync.Mutex{}
 
-func (i *RestaurantInventory) Check(o *PoutineOrder) error {
+func (i *Inventory) Check(o *PoutineOrder) error {
 	inventoryMut.Lock()
 	defer inventoryMut.Unlock()
 
@@ -42,27 +43,37 @@ func (i *RestaurantInventory) Check(o *PoutineOrder) error {
 	return nil
 }
 
+const NumberOfIngredientsInPoutine = 3
+
 //PoutineOrder is one order to we need to deliver promptly
 type PoutineOrder struct {
-	ID        string        `json:"id,omitempty"`
-	Status    OrderStatus   `json:"status,omitempty"`
-	Size      PoutineSize   `json:"size,omitempty"`
-	Potato    PotatoKind    `json:"potato,omitempty"`
-	PotatoCut PotatoCutSize `json:"potato_cut,omitempty"`
-	Cheese    CheeseKind    `json:"cheese,omitempty"`
-	Oil       FryingOilKind `json:"oil,omitempty"`
-	Gravy     GravyKind     `json:"gravy,omitempty"`
+	ID                  string        `json:"id,omitempty"`
+	Received            time.Time     `json:"received,omitempty"`
+	Status              OrderStatus   `json:"status,omitempty"`
+	Size                PoutineSize   `json:"size,omitempty"`
+	Potato              PotatoKind    `json:"potato,omitempty"`
+	PotatoCut           PotatoCutSize `json:"potato_cut,omitempty"`
+	Cheese              CheeseKind    `json:"cheese,omitempty"`
+	Oil                 FryingOilKind `json:"oil,omitempty"`
+	Gravy               GravyKind     `json:"gravy,omitempty"`
+	PoutineDelivered    Poutine       `json:"poutine_delivered,omitempty"`
+	ReceivedIngredients []Ingredient  `json:"received_ingredients,omitempty"`
 
-	ingredients []Ingredient
-	poutine     Poutine
+	ingredientsMutex sync.Mutex
+}
+
+func (p *PoutineOrder) AppendIngredient(i Ingredient) {
+	p.ingredientsMutex.Lock()
+	defer p.ingredientsMutex.Unlock()
+	p.ReceivedIngredients = append(p.ReceivedIngredients, i)
 }
 
 type OrderStatus string
 
 const (
-	StatusOrdered   = "ordered"
-	StatusCompleted = "completed"
-	StatusError     = "error"
+	OrderStatusPending   = "pending"
+	OrderStatusError     = "error"
+	OrderStatusDelivered = "delivered"
 )
 
 //PoutineSize represent the size of a poutine
@@ -104,10 +115,10 @@ func (p Poutine) String() string {
 type CheeseKind string
 
 const (
-	//CouicCouicCheese is the best kind of cheese for poutine
-	CouicCouicCheese CheeseKind = "couic-couic"
-	//NotSoGoodCheese is the weird cheese that people outside Montreal use to do poutine
-	NotSoGoodCheese CheeseKind = "not-so-good"
+	//CheeseKindCouicCouic is the best kind of cheese for poutine
+	CheeseKindCouicCouic CheeseKind = "couic-couic"
+	//CheeseKindNotSoGood is the weird cheese that people outside Montreal use to do poutine
+	CheeseKindNotSoGood CheeseKind = "not-so-good"
 )
 
 //CheeseCurds is a handful of cheese curd
@@ -151,24 +162,24 @@ const (
 type PotatoSoftness string
 
 const (
-	//Raw PotatoSoftness
-	Raw PotatoSoftness = "raw"
-	//Softish PotatoSoftness
-	Softish PotatoSoftness = "softish"
-	//Mushy PotatoSoftness
-	Mushy PotatoSoftness = "mushy"
+	//SoftnessRaw PotatoSoftness
+	SoftnessRaw PotatoSoftness = "raw"
+	//SoftnessSoftish PotatoSoftness
+	SoftnessSoftish PotatoSoftness = "softish"
+	//SoftnessMushy PotatoSoftness
+	SoftnessMushy PotatoSoftness = "mushy"
 )
 
 //FryingOilKind is the type of frying oid
 type FryingOilKind string
 
 const (
-	//Sunflower FyingOilKind
-	Sunflower FryingOilKind = "sunflower"
-	//Olive FyingOilKind
-	Olive FryingOilKind = "olive"
-	//Valvoline FyingOilKind
-	Valvoline FryingOilKind = "valvoline"
+	//OilKindSunflower FyingOilKind
+	OilKindSunflower FryingOilKind = "sunflower"
+	//OilKindOlive FyingOilKind
+	OilKindOlive FryingOilKind = "olive"
+	//OilKindValvoline FyingOilKind
+	OilKindValvoline FryingOilKind = "valvoline"
 )
 
 type FriedPotatoes struct {
@@ -186,8 +197,8 @@ func (fp FriedPotatoes) Description() string {
 type GravyKind string
 
 const (
-	//Secret GravyKind
-	Secret GravyKind = "secret"
+	//GravyKindSecret GravyKind
+	GravyKindSecret GravyKind = "secret"
 )
 
 //GravyScoops represent some gravy sccops
@@ -198,4 +209,8 @@ type GravyScoops struct {
 
 func (gs GravyScoops) Description() string {
 	return fmt.Sprintf("%d scoops of %s sauce", gs.Quantity, gs.Kind)
+}
+
+type Ingredient interface {
+	Description() string
 }
