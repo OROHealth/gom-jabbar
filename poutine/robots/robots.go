@@ -27,9 +27,8 @@ type Outremona interface {
 
 type Montroyashi interface {
 	senderListener
-	ListenNoise()
-	DisplayLeonardCohenLyrics() error
-	DetectDrunkPeople() error
+	DisplayLeonardCohenLyrics()
+	DetectDrunkPeople(*resto.PoutineOrder)
 }
 
 type Verduny interface {

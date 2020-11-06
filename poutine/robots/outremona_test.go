@@ -28,12 +28,9 @@ func TestOutremonaSuccess(t *testing.T) {
 
 	_ = NewOutremona(bus)
 	o := &resto.PoutineOrder{
-		Size:      "small",
-		Potato:    resto.SweetPotato,
-		PotatoCut: resto.SmallCut,
-		Cheese:    resto.CheeseKindCouicCouic,
-		Oil:       resto.OilKindSunflower,
-		Gravy:     resto.GravyKindSecret,
+		ID:     "test",
+		Size:   "small",
+		Cheese: resto.CheeseKindCouicCouic,
 	}
 	bus.Publish("order-received", toJSON(o))
 

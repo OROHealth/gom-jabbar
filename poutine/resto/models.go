@@ -221,7 +221,8 @@ type GravyKind string
 
 const (
 	//GravyKindSecret GravyKind
-	GravyKindSecret GravyKind = "secret"
+	GravyKindSecret  GravyKind = "secret"
+	GravyKindTequila GravyKind = "tequila"
 )
 
 //GravyScoops represent some gravy sccops
