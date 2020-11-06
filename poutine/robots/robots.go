@@ -9,57 +9,57 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-type SenderListener interface {
-	Send(channel, msg string) error
-	Listen(channel string, handler pubsub.MessageHandler) error
-}
-
-type PierreRobot interface {
-	SenderListener
+type Pierre interface {
+	senderListener
 	TakeOrder(*resto.PoutineOrder) (string, error)
 	MixIngredients(i []resto.Ingredient) (resto.Poutine, error)
 	DeliverOrder(id string) error
 	Order(id string) (*resto.PoutineOrder, error)
 }
 
-type OutremonaRobot interface {
-	SenderListener
+type Outremona interface {
+	senderListener
 	PickCheese(qty uint) resto.CheeseCurds
 	SqueezeCheese(resto.CheeseCurds) resto.CheeseCurds
 	EmitNoise()
 }
 
-type MontroyashiRobot interface {
-	SenderListener
+type Montroyashi interface {
+	senderListener
 	ListenNoise()
 	DisplayLeonardCohenLyrics() error
 	DetectDrunkPeople() error
 }
 
-type VerdunyRobot interface {
-	SenderListener
+type Verduny interface {
+	senderListener
 	CutPotato(resto.PotatoCutSize) error
 	DipPotato() error
 }
 
-type NordoRobot interface {
-	SenderListener
+type Nordo interface {
+	senderListener
 	BoilPotato() error
 	CurrentPotatoesSoftness() (resto.PotatoSoftness, error)
 	SingLeonardCohenLyrics() error
 }
 
-type BizarRobot interface {
-	SenderListener
+type Bizar interface {
+	senderListener
 	SetOil(resto.FryingOilKind) error
 	FryPotato() error
 }
 
-type OldoportoRobot interface {
-	SenderListener
+type Oldoporto interface {
+	senderListener
 	HoldTemperature() error
 	SetTemperature(float64) error
 	DispenseGravy() (resto.GravyScoops, error)
+}
+
+type senderListener interface {
+	Send(channel, msg string) error
+	Listen(channel string, handler pubsub.MessageHandler) error
 }
 
 type Robot struct {
@@ -94,11 +94,11 @@ type route struct {
 	handler http.HandlerFunc
 }
 
-func ToJSON(i interface{}) string {
+func toJSON(i interface{}) string {
 	b, _ := json.Marshal(i)
 	return string(b)
 }
 
-func FromJSON(dst interface{}, val string) error {
+func fromJSON(dst interface{}, val string) error {
 	return json.Unmarshal([]byte(val), dst)
 }

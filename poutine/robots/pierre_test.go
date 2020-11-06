@@ -14,8 +14,8 @@ func TestPierreEndToEndSuccess(t *testing.T) {
 	bus := &pubsub.Local{}
 	bus.Subscribe("order-start", func(msg string) error {
 		o := &resto.PoutineOrder{}
-		FromJSON(o, msg)
-		go bus.Publish("squeezed-cheese-done", ToJSON(resto.SqueezedCheeseCurdsReady{
+		fromJSON(o, msg)
+		go bus.Publish("squeezed-cheese-done", toJSON(resto.SqueezedCheeseCurdsReady{
 			OrderID: o.ID,
 			CheeseCurds: resto.CheeseCurds{
 				Kind:     o.Cheese,
@@ -23,14 +23,14 @@ func TestPierreEndToEndSuccess(t *testing.T) {
 				Squeezed: true,
 			},
 		}))
-		go bus.Publish("gravy-scoop-done", ToJSON(resto.GravyScoopsReady{
+		go bus.Publish("gravy-scoop-done", toJSON(resto.GravyScoopsReady{
 			OrderID: o.ID,
 			GravyScoops: resto.GravyScoops{
 				Kind:     o.Gravy,
 				Quantity: o.Size.Template().ScoopsCount,
 			},
 		}))
-		go bus.Publish("fried-potato-done", ToJSON(resto.FriedPotatoesReady{
+		go bus.Publish("fried-potato-done", toJSON(resto.FriedPotatoesReady{
 			OrderID: o.ID,
 			FriedPotatoes: resto.FriedPotatoes{
 				Kind:      o.Potato,
