@@ -2,7 +2,9 @@ package robots
 
 import (
 	"encoding/json"
+	"math/rand"
 	"net/http"
+	"time"
 
 	"github.com/OROHealth/gom-jabbar/poutine/pubsub"
 	"github.com/OROHealth/gom-jabbar/poutine/resto"
@@ -19,9 +21,8 @@ type Pierre interface {
 
 type Outremona interface {
 	senderListener
-	PickCheese(qty uint) resto.CheeseCurds
+	PickCheese(kind resto.CheeseKind, qty uint) resto.CheeseCurds
 	SqueezeCheese(resto.CheeseCurds) resto.CheeseCurds
-	EmitNoise()
 }
 
 type Montroyashi interface {
@@ -86,6 +87,11 @@ func (r *Robot) Send(channel, msg string) error {
 
 func (r *Robot) Listen(channel string, mh pubsub.MessageHandler) error {
 	return r.bus.Subscribe(channel, mh)
+}
+
+func (r *Robot) simulateWork() {
+	s := rand.Intn(5)
+	time.Sleep(time.Duration(s) * time.Second)
 }
 
 type route struct {

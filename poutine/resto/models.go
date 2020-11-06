@@ -7,6 +7,9 @@ import (
 	"time"
 )
 
+const NumberOfIngredientsInPoutine = 3
+const OrderTimeout = 30 * time.Second //an order should never take more than 30 seconds to process
+
 //Inventory represent the current inventory
 type Inventory struct {
 	AvailableCheeses  map[CheeseKind]uint
@@ -17,24 +20,24 @@ type Inventory struct {
 
 var inventoryMut = &sync.Mutex{}
 
-func (i *Inventory) Check(o *PoutineOrder) error {
+func (i *Inventory) Deduct(o *PoutineOrder) error {
 	inventoryMut.Lock()
 	defer inventoryMut.Unlock()
 
 	template := o.Size.Template()
-	if i.AvailableCheeses[o.Cheese]-template.CurdsCount < 0 {
+	if i.AvailableCheeses == nil || int(i.AvailableCheeses[o.Cheese])-int(template.CurdsCount) < 0 {
 		return fmt.Errorf("not enough cheese %s. (want: %d, got: %d)", o.Cheese, template.CurdsCount, i.AvailableCheeses[o.Cheese])
 	} else {
 		i.AvailableCheeses[o.Cheese] -= template.CurdsCount
 	}
 
-	if i.AvailablePotatoes[o.Potato]-template.PotatoCount < 0 {
+	if i.AvailablePotatoes == nil || int(i.AvailablePotatoes[o.Potato])-int(template.PotatoCount) < 0 {
 		return fmt.Errorf("not enough potatoes %s. (want: %d, got: %d)", o.Potato, template.PotatoCount, i.AvailablePotatoes[o.Potato])
 	} else {
 		i.AvailablePotatoes[o.Potato] -= template.PotatoCount
 	}
 
-	if i.AvailableCardbox-1 < 0 {
+	if int(i.AvailableCardbox)-1 < 0 {
 		return fmt.Errorf("not enough cardbox (want: 1, got: %d)", i.AvailableCardbox)
 	} else {
 		i.AvailableCardbox--
@@ -42,8 +45,6 @@ func (i *Inventory) Check(o *PoutineOrder) error {
 
 	return nil
 }
-
-const NumberOfIngredientsInPoutine = 3
 
 //PoutineOrder is one order to we need to deliver promptly
 type PoutineOrder struct {
@@ -71,9 +72,9 @@ func (p *PoutineOrder) AppendIngredient(i Ingredient) {
 type OrderStatus string
 
 const (
-	OrderStatusPending   = "pending"
-	OrderStatusError     = "error"
-	OrderStatusDelivered = "delivered"
+	OrderStatusPending   OrderStatus = "pending"
+	OrderStatusError     OrderStatus = "error"
+	OrderStatusDelivered OrderStatus = "delivered"
 )
 
 //PoutineSize represent the size of a poutine
@@ -108,7 +109,7 @@ func (p Poutine) String() string {
 	for _, i := range p {
 		parts = append(parts, i.Description())
 	}
-	return fmt.Sprintf("Poutine(\n%s\n)", strings.Join(parts, "\n"))
+	return fmt.Sprintf("Poutine(\n\t%s\n)", strings.Join(parts, "\n\t"))
 }
 
 //CheeseKind is the current list of supported cheeses
@@ -190,7 +191,7 @@ type FriedPotatoes struct {
 }
 
 func (fp FriedPotatoes) Description() string {
-	return fmt.Sprintf("%d %s potatoes cutted in %s and fried with %s", fp.Quantity, fp.Kind, fp.CutSize, fp.FryingOil)
+	return fmt.Sprintf("%d %s potatoes cutted in %s cubes and fried with %s oil", fp.Quantity, fp.Kind, fp.CutSize, fp.FryingOil)
 }
 
 //GravyKind is the kind of gravy

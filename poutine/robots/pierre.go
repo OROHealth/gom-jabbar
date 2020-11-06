@@ -33,25 +33,31 @@ func NewPierre(bus pubsub.PubSub, inventory resto.Inventory) Pierre {
 	return p
 }
 
-func (p *pierre) setHTTPHandlers() {
-	p.httpRoutes = []route{
-		{method: "POST", path: "/orders", handler: p.httpTakeOrder},
-		{method: "GET", path: "/orders/:id", handler: p.httpOrderStatus},
+func (r *pierre) setHTTPHandlers() {
+	r.httpRoutes = []route{
+		{method: "POST", path: "/orders", handler: r.httpTakeOrder},
+		{method: "GET", path: "/orders/:id", handler: r.httpOrderStatus},
 	}
 }
 
-func (p *pierre) setSubscriptions() {
-	p.Listen("squeezed-cheese-done", p.handleSqueezedCheese)
-	p.Listen("gravy-scoop-done", p.handleGravyScoop)
-	p.Listen("fried-potato-done", p.handleFriedPotato)
+func (r *pierre) setSubscriptions() {
+	r.Listen("squeezed-cheese-done", r.handleSqueezedCheese)
+	r.Listen("gravy-scoop-done", r.handleGravyScoop)
+	r.Listen("fried-potato-done", r.handleFriedPotato)
 }
 
-func (p *pierre) watchOrders() {
+func (r *pierre) watchOrders() {
 	for range time.Tick(time.Second) {
-		p.Orders.Range(func(key, value interface{}) bool {
+		r.Orders.Range(func(key, value interface{}) bool {
 			if o, ok := value.(*resto.PoutineOrder); ok {
-				if o.Status == resto.OrderStatusPending && len(o.ReceivedIngredients) >= resto.NumberOfIngredientsInPoutine {
-					p.DeliverOrder(o.ID)
+				if o.Status == resto.OrderStatusPending {
+					if len(o.ReceivedIngredients) >= resto.NumberOfIngredientsInPoutine {
+						r.DeliverOrder(o.ID)
+					} else if time.Now().After(o.Received.Add(resto.OrderTimeout)) {
+						//Order failed for some reason
+						o.Status = resto.OrderStatusError
+						r.Send("order-timeout", o.ID)
+					}
 				}
 			}
 			return true
@@ -59,8 +65,8 @@ func (p *pierre) watchOrders() {
 	}
 }
 
-func (p *pierre) Order(id string) (o *resto.PoutineOrder, err error) {
-	if v, ok := p.Orders.Load(id); !ok {
+func (r *pierre) Order(id string) (o *resto.PoutineOrder, err error) {
+	if v, ok := r.Orders.Load(id); !ok {
 		err = fmt.Errorf("order not found %s", id)
 	} else {
 		var ok bool
@@ -71,19 +77,19 @@ func (p *pierre) Order(id string) (o *resto.PoutineOrder, err error) {
 	return
 }
 
-func (p *pierre) TakeOrder(o *resto.PoutineOrder) (string, error) {
+func (r *pierre) TakeOrder(o *resto.PoutineOrder) (string, error) {
 	o.ID = strings.ToUpper(strings.ReplaceAll(uuid.New().String(), "-", "")[0:6])
 	o.Received = time.Now()
-	p.Orders.Store(o.ID, o)
+	r.Orders.Store(o.ID, o)
 
-	if err := p.Inventory.Check(o); err != nil {
+	if err := r.Inventory.Deduct(o); err != nil {
 		o.Status = resto.OrderStatusError
 		return o.ID, err
 	}
 
 	o.Status = resto.OrderStatusPending
 
-	if err := p.Send("order-start", toJSON(o)); err != nil {
+	if err := r.Send("order-received", toJSON(o)); err != nil {
 		o.Status = resto.OrderStatusError
 		return o.ID, err
 	}
@@ -91,98 +97,95 @@ func (p *pierre) TakeOrder(o *resto.PoutineOrder) (string, error) {
 	return o.ID, nil
 }
 
-func (p *pierre) DeliverOrder(id string) error {
-	o, err := p.Order(id)
+func (r *pierre) DeliverOrder(id string) error {
+	o, err := r.Order(id)
 	if err != nil {
 		return fmt.Errorf("delivering: %s", err)
 	}
 
-	p.Send("mixing-ingredients-start", o.ID)
-	poutine, err := p.MixIngredients(o.ReceivedIngredients)
+	r.Send("mixing-ingredients-start", o.ID)
+	poutine, err := r.MixIngredients(o.ReceivedIngredients)
 	if err != nil {
 		return err
 	}
-	p.Send("mixing-ingredients-done", o.ID)
+	r.Send("mixing-ingredients-done", o.ID)
 
 	o.Status = resto.OrderStatusDelivered
 	o.PoutineDelivered = poutine
 
-	p.Send("order-done", o.ID)
+	r.Send("order-done", o.ID)
 
 	return nil
 }
 
-func (p *pierre) MixIngredients(igs []resto.Ingredient) (resto.Poutine, error) {
+func (r *pierre) MixIngredients(igs []resto.Ingredient) (resto.Poutine, error) {
 	if len(igs) < resto.NumberOfIngredientsInPoutine { //Need at least potatos, cheese and gravy
 		return nil, fmt.Errorf("not enough ingredients to mix! (Got: %d)", len(igs))
 	}
 
-	//Simulate some work
-	time.Sleep(5 * time.Second)
-
 	return resto.Poutine(igs), nil
 }
 
-func (p *pierre) handleSqueezedCheese(msg string) error {
+func (r *pierre) handleSqueezedCheese(msg string) error {
 	m := resto.SqueezedCheeseCurdsReady{}
 	fromJSON(&m, msg)
 
-	o, err := p.Order(m.OrderID)
+	o, err := r.Order(m.OrderID)
 	if err != nil {
 		return fmt.Errorf("received squeezed cheese: %s", err)
 	}
 
-	p.Send("squeezed-cheese-received", m.OrderID)
+	r.Send("squeezed-cheese-received", m.OrderID)
 	o.AppendIngredient(m.CheeseCurds)
 
 	return nil
 }
 
-func (p *pierre) handleGravyScoop(msg string) error {
+func (r *pierre) handleGravyScoop(msg string) error {
 	m := resto.GravyScoopsReady{}
 	fromJSON(&m, msg)
 
-	o, err := p.Order(m.OrderID)
+	o, err := r.Order(m.OrderID)
 	if err != nil {
 		return fmt.Errorf("received gravy scoops: %s", err)
 	}
 
-	p.Send("gravy-scoops-received", m.OrderID)
+	r.Send("gravy-scoops-received", m.OrderID)
 	o.AppendIngredient(m.GravyScoops)
 
 	return nil
 }
 
-func (p *pierre) handleFriedPotato(msg string) error {
+func (r *pierre) handleFriedPotato(msg string) error {
 	m := resto.FriedPotatoesReady{}
 	fromJSON(&m, msg)
 
-	o, err := p.Order(m.OrderID)
+	o, err := r.Order(m.OrderID)
 	if err != nil {
 		return fmt.Errorf("received fried potatoes: %s", err)
 	}
 
-	p.Send("fried-potatoes-received", m.OrderID)
+	r.Send("fried-potatoes-received", m.OrderID)
 	o.AppendIngredient(m.FriedPotatoes)
 
 	return nil
 }
 
-func (p *pierre) httpTakeOrder(w http.ResponseWriter, r *http.Request) {
-	if r.Body == nil {
+func (r *pierre) httpTakeOrder(w http.ResponseWriter, req *http.Request) {
+	if req.Body == nil {
 		http.Error(w, "bad request", http.StatusBadRequest)
 		return
 	}
-	defer r.Body.Close()
+	defer req.Body.Close()
 
 	var o *resto.PoutineOrder
-	if err := json.NewDecoder(r.Body).Decode(&o); err != nil {
+	if err := json.NewDecoder(req.Body).Decode(&o); err != nil {
 		log.Println(err)
 		http.Error(w, "server error", http.StatusInternalServerError)
 		return
 	}
 
-	id, err := p.TakeOrder(o)
+	id, err := r.TakeOrder(o)
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -194,8 +197,8 @@ func (p *pierre) httpTakeOrder(w http.ResponseWriter, r *http.Request) {
 	}{id, err})
 }
 
-func (p *pierre) httpOrderStatus(w http.ResponseWriter, r *http.Request) {
-	o, err := p.Order(p.urlParam(r, "id"))
+func (r *pierre) httpOrderStatus(w http.ResponseWriter, req *http.Request) {
+	o, err := r.Order(r.urlParam(req, "id"))
 	if err != nil {
 		http.Error(w, "not found", http.StatusNotFound)
 		return
