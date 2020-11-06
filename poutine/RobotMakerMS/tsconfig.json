@@ -1,0 +1,33 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"module": "commonjs",
+		"sourceMap": false,
+		"outDir": "build",
+		"noImplicitAny": false,
+		"noUnusedParameters": false,
+		"noUnusedLocals": true,
+		"resolveJsonModule": true,
+		"rootDir": ".",
+		"lib": [
+			"es6",
+            "dom",
+            "es2017"
+		],
+		"strict": true,
+		"baseUrl": "./src"
+	},
+	"exclude": [
+		"node_modules",
+		"typings"
+	],
+	"include": [
+    "src/**/*",
+    "locales/*",
+    "config/**/*",
+    "logger/**/*",
+    "mongo/**/*",
+    "redis/**/*",
+    "kafka/**/*"
+	]
+}
