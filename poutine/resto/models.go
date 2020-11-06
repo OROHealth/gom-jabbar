@@ -63,6 +63,28 @@ type PoutineOrder struct {
 	ingredientsMutex sync.Mutex
 }
 
+func (p *PoutineOrder) ValidateAndSetDefault() {
+	//TODO: validate given values and ensure they are good, else default
+	if p.Size == "" {
+		p.Size = "large"
+	}
+	if p.Potato == "" {
+		p.Potato = YellowPotato
+	}
+	if p.PotatoCut == "" {
+		p.PotatoCut = SmallCut
+	}
+	if p.Cheese == "" {
+		p.Cheese = CheeseKindCouicCouic
+	}
+	if p.Oil == "" {
+		p.Oil = OilKindSunflower
+	}
+	if p.Gravy == "" {
+		p.Gravy = GravyKindSecret
+	}
+}
+
 func (p *PoutineOrder) AppendIngredient(i Ingredient) {
 	p.ingredientsMutex.Lock()
 	defer p.ingredientsMutex.Unlock()

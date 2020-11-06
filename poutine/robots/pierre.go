@@ -80,6 +80,7 @@ func (r *pierre) Order(id string) (o *resto.PoutineOrder, err error) {
 func (r *pierre) TakeOrder(o *resto.PoutineOrder) (string, error) {
 	o.ID = strings.ToUpper(strings.ReplaceAll(uuid.New().String(), "-", "")[0:6])
 	o.Received = time.Now()
+	o.ValidateAndSetDefault()
 	r.Orders.Store(o.ID, o)
 
 	if err := r.Inventory.Deduct(o); err != nil {

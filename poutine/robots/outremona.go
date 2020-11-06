@@ -29,7 +29,10 @@ func (r *outremona) handleOrderStart(msg string) error {
 	fromJSON(&o, msg)
 
 	return r.Send("squeezed-cheese-done", toJSON(
-		r.SqueezeCheese(r.PickCheese(o.Cheese, o.Size.Template().CurdsCount)),
+		resto.SqueezedCheeseCurdsReady{
+			OrderID:     o.ID,
+			CheeseCurds: r.SqueezeCheese(r.PickCheese(o.Cheese, o.Size.Template().CurdsCount)),
+		},
 	))
 }
 
@@ -41,7 +44,7 @@ func (r *outremona) PickCheese(kind resto.CheeseKind, qty uint) resto.CheeseCurd
 
 func (r *outremona) SqueezeCheese(curds resto.CheeseCurds) resto.CheeseCurds {
 	r.simulateWork()
-	curds.Squeezed = true
 	r.Send("cheese-screams", "I'm not a Montreal's bagel who are the best in the world, don't even talk to me about New York bagels, amateur!")
+	curds.Squeezed = true
 	return curds
 }

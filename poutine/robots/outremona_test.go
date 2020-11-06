@@ -13,7 +13,7 @@ func TestOutremonaSuccess(t *testing.T) {
 	assert := assert.New(t)
 	done := make(chan bool)
 	screamed := false
-	curds := resto.CheeseCurds{}
+	curds := resto.SqueezedCheeseCurdsReady{}
 
 	bus := &pubsub.Local{}
 	bus.Subscribe("squeezed-cheese-done", func(msg string) error {
@@ -39,6 +39,7 @@ func TestOutremonaSuccess(t *testing.T) {
 
 	select {
 	case <-done:
+		assert.Equal(curds.OrderID, o.ID)
 		assert.Equal(curds.Kind, o.Cheese)
 		assert.Equal(curds.Quantity, o.Size.Template().CurdsCount)
 		assert.True(curds.Squeezed)
