@@ -8,17 +8,32 @@ import (
 
 var Potatoes utils.Potatoes
 
+// cuts potatoes with provided size
+// for example: /verduny/potatoes/cut?size=3
+// default size is 1
 func cutPotatoes(c echo.Context) error {
-	Potatoes = utils.OnePortionCutPotatoes("1")
+
+	qp := c.QueryParams()
+	cutSize := qp.Get("size")
+	if cutSize == "" {
+		cutSize = "1"
+	}
+	Potatoes = utils.OnePortionCutPotatoes(cutSize)
 	return c.JSON(http.StatusAccepted, struct {
 		utils.Potatoes `json:"cutPotatoes"`
 	}{Potatoes})
 }
 
 func dipInMapleSyrup(c echo.Context) error {
-	Potatoes.DippedIn = "maple syrup"
-	return c.JSON(http.StatusAccepted, struct {
-		utils.Potatoes `json:"cutPotatoes"`
-	}{Potatoes})
+	if Potatoes.Portion == "400gms" {
+		Potatoes.DippedIn = "maple syrup"
+		return c.JSON(http.StatusAccepted, struct {
+			utils.Potatoes `json:"cutPotatoes"`
+		}{Potatoes})
+	} else {
+		return c.JSON(http.StatusBadRequest, struct {
+			Message string
+		}{"cut those damn potatoes man, only then you can dip them into the syrup!"})
+	}
 }
 
