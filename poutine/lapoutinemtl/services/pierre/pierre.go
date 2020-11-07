@@ -20,13 +20,17 @@ type Cheese struct {
 	utils.CheddarEnGrains `json:"squeakyCheese"`
 }
 
+type Fries struct {
+	utils.PotatoFries `json:"potatoFries"`
+}
+
 //
 func (p *Pierre) TakeSqueakyCheese() utils.TruePoutineProcess {
 
 	tr := &http.Transport{}
 	client := &http.Client{Transport: tr}
 
-	// Call the api
+	// get squeaky cheese
 	resp, err := client.Get("http://host.docker.internal:5141/outremona/cheese")
 	if err != nil {
 		fmt.Errorf("err is: %s", err)
@@ -43,7 +47,23 @@ func (p *Pierre) TakeSqueakyCheese() utils.TruePoutineProcess {
 }
 
 func (p *Pierre) TakePotatoFries() utils.TruePoutineProcess {
-	p.poutine.PotatoFries = *utils.OnePotatoFriesPortion()
+
+	tr := &http.Transport{}
+	client := &http.Client{Transport: tr}
+
+	// get potato fries
+	resp, err := client.Get("http://host.docker.internal:5145/bizar/potatoes/fries")
+	if err != nil {
+		fmt.Errorf("err is: %s", err)
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+
+	var fries Fries
+	err = json.Unmarshal(body, &fries)
+	if err != nil {}
+
+	p.poutine.PotatoFries = fries.PotatoFries
 	return p
 }
 
