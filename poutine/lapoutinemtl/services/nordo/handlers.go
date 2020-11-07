@@ -9,10 +9,6 @@ import (
 	"net/http"
 )
 
-type Potatoes struct {
-	utils.Potatoes `json:"cutPotatoes"`
-}
-
 func boil(c echo.Context) error {
 
 	tr := &http.Transport{}
@@ -26,7 +22,7 @@ func boil(c echo.Context) error {
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 
-	var potatoes Potatoes
+	var potatoes utils.CutPotatoes
 	err = json.Unmarshal(body, &potatoes)
 	if err != nil {}
 
