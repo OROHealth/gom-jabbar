@@ -11,6 +11,8 @@ import (
 
 // add more choices if required!
 var oilChoices = [3]string{"vegetable", "canola", "olive"}
+var potatoes utils.CutPotatoes
+var fries utils.PotatoFries
 
 func validateOilChoice(oilChoice string) string {
 	for i := range oilChoices {
@@ -43,18 +45,29 @@ func fryPotatoes(context echo.Context) error {
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 
-	var potatoes utils.CutPotatoes
-	var fries utils.PotatoFries
 	err = json.Unmarshal(body, &potatoes)
-	if err != nil {}
-
-	if potatoes.Portion != "" && potatoes.AreCooked && potatoes.DippedIn == "maple syrup" {
-		fries.AreHotAndCrispy = true
-		return context.JSON(http.StatusAccepted, struct {
-			utils.PotatoFries `json:"potatoFries"`
-		}{fries})
+	if err != nil {
+		return err
 	} else {
-		return context.JSON(http.StatusBadRequest, nil)
+		if potatoes.Portion != "" && potatoes.AreCooked && potatoes.DippedIn == "maple syrup" {
+			fries.AreHotAndCrispy = true
+			return context.JSON(http.StatusAccepted, struct {
+				Message string `json:"message"`
+			}{fmt.Sprintf(`frying potatoes in %s oil`, oc)})
+		} else {
+			return context.JSON(http.StatusBadRequest, nil)
+		}
 	}
 }
 
+func getFries(context echo.Context) error {
+	if fries.AreHotAndCrispy {
+		return context.JSON(http.StatusOK, struct {
+			utils.PotatoFries `json:"potatoFries"`
+		}{fries})
+	} else {
+		return context.JSON(http.StatusAccepted, struct {
+			Message string `json:"message"`
+		}{"fryer is currently empty, add some potatoes to get fries!"})
+	}
+}

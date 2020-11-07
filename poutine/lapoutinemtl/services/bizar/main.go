@@ -18,6 +18,7 @@ func main() {
 
 	// Route
 	bizar.POST("/fry", fryPotatoes)
+	bizar.GET("/fries", getFries)
 
 	// Serve
 	e.Logger.Fatal(e.Start(":5145"))
