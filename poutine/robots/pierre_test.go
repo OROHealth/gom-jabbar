@@ -20,10 +20,9 @@ func TestPierreSuccess(t *testing.T) {
 		fromJSON(o, msg)
 		go bus.Publish("squeezed-cheese-done", toJSON(resto.SqueezedCheeseCurdsReady{
 			OrderID: o.ID,
-			CheeseCurds: resto.CheeseCurds{
+			SqueezedCheeseCurds: resto.SqueezedCheeseCurds{
 				Kind:     o.Cheese,
 				Quantity: o.Size.Template().CurdsCount,
-				Squeezed: true,
 			},
 		}))
 		go bus.Publish("gravy-scoop-done", toJSON(resto.GravyScoopsReady{
@@ -50,6 +49,9 @@ func TestPierreSuccess(t *testing.T) {
 		return nil
 	})
 
+	// _ = NewOutremona(bus)
+	// _ = NewMontroyashi(bus)
+
 	robot := NewPierre(bus, fullInventory())
 	id, err := robot.TakeOrder(&resto.PoutineOrder{
 		Size:      "small",
@@ -57,7 +59,7 @@ func TestPierreSuccess(t *testing.T) {
 		PotatoCut: resto.SmallCut,
 		Cheese:    resto.CheeseKindCouicCouic,
 		Oil:       resto.OilKindSunflower,
-		Gravy:     resto.GravyKindSecret,
+		Gravy:     resto.GravyKindTequila,
 	})
 
 	assert.NoError(err)
@@ -129,8 +131,8 @@ func TestPierreCheeseServiceDown(t *testing.T) {
 	}
 }
 
-func fullInventory() resto.Inventory {
-	return resto.Inventory{
+func fullInventory() *resto.Inventory {
+	return &resto.Inventory{
 		AvailableCheeses: map[resto.CheeseKind]uint{
 			resto.CheeseKindCouicCouic: 10000,
 			resto.CheeseKindNotSoGood:  10000,
@@ -147,7 +149,7 @@ func fullInventory() resto.Inventory {
 func TestPierreEmptyInventory(t *testing.T) {
 	assert := assert.New(t)
 
-	robot := NewPierre(&pubsub.Local{}, resto.Inventory{})
+	robot := NewPierre(&pubsub.Local{}, &resto.Inventory{})
 	_, err := robot.TakeOrder(&resto.PoutineOrder{
 		Size:      "small",
 		Potato:    resto.SweetPotato,
@@ -163,7 +165,7 @@ func TestPierreEmptyInventory(t *testing.T) {
 func TestPierreNotEnoughCheese(t *testing.T) {
 	assert := assert.New(t)
 
-	robot := NewPierre(&pubsub.Local{}, resto.Inventory{
+	robot := NewPierre(&pubsub.Local{}, &resto.Inventory{
 		AvailableCheeses: map[resto.CheeseKind]uint{
 			resto.CheeseKindCouicCouic: 10,
 			resto.CheeseKindNotSoGood:  10000,
@@ -190,7 +192,7 @@ func TestPierreNotEnoughCheese(t *testing.T) {
 func TestPierreNotEnoughPotato(t *testing.T) {
 	assert := assert.New(t)
 
-	robot := NewPierre(&pubsub.Local{}, resto.Inventory{
+	robot := NewPierre(&pubsub.Local{}, &resto.Inventory{
 		AvailableCheeses: map[resto.CheeseKind]uint{
 			resto.CheeseKindCouicCouic: 1000,
 			resto.CheeseKindNotSoGood:  1000,
@@ -217,7 +219,7 @@ func TestPierreNotEnoughPotato(t *testing.T) {
 func TestPierreNotEnoughCardbox(t *testing.T) {
 	assert := assert.New(t)
 
-	robot := NewPierre(&pubsub.Local{}, resto.Inventory{
+	robot := NewPierre(&pubsub.Local{}, &resto.Inventory{
 		AvailableCheeses: map[resto.CheeseKind]uint{
 			resto.CheeseKindCouicCouic: 1000,
 			resto.CheeseKindNotSoGood:  1000,

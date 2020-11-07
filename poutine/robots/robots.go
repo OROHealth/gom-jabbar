@@ -14,7 +14,7 @@ import (
 type Pierre interface {
 	senderListener
 	TakeOrder(*resto.PoutineOrder) (string, error)
-	MixIngredients(i []resto.Ingredient) (resto.Poutine, error)
+	MixIngredients([]resto.Ingredient) (resto.Poutine, error)
 	DeliverOrder(id string) error
 	Order(id string) (*resto.PoutineOrder, error)
 }
@@ -22,7 +22,7 @@ type Pierre interface {
 type Outremona interface {
 	senderListener
 	PickCheese(kind resto.CheeseKind, qty uint) resto.CheeseCurds
-	SqueezeCheese(resto.CheeseCurds) resto.CheeseCurds
+	SqueezeCheese(resto.CheeseCurds) resto.SqueezedCheeseCurds
 }
 
 type Montroyashi interface {
@@ -33,28 +33,27 @@ type Montroyashi interface {
 
 type Verduny interface {
 	senderListener
-	CutPotato(resto.PotatoCutSize) error
-	DipPotato() error
+	CutPotatoes(resto.PotatoKind, resto.PotatoCutSize, uint) resto.CuttedPotatoes
+	DipPotatoes(resto.CuttedPotatoes) resto.DippedPotatoes
 }
 
 type Nordo interface {
 	senderListener
-	BoilPotato() error
-	CurrentPotatoesSoftness() (resto.PotatoSoftness, error)
-	SingLeonardCohenLyrics() error
+	BoilPotatoes(resto.DippedPotatoes) resto.BoiledPotatoes
+	SingLeonardCohenLyrics(resto.BoiledPotatoes, string) error
+	CurrentPotatoesSoftness(orderID string) (resto.PotatoSoftness, error)
 }
 
 type Bizar interface {
 	senderListener
-	SetOil(resto.FryingOilKind) error
-	FryPotato() error
+	FryPotatoes(resto.FryingOilKind, resto.BoiledPotatoes) resto.FriedPotatoes
 }
 
 type Oldoporto interface {
 	senderListener
-	HoldTemperature() error
-	SetTemperature(float64) error
-	DispenseGravy() (resto.GravyScoops, error)
+	GravyTemperature(resto.GravyKind) error
+	SetTemperature(resto.GravyKind, float64) error
+	DispenseGravy(resto.GravyKind, uint) (resto.GravyScoops, error)
 }
 
 type senderListener interface {

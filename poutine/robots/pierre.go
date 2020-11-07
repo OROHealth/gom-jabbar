@@ -16,11 +16,11 @@ import (
 
 type pierre struct {
 	Robot
-	Inventory resto.Inventory
+	Inventory *resto.Inventory
 	Orders    sync.Map
 }
 
-func NewPierre(bus pubsub.PubSub, inventory resto.Inventory) Pierre {
+func NewPierre(bus pubsub.PubSub, inventory *resto.Inventory) Pierre {
 	p := &pierre{
 		Robot: Robot{
 			bus: bus,
@@ -137,7 +137,7 @@ func (r *pierre) handleSqueezedCheese(msg string) error {
 	}
 
 	r.Send("squeezed-cheese-received", m.OrderID)
-	o.AppendIngredient(m.CheeseCurds)
+	o.AppendIngredient(m.SqueezedCheeseCurds)
 
 	return nil
 }

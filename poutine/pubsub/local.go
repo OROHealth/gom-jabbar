@@ -2,8 +2,6 @@ package pubsub
 
 import "log"
 
-type MessageHandler func(string) error
-
 type Local struct {
 	subscribers map[string][]MessageHandler
 }

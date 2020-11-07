@@ -39,7 +39,6 @@ func TestOutremonaSuccess(t *testing.T) {
 		assert.Equal(curds.OrderID, o.ID)
 		assert.Equal(curds.Kind, o.Cheese)
 		assert.Equal(curds.Quantity, o.Size.Template().CurdsCount)
-		assert.True(curds.Squeezed)
 		assert.True(screamed)
 	case <-time.After(10 * time.Second):
 		t.Fatal("failed to pick and squeeze curds quickly enough")

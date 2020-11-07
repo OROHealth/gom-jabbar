@@ -1,8 +1,8 @@
 package resto
 
 type SqueezedCheeseCurdsReady struct {
-	OrderID     string `json:"order_id,omitempty"`
-	CheeseCurds `json:",inline"`
+	OrderID             string `json:"order_id,omitempty"`
+	SqueezedCheeseCurds `json:",inline"`
 }
 
 type GravyScoopsReady struct {
