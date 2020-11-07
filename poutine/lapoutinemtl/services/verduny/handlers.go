@@ -25,7 +25,7 @@ func cutPotatoes(c echo.Context) error {
 }
 
 func dipInMapleSyrup(c echo.Context) error {
-	if Potatoes.Portion == "400gms" {
+	if Potatoes.Portion != "" {
 		Potatoes.DippedIn = "maple syrup"
 		return c.JSON(http.StatusAccepted, struct {
 			utils.Potatoes `json:"cutPotatoes"`
@@ -37,3 +37,6 @@ func dipInMapleSyrup(c echo.Context) error {
 	}
 }
 
+func getPotatoes(context echo.Context) error {
+	return context.JSON(http.StatusOK, Potatoes)
+}
