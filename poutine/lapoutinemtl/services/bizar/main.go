@@ -14,10 +14,10 @@ func main() {
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
 
-	outremona := e.Group("/bizar/potatoes")
+	bizar := e.Group("/bizar/potatoes")
 
 	// Route
-	outremona.POST("/fry", fryPotatoes)
+	bizar.POST("/fry", fryPotatoes)
 
 	// Serve
 	e.Logger.Fatal(e.Start(":5145"))
