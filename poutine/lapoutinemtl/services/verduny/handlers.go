@@ -32,11 +32,19 @@ func dipInMapleSyrup(c echo.Context) error {
 		}{Potatoes})
 	} else {
 		return c.JSON(http.StatusBadRequest, struct {
-			Message string
+			Message string `json:"message"`
 		}{"cut those damn potatoes man, only then you can dip them into the syrup!"})
 	}
 }
 
-func getPotatoes(context echo.Context) error {
-	return context.JSON(http.StatusOK, Potatoes)
+func getPotatoes(c echo.Context) error {
+	if Potatoes.Portion != "" {
+		return c.JSON(http.StatusOK, struct {
+			utils.Potatoes `json:"cutPotatoes"`
+		}{Potatoes})
+	} else {
+		return c.JSON(http.StatusBadRequest, struct {
+			Message string `json:"message"`
+		}{"I don't have yet what you're looking for!"})
+	}
 }

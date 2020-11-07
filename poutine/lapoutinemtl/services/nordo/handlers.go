@@ -25,13 +25,15 @@ func boil(c echo.Context) error {
 	var potatoes utils.Potatoes
 	err = json.Unmarshal(body, &potatoes)
 	if err != nil {}
+
 	if potatoes.Portion != "" {
+		// cook potatoes
 		potatoes.AreCooked = true
 		return c.JSON(http.StatusOK, potatoes)
 	} else {
 		return c.JSON(http.StatusBadRequest, struct {
-			Message string
-		}{"nothing to cook man! grab a portion first."})
+			Message string `json:"message"`
+		}{"nothing to cook yet!"})
 	}
 }
 
