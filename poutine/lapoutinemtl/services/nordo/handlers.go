@@ -15,7 +15,7 @@ func boil(c echo.Context) error {
 	client := &http.Client{Transport: tr}
 
 	// Call the api
-	resp, err := client.Get("http://host.docker.internal:5143/verduny/potatoes/get")
+	resp, err := client.Get("http://host.docker.internal:5143/verduny/potatoes")
 	if err != nil {
 		fmt.Errorf("err is: %s", err)
 	}
