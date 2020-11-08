@@ -11,7 +11,6 @@ import (
 // Pierre is one such robot that is programmed to emulate a talented
 // Montréal cook who learned from the great Le Chef Chiffre and can put
 // together a true poutine.
-// todo: you are writing go code, pierre must return errors too, if any.
 type Pierre struct {
 	poutine utils.TruePoutine
 }
@@ -23,6 +22,14 @@ type Cheese struct {
 type Fries struct {
 	utils.PotatoFries `json:"potatoFries"`
 }
+
+type Sauce struct {
+	utils.SaucePoutine `json:"saucePoutine"`
+}
+
+// todo: you are writing go code, find a way to return errors as well.
+// todo: then make error handling more sophisticated than this c#@p.
+// todo: urls and networking.
 
 //
 func (p *Pierre) TakeSqueakyCheese() utils.TruePoutineProcess {
@@ -68,7 +75,23 @@ func (p *Pierre) TakePotatoFries() utils.TruePoutineProcess {
 }
 
 func (p *Pierre) TakePoutineSauce() utils.TruePoutineProcess {
-	p.poutine.SaucePoutine = *utils.OnePoutineSaucePortion()
+
+	tr := &http.Transport{}
+	client := &http.Client{Transport: tr}
+
+	// get potato fries
+	resp, err := client.Get("http://host.docker.internal:5146/oldoporto/sauce")
+	if err != nil {
+		fmt.Errorf("err is: %s", err)
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+
+	var sauce Sauce
+	err = json.Unmarshal(body, &sauce)
+	if err != nil {}
+
+	p.poutine.SaucePoutine = sauce.SaucePoutine
 	return p
 }
 
