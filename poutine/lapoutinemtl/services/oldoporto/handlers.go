@@ -2,10 +2,15 @@ package main
 
 import (
 	"github.com/labstack/echo/v4"
+	"lapoutinemtl.com/utils"
 	"net/http"
 )
 
-func regulateTemperature(c echo.Context) error {
-	return c.JSON(http.StatusAccepted, nil)
-}
+var saucePoutine utils.SaucePoutine
 
+func getPoutineSauce(c echo.Context) error {
+	saucePoutine.IsHotAndFresh = true
+	return c.JSON(http.StatusAccepted, struct {
+		utils.SaucePoutine `json:"saucePoutine"`
+	}{saucePoutine})
+}
