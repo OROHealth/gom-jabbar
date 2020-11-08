@@ -10,7 +10,7 @@ info:
     name: "MIT OpenSource"
     url: "https://opensource.org/licenses/MIT"
 host: "lapoutinemtl.com"
-basePath: "/verduny"
+basePath: "/verduny/potatoes"
 paths:
   /cut:
     post:
@@ -27,10 +27,10 @@ paths:
       produces:
         - "application/json"
       responses:
-        "200":
-          description: "cut potatoes in given size are returned"
-          schema:
-            $ref: '#/definitions/Potatoes'
+        "202":
+          description: "request accepted"
+            # schema:
+          # $ref: '#/definitions/Potatoes'
   /dip:
     post:
       tags:
@@ -41,8 +41,29 @@ paths:
       produces:
         - "application/json"
       responses:
+        "202":
+          description: "request accepted"
+            # schema:
+          # $ref: '#/definitions/Potatoes'
+  /:
+    get:
+      tags:
+        - "get cut potatoes"
+      summary: "potatoes cut and dipped in maple syrup ready to be cooked"
+      description: ""
+      operationId: ""
+      produces:
+        - "application/json"
+      responses:
         "200":
-          description: "successful operation"
+          description: "request ok, response successfully returned"
+          schema:
+            $ref: '#/definitions/Potatoes'
+        "400":
+          description: "bad request"
+          schema:
+            $ref: '#/definitions/Message'
+
 definitions:
   Potatoes:
     type: object
@@ -64,3 +85,8 @@ definitions:
       areCooked:
         type: boolean
         default: false
+  Message:
+    type: object
+    properties:
+      message:
+        type: string

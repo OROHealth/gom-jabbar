@@ -11,6 +11,7 @@ var Potatoes utils.Potatoes
 // cuts potatoes with provided size
 // for example: /verduny/potatoes/cut?size=3
 // default size is 1
+// todo: query param validation
 func cutPotatoes(c echo.Context) error {
 
 	qp := c.QueryParams()

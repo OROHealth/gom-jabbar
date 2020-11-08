@@ -17,7 +17,7 @@ func main() {
 	verduny := e.Group("/verduny/potatoes")
 
 	// Route
-	verduny.GET("", getPotatoes)
+	verduny.GET("/", getPotatoes)
 	verduny.POST("/cut", cutPotatoes)
 	verduny.POST("/dip", dipInMapleSyrup)
 
