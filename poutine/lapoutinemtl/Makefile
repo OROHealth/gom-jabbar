@@ -1,5 +1,5 @@
 .PHONY : all
-all : bonjour outremona montroyashi verduny nordo bizar oldoporto pierre
+all : outremona verduny nordo bizar oldoporto pierre ls
 bonjour:
 	$(MAKE) -C ./services/bonjour docker
 outremona:
@@ -21,11 +21,13 @@ clean:
 ls:
 	docker image ls
 compose:
-	docker-compose up outremona pierre
+	docker-compose up -d outremona verduny nordo bizar oldoporto pierre
 down:
 	docker-compose down
 ps:
 	docker-compose ps
+test:
+	newman run services/tests/tests.postman_collection.json
 
 .PHONY : reset
-reset: down ps clean all compose
+reset: down clean all compose ps
