@@ -10,7 +10,7 @@ var saucePoutine utils.SaucePoutine
 
 func getPoutineSauce(c echo.Context) error {
 	saucePoutine.IsHotAndFresh = true
-	return c.JSON(http.StatusAccepted, struct {
+	return c.JSON(http.StatusOK, struct {
 		utils.SaucePoutine `json:"saucePoutine"`
 	}{saucePoutine})
 }
