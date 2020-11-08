@@ -5,7 +5,7 @@ info:
   title: "La Poutine Mtl"
   termsOfService: ""
   contact:
-    email: "jshn.singh1@gmail.com"
+    email: "mtl.jashanjotsingh@gmail.com"
   license:
     name: "MIT OpenSource"
     url: "https://opensource.org/licenses/MIT"
@@ -15,12 +15,32 @@ paths:
   /cheese:
     get:
       tags:
-      - "get cheese"
-      summary: "take cheese from the box and squeeze it"
+        - "get cheese"
+      summary: "take cheese from the box, squeeze it and return it as a json response"
       description: ""
       operationId: ""
       produces:
-      - "application/json"
+        - "application/json"
+      responses:
+        "200":
+          description: "squeaky cheese object received as json in response"
+          schema:
+            $ref: '#/definitions/Cheese'
+  /swagger:
+    get:
+      tags:
+        - "swagger.yaml"
+      summary: "swagger file"
+      description: ""
+      operationId: ""
+      produces:
+        - "text/plain"
       responses:
         "200":
           description: "successful operation"
+definitions:
+  Cheese:
+    type: object
+    properties:
+      isSqueakyAndFresh:
+        type: boolean
