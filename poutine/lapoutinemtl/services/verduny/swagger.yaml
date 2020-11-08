@@ -14,16 +14,23 @@ basePath: "/verduny"
 paths:
   /cut:
     post:
+      parameters:
+        - name: size
+          in: query
+          type: string
+          default: 1
       tags:
-      - "cut potatoes"
+        - "cut potatoes"
       summary: "cut potatoes in a dynamically sized cube"
       description: ""
       operationId: ""
       produces:
-      - "application/json"
+        - "application/json"
       responses:
         "200":
-          description: "successful operation"
+          description: "cut potatoes in given size are returned"
+          schema:
+            $ref: '#/definitions/Potatoes'
   /dip:
     post:
       tags:
@@ -36,3 +43,24 @@ paths:
       responses:
         "200":
           description: "successful operation"
+definitions:
+  Potatoes:
+    type: object
+    properties:
+      cutPotatoes:
+        $ref: '#/definitions/Potato'
+  Potato:
+    type: object
+    properties:
+      cutSize:
+        type: string
+        default: ""
+      portion:
+        type: string
+        default: ""
+      dippedIn:
+        type: string
+        default: ""
+      areCooked:
+        type: boolean
+        default: false
