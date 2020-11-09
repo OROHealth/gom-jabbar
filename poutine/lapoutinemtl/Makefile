@@ -31,7 +31,7 @@ test:
 .PHONY : setup
 setup: newman
 newman:
-	$(eval err = $(shell npm install newman))
+	npm install newman
 
 .PHONY : reset
 reset: down clean all compose ps
