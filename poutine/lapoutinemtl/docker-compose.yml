@@ -1,4 +1,4 @@
-version: "3.8"
+version: "2.2"
 
 services:
   bonjour:
@@ -9,6 +9,8 @@ services:
     image: "outremona:dev"
     ports:
       - "5141:5141"
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
   montroyashi:
     image: "montroyashi:dev"
     ports:
@@ -17,19 +19,29 @@ services:
     image: "verduny:dev"
     ports:
       - "5143:5143"
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
   nordo:
     image: "nordo:dev"
     ports:
       - "5144:5144"
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
   bizar:
     image: "bizar:dev"
     ports:
       - "5145:5145"
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
   oldoporto:
     image: "oldoporto:dev"
     ports:
       - "5146:5146"
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
   pierre:
     image: "pierre:dev"
     ports:
       - "5147:5147"
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"

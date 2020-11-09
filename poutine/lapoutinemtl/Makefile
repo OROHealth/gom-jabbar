@@ -31,7 +31,7 @@ test:
 .PHONY : setup
 setup: newman
 newman:
-	npm install newman
+	npm install -g newman
 
 .PHONY : reset
 reset: down clean all compose ps
