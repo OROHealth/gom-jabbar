@@ -5,22 +5,47 @@ info:
   title: "La Poutine Mtl"
   termsOfService: ""
   contact:
-    email: "jshn.singh1@gmail.com"
+    email: "mtl.jashanjotsingh@gmail.com"
   license:
     name: "MIT OpenSource"
     url: "https://opensource.org/licenses/MIT"
 host: "lapoutinemtl.com"
-basePath: "/Oldoporto"
+basePath: "/oldoporto"
 paths:
-  /temperature:
-    post:
+  /sauce:
+    get:
       tags:
-      - "temperature regulator"
-      summary: "keep things at a specific temperature in a pot"
+        - "oldoporto keeps sauce in a pot at a cheese melting temperature"
+      summary: "gets hot and fresh sauce poutine object as response"
       description: ""
       operationId: ""
       produces:
-      - "application/json"
+        - "application/json"
+      responses:
+        "200":
+          description: "request ok, received poutine sauce as response"
+          schema:
+            $ref: '#/definitions/SaucePoutine'
+  /swagger:
+    get:
+      tags:
+        - "swagger.yaml"
+      summary: "swagger file"
+      description: ""
+      operationId: ""
+      produces:
+        - "text/plain"
       responses:
         "200":
           description: "successful operation"
+definitions:
+  SaucePoutine:
+    type: object
+    properties:
+      saucePoutine:
+        $ref: '#/definitions/Sauce'
+  Sauce:
+    type: object
+    properties:
+      isHotAndFresh:
+        type: boolean
