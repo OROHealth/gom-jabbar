@@ -12,8 +12,10 @@ import (
 func TestMontroyashiSuccess(t *testing.T) {
 	assert := assert.New(t)
 	done := make(chan bool)
-	drunk := false
-	lyrics := ""
+	var (
+		lyrics []string
+		drunk  bool
+	)
 
 	bus := &pubsub.Local{}
 	bus.Subscribe("drunk-people", func(msg string) error {
@@ -22,7 +24,7 @@ func TestMontroyashiSuccess(t *testing.T) {
 		return nil
 	})
 	bus.Subscribe("leonard-cohen-lyrics", func(msg string) error {
-		lyrics = msg
+		fromJSON(&lyrics, msg)
 		done <- true
 		return nil
 	})

@@ -20,7 +20,7 @@ func TestVerdunySuccess(t *testing.T) {
 	})
 
 	r := NewVerduny(bus)
-	r.SetDipTime(2 * time.Second) //To make the test run faster
+	r.(*verduny).dipTime = 2 * time.Second //To make the test run faster
 
 	o := &resto.PoutineOrder{
 		ID:        "test",

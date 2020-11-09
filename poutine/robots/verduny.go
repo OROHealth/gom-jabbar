@@ -40,7 +40,7 @@ func (r *verduny) handleOrderReceived(msg string) error {
 	}))
 
 	r.Send("dipped-potatoes-start", o.ID)
-	dipped := r.DipPotatoes(cutted, o.PotatoDip)
+	dipped := r.DipPotatoes(cutted, o.PotatoDip, r.dipTime)
 	return r.Send("dipped-potatoes-ready", toJSON(resto.DippedPotatoesReady{
 		OrderID:        o.ID,
 		DippedPotatoes: dipped,
@@ -56,12 +56,8 @@ func (r *verduny) CutPotatoes(k resto.PotatoKind, s resto.PotatoCutSize, qty uin
 		Quantity: qty,
 	}
 }
-func (r *verduny) DipPotatoes(cutted resto.CuttedPotatoes, d resto.PotatoDipKind) resto.DippedPotatoes {
-	r.simulateWork(r.dipTime)
-	cutted.Dip = d
+func (r *verduny) DipPotatoes(cutted resto.CuttedPotatoes, dip resto.PotatoDipKind, dipTime time.Duration) resto.DippedPotatoes {
+	r.simulateWork(dipTime)
+	cutted.Dip = dip
 	return resto.DippedPotatoes(cutted)
-}
-
-func (r *verduny) SetDipTime(d time.Duration) {
-	r.dipTime = d
 }

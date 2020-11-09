@@ -11,6 +11,10 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
+
 type Pierre interface {
 	senderListener
 	TakeOrder(*resto.PoutineOrder) (string, error)
@@ -34,8 +38,7 @@ type Montroyashi interface {
 type Verduny interface {
 	senderListener
 	CutPotatoes(resto.PotatoKind, resto.PotatoCutSize, uint) resto.CuttedPotatoes
-	DipPotatoes(resto.CuttedPotatoes, resto.PotatoDipKind) resto.DippedPotatoes
-	SetDipTime(time.Duration)
+	DipPotatoes(resto.CuttedPotatoes, resto.PotatoDipKind, time.Duration) resto.DippedPotatoes
 }
 
 type Nordo interface {
@@ -47,7 +50,7 @@ type Nordo interface {
 type Bizar interface {
 	senderListener
 	FryPotatoes(resto.BoiledPotatoes, resto.FryingOilKind) resto.FriedPotatoes
-	SingLeonardCohenLyrics(resto.FriedPotatoes, string)
+	SingLeonardCohenLyrics(resto.FriedPotatoes, []string) resto.FriedPotatoes
 }
 
 type Oldoporto interface {

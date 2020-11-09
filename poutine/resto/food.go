@@ -75,6 +75,7 @@ type Potatoes struct {
 	Dip       PotatoDipKind       `json:"dip,omitempty"`
 	Softness  PotatoSoftnessLevel `json:"softness,omitempty"`
 	FryingOil FryingOilKind       `json:"frying_oil,omitempty"`
+	Lyrics    []string            `json:"lyrics,omitempty"`
 }
 
 type CuttedPotatoes Potatoes

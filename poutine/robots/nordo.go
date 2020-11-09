@@ -83,7 +83,7 @@ func (r *nordo) CurrentPotatoesSoftness(orderID string) (resto.PotatoSoftnessLev
 }
 
 func (r *nordo) order(id string) (o *resto.PoutineOrder, err error) {
-	if v, ok := r.Orders.Load(id); !ok {
+	if v, ok := r.Orders.LoadAndDelete(id); !ok {
 		err = fmt.Errorf("order not found %s", id)
 	} else {
 		var ok bool

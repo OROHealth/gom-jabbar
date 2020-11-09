@@ -47,7 +47,12 @@ func (r *montroyashi) DetectDrunkPeople(o *resto.PoutineOrder) {
 }
 
 func (r *montroyashi) DisplayLeonardCohenLyrics() {
-	r.Send("leonard-cohen-lyrics", leonardCohenLyrics[rand.Intn(len(leonardCohenLyrics))])
+	//Sending a random amount of Leonard cohen lyrics
+	var lyrics []string
+	for i := 0; i < rand.Intn(20); i++ {
+		lyrics = append(lyrics, leonardCohenLyrics[rand.Intn(len(leonardCohenLyrics))])
+	}
+	r.Send("leonard-cohen-lyrics", toJSON(lyrics))
 }
 
 var leonardCohenLyrics = strings.Split(strings.TrimSpace(`
