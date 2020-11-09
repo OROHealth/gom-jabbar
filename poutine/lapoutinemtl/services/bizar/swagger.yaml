@@ -31,6 +31,10 @@ paths:
           description: "request accepted"
           schema:
             $ref: '#/definitions/Message'
+        "400":
+          description: "bad request"
+          schema:
+            $ref: '#/definitions/Message'
   /fries:
     get:
       tags:

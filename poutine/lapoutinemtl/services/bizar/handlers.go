@@ -55,7 +55,9 @@ func fryPotatoes(context echo.Context) error {
 				Message string `json:"message"`
 			}{fmt.Sprintf(`frying potatoes in %s oil`, oc)})
 		} else {
-			return context.JSON(http.StatusBadRequest, nil)
+			return context.JSON(http.StatusBadRequest, struct {
+				Message string `json:"message"`
+			}{"seems like Nordo is still cooking the potatoes, beep boop!"})
 		}
 	}
 }
