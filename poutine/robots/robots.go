@@ -35,6 +35,7 @@ type Verduny interface {
 	senderListener
 	CutPotatoes(resto.PotatoKind, resto.PotatoCutSize, uint) resto.CuttedPotatoes
 	DipPotatoes(resto.CuttedPotatoes, resto.PotatoDipKind) resto.DippedPotatoes
+	SetDipTime(time.Duration)
 }
 
 type Nordo interface {

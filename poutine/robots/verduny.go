@@ -9,6 +9,7 @@ import (
 
 type verduny struct {
 	Robot
+	dipTime time.Duration
 }
 
 func NewVerduny(bus pubsub.PubSub) Verduny {
@@ -16,6 +17,7 @@ func NewVerduny(bus pubsub.PubSub) Verduny {
 		Robot: Robot{
 			bus: bus,
 		},
+		dipTime: 25 * time.Second,
 	}
 
 	r.setSubscriptions()
@@ -55,7 +57,11 @@ func (r *verduny) CutPotatoes(k resto.PotatoKind, s resto.PotatoCutSize, qty uin
 	}
 }
 func (r *verduny) DipPotatoes(cutted resto.CuttedPotatoes, d resto.PotatoDipKind) resto.DippedPotatoes {
-	r.simulateWork(25 * time.Second)
+	r.simulateWork(r.dipTime)
 	cutted.Dip = d
 	return resto.DippedPotatoes(cutted)
+}
+
+func (r *verduny) SetDipTime(d time.Duration) {
+	r.dipTime = d
 }

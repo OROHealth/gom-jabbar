@@ -44,6 +44,7 @@ func (r *nordo) handleOrderReceived(msg string) error {
 	o := &resto.PoutineOrder{}
 	fromJSON(&o, msg)
 	r.Orders.Store(o.ID, o)
+	r.CurrentSoftness.Store(o.ID, resto.SoftnessRaw)
 	return nil
 }
 
@@ -64,7 +65,6 @@ func (r *nordo) handleDippedPotatoes(msg string) error {
 }
 
 func (r *nordo) BoilPotatoes(orderID string, dipped resto.DippedPotatoes, level resto.PotatoSoftnessLevel) resto.BoiledPotatoes {
-	r.CurrentSoftness.Store(orderID, resto.SoftnessRaw)
 	r.simulateRandomWork()
 	r.CurrentSoftness.Store(orderID, level)
 	time.AfterFunc(10*time.Minute, func() {
