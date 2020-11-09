@@ -47,19 +47,23 @@ func (i *Inventory) Deduct(o *PoutineOrder) error {
 
 //PoutineOrder is one order to we need to deliver promptly
 type PoutineOrder struct {
-	ID                  string        `json:"id,omitempty"`
-	Received            time.Time     `json:"received,omitempty"`
-	Status              OrderStatus   `json:"status,omitempty"`
-	Size                PoutineSize   `json:"size,omitempty"`
-	Potato              PotatoKind    `json:"potato,omitempty"`
-	PotatoCut           PotatoCutSize `json:"potato_cut,omitempty"`
-	Cheese              CheeseKind    `json:"cheese,omitempty"`
-	Oil                 FryingOilKind `json:"oil,omitempty"`
-	Gravy               GravyKind     `json:"gravy,omitempty"`
-	PoutineDelivered    Poutine       `json:"poutine_delivered,omitempty"`
-	ReceivedIngredients []Ingredient  `json:"received_ingredients,omitempty"`
+	ID       string      `json:"id,omitempty"`
+	Received time.Time   `json:"received,omitempty"`
+	Status   OrderStatus `json:"status,omitempty"`
+	Size     PoutineSize `json:"size,omitempty"`
 
-	ingredientsMutex sync.Mutex
+	Potato         PotatoKind          `json:"potato,omitempty"`
+	PotatoCut      PotatoCutSize       `json:"potato_cut,omitempty"`
+	PotatoDip      PotatoDipKind       `json:"potato_dip,omitempty"`
+	PotatoSoftness PotatoSoftnessLevel `json:"potato_softness,omitempty"`
+
+	Cheese CheeseKind    `json:"cheese,omitempty"`
+	Oil    FryingOilKind `json:"oil,omitempty"`
+	Gravy  GravyKind     `json:"gravy,omitempty"`
+
+	PoutineDelivered    Poutine      `json:"poutine_delivered,omitempty"`
+	ReceivedIngredients []Ingredient `json:"received_ingredients,omitempty"`
+	ingredientsMutex    sync.Mutex
 }
 
 func (p *PoutineOrder) ValidateAndSetDefault() {
@@ -72,6 +76,12 @@ func (p *PoutineOrder) ValidateAndSetDefault() {
 	}
 	if p.PotatoCut == "" {
 		p.PotatoCut = SmallCut
+	}
+	if p.PotatoDip == "" {
+		p.PotatoDip = MapleSyrupDip
+	}
+	if p.PotatoSoftness == "" {
+		p.PotatoSoftness = SoftnessSoftish
 	}
 	if p.Cheese == "" {
 		p.Cheese = CheeseKindCouicCouic
@@ -102,21 +112,21 @@ const (
 type PoutineSize string
 
 //Template returns a template for a give poutine size
-func (ps PoutineSize) Template() PoutineIngredientsTemplate {
+func (ps PoutineSize) Template() PoutineIngredientsQtyTemplate {
 	switch strings.ToLower(string(ps)) {
 	case "small":
-		return PoutineIngredientsTemplate{PotatoCount: 4, CurdsCount: 25, ScoopsCount: 2}
+		return PoutineIngredientsQtyTemplate{PotatoCount: 4, CurdsCount: 25, ScoopsCount: 2}
 	case "large":
-		return PoutineIngredientsTemplate{PotatoCount: 8, CurdsCount: 75, ScoopsCount: 5}
+		return PoutineIngredientsQtyTemplate{PotatoCount: 8, CurdsCount: 75, ScoopsCount: 5}
 	case "medium":
 		fallthrough
 	default:
-		return PoutineIngredientsTemplate{PotatoCount: 6, CurdsCount: 50, ScoopsCount: 3}
+		return PoutineIngredientsQtyTemplate{PotatoCount: 6, CurdsCount: 50, ScoopsCount: 3}
 	}
 }
 
-//PoutineIngredientsTemplate define how much of everything is needed for a given size
-type PoutineIngredientsTemplate struct {
+//PoutineIngredientsQtyTemplate define how much of everything is needed for a given size
+type PoutineIngredientsQtyTemplate struct {
 	PotatoCount uint
 	CurdsCount  uint
 	ScoopsCount uint

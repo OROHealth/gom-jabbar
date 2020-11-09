@@ -10,6 +10,21 @@ type GravyScoopsReady struct {
 	GravyScoops `json:",inline"`
 }
 
+type CuttedPotatoesReady struct {
+	OrderID        string `json:"order_id,omitempty"`
+	CuttedPotatoes `json:",inline"`
+}
+
+type DippedPotatoesReady struct {
+	OrderID        string `json:"order_id,omitempty"`
+	DippedPotatoes `json:",inline"`
+}
+
+type BoiledPotatoesReady struct {
+	OrderID        string `json:"order_id,omitempty"`
+	BoiledPotatoes `json:",inline"`
+}
+
 type FriedPotatoesReady struct {
 	OrderID       string `json:"order_id,omitempty"`
 	FriedPotatoes `json:",inline"`

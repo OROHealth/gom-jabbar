@@ -24,11 +24,11 @@ func NewMontroyashi(bus pubsub.PubSub) Montroyashi {
 }
 
 func (r *montroyashi) setSubscriptions() {
-	r.Listen("order-received", r.handleOrderStart)
+	r.Listen("order-received", r.handleOrderReceived)
 	r.Listen("cheese-screams", r.handleCheeseScream)
 }
 
-func (r *montroyashi) handleOrderStart(msg string) error {
+func (r *montroyashi) handleOrderReceived(msg string) error {
 	o := &resto.PoutineOrder{}
 	fromJSON(&o, msg)
 	r.DetectDrunkPeople(o)

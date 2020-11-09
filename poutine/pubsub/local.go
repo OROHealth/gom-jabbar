@@ -9,7 +9,11 @@ type Local struct {
 func (l *Local) Publish(channel, msg string) error {
 	log.Printf("%s : %s", channel, msg)
 	for _, mh := range l.subscribers[channel] {
-		go mh(msg)
+		go func(m MessageHandler) {
+			if err := m(msg); err != nil {
+				log.Printf("error handler(%s) with message %s: %s", channel, msg, err)
+			}
+		}(mh)
 	}
 	return nil
 }

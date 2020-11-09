@@ -16,7 +16,7 @@ func TestOutremonaSuccess(t *testing.T) {
 	curds := resto.SqueezedCheeseCurdsReady{}
 
 	bus := &pubsub.Local{}
-	bus.Subscribe("squeezed-cheese-done", func(msg string) error {
+	bus.Subscribe("squeezed-cheese-ready", func(msg string) error {
 		fromJSON(&curds, msg)
 		done <- true
 		return nil
@@ -40,7 +40,7 @@ func TestOutremonaSuccess(t *testing.T) {
 		assert.Equal(curds.Kind, o.Cheese)
 		assert.Equal(curds.Quantity, o.Size.Template().CurdsCount)
 		assert.True(screamed)
-	case <-time.After(10 * time.Second):
+	case <-time.After(20 * time.Second):
 		t.Fatal("failed to pick and squeeze curds quickly enough")
 	}
 

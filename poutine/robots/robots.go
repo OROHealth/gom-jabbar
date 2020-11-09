@@ -34,19 +34,19 @@ type Montroyashi interface {
 type Verduny interface {
 	senderListener
 	CutPotatoes(resto.PotatoKind, resto.PotatoCutSize, uint) resto.CuttedPotatoes
-	DipPotatoes(resto.CuttedPotatoes) resto.DippedPotatoes
+	DipPotatoes(resto.CuttedPotatoes, resto.PotatoDipKind) resto.DippedPotatoes
 }
 
 type Nordo interface {
 	senderListener
-	BoilPotatoes(resto.DippedPotatoes) resto.BoiledPotatoes
-	SingLeonardCohenLyrics(resto.BoiledPotatoes, string) error
-	CurrentPotatoesSoftness(orderID string) (resto.PotatoSoftness, error)
+	BoilPotatoes(string, resto.DippedPotatoes, resto.PotatoSoftnessLevel) resto.BoiledPotatoes
+	CurrentPotatoesSoftness(string) (resto.PotatoSoftnessLevel, error)
 }
 
 type Bizar interface {
 	senderListener
-	FryPotatoes(resto.FryingOilKind, resto.BoiledPotatoes) resto.FriedPotatoes
+	FryPotatoes(resto.BoiledPotatoes, resto.FryingOilKind) resto.FriedPotatoes
+	SingLeonardCohenLyrics(resto.FriedPotatoes, string)
 }
 
 type Oldoporto interface {
@@ -87,9 +87,12 @@ func (r *Robot) Listen(channel string, mh pubsub.MessageHandler) error {
 	return r.bus.Subscribe(channel, mh)
 }
 
-func (r *Robot) simulateWork() {
-	s := rand.Intn(5)
-	time.Sleep(time.Duration(s) * time.Second)
+func (r *Robot) simulateRandomWork() {
+	r.simulateWork(time.Duration(rand.Intn(10)) * time.Second)
+}
+
+func (r *Robot) simulateWork(length time.Duration) {
+	time.Sleep(length)
 }
 
 type route struct {

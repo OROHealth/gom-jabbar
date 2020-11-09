@@ -54,12 +54,12 @@ const (
 	LargeCut  PotatoCutSize = "3x3"
 )
 
-type PotatoSoftness string
+type PotatoSoftnessLevel string
 
 const (
-	SoftnessRaw     PotatoSoftness = "raw"
-	SoftnessSoftish PotatoSoftness = "softish"
-	SoftnessMushy   PotatoSoftness = "mushy"
+	SoftnessRaw     PotatoSoftnessLevel = "raw"
+	SoftnessSoftish PotatoSoftnessLevel = "softish"
+	SoftnessMushy   PotatoSoftnessLevel = "mushy"
 )
 
 type PotatoDipKind string
@@ -69,12 +69,12 @@ const (
 )
 
 type Potatoes struct {
-	Kind      PotatoKind     `json:"kind,omitempty"`
-	Quantity  uint           `json:"quantity,omitempty"`
-	CutSize   PotatoCutSize  `json:"cut_size,omitempty"`
-	FryingOil FryingOilKind  `json:"frying_oil,omitempty"`
-	Softness  PotatoSoftness `json:"softness,omitempty"`
-	Dip       PotatoDipKind  `json:"dip,omitempty"`
+	Kind      PotatoKind          `json:"kind,omitempty"`
+	Quantity  uint                `json:"quantity,omitempty"`
+	CutSize   PotatoCutSize       `json:"cut_size,omitempty"`
+	Dip       PotatoDipKind       `json:"dip,omitempty"`
+	Softness  PotatoSoftnessLevel `json:"softness,omitempty"`
+	FryingOil FryingOilKind       `json:"frying_oil,omitempty"`
 }
 
 type CuttedPotatoes Potatoes

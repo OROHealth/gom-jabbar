@@ -19,6 +19,9 @@ func NewBizar(bus pubsub.PubSub) Bizar {
 	return r
 }
 
-func (r *bizar) FryPotatoes(resto.FryingOilKind, resto.BoiledPotatoes) resto.FriedPotatoes {
+func (r *bizar) FryPotatoes(resto.BoiledPotatoes, resto.FryingOilKind) resto.FriedPotatoes {
 	return resto.FriedPotatoes{}
+}
+
+func (r *bizar) SingLeonardCohenLyrics(fried resto.FriedPotatoes, lyrics string) {
 }

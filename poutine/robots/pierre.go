@@ -21,16 +21,16 @@ type pierre struct {
 }
 
 func NewPierre(bus pubsub.PubSub, inventory *resto.Inventory) Pierre {
-	p := &pierre{
+	r := &pierre{
 		Robot: Robot{
 			bus: bus,
 		},
 		Inventory: inventory,
 	}
-	p.setHTTPHandlers()
-	p.setSubscriptions()
-	go p.watchOrders() //In real life I would do a mechanism to avoid that this goroutine leaks
-	return p
+	r.setHTTPHandlers()
+	r.setSubscriptions()
+	go r.watchOrders() //In real life I would do a mechanism to avoid that this goroutine leaks
+	return r
 }
 
 func (r *pierre) setHTTPHandlers() {
@@ -41,9 +41,9 @@ func (r *pierre) setHTTPHandlers() {
 }
 
 func (r *pierre) setSubscriptions() {
-	r.Listen("squeezed-cheese-done", r.handleSqueezedCheese)
-	r.Listen("gravy-scoop-done", r.handleGravyScoop)
-	r.Listen("fried-potato-done", r.handleFriedPotato)
+	r.Listen("squeezed-cheese-ready", r.handleSqueezedCheese)
+	r.Listen("gravy-scoop-ready", r.handleGravyScoop)
+	r.Listen("fried-potato-ready", r.handleFriedPotato)
 }
 
 func (r *pierre) watchOrders() {
@@ -109,12 +109,12 @@ func (r *pierre) DeliverOrder(id string) error {
 	if err != nil {
 		return err
 	}
-	r.Send("mixing-ingredients-done", o.ID)
+	r.Send("mixing-ingredients-ready", o.ID)
 
 	o.Status = resto.OrderStatusDelivered
 	o.PoutineDelivered = poutine
 
-	r.Send("order-done", o.ID)
+	r.Send("order-ready", o.ID)
 
 	return nil
 }

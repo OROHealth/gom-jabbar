@@ -18,21 +18,21 @@ func TestPierreSuccess(t *testing.T) {
 	bus.Subscribe("order-received", func(msg string) error {
 		o := &resto.PoutineOrder{}
 		fromJSON(o, msg)
-		go bus.Publish("squeezed-cheese-done", toJSON(resto.SqueezedCheeseCurdsReady{
+		go bus.Publish("squeezed-cheese-ready", toJSON(resto.SqueezedCheeseCurdsReady{
 			OrderID: o.ID,
 			SqueezedCheeseCurds: resto.SqueezedCheeseCurds{
 				Kind:     o.Cheese,
 				Quantity: o.Size.Template().CurdsCount,
 			},
 		}))
-		go bus.Publish("gravy-scoop-done", toJSON(resto.GravyScoopsReady{
+		go bus.Publish("gravy-scoop-ready", toJSON(resto.GravyScoopsReady{
 			OrderID: o.ID,
 			GravyScoops: resto.GravyScoops{
 				Kind:     o.Gravy,
 				Quantity: o.Size.Template().ScoopsCount,
 			},
 		}))
-		go bus.Publish("fried-potato-done", toJSON(resto.FriedPotatoesReady{
+		go bus.Publish("fried-potato-ready", toJSON(resto.FriedPotatoesReady{
 			OrderID: o.ID,
 			FriedPotatoes: resto.FriedPotatoes{
 				Kind:      o.Potato,
@@ -44,7 +44,7 @@ func TestPierreSuccess(t *testing.T) {
 		return nil
 	})
 
-	bus.Subscribe("order-done", func(msg string) error {
+	bus.Subscribe("order-ready", func(msg string) error {
 		done <- true
 		return nil
 	})
@@ -78,6 +78,10 @@ func TestPierreSuccess(t *testing.T) {
 }
 
 func TestPierreCheeseServiceDown(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping testing in short mode")
+	}
+
 	assert := assert.New(t)
 	done := make(chan bool)
 
@@ -85,14 +89,14 @@ func TestPierreCheeseServiceDown(t *testing.T) {
 	bus.Subscribe("order-received", func(msg string) error {
 		o := &resto.PoutineOrder{}
 		fromJSON(o, msg)
-		go bus.Publish("gravy-scoop-done", toJSON(resto.GravyScoopsReady{
+		go bus.Publish("gravy-scoop-ready", toJSON(resto.GravyScoopsReady{
 			OrderID: o.ID,
 			GravyScoops: resto.GravyScoops{
 				Kind:     o.Gravy,
 				Quantity: o.Size.Template().ScoopsCount,
 			},
 		}))
-		go bus.Publish("fried-potato-done", toJSON(resto.FriedPotatoesReady{
+		go bus.Publish("fried-potato-ready", toJSON(resto.FriedPotatoesReady{
 			OrderID: o.ID,
 			FriedPotatoes: resto.FriedPotatoes{
 				Kind:      o.Potato,
@@ -126,7 +130,7 @@ func TestPierreCheeseServiceDown(t *testing.T) {
 		o, err := robot.Order(id)
 		assert.NoError(err)
 		assert.Equal(o.Status, resto.OrderStatusError)
-	case <-time.After(35 * time.Second):
+	case <-time.After(resto.OrderTimeout + 5*time.Second):
 		t.Fatal("order should have been marked as error because we have no squeezed cheese after time limit!")
 	}
 }
