@@ -1,0 +1,46 @@
+swagger: "2.0"
+info:
+  description: "Robot Outremona"
+  version: "1.0.0"
+  title: "La Poutine Mtl"
+  termsOfService: ""
+  contact:
+    email: "mtl.jashanjotsingh@gmail.com"
+  license:
+    name: "MIT OpenSource"
+    url: "https://opensource.org/licenses/MIT"
+host: "lapoutinemtl.com"
+basePath: "/outremona"
+paths:
+  /cheese:
+    get:
+      tags:
+        - "get cheese"
+      summary: "take cheese from the box, squeeze it and return it as a json response"
+      description: ""
+      operationId: ""
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "squeaky cheese object received as json in response"
+          schema:
+            $ref: '#/definitions/Cheese'
+  /swagger:
+    get:
+      tags:
+        - "swagger.yaml"
+      summary: "swagger file"
+      description: ""
+      operationId: ""
+      produces:
+        - "text/plain"
+      responses:
+        "200":
+          description: "successful operation"
+definitions:
+  Cheese:
+    type: object
+    properties:
+      isSqueakyAndFresh:
+        type: boolean

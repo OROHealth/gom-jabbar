@@ -1,0 +1,70 @@
+swagger: "2.0"
+info:
+  description: "Robot Pierre"
+  version: "1.0.0"
+  title: "La Poutine Mtl"
+  termsOfService: ""
+  contact:
+    email: "mtl.jashanjotsingh@gmail.com"
+  license:
+    name: "MIT OpenSource"
+    url: "https://opensource.org/licenses/MIT"
+host: "lapoutinemtl.com"
+basePath: "/pierre"
+paths:
+  /poutine:
+    get:
+      tags:
+        - "pierre quality checks and makes a poutine"
+      summary: "pierre mixes all ingredients, returns poutine object as json"
+      description: ""
+      operationId: ""
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "request ok, received poutine sauce as response"
+          schema:
+            $ref: '#/definitions/Poutine'
+  /swagger:
+    get:
+      tags:
+        - "swagger.yaml"
+      summary: "swagger file"
+      description: ""
+      operationId: ""
+      produces:
+        - "text/plain"
+      responses:
+        "200":
+          description: "successful operation"
+definitions:
+  Cheese:
+    type: object
+    properties:
+      isSqueakyAndFresh:
+        type: boolean
+  Sauce:
+    type: object
+    properties:
+      isHotAndFresh:
+        type: boolean
+  Fries:
+    type: object
+    properties:
+      areHotAndCrispy:
+        type: boolean
+  Poutine:
+    type: object
+    properties:
+      poutine:
+        $ref: '#/definitions/TruePoutine'
+  TruePoutine:
+    type: object
+    properties:
+      squeakyCheese:
+        $ref: '#/definitions/Cheese'
+      saucePoutine:
+        $ref: '#/definitions/Sauce'
+      potatoFries:
+        $ref: '#/definitions/Fries'

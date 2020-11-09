@@ -1,0 +1,32 @@
+# macOS
+**/.DS_Store/*
+.DS_Store
+.swp
+# Binaries
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+# IntelliJ GoLand
+._*
+.idea/
+*.iml
+*.ipr
+*.iws
+*.out
+# VSCode
+.vscode
+
+# vendor
+**/node_modules/*
+
+# binaries
+services/bonjour/bonjour
+services/outremona/outremona
+services/montroyashi/montroyashi
+services/verduny/verduny
+services/nordo/nordo
+services/bizar/bizar
+services/oldoporto/oldoporto
+services/pierre/pierre

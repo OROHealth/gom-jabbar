@@ -1,0 +1,79 @@
+swagger: "2.0"
+info:
+  description: "Robot Bizar"
+  version: "1.0.0"
+  title: "La Poutine Mtl"
+  termsOfService: ""
+  contact:
+    email: "mtl.jashanjotsingh@gmail.com"
+  license:
+    name: "MIT OpenSource"
+    url: "https://opensource.org/licenses/MIT"
+host: "lapoutinemtl.com"
+basePath: "/bizar/potatoes"
+paths:
+  /fry:
+    post:
+      parameters:
+        - name: oilChoice
+          in: query
+          type: string
+          default: olive
+      tags:
+        - "fry cut potatoes"
+      summary: "fry the potatoes in given oil choice"
+      description: ""
+      operationId: ""
+      produces:
+        - "application/json"
+      responses:
+        "202":
+          description: "request accepted"
+          schema:
+            $ref: '#/definitions/Message'
+        "400":
+          description: "bad request"
+          schema:
+            $ref: '#/definitions/Message'
+  /fries:
+    get:
+      tags:
+        - "get potato fries"
+      summary: "request bizar for potato fries"
+      description: ""
+      operationId: ""
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "request successful, fries received as response"
+          schema:
+            $ref: '#/definitions/PotatoFries'
+  /swagger:
+    get:
+      tags:
+        - "swagger.yaml"
+      summary: "swagger file"
+      description: ""
+      operationId: ""
+      produces:
+        - "text/plain"
+      responses:
+        "200":
+          description: "successful operation"
+definitions:
+  Message:
+    type: object
+    properties:
+      message:
+        type: string
+  PotatoFries:
+    type: object
+    properties:
+      potatoFries:
+        $ref: '#/definitions/Fries'
+  Fries:
+    type: object
+    properties:
+      areHotAndCrispy:
+        type: boolean

@@ -1,0 +1,104 @@
+swagger: "2.0"
+info:
+  description: "Robot Verduny"
+  version: "1.0.0"
+  title: "La Poutine Mtl"
+  termsOfService: ""
+  contact:
+    email: "mtl.jashanjotsingh@gmail.com"
+  license:
+    name: "MIT OpenSource"
+    url: "https://opensource.org/licenses/MIT"
+host: "lapoutinemtl.com"
+basePath: "/verduny/potatoes"
+paths:
+  /cut:
+    post:
+      parameters:
+        - name: size
+          in: query
+          type: string
+          default: 1
+      tags:
+        - "cut potatoes"
+      summary: "cut potatoes in a dynamically sized cube"
+      description: ""
+      operationId: ""
+      produces:
+        - "application/json"
+      responses:
+        "202":
+          description: "request accepted"
+            # schema:
+          # $ref: '#/definitions/Potatoes'
+  /dip:
+    post:
+      tags:
+        - "dip potatoes"
+      summary: "dip potatoes in maple syrup"
+      description: ""
+      operationId: ""
+      produces:
+        - "application/json"
+      responses:
+        "202":
+          description: "request accepted"
+            # schema:
+          # $ref: '#/definitions/Potatoes'
+  /:
+    get:
+      tags:
+        - "get cut potatoes"
+      summary: "potatoes cut and dipped in maple syrup ready to be cooked"
+      description: ""
+      operationId: ""
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "request ok, response successfully returned"
+          schema:
+            $ref: '#/definitions/Potatoes'
+        "400":
+          description: "bad request"
+          schema:
+            $ref: '#/definitions/Message'
+  /swagger:
+    get:
+      tags:
+        - "swagger.yaml"
+      summary: "swagger file"
+      description: ""
+      operationId: ""
+      produces:
+        - "text/plain"
+      responses:
+        "200":
+          description: "successful operation"
+
+definitions:
+  Potatoes:
+    type: object
+    properties:
+      cutPotatoes:
+        $ref: '#/definitions/Potato'
+  Potato:
+    type: object
+    properties:
+      cutSize:
+        type: string
+        default: ""
+      portion:
+        type: string
+        default: ""
+      dippedIn:
+        type: string
+        default: ""
+      areCooked:
+        type: boolean
+        default: false
+  Message:
+    type: object
+    properties:
+      message:
+        type: string

@@ -1,0 +1,51 @@
+swagger: "2.0"
+info:
+  description: "Robot Oldoporto"
+  version: "1.0.0"
+  title: "La Poutine Mtl"
+  termsOfService: ""
+  contact:
+    email: "mtl.jashanjotsingh@gmail.com"
+  license:
+    name: "MIT OpenSource"
+    url: "https://opensource.org/licenses/MIT"
+host: "lapoutinemtl.com"
+basePath: "/oldoporto"
+paths:
+  /sauce:
+    get:
+      tags:
+        - "oldoporto keeps sauce in a pot at a cheese melting temperature"
+      summary: "gets hot and fresh sauce poutine object as response"
+      description: ""
+      operationId: ""
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "request ok, received poutine sauce as response"
+          schema:
+            $ref: '#/definitions/SaucePoutine'
+  /swagger:
+    get:
+      tags:
+        - "swagger.yaml"
+      summary: "swagger file"
+      description: ""
+      operationId: ""
+      produces:
+        - "text/plain"
+      responses:
+        "200":
+          description: "successful operation"
+definitions:
+  SaucePoutine:
+    type: object
+    properties:
+      saucePoutine:
+        $ref: '#/definitions/Sauce'
+  Sauce:
+    type: object
+    properties:
+      isHotAndFresh:
+        type: boolean

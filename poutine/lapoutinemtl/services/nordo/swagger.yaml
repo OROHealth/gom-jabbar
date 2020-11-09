@@ -1,0 +1,66 @@
+swagger: "2.0"
+info:
+  description: "Robot Nordo"
+  version: "1.0.0"
+  title: "La Poutine Mtl"
+  termsOfService: ""
+  contact:
+    email: "mtl.jashanjotsingh@gmail.com"
+  license:
+    name: "MIT OpenSource"
+    url: "https://opensource.org/licenses/MIT"
+host: "lapoutinemtl.com"
+basePath: "/nordo/potatoes"
+paths:
+  /boil:
+    get:
+      tags:
+        - "boil potatoes"
+      summary: "boil potatoes and cook them soft"
+      description: ""
+      operationId: ""
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "request processed and boiled potatoes returned as response"
+          schema:
+            $ref: '#/definitions/Potatoes'
+  /swagger:
+    get:
+      tags:
+        - "swagger.yaml"
+      summary: "swagger file"
+      description: ""
+      operationId: ""
+      produces:
+        - "text/plain"
+      responses:
+        "200":
+          description: "successful operation"
+definitions:
+  Potatoes:
+    type: object
+    properties:
+      cutPotatoes:
+        $ref: '#/definitions/Potato'
+  Potato:
+    type: object
+    properties:
+      cutSize:
+        type: string
+        default: ""
+      portion:
+        type: string
+        default: ""
+      dippedIn:
+        type: string
+        default: ""
+      areCooked:
+        type: boolean
+        default: false
+  Message:
+    type: object
+    properties:
+      message:
+        type: string

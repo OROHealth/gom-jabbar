@@ -1,0 +1,418 @@
+{
+	"info": {
+		"_postman_id": "7ea98e6a-6467-4206-a0a2-422e74c87640",
+		"name": "laputinemtl-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "[outremona] /cheese",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e769aa18-feb3-4ae0-91a4-0d00e96bda62",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Is cheese squeaky and fresh?\", function () {",
+							"    var cheese = pm.response.json();",
+							"    pm.expect(cheese.squeakyCheese.isSqueakyAndFresh).to.eql(true);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5141/outremona/cheese",
+					"host": [
+						"localhost"
+					],
+					"port": "5141",
+					"path": [
+						"outremona",
+						"cheese"
+					]
+				},
+				"description": "Get Squeaky Cheese from Outremona"
+			},
+			"response": []
+		},
+		{
+			"name": "[verduny] /potatoes/cut",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request /potatoes/cut\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"pm.test(\"Is cut size same as requested in query param?\", function () {",
+							"    var resp = pm.response.json();",
+							"    pm.expect(resp.cutPotatoes.cutSize).to.eql(\"1\");",
+							"});"
+						],
+						"id": "aafdcdaf-a2bd-428f-aa3b-8eb1a9b04b9a",
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:5143/verduny/potatoes/cut?size=1",
+					"host": [
+						"localhost"
+					],
+					"port": "5143",
+					"path": [
+						"verduny",
+						"potatoes",
+						"cut"
+					],
+					"query": [
+						{
+							"key": "size",
+							"value": "1"
+						}
+					]
+				},
+				"description": "verduncy cuts potatoes in given dimensions. Where, the default dimensions are 1 inch per 1 inch cube."
+			},
+			"response": []
+		},
+		{
+			"name": "[verduny] /potatoes/dip",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "095afd05-4133-4fc9-a29b-8a356ae00a9b",
+						"exec": [
+							"pm.test(\"Successful POST request /potatoes/dip\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"pm.test(\"Are potatoes dipped in maple syrup?\", function () {",
+							"    var resp = pm.response.json();",
+							"    pm.expect(resp.cutPotatoes.dippedIn).to.eql(\"maple syrup\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:5143/verduny/potatoes/dip",
+					"host": [
+						"localhost"
+					],
+					"port": "5143",
+					"path": [
+						"verduny",
+						"potatoes",
+						"dip"
+					]
+				},
+				"description": "verduncy also dips cut potatoes in maple syrup for given period of time. where, default is 25 seconds."
+			},
+			"response": []
+		},
+		{
+			"name": "[verduny] /potatoes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e5b6682f-1799-4b0b-bd23-c34cd3217bd5",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"pm.test(\"Are potatoes dipped in maple syrup?\", function () {",
+							"    var resp = pm.response.json();",
+							"    pm.expect(resp.cutPotatoes.dippedIn).to.eql(\"maple syrup\");",
+							"});",
+							"pm.test(\"Are potatoes ready to be cooked?\", function () {",
+							"    var resp = pm.response.json();",
+							"    pm.expect(resp.cutPotatoes.areCooked).to.eql(false);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5143/verduny/potatoes/",
+					"host": [
+						"localhost"
+					],
+					"port": "5143",
+					"path": [
+						"verduny",
+						"potatoes",
+						""
+					]
+				},
+				"description": "verduncy also dips cut potatoes in maple syrup."
+			},
+			"response": []
+		},
+		{
+			"name": "[nordo] /potatoes/boil",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2f626e41-29b4-4644-8e8a-cbd8976a5c66",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"pm.test(\"Are potatoes cooked?\", function () {",
+							"    var resp = pm.response.json();",
+							"    pm.expect(resp.cutPotatoes.areCooked).to.eql(true);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5144/nordo/potatoes/boil",
+					"host": [
+						"localhost"
+					],
+					"port": "5144",
+					"path": [
+						"nordo",
+						"potatoes",
+						"boil"
+					]
+				},
+				"description": "nordo boils the potatoes that were cut and dipped in maple syrup by verduny and give their current softness level."
+			},
+			"response": []
+		},
+		{
+			"name": "[bizar] /potatoes/fry",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6f20764c-71c3-4a5f-9e5c-a880aae6a3ab",
+						"exec": [
+							"pm.test(\"Successful POST request /potatoes/fry\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"pm.test(\"Is frying working?\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"frying\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:5145/bizar/potatoes/fry?oilChoice=olive",
+					"host": [
+						"localhost"
+					],
+					"port": "5145",
+					"path": [
+						"bizar",
+						"potatoes",
+						"fry"
+					],
+					"query": [
+						{
+							"key": "oilChoice",
+							"value": "olive"
+						}
+					]
+				},
+				"description": "bizar fries the potatoes with different oil choices."
+			},
+			"response": []
+		},
+		{
+			"name": "[bizar] /potatoes/fries",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f3f1fa3c-9e12-4edc-8ac0-8a37996d14cc",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"pm.test(\"Are fries hot and crispy?\", function () {",
+							"    var resp = pm.response.json();",
+							"    pm.expect(resp.potatoFries.areHotAndCrispy).to.eql(true);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5145/bizar/potatoes/fries",
+					"host": [
+						"localhost"
+					],
+					"port": "5145",
+					"path": [
+						"bizar",
+						"potatoes",
+						"fries"
+					]
+				},
+				"description": "bizar returns fries fried in the given oil choice"
+			},
+			"response": []
+		},
+		{
+			"name": "[oldoporto] /sauce",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b208899e-fae3-4b0e-b067-86cf43d8b454",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5146/oldoporto/sauce",
+					"host": [
+						"localhost"
+					],
+					"port": "5146",
+					"path": [
+						"oldoporto",
+						"sauce"
+					]
+				},
+				"description": "oldoporto provides hot poutine sauce"
+			},
+			"response": []
+		},
+		{
+			"name": "[pierre] /poutine",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "57705071-bbb7-4f24-baca-0c5c3a5aba47",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"pm.test(\"Is poutine cheese squeaky and fresh?\", function () {",
+							"    var resp = pm.response.json();",
+							"    pm.expect(resp.poutine.squeakyCheese.isSqueakyAndFresh).to.eql(true);",
+							"});",
+							"pm.test(\"Is poutine sauce hot and fresh?\", function () {",
+							"     var resp = pm.response.json();",
+							"    pm.expect(resp.poutine.saucePoutine.isHotAndFresh).to.eql(true);",
+							"});",
+							"pm.test(\"Are potato fries hot and crispy?\", function () {",
+							"     var resp = pm.response.json();",
+							"    pm.expect(resp.poutine.potatoFries.areHotAndCrispy).to.eql(true);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [],
+					"options": {
+						"formdata": {}
+					}
+				},
+				"url": {
+					"raw": "localhost:5147/pierre/poutine",
+					"host": [
+						"localhost"
+					],
+					"port": "5147",
+					"path": [
+						"pierre",
+						"poutine"
+					]
+				},
+				"description": "bizar fries the potatoes with different oil choices."
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
