@@ -28,6 +28,10 @@ ps:
 	docker-compose ps
 test:
 	newman run services/tests/tests.postman_collection.json
+.PHONY : setup
+setup: newman
+newman:
+	$(eval err = $(shell npm install newman))
 
 .PHONY : reset
 reset: down clean all compose ps

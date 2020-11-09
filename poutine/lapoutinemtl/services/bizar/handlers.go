@@ -62,6 +62,7 @@ func fryPotatoes(context echo.Context) error {
 	}
 }
 
+// return potato fries, ideally for pierre
 func getFries(context echo.Context) error {
 	if fries.AreHotAndCrispy {
 		return context.JSON(http.StatusOK, struct {
