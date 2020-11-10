@@ -42,8 +42,8 @@ func (r *pierre) setHTTPHandlers() {
 
 func (r *pierre) setSubscriptions() {
 	r.Listen("squeezed-cheese-ready", r.handleSqueezedCheese)
-	r.Listen("gravy-scoop-ready", r.handleGravyScoop)
-	r.Listen("fried-potato-ready", r.handleFriedPotato)
+	r.Listen("gravy-scoops-ready", r.handleGravyScoop)
+	r.Listen("fried-potatoes-ready", r.handleFriedPotato)
 }
 
 func (r *pierre) watchOrders() {

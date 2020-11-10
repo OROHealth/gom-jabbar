@@ -55,9 +55,9 @@ type Bizar interface {
 
 type Oldoporto interface {
 	senderListener
-	GravyTemperature(resto.GravyKind) error
-	SetTemperature(resto.GravyKind, float64) error
-	DispenseGravy(resto.GravyKind, uint) (resto.GravyScoops, error)
+	GravyTemperature(resto.GravyKind) (float64, error)
+	SetGravyTemperature(resto.GravyKind, float64) error
+	DispenseGravy(resto.GravyKind, uint) resto.GravyScoops
 }
 
 type senderListener interface {

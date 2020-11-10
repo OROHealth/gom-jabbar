@@ -25,14 +25,14 @@ func TestPierreSuccess(t *testing.T) {
 				Quantity: o.Size.Template().CurdsCount,
 			},
 		}))
-		go bus.Publish("gravy-scoop-ready", toJSON(resto.GravyScoopsReady{
+		go bus.Publish("gravy-scoops-ready", toJSON(resto.GravyScoopsReady{
 			OrderID: o.ID,
 			GravyScoops: resto.GravyScoops{
 				Kind:     o.Gravy,
 				Quantity: o.Size.Template().ScoopsCount,
 			},
 		}))
-		go bus.Publish("fried-potato-ready", toJSON(resto.FriedPotatoesReady{
+		go bus.Publish("fried-potatoes-ready", toJSON(resto.FriedPotatoesReady{
 			OrderID: o.ID,
 			FriedPotatoes: resto.FriedPotatoes{
 				Kind:      o.Potato,
@@ -48,9 +48,6 @@ func TestPierreSuccess(t *testing.T) {
 		done <- true
 		return nil
 	})
-
-	// _ = NewOutremona(bus)
-	// _ = NewMontroyashi(bus)
 
 	robot := NewPierre(bus, fullInventory())
 	id, err := robot.TakeOrder(&resto.PoutineOrder{
@@ -89,14 +86,14 @@ func TestPierreCheeseServiceDown(t *testing.T) {
 	bus.Subscribe("order-received", func(msg string) error {
 		o := &resto.PoutineOrder{}
 		fromJSON(o, msg)
-		go bus.Publish("gravy-scoop-ready", toJSON(resto.GravyScoopsReady{
+		go bus.Publish("gravy-scoops-ready", toJSON(resto.GravyScoopsReady{
 			OrderID: o.ID,
 			GravyScoops: resto.GravyScoops{
 				Kind:     o.Gravy,
 				Quantity: o.Size.Template().ScoopsCount,
 			},
 		}))
-		go bus.Publish("fried-potato-ready", toJSON(resto.FriedPotatoesReady{
+		go bus.Publish("fried-potatoes-ready", toJSON(resto.FriedPotatoesReady{
 			OrderID: o.ID,
 			FriedPotatoes: resto.FriedPotatoes{
 				Kind:      o.Potato,
