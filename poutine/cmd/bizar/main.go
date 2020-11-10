@@ -9,9 +9,6 @@ import (
 )
 
 func main() {
-	bus, err := pubsub.NewRedisBus(os.Getenv("REDIS_HOST"))
-	if err != nil {
-		log.Fatalf("error: %s", err)
-	}
+	bus, _ := pubsub.NewRedisBus(os.Getenv("REDIS_HOST"))
 	log.Fatal(robots.NewBizar(bus).ServeHTTP(os.Getenv("HTTP_HOST")))
 }

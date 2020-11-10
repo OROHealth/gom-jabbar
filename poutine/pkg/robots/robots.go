@@ -73,7 +73,7 @@ type publisherSubscriber interface {
 }
 
 type server interface {
-	ServeHTTP(port string) error
+	ServeHTTP(host string) error
 }
 
 type Robot struct {
@@ -81,12 +81,12 @@ type Robot struct {
 	httpRoutes []route
 }
 
-func (r *Robot) ServeHTTP(port string) error {
+func (r *Robot) ServeHTTP(host string) error {
 	router := httprouter.New()
 	for _, r := range r.httpRoutes {
 		router.HandlerFunc(r.method, r.path, r.handler)
 	}
-	return http.ListenAndServe(":"+port, router)
+	return http.ListenAndServe(host, router)
 }
 
 func (r *Robot) urlParam(req *http.Request, key string) string {

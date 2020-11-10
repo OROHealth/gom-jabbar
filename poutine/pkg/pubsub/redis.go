@@ -26,11 +26,6 @@ func NewRedisBus(host string) (Bus, error) {
 			return err
 		},
 	}
-	c := pool.Get()
-	defer c.Close()
-	if _, err := c.Do("PING"); err != nil {
-		return nil, err
-	}
 
 	return &RedisBus{
 		pool: pool,
