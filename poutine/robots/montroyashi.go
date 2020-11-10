@@ -12,7 +12,7 @@ type montroyashi struct {
 	Robot
 }
 
-func NewMontroyashi(bus pubsub.PubSub) Montroyashi {
+func NewMontroyashi(bus pubsub.Bus) Montroyashi {
 	r := &montroyashi{
 		Robot: Robot{
 			bus: bus,
@@ -24,8 +24,8 @@ func NewMontroyashi(bus pubsub.PubSub) Montroyashi {
 }
 
 func (r *montroyashi) setSubscriptions() {
-	r.Listen("order-received", r.handleOrderReceived)
-	r.Listen("cheese-screams", r.handleCheeseScream)
+	r.Subscribe("order-received", r.handleOrderReceived)
+	r.Subscribe("cheese-screams", r.handleCheeseScream)
 }
 
 func (r *montroyashi) handleOrderReceived(msg string) error {
@@ -42,7 +42,7 @@ func (r *montroyashi) handleCheeseScream(msg string) error {
 
 func (r *montroyashi) DetectDrunkPeople(o *resto.PoutineOrder) {
 	if o.Gravy == resto.GravyKindTequila {
-		r.Send("drunk-people", o.ID)
+		r.Publish("drunk-people", o.ID)
 	}
 }
 
@@ -52,7 +52,7 @@ func (r *montroyashi) DisplayLeonardCohenLyrics() {
 	for i := 0; i < rand.Intn(20); i++ {
 		lyrics = append(lyrics, leonardCohenLyrics[rand.Intn(len(leonardCohenLyrics))])
 	}
-	r.Send("leonard-cohen-lyrics", toJSON(lyrics))
+	r.Publish("leonard-cohen-lyrics", toJSON(lyrics))
 }
 
 var leonardCohenLyrics = strings.Split(strings.TrimSpace(`

@@ -16,7 +16,7 @@ type bizar struct {
 	mut    sync.Mutex
 }
 
-func NewBizar(bus pubsub.PubSub) Bizar {
+func NewBizar(bus pubsub.Bus) Bizar {
 	r := &bizar{
 		Robot: Robot{
 			bus: bus,
@@ -28,9 +28,9 @@ func NewBizar(bus pubsub.PubSub) Bizar {
 }
 
 func (r *bizar) setSubscriptions() {
-	r.Listen("order-received", r.handleOrderReceived)
-	r.Listen("boiled-potatoes-ready", r.handleBoiledPotatoes)
-	r.Listen("leonard-cohen-lyrics", r.handleLeonardCohenLyrics)
+	r.Subscribe("order-received", r.handleOrderReceived)
+	r.Subscribe("boiled-potatoes-ready", r.handleBoiledPotatoes)
+	r.Subscribe("leonard-cohen-lyrics", r.handleLeonardCohenLyrics)
 }
 
 func (r *bizar) handleOrderReceived(msg string) error {
@@ -49,7 +49,7 @@ func (r *bizar) handleBoiledPotatoes(msg string) error {
 		return err
 	}
 
-	r.Send("fried-potatoes-start", o.ID)
+	r.Publish("fried-potatoes-start", o.ID)
 	fried := r.FryPotatoes(br.BoiledPotatoes, o.Oil)
 
 	var lyrics []string
@@ -64,7 +64,7 @@ func (r *bizar) handleBoiledPotatoes(msg string) error {
 
 	fried = r.SingLeonardCohenLyrics(fried, lyrics)
 
-	return r.Send("fried-potatoes-ready", toJSON(resto.FriedPotatoesReady{
+	return r.Publish("fried-potatoes-ready", toJSON(resto.FriedPotatoesReady{
 		OrderID:       o.ID,
 		FriedPotatoes: fried,
 	}))

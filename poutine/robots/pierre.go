@@ -20,7 +20,7 @@ type pierre struct {
 	Orders    sync.Map
 }
 
-func NewPierre(bus pubsub.PubSub, inventory *resto.Inventory) Pierre {
+func NewPierre(bus pubsub.Bus, inventory *resto.Inventory) Pierre {
 	r := &pierre{
 		Robot: Robot{
 			bus: bus,
@@ -41,9 +41,9 @@ func (r *pierre) setHTTPHandlers() {
 }
 
 func (r *pierre) setSubscriptions() {
-	r.Listen("squeezed-cheese-ready", r.handleSqueezedCheese)
-	r.Listen("gravy-scoops-ready", r.handleGravyScoop)
-	r.Listen("fried-potatoes-ready", r.handleFriedPotato)
+	r.Subscribe("squeezed-cheese-ready", r.handleSqueezedCheese)
+	r.Subscribe("gravy-scoops-ready", r.handleGravyScoop)
+	r.Subscribe("fried-potatoes-ready", r.handleFriedPotato)
 }
 
 func (r *pierre) watchOrders() {
@@ -56,7 +56,7 @@ func (r *pierre) watchOrders() {
 					} else if time.Now().After(o.Received.Add(resto.OrderTimeout)) {
 						//Order failed for some reason
 						o.Status = resto.OrderStatusError
-						r.Send("order-timeout", o.ID)
+						r.Publish("order-timeout", o.ID)
 					}
 				}
 			}
@@ -90,7 +90,7 @@ func (r *pierre) TakeOrder(o *resto.PoutineOrder) (string, error) {
 
 	o.Status = resto.OrderStatusPending
 
-	if err := r.Send("order-received", toJSON(o)); err != nil {
+	if err := r.Publish("order-received", toJSON(o)); err != nil {
 		o.Status = resto.OrderStatusError
 		return o.ID, err
 	}
@@ -104,17 +104,17 @@ func (r *pierre) DeliverOrder(id string) error {
 		return fmt.Errorf("delivering: %s", err)
 	}
 
-	r.Send("mixing-ingredients-start", o.ID)
+	r.Publish("mixing-ingredients-start", o.ID)
 	poutine, err := r.MixIngredients(o.ReceivedIngredients)
 	if err != nil {
 		return err
 	}
-	r.Send("mixing-ingredients-ready", o.ID)
+	r.Publish("mixing-ingredients-ready", o.ID)
 
 	o.Status = resto.OrderStatusDelivered
 	o.PoutineDelivered = poutine
 
-	r.Send("order-ready", o.ID)
+	r.Publish("order-ready", o.ID)
 
 	return nil
 }
@@ -136,7 +136,7 @@ func (r *pierre) handleSqueezedCheese(msg string) error {
 		return fmt.Errorf("received squeezed cheese: %s", err)
 	}
 
-	r.Send("squeezed-cheese-received", m.OrderID)
+	r.Publish("squeezed-cheese-received", m.OrderID)
 	o.AppendIngredient(m.SqueezedCheeseCurds)
 
 	return nil
@@ -151,7 +151,7 @@ func (r *pierre) handleGravyScoop(msg string) error {
 		return fmt.Errorf("received gravy scoops: %s", err)
 	}
 
-	r.Send("gravy-scoops-received", m.OrderID)
+	r.Publish("gravy-scoops-received", m.OrderID)
 	o.AppendIngredient(m.GravyScoops)
 
 	return nil
@@ -166,7 +166,7 @@ func (r *pierre) handleFriedPotato(msg string) error {
 		return fmt.Errorf("received fried potatoes: %s", err)
 	}
 
-	r.Send("fried-potatoes-received", m.OrderID)
+	r.Publish("fried-potatoes-received", m.OrderID)
 	o.AppendIngredient(m.FriedPotatoes)
 
 	return nil

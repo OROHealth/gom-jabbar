@@ -16,7 +16,7 @@ type oldoporto struct {
 	GravyPots sync.Map
 }
 
-func NewOldoporto(bus pubsub.PubSub) Oldoporto {
+func NewOldoporto(bus pubsub.Bus) Oldoporto {
 	r := &oldoporto{
 		Robot: Robot{
 			bus: bus,
@@ -39,7 +39,7 @@ func (r *oldoporto) setHTTPHandlers() {
 }
 
 func (r *oldoporto) setSubscriptions() {
-	r.Listen("order-received", r.handleOrderReceived)
+	r.Subscribe("order-received", r.handleOrderReceived)
 }
 
 func (r *oldoporto) handleOrderReceived(msg string) error {

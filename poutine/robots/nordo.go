@@ -17,7 +17,7 @@ type nordo struct {
 	CurrentSoftness sync.Map
 }
 
-func NewNordo(bus pubsub.PubSub) Nordo {
+func NewNordo(bus pubsub.Bus) Nordo {
 	r := &nordo{
 		Robot: Robot{
 			bus: bus,
@@ -36,8 +36,8 @@ func (r *nordo) setHTTPHandlers() {
 }
 
 func (r *nordo) setSubscriptions() {
-	r.Listen("order-received", r.handleOrderReceived)
-	r.Listen("dipped-potatoes-ready", r.handleDippedPotatoes)
+	r.Subscribe("order-received", r.handleOrderReceived)
+	r.Subscribe("dipped-potatoes-ready", r.handleDippedPotatoes)
 }
 
 func (r *nordo) handleOrderReceived(msg string) error {
@@ -57,8 +57,8 @@ func (r *nordo) handleDippedPotatoes(msg string) error {
 		return err
 	}
 
-	r.Send("boiled-potatoes-start", o.ID)
-	return r.Send("boiled-potatoes-ready", toJSON(resto.BoiledPotatoesReady{
+	r.Publish("boiled-potatoes-start", o.ID)
+	return r.Publish("boiled-potatoes-ready", toJSON(resto.BoiledPotatoesReady{
 		OrderID:        o.ID,
 		BoiledPotatoes: r.BoilPotatoes(o.ID, dr.DippedPotatoes, o.PotatoSoftness),
 	}))

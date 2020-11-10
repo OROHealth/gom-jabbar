@@ -16,7 +16,7 @@ func init() {
 }
 
 type Pierre interface {
-	senderListener
+	publisherSubscriber
 	TakeOrder(*resto.PoutineOrder) (string, error)
 	MixIngredients([]resto.Ingredient) (resto.Poutine, error)
 	DeliverOrder(id string) error
@@ -24,49 +24,49 @@ type Pierre interface {
 }
 
 type Outremona interface {
-	senderListener
+	publisherSubscriber
 	PickCheese(kind resto.CheeseKind, qty uint) resto.CheeseCurds
 	SqueezeCheese(resto.CheeseCurds) resto.SqueezedCheeseCurds
 }
 
 type Montroyashi interface {
-	senderListener
+	publisherSubscriber
 	DisplayLeonardCohenLyrics()
 	DetectDrunkPeople(*resto.PoutineOrder)
 }
 
 type Verduny interface {
-	senderListener
+	publisherSubscriber
 	CutPotatoes(resto.PotatoKind, resto.PotatoCutSize, uint) resto.CuttedPotatoes
 	DipPotatoes(resto.CuttedPotatoes, resto.PotatoDipKind, time.Duration) resto.DippedPotatoes
 }
 
 type Nordo interface {
-	senderListener
+	publisherSubscriber
 	BoilPotatoes(string, resto.DippedPotatoes, resto.PotatoSoftnessLevel) resto.BoiledPotatoes
 	CurrentPotatoesSoftness(string) (resto.PotatoSoftnessLevel, error)
 }
 
 type Bizar interface {
-	senderListener
+	publisherSubscriber
 	FryPotatoes(resto.BoiledPotatoes, resto.FryingOilKind) resto.FriedPotatoes
 	SingLeonardCohenLyrics(resto.FriedPotatoes, []string) resto.FriedPotatoes
 }
 
 type Oldoporto interface {
-	senderListener
+	publisherSubscriber
 	GravyTemperature(resto.GravyKind) (float64, error)
 	SetGravyTemperature(resto.GravyKind, float64) error
 	DispenseGravy(resto.GravyKind, uint) resto.GravyScoops
 }
 
-type senderListener interface {
-	Send(channel, msg string) error
-	Listen(channel string, handler pubsub.MessageHandler) error
+type publisherSubscriber interface {
+	Publish(channel, msg string) error
+	Subscribe(channel string, handler pubsub.MessageHandler) error
 }
 
 type Robot struct {
-	bus        pubsub.PubSub
+	bus        pubsub.Bus
 	httpRoutes []route
 }
 
@@ -83,11 +83,11 @@ func (r *Robot) urlParam(req *http.Request, key string) string {
 	return params.ByName(key)
 }
 
-func (r *Robot) Send(channel, msg string) error {
+func (r *Robot) Publish(channel, msg string) error {
 	return r.bus.Publish(channel, msg)
 }
 
-func (r *Robot) Listen(channel string, mh pubsub.MessageHandler) error {
+func (r *Robot) Subscribe(channel string, mh pubsub.MessageHandler) error {
 	return r.bus.Subscribe(channel, mh)
 }
 

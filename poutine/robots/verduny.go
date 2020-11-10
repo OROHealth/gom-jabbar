@@ -12,7 +12,7 @@ type verduny struct {
 	dipTime time.Duration
 }
 
-func NewVerduny(bus pubsub.PubSub) Verduny {
+func NewVerduny(bus pubsub.Bus) Verduny {
 	r := &verduny{
 		Robot: Robot{
 			bus: bus,
@@ -25,23 +25,23 @@ func NewVerduny(bus pubsub.PubSub) Verduny {
 }
 
 func (r *verduny) setSubscriptions() {
-	r.Listen("order-received", r.handleOrderReceived)
+	r.Subscribe("order-received", r.handleOrderReceived)
 }
 
 func (r *verduny) handleOrderReceived(msg string) error {
 	o := resto.PoutineOrder{}
 	fromJSON(&o, msg)
 
-	r.Send("cutted-potatoes-start", o.ID)
+	r.Publish("cutted-potatoes-start", o.ID)
 	cutted := r.CutPotatoes(o.Potato, o.PotatoCut, o.Size.Template().PotatoCount)
-	r.Send("cutted-potatoes-ready", toJSON(resto.CuttedPotatoesReady{
+	r.Publish("cutted-potatoes-ready", toJSON(resto.CuttedPotatoesReady{
 		OrderID:        o.ID,
 		CuttedPotatoes: cutted,
 	}))
 
-	r.Send("dipped-potatoes-start", o.ID)
+	r.Publish("dipped-potatoes-start", o.ID)
 	dipped := r.DipPotatoes(cutted, o.PotatoDip, r.dipTime)
-	return r.Send("dipped-potatoes-ready", toJSON(resto.DippedPotatoesReady{
+	return r.Publish("dipped-potatoes-ready", toJSON(resto.DippedPotatoesReady{
 		OrderID:        o.ID,
 		DippedPotatoes: dipped,
 	}))
