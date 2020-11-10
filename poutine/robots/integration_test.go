@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/OROHealth/gom-jabbar/poutine/pubsub"
-	"github.com/OROHealth/gom-jabbar/poutine/resto"
+	"github.com/dpatrie/gom-jabbar/poutine/pubsub"
+	"github.com/dpatrie/gom-jabbar/poutine/resto"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,7 +17,10 @@ func TestIntegration(t *testing.T) {
 
 	assert := assert.New(t)
 	done := make(chan bool)
+
 	bus := &pubsub.Local{}
+	// bus, err := pubsub.NewRedisBus(":6379")
+	// assert.NoError(err)
 
 	bus.Subscribe("order-ready", func(msg string) error {
 		done <- true

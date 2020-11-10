@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/OROHealth/gom-jabbar/poutine/pubsub"
-	"github.com/OROHealth/gom-jabbar/poutine/resto"
+	"github.com/dpatrie/gom-jabbar/poutine/pubsub"
+	"github.com/dpatrie/gom-jabbar/poutine/resto"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -17,6 +17,7 @@ func init() {
 
 type Pierre interface {
 	publisherSubscriber
+	server
 	TakeOrder(*resto.PoutineOrder) (string, error)
 	MixIngredients([]resto.Ingredient) (resto.Poutine, error)
 	DeliverOrder(id string) error
@@ -25,36 +26,42 @@ type Pierre interface {
 
 type Outremona interface {
 	publisherSubscriber
+	server
 	PickCheese(kind resto.CheeseKind, qty uint) resto.CheeseCurds
 	SqueezeCheese(resto.CheeseCurds) resto.SqueezedCheeseCurds
 }
 
 type Montroyashi interface {
 	publisherSubscriber
+	server
 	DisplayLeonardCohenLyrics()
 	DetectDrunkPeople(*resto.PoutineOrder)
 }
 
 type Verduny interface {
 	publisherSubscriber
+	server
 	CutPotatoes(resto.PotatoKind, resto.PotatoCutSize, uint) resto.CuttedPotatoes
 	DipPotatoes(resto.CuttedPotatoes, resto.PotatoDipKind, time.Duration) resto.DippedPotatoes
 }
 
 type Nordo interface {
 	publisherSubscriber
+	server
 	BoilPotatoes(string, resto.DippedPotatoes, resto.PotatoSoftnessLevel) resto.BoiledPotatoes
 	CurrentPotatoesSoftness(string) (resto.PotatoSoftnessLevel, error)
 }
 
 type Bizar interface {
 	publisherSubscriber
+	server
 	FryPotatoes(resto.BoiledPotatoes, resto.FryingOilKind) resto.FriedPotatoes
 	SingLeonardCohenLyrics(resto.FriedPotatoes, []string) resto.FriedPotatoes
 }
 
 type Oldoporto interface {
 	publisherSubscriber
+	server
 	GravyTemperature(resto.GravyKind) (float64, error)
 	SetGravyTemperature(resto.GravyKind, float64) error
 	DispenseGravy(resto.GravyKind, uint) resto.GravyScoops
@@ -63,6 +70,10 @@ type Oldoporto interface {
 type publisherSubscriber interface {
 	Publish(channel, msg string) error
 	Subscribe(channel string, handler pubsub.MessageHandler)
+}
+
+type server interface {
+	ServeHTTP(port string) error
 }
 
 type Robot struct {

@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/OROHealth/gom-jabbar/poutine/pubsub"
-	"github.com/OROHealth/gom-jabbar/poutine/resto"
+	"github.com/dpatrie/gom-jabbar/poutine/pubsub"
+	"github.com/dpatrie/gom-jabbar/poutine/resto"
 )
 
 type nordo struct {
