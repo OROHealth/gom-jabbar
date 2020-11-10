@@ -1,0 +1,46 @@
+version: "3.8"
+services:
+  pierre:
+    build: ./cmd/pierre/
+    ports:
+      - "8080:8080"
+    links:
+      - pubsub
+  outremona:
+    build: ./cmd/outremona/
+    ports:
+      - "8081:8081"
+    links:
+      - pubsub      
+  montroyashi:
+    build: ./cmd/montroyashi/
+    ports:
+      - "8082:8082"
+    links:
+      - pubsub      
+  verduny:
+    build: ./cmd/verduny/
+    ports:
+      - "8083:8083"
+    links:
+      - pubsub
+  nordo:
+    build: ./cmd/nordo/
+    ports:
+      - "8084:8084"
+  bizar:
+    build: ./cmd/bizar/
+    ports:
+      - "8085:8085"      
+    links:
+      - pubsub
+  oldoporto:
+    build: ./cmd/oldoporto/
+    ports:
+      - "8086:8086"      
+    links:
+      - pubsub                   
+  pubsub:
+    image: redis
+    ports:
+      - "6379:6379"          

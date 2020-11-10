@@ -6,7 +6,6 @@ import (
 
 	"github.com/dpatrie/gom-jabbar/poutine/pkg/pubsub"
 	"github.com/dpatrie/gom-jabbar/poutine/pkg/robots"
-	_ "github.com/joho/godotenv/autoload"
 )
 
 func main() {
