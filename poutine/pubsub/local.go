@@ -18,11 +18,9 @@ func (l *Local) Publish(channel, msg string) error {
 	return nil
 }
 
-func (l *Local) Subscribe(channel string, mh MessageHandler) error {
+func (l *Local) Subscribe(channel string, mh MessageHandler) {
 	if l.subscribers == nil {
 		l.subscribers = map[string][]MessageHandler{}
 	}
 	l.subscribers[channel] = append(l.subscribers[channel], mh)
-
-	return nil
 }

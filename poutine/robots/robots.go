@@ -62,7 +62,7 @@ type Oldoporto interface {
 
 type publisherSubscriber interface {
 	Publish(channel, msg string) error
-	Subscribe(channel string, handler pubsub.MessageHandler) error
+	Subscribe(channel string, handler pubsub.MessageHandler)
 }
 
 type Robot struct {
@@ -87,8 +87,8 @@ func (r *Robot) Publish(channel, msg string) error {
 	return r.bus.Publish(channel, msg)
 }
 
-func (r *Robot) Subscribe(channel string, mh pubsub.MessageHandler) error {
-	return r.bus.Subscribe(channel, mh)
+func (r *Robot) Subscribe(channel string, mh pubsub.MessageHandler) {
+	r.bus.Subscribe(channel, mh)
 }
 
 func (r *Robot) simulateRandomWork() {
