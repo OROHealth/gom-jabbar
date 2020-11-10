@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/dpatrie/gom-jabbar/poutine/pubsub"
-	"github.com/dpatrie/gom-jabbar/poutine/resto"
+	"github.com/dpatrie/gom-jabbar/poutine/pkg/pubsub"
+	"github.com/dpatrie/gom-jabbar/poutine/pkg/resto"
 	"github.com/julienschmidt/httprouter"
 )
 
