@@ -4,16 +4,16 @@ import (
 	"log"
 	"os"
 
-	"github.com/dpatrie/gom-jabbar/poutine/pubsub"
-	"github.com/dpatrie/gom-jabbar/poutine/resto"
-	"github.com/dpatrie/gom-jabbar/poutine/robots"
+	"github.com/dpatrie/gom-jabbar/poutine/pkg/pubsub"
+	"github.com/dpatrie/gom-jabbar/poutine/pkg/resto"
+	"github.com/dpatrie/gom-jabbar/poutine/pkg/robots"
 	_ "github.com/joho/godotenv/autoload"
 )
 
 func main() {
 	bus, err := pubsub.NewRedisBus(os.Getenv("REDIS_HOST"))
 	if err != nil {
-		log.Fatalf("pierre error: %s", err)
+		log.Fatalf("error: %s", err)
 	}
 	log.Fatal(robots.NewPierre(bus, inventory()).ServeHTTP(os.Getenv("HTTP_HOST")))
 }
