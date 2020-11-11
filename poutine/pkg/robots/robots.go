@@ -2,6 +2,7 @@ package robots
 
 import (
 	"encoding/json"
+	"fmt"
 	"math/rand"
 	"net/http"
 	"time"
@@ -83,6 +84,12 @@ type Robot struct {
 
 func (r *Robot) ServeHTTP(host string) error {
 	router := httprouter.New()
+	r.httpRoutes = append(r.httpRoutes, route{
+		method: "GET", path: "/healthcheck", handler: func(w http.ResponseWriter, req *http.Request) {
+			fmt.Fprintln(w, "OK")
+		},
+	})
+
 	for _, r := range r.httpRoutes {
 		router.HandlerFunc(r.method, r.path, r.handler)
 	}
