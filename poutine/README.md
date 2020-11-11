@@ -203,3 +203,37 @@ POST /gravies/[secret|tequila]/temperature/:temperature
 Response
 HTTP 200 OK
 ```
+
+## What's next? (but likely will never happen)
+
+- Way better error handling in the redis pub/sub package!
+- Better error handling in general...implement retries, circuit breaker and so on...
+- Facade API (with Swagger definition)
+- Automate running test suite (in docker build maybe?)
+- Deploy on Kubernetes (because that's what cool people do right?) and take over the world google style
+- Eat a poutine?
+
+## How much this has cost to develop?
+
+```
+┌──[dany@lemur76]─[~/src/gom-jabbar/poutine]─[±] main → origin ✓                                                                                     [Wed Nov 11 - 10:32]
+└──● scc
+───────────────────────────────────────────────────────────────────────────────
+Language                 Files     Lines   Blanks  Comments     Code Complexity
+───────────────────────────────────────────────────────────────────────────────
+Go                          30      2087      335        13     1739        105
+Dockerfile                   7        77        7         0       70          0
+Markdown                     2       267       93         0      174          0
+SVG                          1       263        0         0      263          0
+YAML                         1        70        0         0       70          0
+gitignore                    1         1        0         0        1          0
+───────────────────────────────────────────────────────────────────────────────
+Total                       42      2765      435        13     2317        105
+───────────────────────────────────────────────────────────────────────────────
+Estimated Cost to Develop $65,278
+Estimated Schedule Effort 4.875574 months
+Estimated People Required 1.189482
+───────────────────────────────────────────────────────────────────────────────
+Processed 84113 bytes, 0.084 megabytes (SI)
+───────────────────────────────────────────────────────────────────────────────
+```
