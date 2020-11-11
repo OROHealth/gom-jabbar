@@ -50,16 +50,15 @@ type PoutineOrder struct {
 	ID       string      `json:"id,omitempty"`
 	Received time.Time   `json:"received,omitempty"`
 	Status   OrderStatus `json:"status,omitempty"`
-	Size     PoutineSize `json:"size,omitempty"`
 
+	Size           PoutineSize         `json:"size,omitempty"`
 	Potato         PotatoKind          `json:"potato,omitempty"`
 	PotatoCut      PotatoCutSize       `json:"potato_cut,omitempty"`
 	PotatoDip      PotatoDipKind       `json:"potato_dip,omitempty"`
 	PotatoSoftness PotatoSoftnessLevel `json:"potato_softness,omitempty"`
-
-	Cheese CheeseKind    `json:"cheese,omitempty"`
-	Oil    FryingOilKind `json:"oil,omitempty"`
-	Gravy  GravyKind     `json:"gravy,omitempty"`
+	Cheese         CheeseKind          `json:"cheese,omitempty"`
+	Oil            FryingOilKind       `json:"oil,omitempty"`
+	Gravy          GravyKind           `json:"gravy,omitempty"`
 
 	PoutineDelivered    Poutine      `json:"poutine_delivered,omitempty"`
 	ReceivedIngredients []Ingredient `json:"received_ingredients,omitempty"`

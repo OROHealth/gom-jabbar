@@ -109,7 +109,7 @@ func (r *pierre) DeliverOrder(id string) error {
 	if err != nil {
 		return err
 	}
-	r.Publish("mixing-ingredients-ready", o.ID)
+	r.Publish("mixing-ingredients-finished", o.ID)
 
 	o.Status = resto.OrderStatusDelivered
 	o.PoutineDelivered = poutine

@@ -45,6 +45,7 @@ func (r *oldoporto) setSubscriptions() {
 func (r *oldoporto) handleOrderReceived(msg string) error {
 	o := &resto.PoutineOrder{}
 	fromJSON(&o, msg)
+	r.bus.Publish("gravy-scoops-start", o.ID)
 	r.bus.Publish("gravy-scoops-ready", toJSON(resto.GravyScoopsReady{
 		OrderID:     o.ID,
 		GravyScoops: r.DispenseGravy(o.Gravy, o.Size.Template().ScoopsCount),

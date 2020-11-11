@@ -31,7 +31,7 @@ func NewNordo(bus pubsub.Bus) Nordo {
 
 func (r *nordo) setHTTPHandlers() {
 	r.httpRoutes = []route{
-		{method: "GET", path: "/orders/:id", handler: r.httpOrderSoftness},
+		{method: "GET", path: "/orders/:id/softness", handler: r.httpOrderSoftness},
 	}
 }
 
