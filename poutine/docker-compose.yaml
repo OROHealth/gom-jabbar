@@ -2,76 +2,69 @@ version: "3.8"
 services:
   pubsub:
     image: redis
-    hostname: pubsub
-    ports:
-      - 6379:6379
+    container_name: pubsub
+    expose:
+      - 6379
   pierre:
     build: ./cmd/pierre/
-    hostname: pierre
     ports:
       - 8080:8080
     environment:
-      - REDIS_HOST=0.0.0.0:6379
-      - HTTP_HOST=0.0.0.0:8080
-    depends_on:
+      - REDIS_HOST=pubsub:6379
+      - HTTP_HOST=:8080
+    links:
       - pubsub
   outremona:
     build: ./cmd/outremona/
-    hostname: outremona
     ports:
       - 8081:8081
     environment:
-      - REDIS_HOST=0.0.0.0:6379
-      - HTTP_HOST=0.0.0.0:8081
-    depends_on:
+      - REDIS_HOST=pubsub:6379
+      - HTTP_HOST=:8081
+    links:
       - pubsub
   montroyashi:
     build: ./cmd/montroyashi/
-    hostname: montroyashi
     ports:
       - 8082:8082
     environment:
-      - REDIS_HOST=0.0.0.0:6379
-      - HTTP_HOST=0.0.0.0:8082
-    depends_on:
+      - REDIS_HOST=pubsub:6379
+      - HTTP_HOST=:8082
+    links:
       - pubsub
   verduny:
     build: ./cmd/verduny/
-    hostname: verduny
     ports:
       - 8083:8083
     environment:
-      - REDIS_HOST=0.0.0.0:6379
-      - HTTP_HOST=0.0.0.0:8083
-    depends_on:
+      - REDIS_HOST=pubsub:6379
+      - HTTP_HOST=:8083
+    links:
       - pubsub
   nordo:
     build: ./cmd/nordo/
-    hostname: nordo
     ports:
       - 8084:8084
     environment:
-      - REDIS_HOST=0.0.0.0:6379
-      - HTTP_HOST=0.0.0.0:8084
-    depends_on:
+      - REDIS_HOST=pubsub:6379
+      - HTTP_HOST=:8084
+    links:
       - pubsub
   bizar:
     build: ./cmd/bizar/
-    hostname: bizar
     ports:
       - 8085:8085
     environment:
-      - REDIS_HOST=0.0.0.0:6379
-      - HTTP_HOST=0.0.0.0:8085
-    depends_on:
+      - REDIS_HOST=pubsub:6379
+      - HTTP_HOST=:8085
+    links:
       - pubsub
   oldoporto:
     build: ./cmd/oldoporto/
-    hostname: oldoporto
     ports:
       - 8086:8086
     environment:
-      - REDIS_HOST=0.0.0.0:6379
-      - HTTP_HOST=0.0.0.0:8086
-    depends_on:
+      - REDIS_HOST=pubsub:6379
+      - HTTP_HOST=:8086
+    links:
       - pubsub
