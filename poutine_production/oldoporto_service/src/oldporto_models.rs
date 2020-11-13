@@ -5,24 +5,27 @@ use tokio::sync::RwLock;
 
 pub type Robots = Arc<RwLock<HashMap<String, Robot>>>;
 
+#[derive(Debug, Clone)]
 pub struct Robot {
     pub port: u16,
     pub maintained_temp: Option<i64>,
+    pub monitored: bool,
 }
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct RobotRegistrationRequest {
-    robot_id: String,
-    port: u16,
+    pub robot_id: String,
+    pub port: u16,
 }
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct RobotStartMonitoringRequest {
-    robot_id: String,
-    temp: i64,
+    pub robot_id: String,
+    pub temp: i64,
 }
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct RobotStopMonitoringRequest {
-    robot_id: String,
+    pub robot_id: String,
+    pub new_temp: i64,
 }
