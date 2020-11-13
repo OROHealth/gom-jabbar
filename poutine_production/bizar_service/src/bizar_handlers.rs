@@ -121,6 +121,8 @@ impl shared::NotifyMontroyashi for BizarHandlers {
     }
 }
 
+impl shared::TemperatureManagement for BizarHandlers {}
+
 #[tokio::test]
 async fn test_fries_state_change() {
     let state = std::sync::Arc::new(tokio::sync::RwLock::new(crate::bizar_models::Frying {

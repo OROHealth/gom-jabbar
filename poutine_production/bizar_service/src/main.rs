@@ -1,4 +1,4 @@
-use shared::NotifyMontroyashi;
+use shared::{NotifyMontroyashi, Temperature, TemperatureManagement, TemperatureState};
 use std::convert::Infallible;
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 use std::sync::Arc;
@@ -21,6 +21,10 @@ async fn main() {
         potatoes: None,
         time: None,
         oil: None,
+    }));
+
+    let temperature_state = Arc::new(RwLock::new(Temperature {
+        degrees_celcius: 37,
     }));
 
     // routes for the bizar service
@@ -46,6 +50,15 @@ async fn main() {
         .or(start_frying_route)
         .or(get_fries_route)
         .or(BizarHandlers::add_sound_heard_route())
+        .or(BizarHandlers::add_increase_temperature_route(
+            temperature_state.clone(),
+        ))
+        .or(BizarHandlers::add_decrease_temperature_route(
+            temperature_state.clone(),
+        ))
+        .or(BizarHandlers::add_get_temperature_route(
+            temperature_state.clone(),
+        ))
         .with(cors);
 
     warp::serve(routes).run(SocketAddr::new(HOST, PORT)).await;
