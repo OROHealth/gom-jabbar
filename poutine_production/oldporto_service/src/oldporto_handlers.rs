@@ -44,23 +44,27 @@ impl OldPortoHandlers {
             }
         }
 
-        println!("Starting to monitor {}", req.robot_id);
+        println!("\nStarting to monitor {}", req.robot_id);
         tokio::spawn(async move {
             // monitoring should be done so we can slowly decrease the temp
-            while let Some(robot) = robots.clone().read().await.get(&req.robot_id) {
-                thread::sleep(Duration::new(10, 0));
+            while let Some(robot) = robots.read().await.get(&req.robot_id) {
+                thread::sleep(Duration::new(2, 0));
                 if !robot.monitored {
                     break;
                 }
-                let decrease = OldPortoHandlers::request_temperature(&robot) > req.temp;
+                println!(
+                    "\n{}'s Temperature: {}",
+                    req.robot_id,
+                    OldPortoHandlers::request_temperature(&robot)
+                );
+                let decrease = OldPortoHandlers::request_temperature(&robot) < req.temp;
                 if decrease {
                     OldPortoHandlers::increase_temperature(&robot);
                 } else {
                     OldPortoHandlers::decrease_temperature(&robot);
                 }
             }
-
-            println!("Done monitoring {}", req.robot_id);
+            println!("\nDone monitoring {}", req.robot_id);
         });
 
         Ok(StatusCode::OK)
@@ -80,16 +84,26 @@ impl OldPortoHandlers {
 
             robot = robots.read().await.get(&req.robot_id).unwrap().clone();
         }
-        let decrease = Self::request_temperature(&robot) > req.new_temp;
-        // monitoring should be done so we can slowly decrease the temp
-        while (Self::request_temperature(&robot) - req.new_temp).abs() > 0 {
-            thread::sleep(Duration::new(10, 0));
-            if decrease {
-                Self::increase_temperature(&robot);
-            } else {
-                Self::decrease_temperature(&robot);
+
+        tokio::spawn(async move {
+            println!("Stopping Nordo monitoring after setting the new temperature");
+            let decrease = Self::request_temperature(&robot) < req.new_temp;
+            // monitoring should be done so we can slowly decrease the temp
+            while (Self::request_temperature(&robot) - req.new_temp).abs() > shared::TEMP_DIFF {
+                thread::sleep(Duration::new(5, 0));
+                println!(
+                    "\n{}'s Temperature: {}",
+                    req.robot_id,
+                    OldPortoHandlers::request_temperature(&robot)
+                );
+                if decrease {
+                    Self::increase_temperature(&robot);
+                } else {
+                    Self::decrease_temperature(&robot);
+                }
             }
-        }
+            println!("Done setting the new temperature");
+        });
 
         Ok(StatusCode::OK)
     }

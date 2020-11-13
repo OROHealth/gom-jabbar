@@ -6,6 +6,6 @@ members = [
     "verduny_service",
     "nordo_service",
     "bizar_service",
-    "oldoporto_service",
+    "oldporto_service",
     "shared",
 ]

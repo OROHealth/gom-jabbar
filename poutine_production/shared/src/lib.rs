@@ -7,15 +7,15 @@ use tokio::sync::RwLock;
 use warp::filters::BoxedFilter;
 use warp::http::StatusCode;
 use warp::reply::{json, with_status, Json, WithStatus};
-use warp::{Filter, Rejection, Reply};
+use warp::{Filter, Rejection};
 
-pub const TEMP_DIFF: i32 = 5;
+pub const TEMP_DIFF: i64 = 5;
 
 pub type TemperatureState = Arc<RwLock<Temperature>>;
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Temperature {
-    pub degrees_celcius: i32,
+    pub degrees_celcius: i64,
 }
 
 /// Shared Models between multiple services
@@ -118,7 +118,6 @@ pub trait TemperatureManagement: Sync + Send + 'static {
     /// Route definition for retrieving temperature path
     fn add_get_temperature_route(temp_state: TemperatureState) -> BoxedFilter<(WithStatus<Json>,)> {
         warp::path!("get-temperature")
-            .and(warp::post())
             .and(with_temp_management(temp_state.clone()))
             .and_then(Self::get_temperature_handler)
             .boxed()
