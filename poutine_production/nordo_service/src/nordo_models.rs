@@ -8,11 +8,11 @@ pub type BoilingState = Arc<RwLock<Boiling>>;
 
 #[derive(Debug, Clone, Serialize)]
 pub enum BoilingStatus {
-    Freezing,
-    SoCold,
-    StartingToBoil,
-    BoilingMore,
-    DamnThatsHot,
+    HardAsAPotatoRock,
+    StillWouldntEatIt,
+    StartingToSoften,
+    ReasonablySoft,
+    LikeButter,
 }
 
 #[derive(Debug, Clone)]

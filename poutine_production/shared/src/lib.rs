@@ -6,15 +6,16 @@ use std::sync::Arc;
 use tokio::sync::RwLock;
 use warp::filters::BoxedFilter;
 use warp::http::StatusCode;
-use warp::{Filter, Rejection};
+use warp::reply::{json, with_status, Json, WithStatus};
+use warp::{Filter, Rejection, Reply};
 
 pub const TEMP_DIFF: i32 = 5;
 
 pub type TemperatureState = Arc<RwLock<Temperature>>;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct Temperature {
-    degrees_celcius: i32,
+    pub degrees_celcius: i32,
 }
 
 /// Shared Models between multiple services
@@ -74,14 +75,19 @@ pub trait NotifyMontroyashi: Sync + Send + 'static {
 
 #[async_trait]
 pub trait TemperatureManagement: Sync + Send + 'static {
+    /// Route definition for increase temperature path
     fn add_increase_temperature_route(temp_state: TemperatureState) -> BoxedFilter<(StatusCode,)> {
         warp::path!("increase-temperature")
             .and(warp::post())
-            .and(with_temp_management(temp_state))
+            .and(with_temp_management(temp_state.clone()))
             .and_then(Self::increase_temperature_handler)
             .boxed()
     }
 
+    /// Increases the temperature and returns a successful status code
+    ///
+    /// # Arguments
+    /// `temp_state` the current temperature of the substance being monitored
     async fn increase_temperature_handler(
         temp_state: TemperatureState,
     ) -> Result<StatusCode, Rejection> {
@@ -89,21 +95,44 @@ pub trait TemperatureManagement: Sync + Send + 'static {
         Ok(StatusCode::OK)
     }
 
-    fn add_decrease_temperature_route<T: 'static + TemperatureManagement>(
-        temp_state: TemperatureState,
-    ) -> BoxedFilter<(StatusCode,)> {
+    /// Route definition for decrease temperature path
+    fn add_decrease_temperature_route(temp_state: TemperatureState) -> BoxedFilter<(StatusCode,)> {
         warp::path!("decrease-temperature")
             .and(warp::post())
-            .and(with_temp_management(temp_state))
-            .and_then(T::decrease_temperature_handler)
+            .and(with_temp_management(temp_state.clone()))
+            .and_then(Self::decrease_temperature_handler)
             .boxed()
     }
 
+    /// Decreases the temperature and returns a successful status code
+    ///
+    /// # Arguments
+    /// `temp_state` the current temperature of the substance being monitored
     async fn decrease_temperature_handler(
         temp_state: TemperatureState,
     ) -> Result<StatusCode, Rejection> {
         temp_state.write().await.degrees_celcius -= TEMP_DIFF;
         Ok(StatusCode::OK)
+    }
+
+    /// Route definition for retrieving temperature path
+    fn add_get_temperature_route(temp_state: TemperatureState) -> BoxedFilter<(WithStatus<Json>,)> {
+        warp::path!("get-temperature")
+            .and(warp::post())
+            .and(with_temp_management(temp_state.clone()))
+            .and_then(Self::get_temperature_handler)
+            .boxed()
+    }
+
+    /// Decreases the temperature and returns a successful status code
+    ///
+    /// # Arguments
+    /// `temp_state` the current temperature of the substance being monitored
+    async fn get_temperature_handler(
+        temp_state: TemperatureState,
+    ) -> Result<WithStatus<Json>, Rejection> {
+        let temp: Temperature = temp_state.read().await.clone();
+        Ok(with_status(json(&temp), StatusCode::OK))
     }
 }
 

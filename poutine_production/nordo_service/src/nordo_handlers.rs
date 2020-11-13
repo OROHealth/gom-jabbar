@@ -60,15 +60,15 @@ impl NordoHandlers {
             };
 
             let status = if time > Duration::new(BOIL_TIME, 0) {
-                BoilingStatus::DamnThatsHot
+                BoilingStatus::LikeButter
             } else if time > Duration::new(BOIL_TIME / 5 * 4, 0) {
-                BoilingStatus::BoilingMore
+                BoilingStatus::ReasonablySoft
             } else if time > Duration::new(BOIL_TIME / 5 * 3, 0) {
-                BoilingStatus::StartingToBoil
+                BoilingStatus::StartingToSoften
             } else if time > Duration::new(BOIL_TIME / 5 * 2, 0) {
-                BoilingStatus::SoCold
+                BoilingStatus::StillWouldntEatIt
             } else {
-                BoilingStatus::Freezing
+                BoilingStatus::HardAsAPotatoRock
             };
 
             println!(
@@ -145,6 +145,8 @@ impl shared::NotifyMontroyashi for NordoHandlers {
         "Nordo Service"
     }
 }
+
+impl shared::TemperatureManagement for NordoHandlers {}
 
 #[tokio::test]
 async fn boil_potatoes_with_status() {

@@ -1,4 +1,4 @@
-use shared::NotifyMontroyashi;
+use shared::{NotifyMontroyashi, Temperature, TemperatureManagement};
 use std::convert::Infallible;
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 use std::sync::Arc;
@@ -20,6 +20,10 @@ async fn main() {
     let boiling_status = Arc::new(RwLock::new(Boiling {
         potatoes: None,
         time: None,
+    }));
+
+    let temperature_state = Arc::new(RwLock::new(Temperature {
+        degrees_celcius: 37,
     }));
 
     // routes for the Nordo service
@@ -51,6 +55,15 @@ async fn main() {
         .or(boiling_status_route)
         .or(get_boiled_route)
         .or(NordoHandlers::add_sound_heard_route())
+        .or(NordoHandlers::add_increase_temperature_route(
+            temperature_state.clone(),
+        ))
+        .or(NordoHandlers::add_decrease_temperature_route(
+            temperature_state.clone(),
+        ))
+        .or(NordoHandlers::add_get_temperature_route(
+            temperature_state.clone(),
+        ))
         .with(cors);
 
     warp::serve(routes).run(SocketAddr::new(HOST, PORT)).await;
