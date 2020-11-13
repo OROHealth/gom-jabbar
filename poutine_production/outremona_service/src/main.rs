@@ -20,9 +20,6 @@ async fn main() {
         .and(warp::post())
         .and_then(OutremonaHandlers::squeeze_cheese);
 
-    let heard_sound_route =
-        warp::path!("sound-heard").and_then(OutremonaHandlers::notify_montroyashi_of_noise);
-
     let cors = warp::cors()
         .allow_any_origin()
         .allow_header("content-type")
@@ -31,7 +28,7 @@ async fn main() {
     let routes = health_route
         .or(take_cheese_route)
         .or(squeeze_cheese_route)
-        .or(heard_sound_route)
+        .or(OutremonaHandlers::add_sound_heard_route())
         .with(cors);
 
     warp::serve(routes).run(SocketAddr::new(HOST, PORT)).await;

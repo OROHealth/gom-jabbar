@@ -41,9 +41,6 @@ async fn main() {
         .and(with_boiling_status(boiling_status.clone()))
         .and_then(NordoHandlers::get_boiled_potatoes);
 
-    let heard_sound_route =
-        warp::path!("sound-heard").and_then(NordoHandlers::notify_montroyashi_of_noise);
-
     let cors = warp::cors()
         .allow_any_origin()
         .allow_header("content-type")
@@ -53,7 +50,7 @@ async fn main() {
         .or(start_boiling_route)
         .or(boiling_status_route)
         .or(get_boiled_route)
-        .or(heard_sound_route)
+        .or(NordoHandlers::add_sound_heard_route())
         .with(cors);
 
     warp::serve(routes).run(SocketAddr::new(HOST, PORT)).await;

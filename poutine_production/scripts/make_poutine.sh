@@ -8,7 +8,7 @@ echo "\nNotifying noise and leonard cohen\n"
 curl -H 'Accept: application/json' http://localhost:8010/leonard-cohen-lyrics/
 echo 
 # Simulates noise heard from another robot
-curl -X POST -H 'Accept: application/json' http://localhost:8010/noise-heard
+curl -X POST -H 'Accept: application/json' http://localhost:8000/sound-heard
 echo 
 curl -H 'Accept: application/json' http://localhost:8010/drunks-around/
 

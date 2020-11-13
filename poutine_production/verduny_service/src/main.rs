@@ -24,9 +24,6 @@ async fn main() {
         .and(warp::body::json())
         .and_then(verduny_handlers::VerdunyHandlers::dip_potatoes_in_maple_syrup);
 
-    let heard_sound_route = warp::path!("sound-heard")
-        .and_then(verduny_handlers::VerdunyHandlers::notify_montroyashi_of_noise);
-
     let cors = warp::cors()
         .allow_any_origin()
         .allow_header("content-type")
@@ -35,7 +32,7 @@ async fn main() {
     let routes = health_route
         .or(cut_potatoes_route)
         .or(dip_potatoes_route)
-        .or(heard_sound_route)
+        .or(verduny_handlers::VerdunyHandlers::add_sound_heard_route())
         .with(cors);
 
     warp::serve(routes).run(SocketAddr::new(HOST, PORT)).await;

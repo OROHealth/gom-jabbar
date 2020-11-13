@@ -34,14 +34,19 @@ pub enum OilTypes {
     Vegetable,
 }
 
+const PORT: u16 = 8010;
 #[async_trait]
-pub trait NotifyMontroyashi {
-    const PORT: u16 = 8010;
+pub trait NotifyMontroyashi: Sync + Send + 'static {
+    fn add_sound_heard_route() -> BoxedFilter<(StatusCode,)> {
+        warp::path!("sound-heard")
+            .and_then(Self::notify_montroyashi_of_noise)
+            .boxed()
+    }
     fn get_robot_name() -> &'static str;
     async fn notify_montroyashi_of_noise() -> Result<StatusCode, Rejection> {
         match DefaultHttpRequest::post_from_url_str(&format!(
             "http://localhost:{}/noise-heard",
-            Self::PORT
+            PORT
         )) {
             Ok(req) => {
                 if req.send().is_ok() {
@@ -68,14 +73,12 @@ pub trait NotifyMontroyashi {
 }
 
 #[async_trait]
-pub trait TemperatureManagement {
-    fn add_increase_temperature_route<T: 'static + TemperatureManagement>(
-        temp_state: TemperatureState,
-    ) -> BoxedFilter<(StatusCode,)> {
+pub trait TemperatureManagement: Sync + Send + 'static {
+    fn add_increase_temperature_route(temp_state: TemperatureState) -> BoxedFilter<(StatusCode,)> {
         warp::path!("increase-temperature")
             .and(warp::post())
             .and(with_temp_management(temp_state))
-            .and_then(T::increase_temperature_handler)
+            .and_then(Self::increase_temperature_handler)
             .boxed()
     }
 
