@@ -1,3 +1,4 @@
+use easy_http_request::DefaultHttpRequest;
 use std::thread;
 use std::time::{Duration, SystemTime};
 use warp::http::StatusCode;
@@ -94,13 +95,37 @@ impl OldPortoHandlers {
     }
 
     fn request_temperature(robot: &Robot) -> i64 {
-        0
+        match DefaultHttpRequest::get_from_url_str(&format!(
+            "http://localhost:{}/get-temperature",
+            robot.port
+        )) {
+            Ok(req) => {
+                let res = req.send().unwrap();
+                if let Ok(response_string) = String::from_utf8(res.body) {
+                    let response: shared::Temperature =
+                        serde_json::from_str(&response_string).unwrap();
+                    return response.degrees_celcius.into();
+                }
+                -1
+            }
+            _ => -1,
+        }
     }
 
-    fn increase_temperature(robot: &Robot) -> i64 {
-        0
+    fn increase_temperature(robot: &Robot) {
+        if let Ok(req) = DefaultHttpRequest::post_from_url_str(&format!(
+            "http://localhost:{}/increase-temperature",
+            robot.port
+        )) {
+            req.send().unwrap();
+        }
     }
-    fn decrease_temperature(robot: &Robot) -> i64 {
-        0
+    fn decrease_temperature(robot: &Robot) {
+        if let Ok(req) = DefaultHttpRequest::post_from_url_str(&format!(
+            "http://localhost:{}/decrease-temperature",
+            robot.port
+        )) {
+            req.send().unwrap();
+        }
     }
 }

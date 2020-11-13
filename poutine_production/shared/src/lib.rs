@@ -13,7 +13,7 @@ pub const TEMP_DIFF: i32 = 5;
 
 pub type TemperatureState = Arc<RwLock<Temperature>>;
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Temperature {
     pub degrees_celcius: i32,
 }
