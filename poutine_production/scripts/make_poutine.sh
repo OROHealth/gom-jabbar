@@ -40,3 +40,7 @@ echo "\n\n Get Fries\n"
 curl -X POST 'http://localhost:8040/get-fries'
 
 echo
+
+curl -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' http://localhost:8050/monitor-robot -d '{"robot_id": "Nordo", "temp": 41}'
+
+curl -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' http://localhost:8050/stop-monitoring-robot -d '{"robot_id": "Nordo", "new_temp": 55}'
