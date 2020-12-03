@@ -17,37 +17,37 @@ class App extends Component {
   };
 
   
-  componentDidMount() {
-    fetch("")
-      // if the api returns data ...
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Something went wrong, please try again later.");
-        }
-        // ... convert it to json
-        return res.json();
-      })
-      // use the json api output
-      .then((data) => {
-        //check if there is meaningful data
+  // componentDidMount() {
+  //   fetch("")
+  //     // if the api returns data ...
+  //     .then((res) => {
+  //       if (!res.ok) {
+  //         throw new Error("Something went wrong, please try again later.");
+  //       }
+  //       // ... convert it to json
+  //       return res.json();
+  //     })
+  //     // use the json api output
+  //     .then((data) => {
+  //       //check if there is meaningful data
         
-        this.setState({
-          chat: data,
-        });
-      })
-      .catch((err) => {
-        console.error(err);
-        this.setState({
-            error: err.message
-        })
-      });
-  }
+  //       this.setState({
+  //         chat: data,
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //       this.setState({
+  //           error: err.message
+  //       })
+  //     });
+  // }
 
-  updatePost = (post) => {
-    this.setState({
-      chat: [...this.state.chat, post],
-    });
-  }
+  // updatePost = (post) => {
+  //   this.setState({
+  //     chat: [...this.state.chat, post],
+  //   });
+  // }
 
 
   render() {
@@ -65,21 +65,19 @@ class App extends Component {
                 <Route path="/login" component={Login} />
                 <Route path="/register" component={Register} />
                 <Route exact path="/" component={About} />
-                {/* <Route exact path="/tracker" component={Tracker} />
-              <Route exact path="/live-chat" component={LiveChat} /> */}
               </Switch>
             </BrowserRouter>
             {/* <LandingPage />
-          <Login />
-          <Register />*/}
+          // <Login />
+          // <Register />*/}
             <Navbar />
-            <About />
+            {/* <About /> */}
             <Tracker />
             <LiveChat 
             // updatePost={this.updatePost}
             />
-            {messages}
-            <AddPost />
+            {/* {messages}*/}
+            <AddPost /> 
           </div>
         </main>
       </div>
