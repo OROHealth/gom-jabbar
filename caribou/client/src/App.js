@@ -72,7 +72,7 @@ class App extends Component {
             <Tracker /> 
             {/* {messages} */}
             <LiveChat 
-            // updatePost={this.updatePost}
+            updatePost={this.updatePost}
             />
            
           </div>

@@ -6,7 +6,7 @@ class LiveChat extends Component {
         return (
             <div>
                 <AddPost 
-                // updatePost={this.props.updatePost} 
+                updatePost={this.props.updatePost} 
                 />
             </div>
         );
