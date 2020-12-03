@@ -1,4 +1,4 @@
-const chat = [
+const messages = [
     
     {
         userId: '1',
@@ -12,4 +12,4 @@ const chat = [
     },
 ]
 
-export default chat;
+export default messages;
