@@ -3,15 +3,15 @@ import React, { Component } from "react";
 import Calculator from "./Calculator";
 
 class Tracker extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      error: null,
-      loading: false,
-      searchTerm: "",
-      humans: [],
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     error: null,
+  //     loading: false,
+  //     searchTerm: "",
+  //     humans: [],
+  //   };
+  // }
 
   render() {
     return (

@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 
 class AddPost extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          content: "",
-        };
-      }
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //       content: "",
+    //     };
+    //   }
       
       updateContent = (content) => {
         this.setState({
@@ -42,7 +42,7 @@ class AddPost extends Component {
             return res.json();
           })
           .then((data) => {
-            this.props.updateNote(data);
+            // this.props.updateNote(data);
             alert('Post added!');
             window.location = '/forum'
           })

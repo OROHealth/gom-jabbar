@@ -7,12 +7,16 @@ import Navbar from "./Navbar";
 import About from "./About";
 import Tracker from "./Tracker";
 import LiveChat from "./LiveChat";
+import AddPost from "./AddPost";
+import Data from "./Data"
+import ReadChat from "./ReadChat";
 
 class App extends Component {
   state = {
-
+    chat: []
   };
 
+  
   componentDidMount() {
     fetch("")
       // if the api returns data ...
@@ -28,7 +32,7 @@ class App extends Component {
         //check if there is meaningful data
         
         this.setState({
-          tabsProp: data,
+          chat: data,
         });
       })
       .catch((err) => {
@@ -41,12 +45,16 @@ class App extends Component {
 
   updatePost = (post) => {
     this.setState({
-    //  will update users post
+      chat: [...this.state.chat, post],
     });
   }
 
 
   render() {
+    const messages = Data.map(chat => 
+      <ReadChat chat={chat} key={chat.id}/>
+)
+
     return (
       <div className="App">
         <main>
@@ -68,7 +76,10 @@ class App extends Component {
             <About />
             <Tracker />
             <LiveChat 
-            updatePost={this.updatePost}/>
+            // updatePost={this.updatePost}
+            />
+            {messages}
+            <AddPost />
           </div>
         </main>
       </div>
