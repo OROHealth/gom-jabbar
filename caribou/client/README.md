@@ -38,11 +38,6 @@ This app is for logged-in user.
 * As a logged-in user,
 * I want to be able to chat about humans activity,
 * So that I can share information with the other members.
-
-### Graybox Wireframes
-Full website graybox wireframes
-:-------------------------:
-![Full website graybox wireframes](/caribou\client\github-images\wireframes\caribou-client-graybox-wireframes.png) 
 ## Functionality
 The app's functionality includes:
 * User can track human damages
