@@ -4,7 +4,8 @@
   "description": "Caribou saving the planet by tracking humans littering through tracking device",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "test": "mocha --require test/setup.js",
+    "dev": "nodemon src/server.js",
     "start": "node src/server.js"
   },
   "keywords": [],
