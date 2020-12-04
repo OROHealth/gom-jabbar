@@ -55,10 +55,13 @@ class App extends Component {
             <BrowserRouter>
               <Switch>
                 <Route exact path="/landingPage" component={LandingPage} />
-                <Route path="/login" component={Login} />
+                {/* FOR FUTURE ROUTING */}
+                {/*  <Route path="/login" component={Login} />
                 <Route path="/register" component={Register} />
-                <Route exact path="/" component={About} />
+                <Route exact path="/" component={About} />*/}
               </Switch>
+              <Login />
+              <Register />
             </BrowserRouter>
             <Navbar />
             <About />
