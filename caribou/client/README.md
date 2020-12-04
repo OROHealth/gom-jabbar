@@ -44,11 +44,6 @@ Full website graybox wireframes
 :-------------------------:
 ![Full website graybox wireframes](/github-images/wireframes/caribou-client-graybox-wireframes.png) 
 
-## Screenshot
-Full Page Screenshot 
-:-------------------------:
-![Full Page Screenshot](/github-images/screenshot/aboutpage.png) 
-
 ## Functionality
 The app's functionality includes:
 * User can track human damages
