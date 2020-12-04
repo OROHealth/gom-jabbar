@@ -1,0 +1,12 @@
+[
+    {
+      "id": "1",
+      "username": "new.user@ymail.com",
+      "password": "$2a$12$Sq2z3zRMvnxH/FGUd1vaYu6eXBA0ciKr5Vn4vXdG91SV8gkM6Wsj2"
+    },
+    {
+      "id": "2",
+      "username": "my.username@email.com",
+      "password": "$2a$12$s7s.KtjD6ndxbAS6.0pWt.FW/4NZKk.2kFXePEDgreqEBs2qLKl.q"
+    }
+  ]

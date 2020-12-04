@@ -52,7 +52,6 @@ The app's functionality includes:
 * Posts 
     * id 
     * user_id
-    * title
     * content 
     * modified
 
