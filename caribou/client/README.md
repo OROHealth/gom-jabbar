@@ -77,6 +77,8 @@ The app's functionality includes:
         * __Tracker.js__ (statelful) - 
             * __Calculator.js__ (statelful) - 
         * __LiveChat.js__ (statelful) - 
+            * __ReadChat__ (stateful) - 
+
 
 ## Api Documentation
 * The Google map api address is  
