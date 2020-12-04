@@ -15,11 +15,11 @@ usersRouter
     .route('/')
     .get((req, res, next) => {
         UsersService.getAllUsers(req.app.get('db'))
-        .then(user => {
-            console.log('User:', user)
-            res.json(user)
-        })
-        .catch(next)
+            .then(user => {
+                console.log('User:', user)
+                res.json(user)
+            })
+            .catch(next)
     })
     //post registering users
     .post(jsonBodyParser, (req, res, next) => {
@@ -34,7 +34,7 @@ usersRouter
                 })
         const passwordError = UsersService.validatePassword(password)
 
-        console.log("password error:",passwordError);
+        console.log("password error:", passwordError);
 
         if (passwordError)
             return res.status(400).json({ error: passwordError })
@@ -52,7 +52,7 @@ usersRouter
 
                 return UsersService.hashPassword(password)
                     .then(hashedPassword => {
-                        console.log("hashedpassword",hashedPassword);
+                        console.log("hashedpassword", hashedPassword);
                         const newUser = {
                             email,
                             password: hashedPassword,

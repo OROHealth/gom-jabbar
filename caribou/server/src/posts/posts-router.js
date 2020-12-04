@@ -37,7 +37,7 @@ postRouter
 		const newPost = { content };
 
 		const knexInstance = req.app.get('db');
-//validating the fields we send accross
+		//validating the fields we send accross
 		for (const field of ['content']) {
 			if (!req.body[field]) {
 				logger.error({
@@ -51,7 +51,7 @@ postRouter
 				});
 			}
 		}
-//validates server where data is sent
+		//validates server where data is sent
 		const error = getPostValidationError(newPost);
 		if (error) {
 			logger.error({
@@ -62,9 +62,9 @@ postRouter
 			});
 			return res.status(400).send(error);
 		}
-//sending data to service in order to save data in db
+		//sending data to service in order to save data in db
 		PostService.insertPost(knexInstance, newPost)
-			.then(post=> {
+			.then(post => {
 				logger.info({
 					message: `Post with id ${post.id} created.`,
 					request: `${req.originalUrl}`,
@@ -85,7 +85,7 @@ postRouter
 		const { id } = req.params;
 		const knexInstance = req.app.get('db');
 		PostService.getById(knexInstance, id)
-			.then(post=> {
+			.then(post => {
 				if (!post) {
 					logger.error({
 						message: `Post with id ${id} not found.`,
@@ -97,7 +97,7 @@ postRouter
 						error: { message: `Post Not Found` }
 					});
 				}
-				res.post= post;
+				res.post = post;
 				next();
 			})
 			.catch(next);

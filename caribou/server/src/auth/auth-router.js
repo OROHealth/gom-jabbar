@@ -22,9 +22,9 @@ authRouter
           error: `Missing '${key}' in request body`
         })
     AuthService.getUserWithUserName(
-        req.app.get('db'),
-        loginUser.userName
-      )
+      req.app.get('db'),
+      loginUser.userName
+    )
       .then(dbUser => {
         console.log('dbUser:', dbUser)
         if (!dbUser)
@@ -38,7 +38,7 @@ authRouter
               return res.status(400).json({
                 error: 'Incorrect email or password',
               })
-              
+
             const sub = dbUser.email
             const payload = {
               user_id: dbUser.id
