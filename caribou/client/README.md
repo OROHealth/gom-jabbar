@@ -42,7 +42,7 @@ This app is for logged-in user.
 ### Graybox Wireframes
 Full website graybox wireframes
 :-------------------------:
-![Full website graybox wireframes](/github-images/wireframes/caribou-client-graybox-wireframes.png) 
+![Full website graybox wireframes](/caribou\client\github-images\wireframes\caribou-client-graybox-wireframes.png) 
 ## Functionality
 The app's functionality includes:
 * User can track human damages
