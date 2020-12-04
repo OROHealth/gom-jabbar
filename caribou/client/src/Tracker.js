@@ -1,17 +1,16 @@
 import React, { Component } from "react";
-
 import Calculator from "./Calculator";
 
 class Tracker extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     error: null,
-  //     loading: false,
-  //     searchTerm: "",
-  //     humans: [],
-  //   };
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null,
+      loading: false,
+      searchTerm: "",
+      humans: [],
+    };
+  }
 
   render() {
     return (
@@ -24,19 +23,19 @@ class Tracker extends Component {
         <input type="input" name="search" id="search-term" value="" placeholder="vermont" />
         <button type="submit" id="submit-keyword">Search</button>
         <div className="tracking-results">
-        <h3>Results for "Vermont":</h3>
-        <h4>Montpelier:</h4>
-        <p className="lorem">"3 individuals have been reported in this area. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</p>
-        <p>Littering Level: 3</p>
+          <h3>Results for "Vermont":</h3>
+          <h4>Montpelier:</h4>
+          <p className="lorem">"3 individuals have been reported in this area. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</p>
+          <p>Littering Level: 3</p>
         </div>
         <div className="tracking-results">
-        <h4>Burlington:</h4>
-        <p className="lorem">"1 individuals have been reported in this area. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</p>
-        <p>Littering Level: 5</p>
+          <h4>Burlington:</h4>
+          <p className="lorem">"1 individuals have been reported in this area. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</p>
+          <p>Littering Level: 5</p>
         </div>
         <Calculator />
       </section>
-      );
-    }
+    );
   }
-  export default Tracker;
+}
+export default Tracker;

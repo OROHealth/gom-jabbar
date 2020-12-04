@@ -59,7 +59,7 @@ The app's functionality includes:
     * email (email validation)
     * password (at least one number, one lowercase and one uppercase letter at least eight characters that are letters, numbers or the underscore)
 
-* Chat 
+* Posts 
     * id 
     * user_id
     * title

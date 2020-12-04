@@ -15,9 +15,8 @@ class App extends Component {
     chat: []
   };
 
-  
   componentDidMount() {
-    fetch("")
+    fetch("https://dummy-api.com/api/posts")
       // if the api returns data ...
       .then((res) => {
         if (!res.ok) {
@@ -29,32 +28,26 @@ class App extends Component {
       // use the json api output
       .then((data) => {
         //check if there is meaningful data
-        
+
         this.setState({
-          chat: data,
+          post: data,
         });
       })
       .catch((err) => {
         console.error(err);
         this.setState({
-            error: err.message
+          error: err.message
         })
       });
   }
 
-  updatePost = (post) => {
+  addPost = (post) => {
     this.setState({
-      chat: [...this.state.chat, post],
+      chat: [...this.state.posts, post],
     });
   }
 
-
   render() {
-  //GOAL WAS TO CREATE A DUMMY DATABASE IN ORDER TO DISPLAY LIVE CHAT BOX MESSAGES
-    // const messages = Data.map((message) => 
-    //   <ReadChat message={message} key={message.id}/>)
-    // console.log(messages);
-
     return (
       <div className="App">
         <main>
@@ -69,12 +62,11 @@ class App extends Component {
             </BrowserRouter>
             <Navbar />
             <About />
-            <Tracker /> 
-            {/* {messages} */}
-            <LiveChat 
-            updatePost={this.updatePost}
+            <Tracker />
+            <LiveChat
+              addPost={this.addPost}
             />
-           
+
           </div>
         </main>
       </div>

@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import Login from './Login';
 import Register from './Register';
 
-
-
 class LandingPage extends Component {
     render() {
         return (
@@ -13,7 +11,6 @@ class LandingPage extends Component {
             </div>
         )
     }
-
 }
 
 export default LandingPage;

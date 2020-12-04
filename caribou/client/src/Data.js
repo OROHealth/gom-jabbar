@@ -1,4 +1,5 @@
-const messages = [
+// DUMMY DATA FOR LIVE CHAT
+const posts = [
     
     {
         userId: '1',
@@ -12,4 +13,4 @@ const messages = [
     },
 ]
 
-export default messages;
+export default posts;

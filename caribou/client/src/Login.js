@@ -94,7 +94,7 @@ class Login extends Component {
           </div>
           <div className="link-register">
             <p>Don't have an account yet?</p>
-              <Link to="/register" className="register-link">Sign up here</Link>
+            <Link to="/register" className="register-link">Sign up here</Link>
           </div>
         </div>
       </section>

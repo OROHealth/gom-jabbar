@@ -67,7 +67,7 @@ class Register extends Component {
     ) : (
         false
       );
-      
+
     return (
       <section className="register-component">
         <div className="register-div">

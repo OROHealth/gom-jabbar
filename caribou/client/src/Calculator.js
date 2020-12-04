@@ -5,7 +5,7 @@ class Calculator extends Component {
         return (
             <section className="littering-level-calculator">
                 <h2 className="level-calculator-title">Littering Level Calculator</h2>
-                <div> 
+                <div>
                     <p>Littering Level 123</p>
                 </div>
             </section>
