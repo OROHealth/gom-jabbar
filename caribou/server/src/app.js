@@ -9,7 +9,7 @@ const authRouter = require('./auth/auth-router');
 const usersRouter = require('./users/users-router');
 
 //loading routers
-const noteRouter = require('./posts/posts-router');
+const postsRouter = require('./posts/posts-router');
 
 //building app object
 const app = express()

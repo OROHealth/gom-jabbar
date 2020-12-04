@@ -1,7 +1,7 @@
 // methods to store database transactions
 let table = 'posts';
 
-const PostService = {
+const PostsService = {
 	getAllPosts(knex) {
 		return knex.select('*').from(table);
 	},
@@ -26,4 +26,4 @@ const PostService = {
 	}
 };
 
-module.exports = PostService;
+module.exports = PostsService;

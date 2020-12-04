@@ -2,7 +2,6 @@
 const path = require('path');
 const express = require('express');
 const xss = require('xss');
-const logger = require('../logger');
 
 //include service and validator
 const PostService = require('./posts-service');
@@ -20,7 +19,7 @@ const serializePost = post => ({
 });
 
 //routes
-postRouter
+postsRouter
 	.route('/')
 	//get all posts
 	.get((req, res, next) => {
