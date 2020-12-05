@@ -1,0 +1,19 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "API for Schitts Project",
+  "main": "dist/server.js",
+  "scripts": {
+    "test": "jest --runInBand"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tcantinelli/gom-jabbar.git"
+  },
+  "author": "Thomas Cantinelli",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tcantinelli/gom-jabbar/issues"
+  },
+  "homepage": "https://github.com/tcantinelli/gom-jabbar#readme"
+}
