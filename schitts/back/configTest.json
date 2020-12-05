@@ -1,0 +1,9 @@
+{
+  "PORT": 3091,
+  "express_debug": true,
+  "mongo_host": "oro.g8hpu.mongodb.net",
+  "mongo_user": "Twyla",
+  "mongo_pass": "pouetpouet",
+  "mongo_database": "SchittsTest",
+  "mongo_debug": true
+}
