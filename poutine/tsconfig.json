@@ -1,0 +1,37 @@
+{
+    "include": ["./src/**/*", "./types/**/*"],
+    "exclude": ["./src/**/*.spec.*"],
+    "compilerOptions": {
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": "./src",
+        "declaration": false,
+        "emitDecoratorMetadata": true,
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "lib": ["es2018"],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noUnusedLocals": true,
+        "outDir": "./dist",
+        "paths": {
+            "@controllers": ["controllers/index"],
+            "@controllers/*": ["controllers/*"],
+            "@middlewares": ["middlewares/index"],
+            "@middlewares/*": ["middlewares/*"],
+            "@models": ["models/index"],
+            "@models/*": ["models/*"],
+            "@schema": ["schema/index"],
+            "@schema/*": ["schema/*"],
+            "@services": ["services/index"],
+            "@services/*": ["services/*"],
+            "@shared": ["shared/index"],
+            "@shared/*": ["shared/*"]
+        },
+        "removeComments": false,
+        "resolveJsonModule": true,
+        "sourceMap": true,
+        "target": "es2018",
+        "typeRoots": ["./node_modules/@types", "./types"]
+    }
+}
