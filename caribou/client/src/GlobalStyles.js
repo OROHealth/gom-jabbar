@@ -21,6 +21,7 @@ time, mark, audio, video, textarea {
 	font: inherit;
 	vertical-align: baseline;
 	box-sizing: border-box;
+	font-family: 'Open Sans',sans-serif;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
