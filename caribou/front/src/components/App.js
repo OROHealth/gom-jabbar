@@ -1,12 +1,18 @@
-import logo from '../assets/images/caribou.svg';
 import './App.css';
+import Map from "./Map";
+import Banner from "./Banner";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-      </header>
+      <div className="header">
+        <Banner/>
+      </div>
+      <div className="main">
+        <div className="map">
+          <Map/>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,68 @@
+.banner {
+    flex: 1;
+    background-color: #282c34;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+h1 {
+    margin-left: 20px;
+    font-size: 40px;
+}
+
+.logo  {
+    height: 10vh;
+    flex: 0;
+    -webkit-animation: breathing 5s ease-out infinite normal;
+    animation: breathing 5s ease-out infinite normal;
+}
+
+@-webkit-keyframes breathing {
+    0% {
+        -webkit-transform: scale(0.9);
+        transform: scale(0.9);
+    }
+
+    25% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+
+    60% {
+        -webkit-transform: scale(0.9);
+        transform: scale(0.9);
+    }
+
+    100% {
+        -webkit-transform: scale(0.9);
+        transform: scale(0.9);
+    }
+}
+
+@keyframes breathing {
+    0% {
+        -webkit-transform: scale(0.9);
+        -ms-transform: scale(0.9);
+        transform: scale(0.9);
+    }
+
+    25% {
+        -webkit-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+    }
+
+    60% {
+        -webkit-transform: scale(0.9);
+        -ms-transform: scale(0.9);
+        transform: scale(0.9);
+    }
+
+    100% {
+        -webkit-transform: scale(0.9);
+        -ms-transform: scale(0.9);
+        transform: scale(0.9);
+    }
+}

@@ -6,4 +6,5 @@ Un petit coup de `yarn install`, puis un `yarn start`, et vous accéderez à "Ca
 
 ## Fonctionnel
 
-Un super logo qui respire. Voilà c'est tout.
+- Affichage d'une superbe bannière avec logo qui respire
+- Affichage d'une carte Leaflet
