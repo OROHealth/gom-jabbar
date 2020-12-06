@@ -1,4 +1,4 @@
-import logo from './caribou.svg';
+import logo from '../assets/images/caribou.svg';
 import './App.css';
 
 function App() {
