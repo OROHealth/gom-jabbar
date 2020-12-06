@@ -11164,6 +11164,11 @@ url@^0.11.0:
     punycode "1.3.2"
     querystring "0.2.0"
 
+use-position@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/use-position/-/use-position-0.0.8.tgz#631243c588e027152e5defe7c3996f4d03e0bb0f"
+  integrity sha512-t7gLuwE/rL30Elxpnjb6D1RnfNFNrf5DWOEXQ5rBKWUvy/QlbI+i4Mlv7GQi1QXt2gkH5YzaGHgx1S16i6Pjsw==
+
 use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
