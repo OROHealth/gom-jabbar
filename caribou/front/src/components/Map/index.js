@@ -1,6 +1,6 @@
-import {useEffect} from 'react';
-import {MapContainer, TileLayer, useMap} from "react-leaflet";
-import {usePosition} from 'use-position';
+import {MapContainer, TileLayer} from "react-leaflet";
+
+import UserLocator from './userLocator';
 
 import 'leaflet/dist/leaflet.css';
 import './styles.css';
@@ -11,19 +11,6 @@ const DEFAULT_POSITION = {
   lng: 7.7245304
 };
 
-const UserLocator = () => {
-  const map = useMap();
-  const {latitude, longitude} = usePosition();
-
-  useEffect(() => {
-    if (latitude && longitude) {
-      map.flyTo([latitude, longitude], DEFAULT_ZOOM, {animate: false});
-    }
-  }, [latitude, longitude, map]);
-
-  return null
-};
-
 const Map = () => {
   return (
     <MapContainer center={DEFAULT_POSITION} zoom={DEFAULT_ZOOM}>
@@ -31,7 +18,7 @@ const Map = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
-      <UserLocator/>
+      <UserLocator zoom={DEFAULT_ZOOM}/>
     </MapContainer>
   );
 };
