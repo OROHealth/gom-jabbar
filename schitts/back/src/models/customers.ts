@@ -13,15 +13,15 @@ const CustomersSchema = new Schema({
 	firstName: String,
 	type: {
 		type: Schema.Types.ObjectId,
-		ref: 'ICustomerTypes'
+		ref: 'CustomerTypes'
 	},
 	drinkPreferences: [{
 		type: Schema.Types.ObjectId,
-		ref: 'IMenuItems'
+		ref: 'MenuItems'
 	}],
 	foodPreferences: [{
 		type: Schema.Types.ObjectId,
-		ref: 'IMenuItems'
+		ref: 'MenuItems'
 	}]
 });
 
