@@ -6,6 +6,7 @@
 /client/.eslintcache
 /.pnp
 .pnp.js
+.env
 
 # testing
 /coverage
