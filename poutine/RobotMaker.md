@@ -1,11 +1,11 @@
 # Accelerating Poutine production
 
-We have a problem: Poutine is taking the world over, but our production is constrained by the amount of cook we have available. 
+We have a problem: Poutine is taking the world over, but our production is constrained by the amount of cook we have available.
 
 ***True*** poutine requires a complex step-by-step process that only the most talented Montrealer cook can pretend to master:
 
 1. take a handful of squeaky cheese
-2. squeeze it until it screams "I'm not a Montreal's bagel who are the best in the world, don't even talk to me about New York bagels, amateur!" 
+2. squeeze it until it screams "I'm not a Montreal's bagel who are the best in the world, don't even talk to me about New York bagels, amateur!"
 3. cut the potatoes in exactly 1 inch per 1 inch cube
 4. dip the potatoes in maple sirup for 25 seconds
 5. put the dipped potatoes directly in boiling water
@@ -20,7 +20,7 @@ We have a problem: Poutine is taking the world over, but our production is const
 
 Now, since we are a smart company, we built Robot that are capable to individually (each line is a robot with a name):
 
-- Outremona: take cheese from a box an squeeze it
+- Outremona: take cheese from a box and squeeze it
 - Montroyashi: listen to other robots' environment sounds and display Leonard Cohen lyrics, detect drunk people
 - Verduny: cut potatoes in dynamicaly-sized cube and dip them in maple sirup
 - Nordo: boil potatoes and give their current softness level
