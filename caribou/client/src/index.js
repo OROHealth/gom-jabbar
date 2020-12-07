@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import GlobalStyles from "./GlobalStyles";
-import CurrentUserProvider from "./UserContext";
+import CurrentUserProvider from "./CurrentUserContext";
 
 ReactDOM.render(
   <React.StrictMode>
