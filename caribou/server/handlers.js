@@ -46,7 +46,18 @@ const logIn = async (req, res) => {
     res.status(500).json({ status: 500, data: req.body, message: err.message });
   }
 };
-const seeHumans = async (req, res) => {};
+const seeHumans = async (req, res) => {
+  const client = await MongoClient(MONGO_URI, options);
+  try {
+    await client.connect();
+    const db = client.db("gom-jabbar");
+    const humans = await db.collection("humans").find().toArray();
+    res.status(200).json({ status: 200, data: humans });
+  } catch (err) {
+    console.log(err.stack);
+    res.status(500).json({ status: 500, message: err.message });
+  }
+};
 const addHuman = async (req, res) => {
   const client = await MongoClient(MONGO_URI, options);
   try {
