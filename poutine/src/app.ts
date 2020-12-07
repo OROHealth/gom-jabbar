@@ -15,7 +15,7 @@ const { API_PREFIX = '', ROBOT_NAME = '' } = process.env;
 
 const application = express();
 application.disable('x-powered-by');
-applyRequestMiddleWares(application, API_PREFIX);
+applyRequestMiddleWares(application, API_PREFIX, ROBOT_NAME);
 applyRoutes(application, API_PREFIX, ROBOT_NAME as RobotName);
 applyResponseMiddleWares(application);
 export default application;
@@ -25,8 +25,8 @@ export default application;
  * @param app the express application
  * @param prefix the api url prefix
  */
-function applyRequestMiddleWares(app: Application, prefix: string): void {
-    const swaggerDocumentPath = path.join(__dirname, '../swagger.yaml');
+function applyRequestMiddleWares(app: Application, prefix: string, swaggerName: string): void {
+    const swaggerDocumentPath = path.join(__dirname, `../swagger/${swaggerName}.yaml`);
     if (process.env.NODE_ENV === 'development' && fs.existsSync(swaggerDocumentPath)) {
         const swaggerDocument = yaml.load(swaggerDocumentPath);
         const options = {
