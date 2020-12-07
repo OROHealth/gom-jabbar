@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { Link, useHistory } from "react-router-dom";
+import { Button, Input, Title } from "../StyledComponents";
 
 const LogIn = () => {
+  const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -10,6 +13,9 @@ const LogIn = () => {
   };
   const handlePassword = (event) => {
     setPassword(event.target.value);
+  };
+  const handleLogin = () => {
+    history.push("/map");
   };
   return (
     <Wrapper>
@@ -27,25 +33,22 @@ const LogIn = () => {
           value={password}
           onChange={handlePassword}
         />
-        <Button>Log In</Button>
+        <Button onClick={handleLogin}>Log In</Button>
       </Box>
+      <Footer>
+        Don't have an account? <Link to="/signup">Sign up</Link>
+      </Footer>
     </Wrapper>
   );
 };
 
-const Title = styled.div`
-  font-size: xx-large;
-  font-weight: bold;
-  margin: 30px 0 40px 20px;
-`;
-const Button = styled.button``;
-const Input = styled.input`
-  border: none;
-  border-bottom: 3px solid #020826;
-  width: auto;
-  font-size: large;
-  padding: 8px;
-  outline: none;
+const Footer = styled.div`
+  margin-top: auto;
+  margin-bottom: 15px;
+  a {
+    text-decoration: none;
+    color: #020826;
+  }
 `;
 const Wrapper = styled.div`
   height: 500px;

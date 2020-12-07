@@ -9,8 +9,8 @@ import Chat from "./pages/Chat";
 function App() {
   return (
     <Wrapper>
-      <Header />
       <Router>
+        <Header />
         <Switch>
           <Route path="/" exact component={LogIn} />
           <Route path="/signup" component={SignUp} />

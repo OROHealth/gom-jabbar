@@ -1,11 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import reindeer from "./assets/reindeer.png";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
     <Wrapper>
-      <Logo src={reindeer} alt="Caribou Logo" />
+      <Link to="/">
+        <Logo src={reindeer} alt="Caribou Logo" />
+      </Link>
     </Wrapper>
   );
 };
@@ -22,6 +25,7 @@ const Logo = styled.img`
   width: 80px;
   filter: invert(7%) sepia(13%) saturate(6652%) hue-rotate(207deg)
     brightness(92%) contrast(108%);
+  cursor: pointer;
 `;
 
 export default Header;
