@@ -7,8 +7,11 @@
     "start": "nodemon index.js"
   },
   "dependencies": {
+    "assert": "^2.0.0",
     "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "mongodb": "^3.6.3",
     "morgan": "^1.10.0"
   }
 }
