@@ -8,13 +8,15 @@ import swaggerUi from 'swagger-ui-express';
 import yaml from 'yamljs';
 import * as controllers from '@controllers';
 import { boomify, errorHandler } from '@middlewares';
+import { RobotName } from '@shared/core';
+import { robotControllerInitializer } from '@services/controller-initializer';
 
-const { API_PREFIX = '' } = process.env;
+const { API_PREFIX = '', ROBOT_NAME = '' } = process.env;
 
 const application = express();
 application.disable('x-powered-by');
 applyRequestMiddleWares(application, API_PREFIX);
-applyRoutes(application, API_PREFIX);
+applyRoutes(application, API_PREFIX, ROBOT_NAME as RobotName);
 applyResponseMiddleWares(application);
 export default application;
 
@@ -46,8 +48,17 @@ function applyRequestMiddleWares(app: Application, prefix: string): void {
  * @param app the express application
  * @param prefix the api url prefix
  */
-export function applyRoutes(app: Application, prefix: string): void {
+export function applyRoutes(app: Application, prefix: string, robotName: RobotName): void {
     app.use(prefix, controllers.coreController);
+
+    const robotController = robotControllerInitializer(robotName);
+    if (robotController) {
+        console.log(`Initializing '${robotName}' robot maker`.grey);
+        app.use(prefix, robotController);
+    } else {
+        // TODO: Do something when no robot controller defined ?
+        console.log(`🚨 Robot ${robotName} not found`.red);
+    }
 
     // The 404 Route (ALWAYS Keep this as the last route)
     app.get('*', (req, res): any => res.status(404).send('Not Found ¯\\_(ツ)_/¯'));
