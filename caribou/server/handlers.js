@@ -12,7 +12,20 @@ const options = {
 const test = async (req, res) => {
   res.status(200).send("bacon");
 };
-const addUser = async (req, res) => {};
+const addUser = async (req, res) => {
+  const client = await MongoClient(MONGO_URI, options);
+  try {
+    await client.connect();
+    const db = client.db("gom-jabbar");
+    const r = await db.collection("users").insertOne(req.body);
+    assert.strictEqual(1, r.insertedCount);
+    res.status(201).json({ status: 201, data: req.body });
+  } catch (err) {
+    console.log(err.stack);
+    res.status(500).json({ status: 500, data: req.body, message: err.message });
+  }
+  client.close();
+};
 const logIn = async (req, res) => {
   const _id = req.body.email;
   const client = await MongoClient(MONGO_URI, options);
@@ -34,7 +47,20 @@ const logIn = async (req, res) => {
   }
 };
 const seeHumans = async (req, res) => {};
-const addHuman = async (req, res) => {};
+const addHuman = async (req, res) => {
+  const client = await MongoClient(MONGO_URI, options);
+  try {
+    await client.connect();
+    const db = client.db("gom-jabbar");
+    const r = await db.collection("humans").insertOne(req.body);
+    assert.strictEqual(1, r.insertedCount);
+    res.status(201).json({ status: 201, data: req.body });
+  } catch (err) {
+    console.log(err.stack);
+    res.status(500).json({ status: 500, data: req.body, message: err.message });
+  }
+  client.close();
+};
 const removeHuman = async (req, res) => {};
 
 module.exports = {
