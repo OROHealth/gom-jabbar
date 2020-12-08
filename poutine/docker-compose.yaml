@@ -7,6 +7,7 @@ services:
             - ./.env
         environment:
             - ROBOT_NAME=bizar
+            - FRYING_OILS=canola,sunflower,colza
 
     montroyashi:
         image: 'robot-maker:dev'
