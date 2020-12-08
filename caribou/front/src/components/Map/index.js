@@ -1,4 +1,5 @@
 import {MapContainer, TileLayer} from "react-leaflet";
+import {useSelector} from "react-redux";
 
 import TrashZone from './trashZone';
 import UserLocator from './userLocator';
@@ -12,22 +13,18 @@ const DEFAULT_POSITION = {
   lng: 7.7245304
 };
 
-const trashZones = [{
-  radius: 500,
-  lat: 48.5908666,
-  lng: 7.7045304
-}];
-
 const Map = () => {
+  const trashZone = useSelector(s => s.trashZone);
   return (
     <MapContainer center={DEFAULT_POSITION} zoom={DEFAULT_ZOOM}>
-      {
-        trashZones.map(({lat, lng, radius}) =>
-          <TrashZone
-            position={{lat, lng}}
-            radius={radius}
-          />
-        )
+      {trashZone &&
+      <TrashZone
+        position={{
+          lat: trashZone.lat,
+          lng: trashZone.lng
+        }}
+        radius={trashZone.radius}
+      />
       }
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
