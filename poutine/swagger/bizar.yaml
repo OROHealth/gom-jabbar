@@ -1,0 +1,19 @@
+swagger: '2.0'
+info:
+  title: Poutine microservice - Bizar
+consumes: [application/json]
+produces: [application/json]
+schemes: [http]
+paths:
+  /check:
+    get:
+      tags: [check]
+      summary: 'Checks if the server is running'
+      responses:
+        200:
+          description: 'The server is running'
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
