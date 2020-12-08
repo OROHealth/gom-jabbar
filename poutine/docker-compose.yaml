@@ -2,18 +2,21 @@ version: '3.3'
 
 services:
     nordo:
-        image: "robot-maker:dev"
-        ports:
-          - "8080:8080"
+        image: 'robot-maker:dev'
         env_file:
-          - ./.env
+            - ./.env
         environment:
-          - ROBOT_NAME=nordo
+            - ROBOT_NAME=nordo
     outremona:
-        image: "robot-maker:dev"
-        ports:
-          - "8081:8080"
+        image: 'robot-maker:dev'
         env_file:
-          - ./.env
+            - ./.env
         environment:
-          - ROBOT_NAME=outremona
+            - ROBOT_NAME=outremona
+
+    reverse-proxy:
+        image: nginx
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf
+        ports:
+            - 80:80
