@@ -1,18 +1,54 @@
 version: '3.3'
 
 services:
+    bizar:
+        image: 'robot-maker:dev'
+        env_file:
+            - ./.env
+        environment:
+            - ROBOT_NAME=bizar
+
+    montroyashi:
+        image: 'robot-maker:dev'
+        env_file:
+            - ./.env
+        environment:
+            - ROBOT_NAME=montroyashi
+
     nordo:
         image: 'robot-maker:dev'
         env_file:
             - ./.env
         environment:
             - ROBOT_NAME=nordo
+
+    oldoporto:
+        image: 'robot-maker:dev'
+        env_file:
+            - ./.env
+        environment:
+            - ROBOT_NAME=oldoporto
+
     outremona:
         image: 'robot-maker:dev'
         env_file:
             - ./.env
         environment:
             - ROBOT_NAME=outremona
+
+    pierre:
+        image: 'robot-maker:dev'
+        env_file:
+            - ./.env
+        environment:
+            - ROBOT_NAME=pierre
+
+    verduny:
+        image: 'robot-maker:dev'
+        env_file:
+            - ./.env
+        environment:
+            - ROBOT_NAME=verduny
 
     reverse-proxy:
         image: nginx
