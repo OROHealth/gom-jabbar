@@ -3,6 +3,7 @@ import {useSelector} from "react-redux";
 
 import TrashZone from './trashZone';
 import UserLocator from './userLocator';
+import InteractionMap from './interactionMap';
 
 import 'leaflet/dist/leaflet.css';
 import './styles.css';
@@ -17,6 +18,7 @@ const Map = () => {
   const trashZone = useSelector(s => s.trashZone);
   return (
     <MapContainer center={DEFAULT_POSITION} zoom={DEFAULT_ZOOM}>
+      <InteractionMap/>
       {trashZone &&
       <TrashZone
         position={{
