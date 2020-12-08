@@ -13,7 +13,7 @@ const Header = () => {
   };
   return (
     <Wrapper>
-      <Link to="/">
+      <Link to={currentUser === null ? "/" : "/map"}>
         <Logo src={reindeer} alt="Caribou Logo" />
       </Link>
       {currentUser !== null && (
