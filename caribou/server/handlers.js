@@ -1,5 +1,6 @@
 const assert = require("assert");
 const { MongoClient, ObjectId } = require("mongodb");
+const bcrypt = require("bcrypt");
 
 require("dotenv").config();
 const { MONGO_URI } = process.env;
@@ -8,16 +9,23 @@ const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 };
+const saltRounds = 10;
 
+//HANDLERS
 const test = async (req, res) => {
   res.status(200).send("bacon");
 };
 const addUser = async (req, res) => {
   const client = await MongoClient(MONGO_URI, options);
+  const user = {
+    _id: req.body._id,
+    name: req.body.name,
+    password: bcrypt.hashSync(req.body.password, saltRounds),
+  };
   try {
     await client.connect();
     const db = client.db("gom-jabbar");
-    const r = await db.collection("users").insertOne(req.body);
+    const r = await db.collection("users").insertOne(user);
     assert.strictEqual(1, r.insertedCount);
     res.status(201).json({ status: 201, data: req.body });
   } catch (err) {
@@ -33,7 +41,7 @@ const logIn = async (req, res) => {
     await client.connect();
     const db = client.db("gom-jabbar");
     const r = await db.collection("users").findOne({ _id }, (err, result) => {
-      if (result && result.password === req.body.password) {
+      if (result && bcrypt.compareSync(req.body.password, result.password)) {
         res.status(200).json({ status: 200, _id, data: result });
       } else if (result) {
         res.status(401).json({ status: 401, _id, data: "Incorrect password" });
