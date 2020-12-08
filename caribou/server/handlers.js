@@ -72,7 +72,21 @@ const addHuman = async (req, res) => {
   }
   client.close();
 };
-const removeHuman = async (req, res) => {};
+const removeHuman = async (req, res) => {
+  const client = await MongoClient(MONGO_URI, options);
+  try {
+    await client.connect();
+    const db = client.db("gom-jabbar");
+    await db
+      .collection("humans")
+      .findOneAndDelete({ _id: ObjectId(req.body._id) });
+    res.status(201).json({ status: 201, data: req.body });
+  } catch (err) {
+    console.log(err.stack);
+    res.status(500).json({ status: 500, data: req.body, message: err.message });
+  }
+  client.close();
+};
 
 module.exports = {
   test,

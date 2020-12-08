@@ -43,6 +43,6 @@ app
   .post("/login", logIn)
   .post("/adduser", addUser)
   .post("/addhuman", addHuman)
-  .delete("deletehuman", removeHuman)
+  .delete("/deletehuman", removeHuman)
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));
