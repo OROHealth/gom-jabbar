@@ -1,6 +1,22 @@
+import { ParsedQueryRequest } from '@models/requests';
+import { Potatoe } from '@shared/core';
 import { Router } from 'express';
 
 const router = Router();
 export const nordoController = router;
 
-router.get('/potatoes/boil', (req, res): any => res.json({ boiled: true }));
+function boilPotatoes(potatoes: Potatoe[]): Potatoe[] {
+    potatoes.forEach((potatoe) => {
+        potatoe.boiled = true;
+    });
+
+    return potatoes;
+}
+
+router.get('/potatoes/boil', (req: ParsedQueryRequest, res): any => {
+    const potatoes = req.body;
+
+    console.log(`Boil potatoes`);
+
+    res.json(boilPotatoes(potatoes));
+});
