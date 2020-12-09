@@ -21,7 +21,7 @@ async function removeAllCollections() {
 }
 
 //TO REMOVE ALL COLLECTIONS
-export async function dropAllCollections() {
+async function dropAllCollections() {
 	const collections = Object.keys(mongoose.connection.collections);
 	for (const collectionName of collections) {
 		const collection = mongoose.connection.collections[collectionName];

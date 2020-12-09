@@ -3,7 +3,7 @@ import helmet from "helmet";
 import { IConfig } from "./config";
 
 //ROUTES
-// import usersRoutes from './routes/usersRoutes';
+import servicesRoutes from './routes/servicesRoutes';
 
 function createExpressApp(config: IConfig): express.Express {
 	const { express_debug } = config;
@@ -18,7 +18,7 @@ function createExpressApp(config: IConfig): express.Express {
 	app.use(helmet());
 	app.use(express.json());
 
-	// app.use('/users', usersRoutes);
+	app.use('/services', servicesRoutes);
 	app.get("/test", async (req, res) => {
 		res.json({ message: "pass!" });
 	});

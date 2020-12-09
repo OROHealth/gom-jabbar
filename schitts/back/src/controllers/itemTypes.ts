@@ -14,7 +14,7 @@ const ItemTypesController = {
 	},
 
 	async getAll(): Promise<IItemTypes[]> {
-		const itemTypes = await ItemTypes.find();
+		const itemTypes = await ItemTypes.find({});
 		return itemTypes;
 	},
 

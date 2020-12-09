@@ -506,8 +506,73 @@
         "signature": "29b7786da16200eaf23b5aeb2a1ac1c6e333bf7e221647012d77f832f42a72e2",
         "affectsGlobalScope": false
       },
+      "./src/models/customertypes.ts": {
+        "version": "6513f196fbad92b0b03419287ffec8c6f557c84e0411aaa00419a2a554af8668",
+        "signature": "bae8b36eb2d00ff8abfb5d2ab8fdc00e8b27e2e092f4988a104e474c6fff355b",
+        "affectsGlobalScope": false
+      },
+      "./src/controllers/customertypes.ts": {
+        "version": "88e71100fa41a6980c5252ba56bd100beda2c8da59c0ea15a6a8881535a0e6c2",
+        "signature": "63274689df9fecb5dd12c50819e5e9d2e99d190a8771496599cab6edd03713c4",
+        "affectsGlobalScope": false
+      },
+      "./src/models/itemtypes.ts": {
+        "version": "7e4092abab329c334e6cbb73d1667d44d0906b80a972272c277780f5d50f337f",
+        "signature": "47d8f4a4193e6b42dbbf71c6f8281176844a3ec28fc6c1bcc728474d5b96680b",
+        "affectsGlobalScope": false
+      },
+      "./src/controllers/itemtypes.ts": {
+        "version": "d258ad570ea4616825820058664970c5ec28cc66087cbda87c4cc6f75d1f1cae",
+        "signature": "9eaecaeb7660beea2297499d126ccbbe5d9073ad8da5599b4cd769c47e2fc363",
+        "affectsGlobalScope": false
+      },
+      "./src/models/menuitems.ts": {
+        "version": "8ef6ddec1b6ca3da58c186c9a7671c0ce6221abd03f6ddefa01a4957aa0bd97c",
+        "signature": "08440c1ef19a812f63aa0052b1607b755c84f505031d67ce5d78048266fddd2c",
+        "affectsGlobalScope": false
+      },
+      "./src/controllers/menuitems.ts": {
+        "version": "9360d9a06249a6fa73fba13978b6fbb1b1b41fe143675853e8b1f1a76db1b698",
+        "signature": "f58c521f044d73820a79407867a9b6a5eeffb4860641a4582c0441cc9902e69e",
+        "affectsGlobalScope": false
+      },
+      "./src/models/menus.ts": {
+        "version": "b3453ec44f79850b70fc18aaae2bb98020f3a21ba2f1033243f4b683e5d3e802",
+        "signature": "f9a256d5ff9e85d09d97dca2e2788d82d894d7065e1af46e52337b7ec66f45b2",
+        "affectsGlobalScope": false
+      },
+      "./src/controllers/menus.ts": {
+        "version": "1bb3ad7dd3041544afdbdb77b6b771451d6d48404af9c702870a19f6aba45794",
+        "signature": "599ce6781e2af853b2cf353d27c540ac8b2afb1eb57663e1089b79cc3c6456fc",
+        "affectsGlobalScope": false
+      },
+      "./src/models/tones.ts": {
+        "version": "64beb9344e76ba5ed366a86fe69b11e43f91c3a8e296fd4a12f2e7d4dea7187c",
+        "signature": "f3978d50ce8155c33ec9973cf6bdd66fc2657a4555af80aee0e3a1bfbc8ca1f4",
+        "affectsGlobalScope": false
+      },
+      "./src/controllers/tones.ts": {
+        "version": "42f92e34e97193e7c669ab0c21fa645dc54d5a1bda7344e5c936396c569e5b82",
+        "signature": "623bc022e81d62b38cf058958b9b067232a7f89f40c2fc4923fef2adf6c4ce56",
+        "affectsGlobalScope": false
+      },
+      "./src/services/addconstantsdatas.ts": {
+        "version": "7ea56dcdabe5a09083b55cccd522f85c822faa93c0314f2a7f3d84beb8b16368",
+        "signature": "ee2e37b49e2182a0ff34061d00a4f17c18c68db250dcdc5e3d4cdec04c83f9e6",
+        "affectsGlobalScope": false
+      },
+      "./src/services/resetdb.ts": {
+        "version": "7163a6d03359e1a466073382fa9544d9ff7629cd05ff8006523e9f165bdf87ab",
+        "signature": "d2d255310975f1fbecfc6ab405dd0037cfd2d0e924343dbddc5aca48f0d81221",
+        "affectsGlobalScope": false
+      },
+      "./src/routes/servicesroutes.ts": {
+        "version": "09361ef2d15a88ed4408d76827956aa6e5a218543268c04492f7961687f9e480",
+        "signature": "0747134fc57c8e4a12d6144952ae1f47f54848f1ca110e997bd81ec1cc7b76e6",
+        "affectsGlobalScope": false
+      },
       "./src/server.ts": {
-        "version": "96e65f91d1f54413c848c408fe81d9ca172ead902a4ed835b5d66a36e4383032",
+        "version": "55938d4caaea6cc34585c49d15c7a77c3c4145b8dac40ce7a47611e8c38f6f10",
         "signature": "8ad9916707bf613a4bacf5980e511688622ccea5fcece1491dfc11edd1c23e73",
         "affectsGlobalScope": false
       },
@@ -546,26 +611,6 @@
         "signature": "513c8c7f90e7fea3d6a6fae1540f54bb57a1d87398b6097c8738b4e23516bb39",
         "affectsGlobalScope": false
       },
-      "./src/models/customertypes.ts": {
-        "version": "6513f196fbad92b0b03419287ffec8c6f557c84e0411aaa00419a2a554af8668",
-        "signature": "bae8b36eb2d00ff8abfb5d2ab8fdc00e8b27e2e092f4988a104e474c6fff355b",
-        "affectsGlobalScope": false
-      },
-      "./src/controllers/customertypes.ts": {
-        "version": "949fdf86dc7a437299e70be7183ba4f8092526163c2ad51e2d048b7ebde5435b",
-        "signature": "4c13cb4d3ff1bf0698acdaf4e8d51748076172f2c24d7d1a212788d3a47da04c",
-        "affectsGlobalScope": false
-      },
-      "./src/models/itemtypes.ts": {
-        "version": "7e4092abab329c334e6cbb73d1667d44d0906b80a972272c277780f5d50f337f",
-        "signature": "47d8f4a4193e6b42dbbf71c6f8281176844a3ec28fc6c1bcc728474d5b96680b",
-        "affectsGlobalScope": false
-      },
-      "./src/models/menuitems.ts": {
-        "version": "8ef6ddec1b6ca3da58c186c9a7671c0ce6221abd03f6ddefa01a4957aa0bd97c",
-        "signature": "08440c1ef19a812f63aa0052b1607b755c84f505031d67ce5d78048266fddd2c",
-        "affectsGlobalScope": false
-      },
       "./src/models/customers.ts": {
         "version": "d9568478cf0d84c7b47214435238c8e091080df758880dd944116bb53da4cee3",
         "signature": "90fb01780b21785fdc46eb37baa0134d01542b1b0c856708788766eb398ce618",
@@ -576,34 +621,14 @@
         "signature": "e0ffdb66854a1f4ce775c145fa77732562d37e62a8ded73a221acf42c42a0c9c",
         "affectsGlobalScope": false
       },
-      "./src/controllers/itemtypes.ts": {
-        "version": "b72e613a06bafe6eac3e3615fc744e981c8e53968a2f5c16852e546834f04b7f",
-        "signature": "e497568767ed1e5fce8b3bd5412f9ea74f5ede0c87d6436a309ea0dd21d26753",
-        "affectsGlobalScope": false
-      },
-      "./src/controllers/menuitems.ts": {
-        "version": "1461c3572942851f79264854114bf7ef676b0e702089bf6f99f4447f84c800e0",
-        "signature": "91a68e161075fd24ada8e0cbd6b02ed2d52af8c8c086c75232fa05fa5c65cb1d",
-        "affectsGlobalScope": false
-      },
-      "./src/models/tones.ts": {
-        "version": "64beb9344e76ba5ed366a86fe69b11e43f91c3a8e296fd4a12f2e7d4dea7187c",
-        "signature": "f3978d50ce8155c33ec9973cf6bdd66fc2657a4555af80aee0e3a1bfbc8ca1f4",
-        "affectsGlobalScope": false
-      },
-      "./src/controllers/tones.ts": {
-        "version": "1d42547080b519c050ee3c0835b994d00a423352bdd3d9143b8d8d372b610a65",
-        "signature": "8046a74e26349b844be1c3844db706f57200f6cc276cae7558df947eb069d7c2",
-        "affectsGlobalScope": false
-      },
-      "./src/models/menus.ts": {
-        "version": "b3453ec44f79850b70fc18aaae2bb98020f3a21ba2f1033243f4b683e5d3e802",
-        "signature": "f9a256d5ff9e85d09d97dca2e2788d82d894d7065e1af46e52337b7ec66f45b2",
-        "affectsGlobalScope": false
-      },
       "./src/models/orders.ts": {
         "version": "787977bce4cfe6994fd8884c4179a87d0729e90ca14e05cc7fe7ff3035b9e003",
         "signature": "a5b8baa88e931a7757b2891d0812d7599a0cb8ac60dcc2f9e0ce5ca976c13b50",
+        "affectsGlobalScope": false
+      },
+      "./src/controllers/orders.ts": {
+        "version": "62bfc52ff480071a9bfeeb669f98fd8b5fa6adfe2605be40dde8e622db65f743",
+        "signature": "6b03ee8eecc13e74a78b9623612a22a0db9942266c1728d1556734a8520ba2b2",
         "affectsGlobalScope": false
       },
       "./node_modules/@babel/types/lib/index-ts3.7.d.ts": {
@@ -2049,7 +2074,23 @@
       "./src/controllers/menuitems.ts": [
         "./node_modules/@types/mongoose/index.d.ts",
         "./node_modules/mongoose/index.d.ts",
+        "./src/models/itemtypes.ts",
         "./src/models/menuitems.ts"
+      ],
+      "./src/controllers/menus.ts": [
+        "./node_modules/@types/mongoose/index.d.ts",
+        "./node_modules/mongoose/index.d.ts",
+        "./src/models/menuitems.ts",
+        "./src/models/menus.ts"
+      ],
+      "./src/controllers/orders.ts": [
+        "./node_modules/@types/mongoose/index.d.ts",
+        "./node_modules/mongoose/index.d.ts",
+        "./src/models/bills.ts",
+        "./src/models/customers.ts",
+        "./src/models/menus.ts",
+        "./src/models/orders.ts",
+        "./src/models/tones.ts"
       ],
       "./src/controllers/tones.ts": [
         "./node_modules/@types/mongoose/index.d.ts",
@@ -2108,12 +2149,33 @@
         "./node_modules/@types/mongoose/index.d.ts",
         "./node_modules/mongoose/index.d.ts"
       ],
+      "./src/routes/servicesroutes.ts": [
+        "./node_modules/@types/express/index.d.ts",
+        "./node_modules/@types/mongoose/index.d.ts",
+        "./node_modules/mongoose/index.d.ts",
+        "./src/services/resetdb.ts"
+      ],
       "./src/server.ts": [
         "./node_modules/@types/express/index.d.ts",
         "./node_modules/@types/helmet/index.d.ts",
         "./node_modules/@types/mongoose/index.d.ts",
         "./node_modules/mongoose/index.d.ts",
-        "./src/config.ts"
+        "./src/config.ts",
+        "./src/routes/servicesroutes.ts"
+      ],
+      "./src/services/addconstantsdatas.ts": [
+        "./node_modules/@types/mongoose/index.d.ts",
+        "./node_modules/mongoose/index.d.ts",
+        "./src/controllers/customertypes.ts",
+        "./src/controllers/itemtypes.ts",
+        "./src/controllers/menuitems.ts",
+        "./src/controllers/menus.ts",
+        "./src/controllers/tones.ts"
+      ],
+      "./src/services/resetdb.ts": [
+        "./node_modules/@types/mongoose/index.d.ts",
+        "./node_modules/mongoose/index.d.ts",
+        "./src/services/addconstantsdatas.ts"
       ],
       "./src/testsetup.ts": [
         "./node_modules/@types/mongoose/index.d.ts",
@@ -3146,7 +3208,19 @@
         "./src/models/itemtypes.ts"
       ],
       "./src/controllers/menuitems.ts": [
+        "./src/models/itemtypes.ts",
         "./src/models/menuitems.ts"
+      ],
+      "./src/controllers/menus.ts": [
+        "./src/models/menuitems.ts",
+        "./src/models/menus.ts"
+      ],
+      "./src/controllers/orders.ts": [
+        "./src/models/bills.ts",
+        "./src/models/customers.ts",
+        "./src/models/menus.ts",
+        "./src/models/orders.ts",
+        "./src/models/tones.ts"
       ],
       "./src/controllers/tones.ts": [
         "./src/models/tones.ts"
@@ -3185,6 +3259,9 @@
       ],
       "./src/models/tones.ts": [
         "./node_modules/mongoose/index.d.ts"
+      ],
+      "./src/routes/servicesroutes.ts": [
+        "./node_modules/@types/express-serve-static-core/index.d.ts"
       ],
       "./src/server.ts": [
         "./node_modules/@types/express/index.d.ts",
@@ -3379,6 +3456,8 @@
       "./src/controllers/customertypes.ts",
       "./src/controllers/itemtypes.ts",
       "./src/controllers/menuitems.ts",
+      "./src/controllers/menus.ts",
+      "./src/controllers/orders.ts",
       "./src/controllers/tones.ts",
       "./src/database.ts",
       "./src/index.ts",
@@ -3390,7 +3469,10 @@
       "./src/models/menus.ts",
       "./src/models/orders.ts",
       "./src/models/tones.ts",
+      "./src/routes/servicesroutes.ts",
       "./src/server.ts",
+      "./src/services/addconstantsdatas.ts",
+      "./src/services/resetdb.ts",
       "./src/testsetup.ts"
     ]
   },
