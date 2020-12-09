@@ -12,17 +12,21 @@ describe('Customers Controllers', () => {
 		expect(customer?._id).toEqual(customerTest._id);
 	});
 
-	it('can add Customer', async () => {
-		const customer = await CustomersController.add();
-		expect(customer?._id).toBeTruthy();
+	it('can get all Customers', async () => {
+		await new Customers().save();
+		const customers = await CustomersController.getAll();
+		expect(customers.length).toBe(1);
 	});
 
-	it('can update Customer', async () => {
-		const customerTest = await new Customers({
+	it('can find a Customer by firstName', async () => {
+		await new Customers({
 			firstName: 'Toto',
 		}).save();
+		await new Customers({
+			firstName: 'tutu',
+		}).save();
 
-		const customer = await CustomersController.patch(customerTest._id, { firstName: 'tata' });
-		expect(customer?.firstName).not.toBe(customerTest.firstName);
+		const customers = await CustomersController.findBy({ firstName: 'Toto' });
+		expect(customers.length).toBe(1);
 	});
 });
