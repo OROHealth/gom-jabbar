@@ -10,6 +10,7 @@
         "test:nocache": "jest --no-cache --runInBand",
         "test:watch": "jest --watch --verbose false",
         "test:ci": "jest --forceExit --coverage --verbose --runInBand --no-cache",
+        "test:newman": "newman run poutine.postman_collection.json",
         "lint": "eslint './src/**/*'",
         "pretty": "prettier --write './{src}/**/*.{ts,js,json,md}' && prettier --write './*.md'",
         "preinstall": "bash scripts/preinstall.sh"
@@ -39,6 +40,7 @@
     },
     "dependencies": {
         "@hapi/boom": "^9.1.0",
+        "axios": "^0.21.0",
         "body-parser": "^1.19.0",
         "colors": "^1.4.0",
         "debug": "^4.3.1",
@@ -74,6 +76,7 @@
         "husky": "^4.3.4",
         "jest": "^26.6.3",
         "lint-staged": "^10.5.3",
+        "newman": "^5.2.1",
         "pino-pretty": "^4.3.0",
         "prettier": "^2.2.1",
         "ts-jest": "^26.4.4",
