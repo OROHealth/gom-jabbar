@@ -4,7 +4,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const {
-  test,
   logIn,
   addUser,
   addHuman,
@@ -38,7 +37,6 @@ app
   .use("/", express.static(__dirname + "/"))
 
   //ENDPOINTS
-  .get("/test", test)
   .get("/humans", seeHumans)
   .post("/login", logIn)
   .post("/adduser", addUser)

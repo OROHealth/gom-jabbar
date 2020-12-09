@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { CurrentUserContext } from "../CurrentUserContext";
 import { useHistory } from "react-router-dom";
 
-import { Button, Input, Title } from "../StyledComponents";
+import { Button, Input, Title } from "../components/index";
 
 const SignUp = () => {
   const history = useHistory();
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { setCurrentUser } = useContext(CurrentUserContext);
   const [errorMessage, setErrorMessage] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

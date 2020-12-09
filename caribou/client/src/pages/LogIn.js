@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
-import { Button, Input, Title } from "../StyledComponents";
+import { Button, Input, Title } from "../components/index";
 import { CurrentUserContext } from "../CurrentUserContext";
 
 const LogIn = () => {
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { setCurrentUser } = useContext(CurrentUserContext);
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

@@ -12,9 +12,7 @@ const options = {
 const saltRounds = 10;
 
 //HANDLERS
-const test = async (req, res) => {
-  res.status(200).send("bacon");
-};
+
 const addUser = async (req, res) => {
   const client = await MongoClient(MONGO_URI, options);
   const user = {
@@ -97,7 +95,6 @@ const removeHuman = async (req, res) => {
 };
 
 module.exports = {
-  test,
   logIn,
   addUser,
   addHuman,

@@ -10,7 +10,7 @@ const Footer = () => {
 };
 
 const Wrapper = styled.div`
-  height: 200px;
+  height: 400px;
   p {
     width: 250px;
     font-size: large;
