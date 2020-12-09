@@ -3,22 +3,35 @@ import './App.css';
 import { Grid } from '@material-ui/core';
 import MenuCard from './components/menuCard';
 
+//Parts
+import Database from './database/index';
+
+// Icons
+import database from './img/database.png';
+import statistics from './img/statistics.png';
+import pot from './img/pot.png';
+
 function App() {
 
 	const parts = [
 		{
+			title: 'Base de donnée',
+			icon: database,
+			component: <Database />
+		},
+		{
 			title: 'Statistiques',
-			icon: null,
+			icon: statistics,
 			component: null
 		},
 		{
 			title: 'Trop cuit !?',
-			icon: null,
+			icon: pot,
 			component: null
 		}
 	];
 
-	const [selectedPart, setSelectedPart] = useState(0)
+	const [selectedPart, setSelectedPart] = useState(0);
 
 	return (
 		<div className="App">
@@ -27,6 +40,7 @@ function App() {
 				justify="center"
 				alignItems="center"
 			>
+				{/* MENU */}
 				<Grid item xs={12} container
 					direction="row"
 					justify="center"
@@ -38,6 +52,10 @@ function App() {
 						return <MenuCard part={part} selected={index === selectedPart} key={index} action={() => setSelectedPart(index)} />
 					}
 					)}
+				</Grid >
+				{/* PART */}
+				<Grid item>
+					{parts[selectedPart].component}
 				</Grid >
 			</Grid >
 		</div>

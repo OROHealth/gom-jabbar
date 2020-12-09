@@ -18,6 +18,7 @@ const MenuCard: React.FC<IMenuCardProps> = ({ part, selected, action }) => {
 						alignItems="center"
 						style={styles.container}
 					>
+						<img src={part.icon} alt="Icon" style={styles.icon} />
 						<p style={styles.title}>{part.title}</p>
 					</Grid >
 				</Paper>
@@ -41,6 +42,10 @@ const styles = {
 	},
 	title: {
 		fontSize: '1.2rem',
+	},
+	icon: {
+		height: 50,
+		width: 50,
 	},
 	selectedBar: {
 		height: 5,
