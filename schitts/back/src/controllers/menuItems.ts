@@ -8,7 +8,7 @@ const MenuItemsController = {
 	},
 
 	async getAll(): Promise<IMenuItems[]> {
-		const menuItems = await MenuItems.find();
+		const menuItems = await MenuItems.find({});
 		return menuItems;
 	},
 

@@ -5,9 +5,9 @@ import { Orders, IOrders } from "../models/orders";
 import { ITones } from "../models/tones";
 
 const OrdersController = {
-	async get(orderID: string): Promise<IOrders | null> {
-		const order = await Orders.findById(orderID);
-		return order;
+	async getAll(): Promise<IOrders[]> {
+		const orders = await Orders.find({});
+		return orders;
 	},
 
 	async add(customer: ICustomers, bill: IBills, orderDate: Date, menu: IMenus, tone: ITones): Promise<IOrders | null> {

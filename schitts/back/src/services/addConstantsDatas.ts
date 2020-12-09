@@ -8,25 +8,24 @@ const addConstantsDatas = async () => {
 
 	//Add CustomerTypes:
 	const types = ['Out of town', 'In town', 'Rose\'s familly'];
-	for(let type of types) {
+	for (let type of types) {
 		await CustomerTypesController.add(type);
 	};
 
 	//Add ItemTypes:
 	const types2 = ['Food', 'Drink'];
-	for(let type of types2) {
+	for (let type of types2) {
 		await ItemTypesController.add(type);
 	};
 
 	//Add Tones:
 	const tones = ['angry', 'happy', 'overwhelmed', 'pregnant', 'moody', 'bored', 'excited'];
-	for(let tone of tones) {
+	for (let tone of tones) {
 		await TonesController.add(tone);
 	};
 
 	//Add 30 menuItems
 	const itemTypes = await ItemTypesController.getAll();
-	console.log(itemTypes);
 
 	for (let i = 0; i < 30; i++) {
 		const type = itemTypes[Math.floor((Math.random() * itemTypes.length))];
@@ -44,8 +43,8 @@ const addConstantsDatas = async () => {
 	const foodList = await MenuItemsController.getByType(foodType);
 	const drinkList = await MenuItemsController.getByType(drinkType);
 
-	for (let i = 0; i < 20; i++) {
-		const title = `menu${i}`;
+	for (let j = 0; j < 20; j++) {
+		const title = `menu${j}`;
 		const food = foodList[Math.floor((Math.random() * foodList.length))];
 		const drink = drinkList[Math.floor((Math.random() * drinkList.length))];
 

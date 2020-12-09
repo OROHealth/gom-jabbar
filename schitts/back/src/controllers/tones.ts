@@ -14,7 +14,7 @@ const TonesController = {
 	},
 
 	async getAll(): Promise<ITones[]> {
-		const tones = await Tones.find();
+		const tones = await Tones.find({});
 		return tones;
 	},
 

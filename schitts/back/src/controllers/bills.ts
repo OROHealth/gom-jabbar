@@ -7,8 +7,15 @@ const BillsController = {
 	},
 
 	async getAll(): Promise<IBills[]> {
-		const bills = await Bills.find();
+		const bills = await Bills.find({});
 		return bills;
+	},
+
+	async add(split: string): Promise<IBills> {
+		const bill = await new Bills({
+			split
+		}).save();
+		return bill;
 	}
 };
 
