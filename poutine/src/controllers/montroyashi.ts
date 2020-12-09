@@ -5,7 +5,8 @@ export const montroyashiController = router;
 
 router.get('/fantastic-lyrics', (req, res): any =>
     res.json({
-        lyrics: `Suzanne takes you down to her place near the river
+        artist: 'Leonard Cohen',
+        text: `Suzanne takes you down to her place near the river
 You can hear the boats go by, you can spend the night forever
 And you know that she's half-crazy but that's why you want to be there
 And she feeds you tea and oranges that come all the way from China
@@ -34,6 +35,5 @@ While Suzanne holds her mirror
 And you want to travel with her, and you want to travel blind
 And you know that you can trust her
 For she's touched your perfect body with her mind`,
-        artist: 'Leonard Cohen',
     })
 );

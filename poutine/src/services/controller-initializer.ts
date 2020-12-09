@@ -1,4 +1,5 @@
 import { bizarController } from '@controllers/bizar';
+import { chefController } from '@controllers/chef';
 import { montroyashiController } from '@controllers/montroyashi';
 import { nordoController } from '@controllers/nordo';
 import { oldoportoController } from '@controllers/oldoporto';
@@ -30,6 +31,9 @@ export function robotControllerInitializer(robotName: RobotName): Router {
         }
         case 'verduny': {
             return verdunyController;
+        }
+        case 'chef': {
+            return chefController;
         }
 
         default: {

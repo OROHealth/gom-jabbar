@@ -1,4 +1,4 @@
-export type RobotName = 'bizar' | 'montroyashi' | 'nordo' | 'oldoporto' | 'outremona' | 'pierre' | 'verduny';
+export type RobotName = 'bizar' | 'montroyashi' | 'nordo' | 'oldoporto' | 'outremona' | 'pierre' | 'verduny' | 'chef';
 
 export interface Potatoe {
     boiled?: boolean;
@@ -25,4 +25,9 @@ export interface Pot {
 
 export interface Cardboard {
     mixed: boolean;
+}
+
+export interface Lyrics {
+    artist: string;
+    text: string;
 }

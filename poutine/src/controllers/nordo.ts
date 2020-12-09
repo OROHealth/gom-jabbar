@@ -13,7 +13,7 @@ function boilPotatoes(potatoes: Potatoe[]): Potatoe[] {
     return potatoes;
 }
 
-router.get('/potatoes/boil', (req: ParsedQueryRequest, res): any => {
+router.post('/potatoes/boil', (req: ParsedQueryRequest, res): any => {
     const potatoes = req.body;
 
     console.log(`Boil potatoes`);
