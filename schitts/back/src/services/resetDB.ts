@@ -1,0 +1,2 @@
+import dropAllCollections from '../testSetup';
+

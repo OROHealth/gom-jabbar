@@ -16,6 +16,13 @@ const TonesController = {
 	async getAll(): Promise<ITones[]> {
 		const tones = await Tones.find();
 		return tones;
+	},
+
+	async add(title: string): Promise<ITones> {
+		const tone = new Tones({
+			title
+		}).save();
+		return tone;
 	}
 };
 
