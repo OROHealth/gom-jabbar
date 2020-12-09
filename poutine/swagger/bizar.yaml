@@ -1,19 +1,72 @@
 swagger: '2.0'
 info:
-  title: Poutine microservice - Bizar
+    version: '1'
+    title: Poutine microservice - Bizar Robot Maker
 consumes: [application/json]
 produces: [application/json]
 schemes: [http]
 paths:
-  /check:
-    get:
-      tags: [check]
-      summary: 'Checks if the server is running'
-      responses:
-        200:
-          description: 'The server is running'
-          schema:
-            type: object
-            properties:
-              ok:
-                type: boolean
+    /check:
+        get:
+            tags: [check]
+            summary: 'Checks if the server is running'
+            responses:
+                200:
+                    description: 'The server is running'
+                    schema:
+                        type: object
+                        properties:
+                            ok:
+                                type: boolean
+    /potatoes/fry:
+        post:
+            tags: [poutine]
+            summary: 'Fries given object in oil'
+            parameters:
+                - name: body
+                  in: body
+                  description: 'The object to fry. Please prefer potatoes 😇.'
+                  schema:
+                      type: object
+                - name: oil
+                  in: query
+                  description: 'The oil to use.'
+                  type: string
+                  enum:
+                      - canola
+                      - sunflower
+                      - colza
+            responses:
+                200:
+                    description: 'The fried object'
+                    schema:
+                        type: object
+                        properties:
+                            oil:
+                                type: string
+                            fried:
+                                type: boolean
+                        additionalProperties: true
+                404:
+                    description: 'Oil not found'
+                    schema:
+                        $ref: '#/definitions/Error'
+                default:
+                    description: Unexpected error
+                    schema:
+                        $ref: '#/definitions/Error'
+
+definitions:
+    Error:
+        required:
+            - statusCode
+            - message
+        properties:
+            statusCode:
+                type: integer
+                format: int32
+            message:
+                type: string
+        example:
+            statusCode: 404
+            message: Page Not Found...
