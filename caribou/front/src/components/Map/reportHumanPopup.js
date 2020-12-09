@@ -1,23 +1,23 @@
 import {useState} from 'react';
 
+import Input from "../ui/Input";
+import Button from "../ui/Button";
+
 const ReportHumanPopup = ({onSubmit}) => {
   const [trashingLevel, setTrashingLevel] = useState("");
   const [excitementLevel, setExcitementLevel] = useState("");
   return (
-    <div>
-      <h1>Merci pour votre signalement !</h1>
-      <p>Ce signalement permettra d'identifier de nouvelles actions afin de rendre notre monde meilleur.</p>
-      <div>
-        Capacité de nuisance<br/>
-        <input value={trashingLevel} onChange={(e) => setTrashingLevel(e.target.value)}/>
+    <div className="row">
+      <div className="offset-1 col-10">
+        <h1>Merci pour votre signalement !</h1>
+        <p>Ce signalement permettra d'identifier de nouvelles actions afin de rendre notre monde meilleur.</p>
+        <Input value={trashingLevel} placeholder="Capacité de nuisance" onChange={(text) => setTrashingLevel(text)}/>
+        <Input value={excitementLevel} placeholder="Niveau d'excitation" onChange={(text) => setExcitementLevel(text)}/>
+        <br/>
+        <Button onClick={() => onSubmit(trashingLevel, excitementLevel)}>
+          Ajouter
+        </Button>
       </div>
-      <div>
-        Niveau d'excitation<br/>
-        <input value={excitementLevel} onChange={(e) => setExcitementLevel(e.target.value)}/>
-      </div>
-      <button onClick={() => onSubmit(trashingLevel, excitementLevel)}>
-        Ajouter
-      </button>
     </div>
   );
 };

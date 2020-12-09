@@ -1,20 +1,38 @@
+import * as R from "ramda";
+import {Link, Redirect, Route, Switch} from "react-router-dom";
+import {useSelector} from "react-redux";
+
 import './App.css';
 import Map from "./Map";
 import Banner from "./Banner";
 import Modal from "./Modal";
+import Login from "./Account/Login";
+import Signup from "./Account/Signup";
 
 function App() {
+  const token = useSelector(R.path(["user", "token"]));
   return (
     <div className="App">
-      <Modal/>
       <div className="header">
-        <Banner/>
+        <Banner isConnected={!!token}/>
       </div>
-      <div className="main">
-        <div className="map">
-          <Map/>
+      <Modal/>
+      {token &&
+      <>
+        <div className="main">
+          <div className="map">
+            <Map/>
+          </div>
         </div>
-      </div>
+      </>
+      }
+      {!token &&
+      <Switch>
+        <Route exact path="/" component={Login}/>
+        <Route path="/signup" component={Signup}/>
+        <Redirect to="/"/>
+      </Switch>
+      }
     </div>
   );
 }

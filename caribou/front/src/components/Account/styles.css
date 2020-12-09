@@ -1,0 +1,33 @@
+.formBlock {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.buttonsBlock {
+  display: flex;
+}
+
+img.alert {
+  width: 75px;
+  display: inline;
+  margin: 0;
+}
+
+.alertBlock {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 5px;
+  padding-bottom: 15px;
+  border: 1px #3cb39d solid;
+  border-radius: 10px;
+}
+
+.alertBlock p {
+  margin: 0;
+}
+
+@media screen and (max-width: 640px) {
+  .buttonsBlock {
+    display: block;
+  }
+}

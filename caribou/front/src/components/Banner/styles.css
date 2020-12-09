@@ -7,9 +7,10 @@
     height: 100%;
 }
 
-h1 {
+.banner h1 {
+    color: white;
     margin-left: 20px;
-    font-size: 40px;
+    font-size: 93px;
 }
 
 .logo  {
@@ -17,6 +18,12 @@ h1 {
     flex: 0;
     -webkit-animation: breathing 5s ease-out infinite normal;
     animation: breathing 5s ease-out infinite normal;
+}
+
+img.logout {
+    width: 50px;
+    display: inline;
+    margin: 0;
 }
 
 @-webkit-keyframes breathing {

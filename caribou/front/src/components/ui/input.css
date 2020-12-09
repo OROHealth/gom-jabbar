@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css?family=Dosis');
+
+.input {
+    position: relative;
+    margin-top: 14px;
+    padding-top: 20px;
+}
+
+.input-text {
+    text-align: center;
+    color: #0f2027;
+    display: block;
+    margin: 0;
+    width: 100%;
+    font-family: inherit;
+    font-weight: inherit;
+    line-height: 45px;
+    border: 1px solid #282c34;
+    border-radius: 0.4rem;
+    transition: box-shadow 0.5s;
+}
+
+.input-text:focus {
+    outline: none;
+    box-shadow: 1px 1px white;
+}
+
+.input-label {
+    display: block;
+    position: absolute;
+    bottom: 75%;
+    left: 20px;
+    color: #282c34;
+    font-family: inherit;
+    font-weight: inherit;
+    line-height: 50px;
+    opacity: 0;
+    transform: translate3d(0, 50%, 0) scale(1);
+    transform-origin: 0 0;
+    transition:
+            opacity 0.5s cubic-bezier(0.645, 0.045, 0.355, 1),
+            transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1),
+            visibility 0ms 0.5s cubic-bezier(0.645, 0.045, 0.355, 1),
+            z-index 0ms 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.input-text:placeholder-shown + .input-label {
+    visibility: hidden;
+    z-index: -1;
+}
+
+.input-text::placeholder {
+    color: #515a62 !important;
+    font-family: "Nunito Bold", serif;
+}
+
+.input-text:not(:placeholder-shown) + .input-label,
+.input-text:focus:not(:placeholder-shown) + .input-label {
+    visibility: visible;
+    z-index: 1;
+    opacity: 1;
+    transform: translate3d(0, 50%, 0) scale(0.8);
+    transition: transform 0.5s, visibility 0ms, z-index 0ms;
+}
