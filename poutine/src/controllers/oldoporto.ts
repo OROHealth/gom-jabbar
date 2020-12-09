@@ -19,12 +19,18 @@ router.post('/keep-warm', (req: ParsedQueryRequest, res): any => {
     res.json({});
 });
 
-function getPotContent(pot: Pot): Pot {
-    if (pot && pot.content) {
-        return pot;
-    } else {
+/**
+ * This function returns the content of a Pot
+ * @param pot The Pot to get the content from
+ * @returns The content of the input Pot
+ * @throws boom.Boom when Pot or its content is undefined
+ */
+export function getPotContent(pot: Pot): Pot {
+    if (!(pot && pot.content)) {
         throw boom.badRequest('Pot is empty');
     }
+
+    return pot.content;
 }
 
 router.get('/pot-content', (req: ParsedQueryRequest, res): any => {

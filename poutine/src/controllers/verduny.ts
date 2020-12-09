@@ -6,7 +6,13 @@ import { Router } from 'express';
 const router = Router();
 export const verdunyController = router;
 
-function cutPotatoes(sideLength: number, potatoeNumber: number): any[] {
+/**
+ * This functions get potatoes out of Wonderland and cut it in cubes.
+ * @param sideLength The length of a side of the cube
+ * @param potatoeNumber The number of potatoes to cut
+ * @returns Cut potatoes
+ */
+export function cutPotatoes(sideLength: number, potatoeNumber: number): any[] {
     const res = [];
 
     for (let idx = 0; idx < potatoeNumber; idx++) {
@@ -16,7 +22,13 @@ function cutPotatoes(sideLength: number, potatoeNumber: number): any[] {
     return res;
 }
 
-function dipPotatoes(potatoes: Potatoe[], duration: number): Promise<Potatoe[]> {
+/**
+ * This function dip Potatoes in maple syrup
+ * @param potatoes The potatoes to dip
+ * @param duration The dipping duration
+ * @returns Dipped potatoes
+ */
+export function dipPotatoes(potatoes: Potatoe[], duration: number): Promise<Potatoe[]> {
     return promiseTimeout(duration).then(() => {
         potatoes.forEach((potatoe) => {
             potatoe.dipped = true;

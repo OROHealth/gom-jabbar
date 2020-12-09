@@ -5,7 +5,12 @@ import { Router } from 'express';
 const router = Router();
 export const nordoController = router;
 
-function boilPotatoes(potatoes: Potatoe[]): Potatoe[] {
+/**
+ * This function boils potatoes
+ * @param potatoes The potatoes to boil
+ * @returns Boiled potatoes
+ */
+export function boilPotatoes(potatoes: Potatoe[]): Potatoe[] {
     potatoes.forEach((potatoe) => {
         potatoe.boiled = true;
     });

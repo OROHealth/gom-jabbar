@@ -1,5 +1,6 @@
 import boom from '@hapi/boom';
 import { ParsedQueryRequest } from '@models/requests';
+import { splitEnvVarArray } from '@services/utilities';
 import { Potatoe } from '@shared/core';
 import { Router } from 'express';
 
@@ -7,10 +8,18 @@ const router = Router();
 export const bizarController = router;
 
 const { FRYING_OILS = '' } = process.env;
-const fryingOilList = FRYING_OILS.split(',').filter((value) => value !== '');
+const fryingOilList = splitEnvVarArray(FRYING_OILS);
 
-function fryPotatoes(potatoes: Potatoe[], oil: string, availableOils: string[]): Potatoe[] {
-    if (!availableOils.includes(oil)) {
+/**
+ * This function fries potatoes in oil
+ * @param potatoes The potatoes to fry
+ * @param oil The needed oil
+ * @param availableOils The available oils
+ * @returns Fried potatoes
+ * @throws boom.Boom when oil is not available
+ */
+export function fryPotatoes(potatoes: Potatoe[], oil: string, availableOils: string[]): Potatoe[] {
+    if (!(availableOils && availableOils.includes(oil))) {
         throw boom.notFound(`'${oil}' oil not found`);
     }
 
