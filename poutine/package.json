@@ -10,7 +10,7 @@
         "test:nocache": "jest --no-cache --runInBand",
         "test:watch": "jest --watch --verbose false",
         "test:ci": "jest --forceExit --coverage --verbose --runInBand --no-cache",
-        "test:newman": "newman run poutine.postman_collection.json",
+        "test:integration": "newman run poutine.postman_collection.json",
         "lint": "eslint './src/**/*'",
         "pretty": "prettier --write './{src}/**/*.{ts,js,json,md}' && prettier --write './*.md'",
         "preinstall": "bash scripts/preinstall.sh"

@@ -1,0 +1,1022 @@
+{
+	"info": {
+		"_postman_id": "cb78260a-f15d-4ddd-9e78-94e78d676073",
+		"name": "poutine",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "nordo",
+			"item": [
+				{
+					"name": "check",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ee772cf8-de4c-444b-9f0a-9eb24298f064",
+								"exec": [
+									"pm.test(\"Nordo check endpoint\", function () {\r",
+									"    pm.expect(pm.response.json()).to.eql({ok: true});\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/nordo/api/check",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"nordo",
+								"api",
+								"check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "docs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/nordo/api/docs/",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"nordo",
+								"api",
+								"docs",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/potatoes/boil",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec0f6774-27d8-4c0b-96c4-affde60deabb",
+								"exec": [
+									"pm.test(\"Nordo /potatoes/cut endpoint\", function () {\r",
+									"    pm.expect(pm.response.json()).to.eql([\r",
+									"    {\r",
+									"        sideLength: 1,\r",
+									"        cut: true,\r",
+									"        dipped: true,\r",
+									"        dippingDuration: 123,\r",
+									"        boiled: true\r",
+									"    },\r",
+									"    {\r",
+									"        sideLength: 1,\r",
+									"        cut: true,\r",
+									"        dipped: true,\r",
+									"        dippingDuration: 123,\r",
+									"        boiled: true\r",
+									"    }\r",
+									"]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"sideLength\": 1,\r\n        \"cut\": true,\r\n        \"dipped\": true,\r\n        \"dippingDuration\": 123\r\n    },\r\n    {\r\n        \"sideLength\": 1,\r\n        \"cut\": true,\r\n        \"dipped\": true,\r\n        \"dippingDuration\": 123\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/nordo/api/potatoes/boil",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"nordo",
+								"api",
+								"potatoes",
+								"boil"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "bizar",
+			"item": [
+				{
+					"name": "check",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "01556004-ae35-474f-addb-fae444f84ca3",
+								"exec": [
+									"pm.test(\"Bizar check endpoint\", function () {\r",
+									"    pm.expect(pm.response.json()).to.eql({ok: true});\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/bizar/api/check",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"bizar",
+								"api",
+								"check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "docs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/bizar/api/docs/",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"bizar",
+								"api",
+								"docs",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/potatoes/fry",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "878dfb64-506b-4933-845e-b9ace00bbc49",
+								"exec": [
+									"pm.test(\"Bizar /potatoes/fry endpoint\", function () {\r",
+									"    pm.expect(pm.response.json()).to.eql([\r",
+									"    {\r",
+									"        sideLength: 1,\r",
+									"        cut: true,\r",
+									"        dipped: true,\r",
+									"        dippingDuration: 123,\r",
+									"        boiled: true,\r",
+									"        fried: true,\r",
+									"        oil: \"canola\"\r",
+									"    },\r",
+									"    {\r",
+									"        sideLength: 1,\r",
+									"        cut: true,\r",
+									"        dipped: true,\r",
+									"        dippingDuration: 123,\r",
+									"        boiled: true,\r",
+									"        fried: true,\r",
+									"        oil: \"canola\"\r",
+									"    }\r",
+									"]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"sideLength\": 1,\r\n        \"cut\": true,\r\n        \"dipped\": true,\r\n        \"dippingDuration\": 123,\r\n        \"boiled\": true\r\n    },\r\n    {\r\n        \"sideLength\": 1,\r\n        \"cut\": true,\r\n        \"dipped\": true,\r\n        \"dippingDuration\": 123,\r\n        \"boiled\": true\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/bizar/api/potatoes/fry?oil=canola",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"bizar",
+								"api",
+								"potatoes",
+								"fry"
+							],
+							"query": [
+								{
+									"key": "oil",
+									"value": "canola"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "montroyashi",
+			"item": [
+				{
+					"name": "check",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "42bf9d4e-c750-467d-a6ef-5cf86c760039",
+								"exec": [
+									"pm.test(\"Montroyashi check endpoint\", function () {\r",
+									"    pm.expect(pm.response.json()).to.eql({ok: true});\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/montroyashi/api/check",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"montroyashi",
+								"api",
+								"check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/fantastic-lyrics",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "10ab19c9-6dc4-4b80-91e8-df9e3f4cc7ba",
+								"exec": [
+									"pm.test(\"Montroyashi check endpoint\", function () {\r",
+									"    pm.expect(pm.response.json()).to.contain.keys(['artist', 'text']);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/montroyashi/api/fantastic-lyrics",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"montroyashi",
+								"api",
+								"fantastic-lyrics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "docs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/montroyashi/api/docs/",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"montroyashi",
+								"api",
+								"docs",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "oldoporto",
+			"item": [
+				{
+					"name": "check",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8a404bdf-88de-4442-9ccb-a97601944210",
+								"exec": [
+									"pm.test(\"Oldoporto check endpoint\", function () {\r",
+									"    pm.expect(pm.response.json()).to.eql({ok: true});\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/oldoporto/api/check",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"oldoporto",
+								"api",
+								"check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/keep-warm",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "422a8d14-b481-423e-a6b1-bebb08cab9b5",
+								"exec": [
+									"pm.test(\"Oldoporto /keep-warm endpoint\", function () {\r",
+									"    pm.expect(pm.response.json()).to.eql({});\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "14aab92b-8682-459d-957a-e968636dd6cc",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"anything\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/oldoporto/api/keep-warm?temperature=95",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"oldoporto",
+								"api",
+								"keep-warm"
+							],
+							"query": [
+								{
+									"key": "temperature",
+									"value": "95"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/pot-content",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "440c7323-5d1b-48e9-99e6-c8ca4f08b9d2",
+								"exec": [
+									"pm.test(\"Oldoporto /pot-content endpoint\", function () {\r",
+									"    pm.expect(pm.response.json()).to.eql({ anything: 4 });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/oldoporto/api/pot-content",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"oldoporto",
+								"api",
+								"pot-content"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "docs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/oldoporto/api/docs/",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"oldoporto",
+								"api",
+								"docs",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "pierre",
+			"item": [
+				{
+					"name": "check",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dbdc7507-12f6-484d-b919-11cdc52c403c",
+								"exec": [
+									"pm.test(\"Pierre check endpoint\", function () {\r",
+									"    pm.expect(pm.response.json()).to.eql({ok: true});\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/pierre/api/check",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"pierre",
+								"api",
+								"check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/mix",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5203a907-8dac-4655-bdb9-ef5ef1b3ada1",
+								"exec": [
+									"pm.test(\"Pierre /mix endpoint\", function () {\r",
+									"    pm.expect(pm.response.json()).to.eql({\r",
+									"        potatoes: [\r",
+									"            {\r",
+									"                sideLength: 1,\r",
+									"                cut: true,\r",
+									"                dipped: true,\r",
+									"                dippingDuration: 123,\r",
+									"                boiled: true,\r",
+									"                fried: true,\r",
+									"                oil: 'canola',\r",
+									"            },\r",
+									"        ],\r",
+									"        sauce: {\r",
+									"            type: 'gravy',\r",
+									"        },\r",
+									"        cheese: {\r",
+									"            squeezed: true,\r",
+									"        },\r",
+									"        mixed: true,\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"potatoes\": [\r\n        {\r\n            \"sideLength\": 1,\r\n            \"cut\": true,\r\n            \"dipped\": true,\r\n            \"dippingDuration\": 123,\r\n            \"boiled\": true,\r\n            \"fried\": true,\r\n            \"oil\": \"canola\"\r\n        }\r\n    ],\r\n    \"sauce\": {\r\n        \"type\": \"gravy\"\r\n    },\r\n    \"cheese\": {\r\n        \"squeezed\": true\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/pierre/api/mix",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"pierre",
+								"api",
+								"mix"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "docs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/pierre/api/docs/",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"pierre",
+								"api",
+								"docs",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "outremona",
+			"item": [
+				{
+					"name": "check",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dd0e9ec9-e444-475d-bc72-b58e579a7dde",
+								"exec": [
+									"pm.test(\"Outremona check endpoint\", function () {\r",
+									"    pm.expect(pm.response.json()).to.eql({ok: true});\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/outremona/api/check",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"outremona",
+								"api",
+								"check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "docs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/outremona/api/docs/",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"outremona",
+								"api",
+								"docs",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/cheeses/squeeze",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "553ee798-6a2d-4e57-8acf-a6be5c7b762d",
+								"exec": [
+									"pm.test(\"Outremona cheese squeeze endpoint\", function () {\r",
+									"    pm.expect(pm.response.json()).to.eql({squeezed: true});\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost/outremona/api/cheeses/squeeze",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"outremona",
+								"api",
+								"cheeses",
+								"squeeze"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "verduny",
+			"item": [
+				{
+					"name": "check",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dd91d1c5-7d4b-4f97-8abe-962887ab4756",
+								"exec": [
+									"pm.test(\"Verduny check endpoint\", function () {\r",
+									"    pm.expect(pm.response.json()).to.eql({ok: true});\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/verduny/api/check",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"verduny",
+								"api",
+								"check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/potatoes/cut",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b76b33d9-f7e1-48c2-ae8a-dfdb7ad36054",
+								"exec": [
+									"pm.test(\"Verduny /potatoes/cut endpoint\", function () {\r",
+									"    pm.expect(pm.response.json()).to.eql([\r",
+									"        {\r",
+									"            sideLength: 1,\r",
+									"            cut: true\r",
+									"        },\r",
+									"        {\r",
+									"            sideLength: 1,\r",
+									"            cut: true\r",
+									"        }\r",
+									"    ]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost/verduny/api/potatoes/cut?sideLength=1&potatoeNumber=2",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"verduny",
+								"api",
+								"potatoes",
+								"cut"
+							],
+							"query": [
+								{
+									"key": "sideLength",
+									"value": "1"
+								},
+								{
+									"key": "potatoeNumber",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/potatoes/dip",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c7236364-f4d8-4b29-9e79-9c910b9eb8f9",
+								"exec": [
+									"pm.test(\"Verduny /potatoes/dip endpoint\", function () {\r",
+									"    pm.expect(pm.response.json()).to.eql([\r",
+									"        {\r",
+									"            sideLength: 1,\r",
+									"            cut: true,\r",
+									"            dipped: true,\r",
+									"            dippingDuration: 123\r",
+									"        },\r",
+									"        {\r",
+									"            sideLength: 1,\r",
+									"            cut: true,\r",
+									"            dipped: true,\r",
+									"            dippingDuration: 123\r",
+									"        }\r",
+									"    ]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"sideLength\": 1,\r\n        \"cut\": true\r\n    },\r\n    {\r\n        \"sideLength\": 1,\r\n        \"cut\": true\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/verduny/api/potatoes/dip?duration=123",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"verduny",
+								"api",
+								"potatoes",
+								"dip"
+							],
+							"query": [
+								{
+									"key": "duration",
+									"value": "123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "docs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/verduny/api/docs/",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"verduny",
+								"api",
+								"docs",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "chef",
+			"item": [
+				{
+					"name": "check",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "abd5e0d9-3690-4b90-8d14-c05cfa7c57d5",
+								"exec": [
+									"pm.test(\"Chef check endpoint\", function () {\r",
+									"    pm.expect(pm.response.json()).to.eql({ok: true});\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/chef/api/check",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"chef",
+								"api",
+								"check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "docs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/chef/api/docs/",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"chef",
+								"api",
+								"docs",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/poutine",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "05010864-fa9e-4e9a-9639-10b256ac756a",
+								"exec": [
+									"pm.test(\"Chef /poutine endpoint\", function () {\r",
+									"    pm.expect(pm.response.json()).to.eql({\r",
+									"        cheese: {\r",
+									"            squeezed: true,\r",
+									"        },\r",
+									"        sauce: {\r",
+									"            type: 'gravy',\r",
+									"        },\r",
+									"        potatoes: [\r",
+									"            {\r",
+									"                sideLength: 1,\r",
+									"                cut: true,\r",
+									"                dipped: true,\r",
+									"                dippingDuration: 25000,\r",
+									"                boiled: true,\r",
+									"                fried: true,\r",
+									"                oil: 'canola',\r",
+									"            },\r",
+									"            {\r",
+									"                sideLength: 1,\r",
+									"                cut: true,\r",
+									"                dipped: true,\r",
+									"                dippingDuration: 25000,\r",
+									"                boiled: true,\r",
+									"                fried: true,\r",
+									"                oil: 'canola',\r",
+									"            },\r",
+									"        ],\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost/chef/api/poutine?oil=canola",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"chef",
+								"api",
+								"poutine"
+							],
+							"query": [
+								{
+									"key": "oil",
+									"value": "canola"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
