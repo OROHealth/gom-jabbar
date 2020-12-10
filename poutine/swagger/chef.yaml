@@ -19,7 +19,7 @@ paths:
                             ok:
                                 type: boolean
     /poutine:
-        get:
+        post:
             tags: [poutine]
             summary: 'Get the best poutine in town to past 2am drunked people. The chef may sing'
             parameters:

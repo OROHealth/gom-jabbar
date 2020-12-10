@@ -7,7 +7,7 @@ class CuisineService {
     constructor(private url: string, private prefix: string) {}
 
     public squeezeCheese(): Promise<Cheese> {
-        return Axios.get<Cheese>(`${this.url}/outremona${this.prefix}/cheeses/squeeze`).then((value) => value.data);
+        return Axios.post<Cheese>(`${this.url}/outremona${this.prefix}/cheeses/squeeze`).then((value) => value.data);
     }
 
     public keepWarm(something: any, temperature: number): Promise<any> {

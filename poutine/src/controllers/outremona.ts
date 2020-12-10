@@ -5,7 +5,7 @@ import { Router } from 'express';
 const router = Router();
 export const outremonaController = router;
 
-router.get('/cheeses/squeeze', (req, res): any => {
+router.post('/cheeses/squeeze', (req, res): any => {
     console.log('Takes a handful of squeaky cheese and squeeze it...');
 
     promiseTimeout(2000)

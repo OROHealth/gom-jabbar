@@ -20,7 +20,7 @@ paths:
                                 type: boolean
 
     /cheeses/squeeze:
-        get:
+        post:
             tags: [poutine]
             summary: 'Get squeezed cheese.'
             responses:

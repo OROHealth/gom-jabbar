@@ -6,7 +6,7 @@ import { Router } from 'express';
 const router = Router();
 export const chefController = router;
 
-router.get('/poutine', (req: ParsedQueryRequest, res, next): any => {
+router.post('/poutine', (req: ParsedQueryRequest, res, next): any => {
     const { oil } = req.parsedQuery;
 
     const potatoesPreparation = cuisineService
