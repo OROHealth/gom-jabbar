@@ -1,4 +1,4 @@
-export interface Cardboard {
+export interface Cardbox {
     mixed: boolean;
 }
 export interface Cheese {

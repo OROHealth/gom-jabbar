@@ -21,13 +21,15 @@ paths:
     /potatoes/fry:
         post:
             tags: [poutine]
-            summary: 'Fries given object in oil'
+            summary: 'Fries given potatoes in oil'
             parameters:
                 - name: body
                   in: body
-                  description: 'The object to fry. Please prefer potatoes 😇.'
+                  description: 'The potatoes to fry.'
                   schema:
-                      type: object
+                      type: array
+                      items:
+                          $ref: '#/definitions/Potatoe'
                 - name: oil
                   in: query
                   description: 'The oil to use.'
@@ -38,15 +40,11 @@ paths:
                       - colza
             responses:
                 200:
-                    description: 'The fried object'
+                    description: 'The fried potatoes'
                     schema:
-                        type: object
-                        properties:
-                            oil:
-                                type: string
-                            fried:
-                                type: boolean
-                        additionalProperties: true
+                        type: array
+                        items:
+                            $ref: '#/definitions/Potatoe'
                 404:
                     description: 'Oil not found'
                     schema:
@@ -57,6 +55,25 @@ paths:
                         $ref: '#/definitions/Error'
 
 definitions:
+    Potatoe:
+        properties:
+            boiled:
+                type: boolean
+            cut:
+                type: boolean
+            dipped:
+                type: boolean
+            dippingDuration:
+                type: number
+            fried:
+                type: boolean
+            oil:
+                type: string
+            sideLength:
+                type: number
+        example:
+            sideLength: 1
+            cut: true
     Error:
         required:
             - statusCode

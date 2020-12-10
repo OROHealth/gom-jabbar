@@ -1,19 +1,106 @@
 swagger: '2.0'
 info:
-  title: Poutine microservice - Verduny
+    title: Poutine microservice - Verduny Robot Maker
+    version: '1'
 consumes: [application/json]
 produces: [application/json]
 schemes: [http]
 paths:
-  /check:
-    get:
-      tags: [check]
-      summary: 'Checks if the server is running'
-      responses:
-        200:
-          description: 'The server is running'
-          schema:
-            type: object
-            properties:
-              ok:
+    /check:
+        get:
+            tags: [check]
+            summary: 'Checks if the server is running'
+            responses:
+                200:
+                    description: 'The server is running'
+                    schema:
+                        type: object
+                        properties:
+                            ok:
+                                type: boolean
+    /potatoes/cut:
+        post:
+            tags: [poutine]
+            summary: 'Cut potatoes in dynamicaly-sized cube.'
+            description: 'Get potatoes out of Wonderland and cut it in cubes.'
+            parameters:
+                - name: sideLength
+                  in: query
+                  description: 'The length of a side of the cube.'
+                  type: number
+                - name: potatoeNumber
+                  in: query
+                  description: 'The number of potatoes to cut.'
+                  type: number
+            responses:
+                200:
+                    description: 'Cut potatoes'
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/Potatoe'
+                default:
+                    description: Unexpected error
+                    schema:
+                        $ref: '#/definitions/Error'
+    /potatoes/dip:
+        post:
+            tags: [poutine]
+            summary: 'Dip Potatoes in maple syrup.'
+            parameters:
+                - name: body
+                  in: body
+                  description: 'The potatoes to dip in maple syrup.'
+                  schema:
+                      type: array
+                      items:
+                          $ref: '#/definitions/Potatoe'
+                - name: duration
+                  in: query
+                  description: 'Dipping duration.'
+                  type: integer
+            responses:
+                200:
+                    description: 'The boiled potatoes'
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/Potatoe'
+                default:
+                    description: Unexpected error
+                    schema:
+                        $ref: '#/definitions/Error'
+
+definitions:
+    Potatoe:
+        properties:
+            boiled:
                 type: boolean
+            cut:
+                type: boolean
+            dipped:
+                type: boolean
+            dippingDuration:
+                type: number
+            fried:
+                type: boolean
+            oil:
+                type: string
+            sideLength:
+                type: number
+        example:
+            sideLength: 1
+            cut: true
+    Error:
+        required:
+            - statusCode
+            - message
+        properties:
+            statusCode:
+                type: integer
+                format: int32
+            message:
+                type: string
+        example:
+            statusCode: 404
+            message: Page Not Found...

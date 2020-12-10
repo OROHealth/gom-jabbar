@@ -1,19 +1,53 @@
 swagger: '2.0'
 info:
-  title: Poutine microservice - Outremona
+    title: Poutine microservice - Outremona Robot Maker
+    version: '1'
 consumes: [application/json]
 produces: [application/json]
 schemes: [http]
 paths:
-  /check:
-    get:
-      tags: [check]
-      summary: 'Checks if the server is running'
-      responses:
-        200:
-          description: 'The server is running'
-          schema:
-            type: object
-            properties:
-              ok:
+    /check:
+        get:
+            tags: [check]
+            summary: 'Checks if the server is running'
+            responses:
+                200:
+                    description: 'The server is running'
+                    schema:
+                        type: object
+                        properties:
+                            ok:
+                                type: boolean
+
+    /cheeses/squeeze:
+        get:
+            tags: [poutine]
+            summary: 'Get squeezed cheese.'
+            responses:
+                200:
+                    description: 'Squeezed cheese'
+                    schema:
+                        $ref: '#/definitions/Cheese'
+                default:
+                    description: Unexpected error
+                    schema:
+                        $ref: '#/definitions/Error'
+
+definitions:
+    Cheese:
+        properties:
+            squeezed:
                 type: boolean
+    Error:
+        required:
+            - statusCode
+            - message
+        properties:
+            statusCode:
+                type: integer
+                format: int32
+            message:
+                type: string
+        example:
+            statusCode: 404
+            message: Page Not Found...

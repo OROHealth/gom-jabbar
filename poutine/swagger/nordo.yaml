@@ -1,19 +1,77 @@
 swagger: '2.0'
 info:
-  title: Poutine microservice - Nordo
+    title: Poutine microservice - Nordo Robot Maker
+    version: '1'
 consumes: [application/json]
 produces: [application/json]
 schemes: [http]
 paths:
-  /check:
-    get:
-      tags: [check]
-      summary: 'Checks if the server is running'
-      responses:
-        200:
-          description: 'The server is running'
-          schema:
-            type: object
-            properties:
-              ok:
+    /check:
+        get:
+            tags: [check]
+            summary: 'Checks if the server is running'
+            responses:
+                200:
+                    description: 'The server is running'
+                    schema:
+                        type: object
+                        properties:
+                            ok:
+                                type: boolean
+    /potatoes/boil:
+        post:
+            tags: [poutine]
+            summary: 'Boils given potatoes'
+            parameters:
+                - name: body
+                  in: body
+                  description: 'The potatoes to boil.'
+                  schema:
+                      type: array
+                      items:
+                          $ref: '#/definitions/Potatoe'
+            responses:
+                200:
+                    description: 'The boiled potatoe'
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/Potatoe'
+                default:
+                    description: Unexpected error
+                    schema:
+                        $ref: '#/definitions/Error'
+
+definitions:
+    Potatoe:
+        properties:
+            boiled:
                 type: boolean
+            cut:
+                type: boolean
+            dipped:
+                type: boolean
+            dippingDuration:
+                type: number
+            fried:
+                type: boolean
+            oil:
+                type: string
+            sideLength:
+                type: number
+        example:
+            sideLength: 1
+            cut: true
+    Error:
+        required:
+            - statusCode
+            - message
+        properties:
+            statusCode:
+                type: integer
+                format: int32
+            message:
+                type: string
+        example:
+            statusCode: 404
+            message: Page Not Found...

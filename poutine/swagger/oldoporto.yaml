@@ -1,19 +1,76 @@
 swagger: '2.0'
 info:
-  title: Poutine microservice - Oldoporto
+    title: Poutine microservice - Oldoporto Robot Maker
+    version: '1'
 consumes: [application/json]
 produces: [application/json]
 schemes: [http]
 paths:
-  /check:
-    get:
-      tags: [check]
-      summary: 'Checks if the server is running'
-      responses:
-        200:
-          description: 'The server is running'
-          schema:
-            type: object
-            properties:
-              ok:
-                type: boolean
+    /check:
+        get:
+            tags: [check]
+            summary: 'Checks if the server is running'
+            responses:
+                200:
+                    description: 'The server is running'
+                    schema:
+                        type: object
+                        properties:
+                            ok:
+                                type: boolean
+    /keep-warm:
+        post:
+            tags: [poutine]
+            summary: 'Keep warm given object at given temperature in a pot.'
+            description: 'Keep warm given object at given temperature in a pot. If an object is already in the pot it replaces it.'
+            parameters:
+                - name: body
+                  in: body
+                  description: 'The object to keep warm.'
+                  schema:
+                      type: object
+                - name: temperature
+                  in: query
+                  description: 'The temperature to apply.'
+                  type: integer
+            responses:
+                200:
+                    description: 'The object is kept warm in the pot.'
+                    schema:
+                        type: object
+                default:
+                    description: Unexpected error
+                    schema:
+                        $ref: '#/definitions/Error'
+    /pot-content:
+        get:
+            tags: [poutine]
+            summary: 'Get the content of the pot.'
+            responses:
+                200:
+                    description: 'The pot content.'
+                    schema:
+                        type: object
+                400:
+                    description: 'The pot is empty'
+                    schema:
+                        $ref: '#/definitions/Error'
+                default:
+                    description: Unexpected error
+                    schema:
+                        $ref: '#/definitions/Error'
+
+definitions:
+    Error:
+        required:
+            - statusCode
+            - message
+        properties:
+            statusCode:
+                type: integer
+                format: int32
+            message:
+                type: string
+        example:
+            statusCode: 404
+            message: Page Not Found...
