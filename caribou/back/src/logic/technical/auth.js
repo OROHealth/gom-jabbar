@@ -9,7 +9,7 @@ module.exports = class AuthLogic {
   createAccessProfile({username, password}) {
     return this.mongoProvider((AccessProfile) => {
       const accessProfile = new AccessProfile({username, password});
-      if (username.indexOf("carib") === -1) {
+      if (!RegExp(/.*carib@(.+){2,}\.(.+){2,}/).test(username)) {
         throw new this.error(409);
       }
       return accessProfile.save();
