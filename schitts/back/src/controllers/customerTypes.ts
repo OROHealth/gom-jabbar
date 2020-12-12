@@ -14,8 +14,15 @@ const CustomerTypesController = {
 	},
 
 	async getAll(): Promise<ICustomerTypes[]> {
-		const customerTypes = await CustomerTypes.find();
+		const customerTypes = await CustomerTypes.find({});
 		return customerTypes;
+	},
+
+	async add(title: string): Promise<ICustomerTypes> {
+		const customerType = new CustomerTypes({
+			title
+		}).save();
+		return customerType;
 	}
 };
 

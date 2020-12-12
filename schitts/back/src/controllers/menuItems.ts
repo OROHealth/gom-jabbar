@@ -1,3 +1,4 @@
+import { IItemTypes } from "../models/itemTypes";
 import { MenuItems, IMenuItems } from "../models/menuItems";
 
 const MenuItemsController = {
@@ -6,8 +7,26 @@ const MenuItemsController = {
 		return menuItem;
 	},
 
-	async add(): Promise<IMenuItems | null> {
-		const newMenuItem = new MenuItems();
+	async getAll(): Promise<IMenuItems[]> {
+		const menuItems = await MenuItems.find({});
+		return menuItems;
+	},
+
+	async getByType(type: IItemTypes | null): Promise<IMenuItems[]> {
+		const menuItems = type ? await MenuItems.find({
+			type
+		}) : [];
+		return menuItems;
+	},
+
+	async add(type: IItemTypes, title: string, price: number, cookedLevel: number, bestBefore: number): Promise<IMenuItems | null> {
+		const newMenuItem = new MenuItems({
+			type,
+			title,
+			price,
+			cookedLevel,
+			bestBefore
+		});
 		const menuItemSaved = await newMenuItem.save();
 		if (menuItemSaved) return menuItemSaved;
 		return null;

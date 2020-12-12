@@ -4,6 +4,7 @@
   "description": "API for Schitts Project",
   "main": "dist/server.js",
   "dependencies": {
+    "@nastyox/rando.js": "^2.0.5",
     "axios": "^0.21.0",
     "body-parser": "^1.19.0",
     "connect-mongo": "^3.2.0",
