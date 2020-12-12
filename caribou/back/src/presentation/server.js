@@ -1,25 +1,10 @@
 const bodyParser = require("body-parser");
 const cors = require('cors');
 const P = require("bluebird");
-const R = require("ramda");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 
-const propToRemove = [
-  "password",
-];
-
-const removePrivateProperties = (_log) => {
-  const log = R.clone(_log);
-  Object.keys(log).forEach(key => {
-    if (typeof log[key] === "object") {
-      log[key] = removePrivateProperties(log[key]);
-    } else if ((typeof log[key] === "string" || typeof log[key] === "number") && R.includes(key, propToRemove)) {
-      log[key] = "**********";
-    }
-  });
-  return log;
-};
+const {removePrivateProperties} = require("../tools");
 
 class Server {
   constructor(container) {
@@ -35,12 +20,12 @@ class Server {
       origin: allowedCorsOrigins,
       credentials: true
     }));
-    this.authenticationMethods = {}
+    this.authenticationMethods = {};
   };
 
   start() {
-    this.app.listen(this.port, () => console.log(`Server running on port ${this.port}`));
-  };
+    this.app.listen(this.port, () => console.log(`HTTP server running on port ${this.port}`));
+  }
 
   registerAuthenticationMethod(methodName, method) {
     this.authenticationMethods[methodName] = method;

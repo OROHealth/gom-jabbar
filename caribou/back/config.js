@@ -26,6 +26,7 @@ module.exports = {
   },
   logic: {},
   presentation: {
-    port: 33333
+    port: 33333,
+    socketPort: 33334,
   }
 };
