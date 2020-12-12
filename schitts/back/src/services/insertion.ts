@@ -14,9 +14,9 @@ import { ICustomerTypes } from '../models/customerTypes';
 import { IMenuItems } from '../models/menuItems';
 
 const insertion = async (props: { [key: string]: number }): Promise<{ [key: string]: number }> => {
-	const { nbUsers, orderMin, orderMax, spanYears } = props;
+	const { orderMin, orderMax, spanYears } = props;
 
-	if (nbUsers && nbUsers > 0 && orderMin && orderMax && spanYears) {
+	if (orderMin && orderMax && spanYears) {
 
 		const customerTypes = await CustomerTypesController.getAll();
 		const foodType = await ItemTypesController.findOne('Food');
@@ -26,45 +26,44 @@ const insertion = async (props: { [key: string]: number }): Promise<{ [key: stri
 		const menusList = await MenusController.getAll();
 		const tonesList = await TonesController.getAll();
 
-		for (let i = 0; i < nbUsers; i++) {
-			//Random male or female
-			const gender: string = rando(['John', 'Jane']).value;
+		//Random male or female
+		const gender: string = rando(['John', 'Jane']).value;
 
-			//Add customers
-			const firstName = `${gender}${i}`;
-			const type:ICustomerTypes = rando(customerTypes).value;
-			const drinkPreferences:IMenuItems[] = [rando(drinksList).value];
-			const foodPreferences:IMenuItems[] = [rando(foodsList).value];
+		//Add customers
+		const newCount = await Customers.estimatedDocumentCount();
+		const firstName = `${gender}${newCount + 1}`;
+		const type: ICustomerTypes = rando(customerTypes).value;
+		const drinkPreferences: IMenuItems[] = [rando(drinksList).value];
+		const foodPreferences: IMenuItems[] = [rando(foodsList).value];
 
-			const newCustomer = await CustomersController.add(firstName, type, drinkPreferences, foodPreferences);
+		const newCustomer = await CustomersController.add(firstName, type, drinkPreferences, foodPreferences);
 
-			if (newCustomer) {
-				//Orders
-				const nbOrders = orderMax >= orderMin ? rando(orderMin - orderMax) : 1;
-				const nbDays = spanYears > 0 ? spanYears * 365 : 365;
+		if (newCustomer) {
+			//Orders
+			const nbOrders = orderMax >= orderMin ? rando(orderMin, orderMax) : 1;
+			const nbDays = spanYears > 0 ? spanYears * 365 : 365;
 
-				for (let j = 0; j < nbOrders; j++) {
-					//New Bill or existing one
-					const bills = await BillsController.getAll();
-					const randomBill = rando(true, false);
+			for (let j = 0; j < nbOrders; j++) {
+				//New Bill or existing one
+				const bills = await BillsController.getAll();
+				const randomBill = rando(true, false);
 
-					let theBill = null;
-					if (bills.length > 2 && randomBill) {
-						theBill = rando(bills).value;
-					} else {
-						theBill = await BillsController.add(rando(['per group', 'per person', 'ratios']).value);
-					};
+				let theBill = null;
+				if (bills.length > 2 && randomBill) {
+					theBill = rando(bills).value;
+				} else {
+					theBill = await BillsController.add(rando(['per group', 'per person', 'ratios']).value);
+				};
 
-					const orderDate = subDays(new Date(), rando(0, nbDays));
-					const menu = rando(menusList).value;
-					const tone = rando(tonesList).value;
-					const feedBack = rando(0, 10);
+				const orderDate = subDays(new Date(), rando(0, nbDays));
+				const menu = rando(menusList).value;
+				const tone = rando(tonesList).value;
+				const feedback: number = rando(0, 10);
 
-					const newOrder = await OrdersController.add(newCustomer, theBill, orderDate, menu, tone);
+				const newOrder = await OrdersController.add(newCustomer, theBill, orderDate, menu, tone);
 
-					//feedBack
-					if (newOrder) await OrdersController.patchFeedback(newOrder._id.toString(), feedBack);
-				}
+				//feedback
+				if (newOrder) await OrdersController.patchFeedback(newOrder._id.toString(), feedback);
 			}
 		}
 	}
@@ -73,10 +72,12 @@ const insertion = async (props: { [key: string]: number }): Promise<{ [key: stri
 	const customers = await Customers.estimatedDocumentCount();
 	const orders = await Orders.estimatedDocumentCount();
 
-	return {
+	const result = {
 		customers,
 		orders
 	};
+
+	return result;
 }
 
 export default insertion;

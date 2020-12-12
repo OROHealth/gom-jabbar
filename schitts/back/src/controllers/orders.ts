@@ -23,12 +23,13 @@ const OrdersController = {
 		return null;
 	},
 
-	async patchFeedback(orderID: string, feedBack: number): Promise<IOrders | null> {
+	async patchFeedback(orderID: string, feedback: number): Promise<IOrders | null> {
 		const patchedOrder = await Orders.findByIdAndUpdate(
 			orderID,
-			{feedBack},
+			{feedback},
 			{ new: true }
 		);
+
 		if (patchedOrder) return patchedOrder;
 		return null;
 	}
