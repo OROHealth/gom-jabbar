@@ -8,18 +8,21 @@ import Input from "../ui/Input";
 import Link from "../ui/Link";
 
 function SignUp() {
-
   const PASSWORD_MIN_LENGTH = 8;
 
   const dispatch = useDispatch();
-  const createdUser = useSelector(s => s.user.lastCreatedUser);
+  const error = useSelector(s => s.error);
 
+  const [createdUser, setCreatedUser] = useState(null);
   const [inputEmail, setInputEmail] = useState('');
   const [inputPassword, setInputPassword] = useState('');
   const [inputPasswordConfirmation, setInputPasswordConfirmation] = useState('');
-
   const [passwordMismatch, setPasswordMismatch] = useState(false);
   const [passwordTooShort, setPasswordTooShort] = useState(false);
+
+  const submitRegistration = () => {
+    dispatch(register(inputEmail, inputPassword, setCreatedUser));
+  };
 
   useEffect(() => {
     setPasswordMismatch(inputPassword !== inputPasswordConfirmation && inputPasswordConfirmation.length > 0);
@@ -38,7 +41,7 @@ function SignUp() {
               <Input type="password" id="name" placeholder="Mot de passe" value={inputPassword} onChange={text => setInputPassword(text)} />
               <Input type="password" id="name" placeholder="Confirmation du mot de passe" value={inputPasswordConfirmation} onChange={text => setInputPasswordConfirmation(text)} />
               <br/>
-              {(passwordMismatch || passwordTooShort) &&
+              {(passwordMismatch || passwordTooShort || error.errorType) &&
               <div className={"alertBlock"}>
                 {passwordMismatch &&
                 <p>Les mots de passe saisis ne correspondent pas.</p>
@@ -46,12 +49,15 @@ function SignUp() {
                 {passwordTooShort &&
                 <p>Le mot de passe est trop court (minimum 8 caractères)</p>
                 }
+                {error.errorType &&
+                <p>Une erreur est survenue, merci de vérifier votre saisie</p>
+                }
               </div>
               }
               <div className={"buttonsBlock"}>
                 <Button onClick={() => {
                   if (!passwordMismatch) {
-                    dispatch(register(inputEmail, inputPassword))
+                    submitRegistration();
                   }
                 }}>
                   S'inscrire

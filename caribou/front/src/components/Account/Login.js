@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
-import {login} from '../../actions/auth';
+import {login, register} from '../../actions/auth';
 
 import Input from "../ui/Input";
 import Button from "../ui/Button";
@@ -11,8 +11,13 @@ function Login() {
 
   const dispatch = useDispatch();
 
+  const error = useSelector(s => s.error);
   const [inputEmail, setInputEmail] = useState('');
   const [inputPassword, setInputPassword] = useState('');
+
+  const submitLogin = () => {
+    dispatch(login(inputEmail, inputPassword));
+  };
 
   return (
     <div className="Login">
@@ -22,8 +27,13 @@ function Login() {
             <Input type="text" placeholder="Identifiant" value={inputEmail} onChange={text => setInputEmail(text)} />
             <Input type="password" placeholder="Mot de passe" value={inputPassword} onChange={text => setInputPassword(text)} />
             <br/>
+            {error.errorType &&
+            <div className={"alertBlock"}>
+              <p>Une erreur est survenue, merci de vérifier votre saisie</p>
+            </div>
+            }
             <div className={"buttonsBlock"}>
-              <Button onClick={() => dispatch(login(inputEmail, inputPassword))}>Se connecter</Button>
+              <Button onClick={submitLogin}>Se connecter</Button>
               <Link to="/signup">S'inscrire</Link>
             </div>
           </div>

@@ -8,7 +8,7 @@ const UserReducer = function(previousState = initialState, action) {
   const newState = R.clone(previousState);
   switch (action.type) {
     case "REGISTER_USER":
-      return R.assoc("lastCreatedUser", action.user, newState);
+      return R.mergeRight(newState, action.user);
     case "REGISTER_TOKEN":
       return R.assoc("token", action.token, newState);
     case "REMOVE_TOKEN":
