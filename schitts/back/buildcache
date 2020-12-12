@@ -501,6 +501,11 @@
         "signature": "924732dfbdfd120ee07cf733c7c65018f24ce9ddf06ed9ccf3cad8fdc2e33585",
         "affectsGlobalScope": false
       },
+      "./node_modules/@types/cors/index.d.ts": {
+        "version": "93e84a7d4af3809d0bb3d6d5cfb1b0edf082093588ea0a8df78ba5d3e71126d5",
+        "signature": "93e84a7d4af3809d0bb3d6d5cfb1b0edf082093588ea0a8df78ba5d3e71126d5",
+        "affectsGlobalScope": false
+      },
       "./node_modules/@types/helmet/index.d.ts": {
         "version": "29b7786da16200eaf23b5aeb2a1ac1c6e333bf7e221647012d77f832f42a72e2",
         "signature": "29b7786da16200eaf23b5aeb2a1ac1c6e333bf7e221647012d77f832f42a72e2",
@@ -582,8 +587,8 @@
         "affectsGlobalScope": false
       },
       "./src/controllers/customers.ts": {
-        "version": "c34a0eee7f7c1ef0a2d22492d5ff3965b6d7aaf26453daee6715d063a396a476",
-        "signature": "a57a48be241a8500102096c364de1c6b20fb6e235bf39a5974221a122fd4af42",
+        "version": "1f3204d655676a6fd6b24a69765de779f567b96b8f956b6b6c27c7863c6a0358",
+        "signature": "459f914cfdeae0c56410597d0cda50f89c7a7c0466dbad7e6be02bb946548cb1",
         "affectsGlobalScope": false
       },
       "./node_modules/date-fns/typings.d.ts": {
@@ -597,8 +602,8 @@
         "affectsGlobalScope": false
       },
       "./src/controllers/orders.ts": {
-        "version": "c9241b2fc118ffb3f31e13f1bf38d25ce604b111c7059c5e2c60753c3910f85f",
-        "signature": "961c39cff3870887ab8416888e1d7f832da0a2c76f337bb24829fee0a995c99c",
+        "version": "51ade5e576568d4418bfa99df6cbb41e3528f41044cccb08c278a835b1d9a266",
+        "signature": "b2fa02c22983c921f15195befdc5ea60bd48fc28fb7d97a90916485c94258acd",
         "affectsGlobalScope": false
       },
       "./src/services/insertion.ts": {
@@ -611,8 +616,18 @@
         "signature": "0747134fc57c8e4a12d6144952ae1f47f54848f1ca110e997bd81ec1cc7b76e6",
         "affectsGlobalScope": false
       },
+      "./src/routes/customersroutes.ts": {
+        "version": "c03edb8f29d540f0c7913b073582db22bae65655cd190fea49b9a06a6ceb0edc",
+        "signature": "0747134fc57c8e4a12d6144952ae1f47f54848f1ca110e997bd81ec1cc7b76e6",
+        "affectsGlobalScope": false
+      },
+      "./src/routes/ordersroutes.ts": {
+        "version": "a7fb1a805f1b8ebe1e5db66c53554d899eefcfc23be030af13c4967b4e1f3b47",
+        "signature": "0747134fc57c8e4a12d6144952ae1f47f54848f1ca110e997bd81ec1cc7b76e6",
+        "affectsGlobalScope": false
+      },
       "./src/server.ts": {
-        "version": "55938d4caaea6cc34585c49d15c7a77c3c4145b8dac40ce7a47611e8c38f6f10",
+        "version": "2dc2888d6b58b239847acfd8622f228c7f9b2ff8d46d25adf1bdbaf206e7d637",
         "signature": "8ad9916707bf613a4bacf5980e511688622ccea5fcece1491dfc11edd1c23e73",
         "affectsGlobalScope": false
       },
@@ -1109,6 +1124,12 @@
       ],
       "./node_modules/@types/cookiejar/index.d.ts": [
         "./node_modules/@types/mongoose/index.d.ts",
+        "./node_modules/date-fns/typings.d.ts",
+        "./node_modules/mongoose/index.d.ts"
+      ],
+      "./node_modules/@types/cors/index.d.ts": [
+        "./node_modules/@types/mongoose/index.d.ts",
+        "./node_modules/@types/node/http.d.ts",
         "./node_modules/date-fns/typings.d.ts",
         "./node_modules/mongoose/index.d.ts"
       ],
@@ -2363,6 +2384,20 @@
         "./node_modules/date-fns/typings.d.ts",
         "./node_modules/mongoose/index.d.ts"
       ],
+      "./src/routes/customersroutes.ts": [
+        "./node_modules/@types/express/index.d.ts",
+        "./node_modules/@types/mongoose/index.d.ts",
+        "./node_modules/date-fns/typings.d.ts",
+        "./node_modules/mongoose/index.d.ts",
+        "./src/controllers/customers.ts"
+      ],
+      "./src/routes/ordersroutes.ts": [
+        "./node_modules/@types/express/index.d.ts",
+        "./node_modules/@types/mongoose/index.d.ts",
+        "./node_modules/date-fns/typings.d.ts",
+        "./node_modules/mongoose/index.d.ts",
+        "./src/controllers/orders.ts"
+      ],
       "./src/routes/servicesroutes.ts": [
         "./node_modules/@types/express/index.d.ts",
         "./node_modules/@types/mongoose/index.d.ts",
@@ -2372,12 +2407,15 @@
         "./src/services/resetdb.ts"
       ],
       "./src/server.ts": [
+        "./node_modules/@types/cors/index.d.ts",
         "./node_modules/@types/express/index.d.ts",
         "./node_modules/@types/helmet/index.d.ts",
         "./node_modules/@types/mongoose/index.d.ts",
         "./node_modules/date-fns/typings.d.ts",
         "./node_modules/mongoose/index.d.ts",
         "./src/config.ts",
+        "./src/routes/customersroutes.ts",
+        "./src/routes/ordersroutes.ts",
         "./src/routes/servicesroutes.ts"
       ],
       "./src/services/addconstantsdatas.ts": [
@@ -2478,6 +2516,12 @@
       ],
       "./node_modules/@types/cookiejar/index.d.ts": [
         "./node_modules/@types/mongoose/index.d.ts",
+        "./node_modules/mongoose/index.d.ts"
+      ],
+      "./node_modules/@types/cors/index.d.ts": [
+        "./node_modules/@types/mongoose/index.d.ts",
+        "./node_modules/@types/node/http.d.ts",
+        "./node_modules/date-fns/typings.d.ts",
         "./node_modules/mongoose/index.d.ts"
       ],
       "./node_modules/@types/cross-spawn/index.d.ts": [
@@ -3504,6 +3548,12 @@
       "./src/models/tones.ts": [
         "./node_modules/mongoose/index.d.ts"
       ],
+      "./src/routes/customersroutes.ts": [
+        "./node_modules/@types/express-serve-static-core/index.d.ts"
+      ],
+      "./src/routes/ordersroutes.ts": [
+        "./node_modules/@types/express-serve-static-core/index.d.ts"
+      ],
       "./src/routes/servicesroutes.ts": [
         "./node_modules/@types/express-serve-static-core/index.d.ts"
       ],
@@ -3526,6 +3576,7 @@
       "./node_modules/@types/bson/index.d.ts",
       "./node_modules/@types/connect/index.d.ts",
       "./node_modules/@types/cookiejar/index.d.ts",
+      "./node_modules/@types/cors/index.d.ts",
       "./node_modules/@types/cross-spawn/index.d.ts",
       "./node_modules/@types/debug/index.d.ts",
       "./node_modules/@types/dedent/index.d.ts",
@@ -3714,6 +3765,8 @@
       "./src/models/menus.ts",
       "./src/models/orders.ts",
       "./src/models/tones.ts",
+      "./src/routes/customersroutes.ts",
+      "./src/routes/ordersroutes.ts",
       "./src/routes/servicesroutes.ts",
       "./src/server.ts",
       "./src/services/addconstantsdatas.ts",

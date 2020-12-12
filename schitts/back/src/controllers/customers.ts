@@ -18,6 +18,11 @@ const CustomersController = {
 		return customers;
 	},
 
+	async count(): Promise<number> {
+		const count = await Customers.estimatedDocumentCount();
+		return count;
+	},
+
 	async add(firstName: string, type: ICustomerTypes, drinkPreferences: IMenuItems[], foodPreferences: IMenuItems[]): Promise<ICustomers | null> {
 		const newCustomer = new Customers({
 			firstName,

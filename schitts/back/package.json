@@ -5,9 +5,11 @@
   "main": "dist/server.js",
   "dependencies": {
     "@nastyox/rando.js": "^2.0.5",
+    "@types/cors": "^2.8.9",
     "axios": "^0.21.0",
     "body-parser": "^1.19.0",
     "connect-mongo": "^3.2.0",
+    "cors": "^2.8.5",
     "date-fns": "^2.16.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

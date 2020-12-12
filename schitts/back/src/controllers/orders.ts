@@ -10,6 +10,11 @@ const OrdersController = {
 		return orders;
 	},
 
+	async count(): Promise<number> {
+		const count = await Orders.estimatedDocumentCount();
+		return count;
+	},
+
 	async add(customer: ICustomers, bill: IBills, orderDate: Date, menu: IMenus, tone: ITones): Promise<IOrders | null> {
 		const newOrder = new Orders({
 			customer,

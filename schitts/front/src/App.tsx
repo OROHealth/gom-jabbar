@@ -15,17 +15,17 @@ function App() {
 
 	const parts = [
 		{
-			title: 'Base de donnée',
+			title: 'Database',
 			icon: database,
 			component: <Database />
 		},
 		{
-			title: 'Statistiques',
+			title: 'Statistics',
 			icon: statistics,
 			component: null
 		},
 		{
-			title: 'Trop cuit !?',
+			title: 'Overcooked ?',
 			icon: pot,
 			component: null
 		}
@@ -46,7 +46,7 @@ function App() {
 					justify="center"
 					alignItems="flex-start"
 					spacing={3}
-					style={styles.container}
+					style={styles.menu}
 				>
 					{parts.map((part, index) => {
 						return <MenuCard part={part} selected={index === selectedPart} key={index} action={() => setSelectedPart(index)} />
@@ -54,7 +54,7 @@ function App() {
 					)}
 				</Grid >
 				{/* PART */}
-				<Grid item>
+				<Grid item xs={12} style={styles.part}>
 					{parts[selectedPart].component}
 				</Grid >
 			</Grid >
@@ -65,16 +65,11 @@ function App() {
 export default App;
 
 const styles = {
-	container: {
+	menu: {
 		padding: 10,
 		marginTop: 30
 	},
-	// listItem: {
-	// 	paddingLeft: '0px',
-	// 	paddingRight: '0px'
-	// },
-	// title: {
-	// 	fontSize: '1.2rem',
-	// 	textAlign: 'center' as const
-	// }
+	part: {
+		width: '100%'
+	}
 }
