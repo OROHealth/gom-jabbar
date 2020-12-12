@@ -1,4 +1,5 @@
 const moment = require("moment");
+const R = require("ramda");
 
 module.exports = class AuthLogic {
   constructor(MongoProvider, CaribError) {
@@ -19,11 +20,13 @@ module.exports = class AuthLogic {
   getAccessProfile(accessToken) {
     return this.mongoProvider((Token) => {
       return Token.findOne({value: accessToken})
+        .populate("accessProfile")
         .then((res) => {
-          if (!res) {
+          const accessProfile = R.path(["_doc", "accessProfile", "_doc"], res);
+          if (!accessProfile) {
             throw new this.error(401);
           }
-          return res.accessProfile;
+          return accessProfile;
         })
     });
   }
