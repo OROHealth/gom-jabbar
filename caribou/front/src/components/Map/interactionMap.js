@@ -4,10 +4,11 @@ import {useMapEvents} from 'react-leaflet';
 import {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
+import {registerHuman} from '../../actions/human';
 import {getDistance} from '../../utils'
 
 import Human from './human';
-import ReportHumanPopup from './reportHumanPopup';
+import LocationPopup from './locationPopup';
 
 const InteractionMap = () => {
   const dispatch = useDispatch();
@@ -70,11 +71,13 @@ const InteractionMap = () => {
       dispatch({
         type: "SET_MODAL",
         content: (
-          <ReportHumanPopup
+          <LocationPopup
             position={e.latlng}
             trashZone={trashZone}
-            onSubmit={(trashingLevel, excitementLevel) => {
-              const newMarker = {
+            closeModal={() => dispatch({type: "RESET_MODAL"})}
+            submitHumanPosition={(data) => {
+              const {trashingLevel, excitementLevel} = data;
+              const newHuman = {
                 id: Math.random(),
                 position: e.latlng,
                 directionV: Math.trunc(Math.random() * 100) % 2 ? 1 : -1,
@@ -83,9 +86,10 @@ const InteractionMap = () => {
                 trashingLevel,
                 excitementLevel,
               };
-              setHumans((humans) => [...humans, newMarker]);
-              dispatch({type: "RESET_MODAL"});}
-            }
+              setHumans((humans) => [...humans, newHuman]);
+              dispatch(registerHuman(newHuman));
+              dispatch({type: "RESET_MODAL"});
+            }}
           />
         )
       });
