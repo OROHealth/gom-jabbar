@@ -26,6 +26,11 @@ button:focus, .button:focus {
     outline: none;
 }
 
+button.active {
+    color: white;
+    background-color: #3b3f48;
+}
+
 @media screen and (max-width: 640px) {
     button, .button {
         width: 100%;

@@ -5,9 +5,11 @@ import {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
 import {registerHuman} from '../../actions/human';
+import {registerCaribou} from '../../actions/caribou';
 import {getDistance} from '../../utils'
 
 import Human from './human';
+import Caribou from './caribou';
 import LocationPopup from './locationPopup';
 
 const InteractionMap = () => {
@@ -15,6 +17,7 @@ const InteractionMap = () => {
   const trashZone = useSelector(s => s.trashZone);
 
   const [humans, setHumans] = useState([]);
+  const [caribous, setCaribous] = useState([]);
   const [insiders, setInsiders] = useState([]);
 
   const requestRef = useRef();
@@ -90,6 +93,15 @@ const InteractionMap = () => {
               dispatch(registerHuman(newHuman));
               dispatch({type: "RESET_MODAL"});
             }}
+            submitCaribouPosition={() => {
+              const newCaribou = {
+                id: Math.random(),
+                position: e.latlng,
+              };
+              setCaribous((caribous) => [...caribous, newCaribou]);
+              dispatch(registerCaribou(newCaribou));
+              dispatch({type: "RESET_MODAL"});
+            }}
           />
         )
       });
@@ -106,6 +118,13 @@ const InteractionMap = () => {
               trashingLevel={human.trashingLevel}
               excitementLevel={human.excitementLevel}
             />
+          );
+        })
+      }
+      {
+        caribous.map((caribou) => {
+          return (
+            <Caribou position={caribou.position}/>
           );
         })
       }
