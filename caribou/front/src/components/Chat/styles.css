@@ -33,7 +33,7 @@ img.chatIcon {
 }
 
 .collapsed {
-    padding: 20px;
+    padding: 20px 10px 0 10px;
     width: 100px;
 }
 
