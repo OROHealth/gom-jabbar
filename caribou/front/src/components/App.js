@@ -1,5 +1,5 @@
 import * as R from "ramda";
-import {Link, Redirect, Route, Switch} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import {useSelector} from "react-redux";
 
 import './App.css';
@@ -8,6 +8,7 @@ import Banner from "./Banner";
 import Modal from "./Modal";
 import Login from "./Account/Login";
 import Signup from "./Account/Signup";
+import Chat from "./Chat";
 
 function App() {
   const token = useSelector(R.path(["user", "token"]));
@@ -23,6 +24,7 @@ function App() {
           <div className="map">
             <Map/>
           </div>
+          <Chat/>
         </div>
       </>
       }

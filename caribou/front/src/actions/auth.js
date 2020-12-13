@@ -2,7 +2,7 @@ import axios from "axios";
 import config from "../config";
 
 const register = (inputEmail, inputPassword, callback) => (dispatch) => {
-  axios.post(`${config.HOST}/api/accessProfile`, {username: inputEmail, password: inputPassword})
+  axios.post(`${config.API_HOST}/api/accessProfile`, {username: inputEmail, password: inputPassword})
     .then((result) => {
       dispatch({type: "RESET_ERROR"});
       callback(result.data);
@@ -14,7 +14,7 @@ const register = (inputEmail, inputPassword, callback) => (dispatch) => {
 };
 
 const login = (inputEmail, inputPassword) => (dispatch) => {
-  return axios.post(`${config.HOST}/api/oauth/login`, {username: inputEmail, password: inputPassword, grant_type: 'password'}, {withCredentials: true})
+  return axios.post(`${config.API_HOST}/api/oauth/login`, {username: inputEmail, password: inputPassword, grant_type: 'password'}, {withCredentials: true})
     .then((response) => {
       dispatch({type: "RESET_ERROR"});
       dispatch({type: "REGISTER_USER", user: {email: inputEmail}});
