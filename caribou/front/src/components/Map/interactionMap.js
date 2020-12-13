@@ -5,7 +5,7 @@ import {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
 import {registerHuman} from '../../actions/human';
-import {registerCaribou} from '../../actions/caribou';
+import {registerCaribou, retrieveCaribous} from '../../actions/caribou';
 import {getDistance} from '../../utils'
 
 import Human from './human';
@@ -15,13 +15,22 @@ import LocationPopup from './locationPopup';
 const InteractionMap = () => {
   const dispatch = useDispatch();
   const trashZone = useSelector(s => s.trashZone);
+  const caribouList = useSelector(s => s.caribou.list);
 
   const [humans, setHumans] = useState([]);
-  const [caribous, setCaribous] = useState([]);
+  const [caribous, setCaribous] = useState(caribouList);
   const [insiders, setInsiders] = useState([]);
 
   const requestRef = useRef();
   const previousRef = useRef();
+
+  useEffect(() => {
+    setCaribous(caribouList);
+  }, [caribouList]);
+
+  useEffect(() => {
+    dispatch(retrieveCaribous());
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -98,7 +107,6 @@ const InteractionMap = () => {
                 id: Math.random(),
                 position: e.latlng,
               };
-              setCaribous((caribous) => [...caribous, newCaribou]);
               dispatch(registerCaribou(newCaribou));
               dispatch({type: "RESET_MODAL"});
             }}
@@ -122,9 +130,9 @@ const InteractionMap = () => {
         })
       }
       {
-        caribous.map((caribou) => {
+        caribous.map(({lat, lng}) => {
           return (
-            <Caribou position={caribou.position}/>
+            <Caribou position={{lat, lng}}/>
           );
         })
       }
