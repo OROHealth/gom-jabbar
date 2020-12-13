@@ -1,21 +1,18 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 import "./input.css";
 
-function Login(props) {
-  const [value, setValue] = useState(props.value);
-
+function Input(props) {
   const handleChange = (event) => {
-    setValue(event.target.value);
     props.onChange(event.target.value);
   };
 
   return (
     <div className="input">
-      <input className="input-text" placeholder={props.placeholder} type={props.type || "text"} value={value} onChange={handleChange} pattern="\S+"/>
+      <input className="input-text" placeholder={props.placeholder} type={props.type || "text"} value={props.value || ""} onChange={handleChange} pattern="\S+"/>
       <label className="input-label">{props.placeholder}</label>
     </div>
   );
 }
 
-export default Login;
+export default Input;
