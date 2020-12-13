@@ -9,11 +9,13 @@ module.exports = class MessagingLogic {
     cb();
   }
 
-  sendMessage(accessProfile, content, room, io, cb) {
+  sendMessage(accessProfile, content, secret, room, io, cb) {
     return this.mongoProvider((AccessProfile, Message) => {
-      const translatedMessage = content
-        .replace(/[bcdfghjklmnpqrstvwxz]/g, "grm")
-        .replace(/[aeiouy]/g, "muu");
+      const translatedMessage = secret
+        ? content
+          .replace(/[bcdfghjklmnpqrstvwxz]/g, "grm")
+          .replace(/[aeiouy]/g, "muu")
+        : content;
       io.to(room).emit('message', {user: accessProfile.username, text: translatedMessage});
       const message = new Message({content: translatedMessage, room, accessProfile});
       return message.save()

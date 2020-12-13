@@ -12,8 +12,8 @@ module.exports = (SocketServer) => {
     eventName: "sendMessage",
     authenticationMethod: "OAuth",
     handler: (Data, Callback, IO, Credentials, MessagingLogic) => {
-      const {content, room} = Data;
-      return MessagingLogic.sendMessage(Credentials, content, room, IO, Callback);
+      const {content, room, secret} = Data;
+      return MessagingLogic.sendMessage(Credentials, content, secret, room, IO, Callback);
     }
   });
 };
