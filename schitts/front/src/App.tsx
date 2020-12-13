@@ -5,6 +5,7 @@ import MenuCard from './components/menuCard';
 
 //Parts
 import Database from './database/index';
+import Overcooked from './overcooked/index';
 
 // Icons
 import database from './img/database.png';
@@ -27,7 +28,7 @@ function App() {
 		{
 			title: 'Overcooked ?',
 			icon: pot,
-			component: null
+			component: <Overcooked />
 		}
 	];
 

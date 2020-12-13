@@ -100,7 +100,7 @@ const AddCustomer: React.FC<IAddCustomerProps> = ({ setDatas, setLoading }) => {
 						alignItems="center"
 						style={styles.container}
 					>
-						<Button size="medium" variant="contained" color='primary' onClick={addCustomer}>Ajouter</Button>
+						<Button size="medium" variant="contained" color='primary' onClick={addCustomer}>Add</Button>
 					</Grid>
 				</Grid >
 			</Paper>
