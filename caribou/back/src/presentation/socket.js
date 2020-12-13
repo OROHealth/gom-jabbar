@@ -38,7 +38,7 @@ class SocketServer {
         socketContainer.registerValue("Socket", socket);
         socketContainer.registerValue("IO", this.io);
         socketContainer.registerValue("Data", data);
-        socketContainer.registerValue("Callback", callback);
+        socketContainer.registerValue("Callback", callback || (() => null));
         return P.resolve()
           .then(() => {
             if (authenticationMethod) {

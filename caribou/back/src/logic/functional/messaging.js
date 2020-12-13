@@ -3,7 +3,8 @@ module.exports = class MessagingLogic {
     this.mongoProvider = MongoProvider;
   }
 
-  joinRoom(accessProfile, room, socket, cb) {socket.join(room);
+  joinRoom(accessProfile, room, socket, cb) {
+    socket.join(room);
     socket.broadcast.to(room).emit('message', {user: 'admin', text: `${accessProfile.username} has joined!`});
     cb();
   }
