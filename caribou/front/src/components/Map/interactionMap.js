@@ -4,7 +4,7 @@ import {useMapEvents} from 'react-leaflet';
 import {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
-import {registerHuman} from '../../actions/human';
+import {registerHuman, checkHuman} from '../../actions/human';
 import {registerCaribou, retrieveCaribous} from '../../actions/caribou';
 import {getDistance} from '../../utils'
 
@@ -19,18 +19,18 @@ let socket;
 const InteractionMap = () => {
   const dispatch = useDispatch();
   const trashZone = useSelector(s => s.trashZone);
-  const caribouList = useSelector(s => s.caribou.list);
+  const storedCaribous = useSelector(s => s.caribou.list);
 
   const [humans, setHumans] = useState([]);
-  const [caribous, setCaribous] = useState(caribouList);
+  const [caribous, setCaribous] = useState(storedCaribous);
   const [insiders, setInsiders] = useState([]);
 
   const requestRef = useRef();
   const previousRef = useRef();
 
   useEffect(() => {
-    setCaribous(caribouList);
-  }, [caribouList]);
+    setCaribous(storedCaribous);
+  }, [storedCaribous]);
 
   useEffect(() => {
     socket = initSocket();
@@ -102,6 +102,13 @@ const InteractionMap = () => {
               };
               setHumans((humans) => [...humans, newHuman]);
               dispatch(registerHuman(newHuman));
+              dispatch({type: "RESET_MODAL"});
+            }}
+            submitHumanCheck={(data) => {
+              const {radiusToCheck} = data;
+              dispatch(checkHuman(e.latlng, radiusToCheck, (zoneNotSafe) => dispatch(
+                sendMessage(socket, `La zone vérifiée (latitude ${e.latlng.lat} / longitude ${e.latlng.lng}) ${zoneNotSafe ? "n'est pas sûre !" : "est sûre"}`, room, false)
+              )));
               dispatch({type: "RESET_MODAL"});
             }}
             submitCaribouPosition={() => {

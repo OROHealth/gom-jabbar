@@ -3,9 +3,10 @@ import {useState} from 'react';
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 
-const PopupContent = ({mode, submitHumanPosition, submitCaribouPosition, closeModal}) => {
+const PopupContent = ({mode, submitHumanPosition, submitHumanCheck, submitCaribouPosition, closeModal}) => {
   const [trashingLevel, setTrashingLevel] = useState("");
   const [excitementLevel, setExcitementLevel] = useState("");
+  const [radiusToCheck, setRadiusToCheck] = useState("");
 
   if (mode === "REGISTER_HUMAN") {
     return (
@@ -21,6 +22,22 @@ const PopupContent = ({mode, submitHumanPosition, submitCaribouPosition, closeMo
           </Button>
           <Button onClick={() => closeModal()}>
             Annuler
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (mode === "CHECK_HUMAN") {
+    return (
+      <div className="row">
+        <div className="offset-1 col-10">
+          <h1>Vérification de position</h1>
+          <p>Précisez le rayon dans lequel vérifier la présence d'un humain</p>
+          <Input value={radiusToCheck} placeholder="Rayon à analyser" onChange={(text) => setRadiusToCheck(text)}/>
+          <br/>
+          <Button onClick={() => submitHumanCheck({radiusToCheck})}>
+            Vérifier
           </Button>
         </div>
       </div>
@@ -55,6 +72,9 @@ const LocationPopup = (props) => {
       <br/>
       <Button isActive={mode === "REGISTER_HUMAN"} onClick={() => setMode("REGISTER_HUMAN")}>
         Signaler un human
+      </Button>
+      <Button isActive={mode === "CHECK_HUMAN"} onClick={() => setMode("CHECK_HUMAN")}>
+        Vérifier la zone
       </Button>
       <Button isActive={mode === "REGISTER_CARIBOU"} onClick={() => setMode("REGISTER_CARIBOU")}>
         Signaler un caribou

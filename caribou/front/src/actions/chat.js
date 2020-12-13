@@ -9,8 +9,8 @@ const joinRoom = (socket, room) => () => {
   socket.emit('join', {room});
 };
 
-const sendMessage = (socket, message, room) => () => {
-  socket.emit('sendMessage', {content: message, room});
+const sendMessage = (socket, message, room, secret = true) => () => {
+  socket.emit('sendMessage', {content: message, room, secret});
 };
 
 const listenMessage = (socket, callback) => () => {

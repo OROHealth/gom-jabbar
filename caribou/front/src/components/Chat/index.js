@@ -59,7 +59,7 @@ const MessageInput = ({submitNewMessage}) => {
 };
 
 const Chat = () => {
-  const [isCollapsed, setCollapsed] = useState(true);
+  const [isCollapsed, setCollapsed] = useState(false);
   const [messages, setMessages] = useState([]);
   const userEmail = useSelector(s => s.user.email);
   const dispatch = useDispatch();
