@@ -9,6 +9,14 @@ module.exports = (Server) => {
   });
 
   Server.registerRoute({
+    method: "GET",
+    authenticationMethod: "OAuth",
+    path: "/api/humans",
+    handler: (HumanLogic, Body) => {
+      return HumanLogic.getAll(Body);
+    }
+  });
+  Server.registerRoute({
     method: "POST",
     authenticationMethod: "OAuth",
     path: "/api/humans/check",

@@ -13,6 +13,12 @@ module.exports = class HumanLogic {
     });
   }
 
+  getAll() {
+    return this.mongoProvider((Human) => {
+      return Human.find();
+    });
+  }
+
   checkSafety({lat, lng, radius}) {
     return this.mongoProvider((Human) => {
       return Human.find()
