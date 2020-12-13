@@ -34,7 +34,10 @@ class SocketServer {
       socket.on(eventName, (data, callback) => {
         console.log("Incoming socket event", removePrivateProperties({eventName, data}));
         const socketContainer = this.container.createChild();
-        socketContainer.registerValue("Cookies", cookie.parse(R.path(["handshake", "headers", "cookie"], socket)));
+        const socketCookie = R.path(["handshake", "headers", "cookie"], socket);
+        if (socketCookie) {
+          socketContainer.registerValue("Cookies", cookie.parse(socketCookie));
+        }
         socketContainer.registerValue("Socket", socket);
         socketContainer.registerValue("IO", this.io);
         socketContainer.registerValue("Data", data);
