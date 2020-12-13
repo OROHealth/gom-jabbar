@@ -11,6 +11,10 @@ import {getDistance} from '../../utils'
 import Human from './human';
 import Caribou from './caribou';
 import LocationPopup from './locationPopup';
+import {initSocket, sendMessage} from "../../actions/chat";
+
+const room = 'myRoom';
+let socket;
 
 const InteractionMap = () => {
   const dispatch = useDispatch();
@@ -29,26 +33,24 @@ const InteractionMap = () => {
   }, [caribouList]);
 
   useEffect(() => {
+    socket = initSocket();
     dispatch(retrieveCaribous());
   }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const notificationDuration = 3000;
       humans.forEach((h) => {
         if (h.isInside === true && !R.find(R.propEq('id', h.id))(insiders)) {
           setInsiders((insiders) => [...insiders, h]);
-          dispatch({type: "NOTIFY_HUMAN_MOVE", humanId: h.id, move: "IN"});
-          setTimeout(() => {
-            dispatch({type: "CLEAR_HUMAN_MOVE_NOTIFICATION", humanId: h.id, move: "IN"});
-          }, notificationDuration);
+          dispatch(
+            sendMessage(socket, `Je viens de voir un humain entrer dans la zone rouge...`, room, false)
+          );
         }
         if (h.isInside === false && R.find(R.propEq('id', h.id))(insiders)) {
           setInsiders((insiders) => insiders.filter((insider) => insider.id !== h.id));
-          dispatch({type: "NOTIFY_HUMAN_MOVE", humanId: h.id, move: "OUT"});
-          setTimeout(() => {
-            dispatch({type: "CLEAR_HUMAN_MOVE_NOTIFICATION", humanId: h.id, move: "OUT"});
-          }, notificationDuration);
+          dispatch(
+            sendMessage(socket, `Je viens de voir un humain sortir de la zone rouge...`, room, false)
+          );
         }
       });
     }, 100);
