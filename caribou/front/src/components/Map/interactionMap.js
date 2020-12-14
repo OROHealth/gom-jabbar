@@ -1,7 +1,7 @@
 import * as R from "ramda";
 
 import {useMapEvents} from 'react-leaflet';
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState, useCallback} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
 import {registerHuman, checkHuman} from '../../actions/human';
@@ -35,7 +35,7 @@ const InteractionMap = () => {
   useEffect(() => {
     socket = initSocket();
     dispatch(retrieveCaribous());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -55,9 +55,10 @@ const InteractionMap = () => {
       });
     }, 100);
     return () => clearInterval(interval);
-  }, [humans.length, insiders]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [humans.length, insiders, dispatch]);
 
-  const animate = time => {
+  const animate = useCallback(time => {
     const stepDivider = 100000;
     if (!!previousRef.current) {
       setHumans((hms) => {
@@ -73,12 +74,12 @@ const InteractionMap = () => {
     }
     previousRef.current = time;
     requestRef.current = requestAnimationFrame(animate);
-  };
+  }, [trashZone]);
 
   useEffect(() => {
     requestRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(requestRef.current);
-  }, [humans]);
+  }, [animate]);
 
   useMapEvents({
     click(e) {
@@ -131,6 +132,7 @@ const InteractionMap = () => {
         humans.map((human) => {
           return (
             <Human
+              key={human.id}
               position={human.position}
               trashingLevel={human.trashingLevel}
               excitementLevel={human.excitementLevel}
@@ -139,9 +141,12 @@ const InteractionMap = () => {
         })
       }
       {
-        caribous.map(({lat, lng}) => {
+        caribous.map(({lat, lng, _id}) => {
           return (
-            <Caribou position={{lat, lng}}/>
+            <Caribou
+              key={_id}
+              position={{lat, lng}}
+            />
           );
         })
       }

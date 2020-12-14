@@ -48,7 +48,7 @@ const MessageInput = ({submitNewMessage}) => {
         value={newMessage}
         onChange={(e) => setNewMessage(e.target.value)}
         onKeyPress={(event) => {
-          if(event.key === 'Enter'){
+          if(event.key === 'Enter') {
             setNewMessage('');
             submitNewMessage(newMessage);
           }
@@ -73,7 +73,7 @@ const Chat = () => {
     return () => {
       socket.close();
     }
-  }, [userEmail]);
+  }, [userEmail, dispatch]);
 
   const submitNewMessage = (message) => {
     if (socket) {
