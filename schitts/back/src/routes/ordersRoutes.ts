@@ -13,4 +13,16 @@ router.get('/count', async (req: Request, res: Response) => {
 	}
 });
 
+/* GET ORDERS WITH FEEDBACK > n */
+router.get('/feedback/:grade', async (req: Request, res: Response) => {
+	const {grade} = req.params;
+
+	const list = await OrdersController.findByFeedback(parseInt(grade));
+	try {
+		return res.status(200).send(list);
+	} catch (_err) {
+		res.sendStatus(500);
+	}
+	});
+
 export default router;

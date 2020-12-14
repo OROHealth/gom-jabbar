@@ -1,6 +1,6 @@
 import { IBills } from "../models/bills";
 import { ICustomers } from "../models/customers";
-import { IMenus } from "../models/menus";
+import { IMenus, Menus } from "../models/menus";
 import { Orders, IOrders } from "../models/orders";
 import { ITones } from "../models/tones";
 
@@ -13,6 +13,17 @@ const OrdersController = {
 	async count(): Promise<number> {
 		const count = await Orders.estimatedDocumentCount();
 		return count;
+	},
+
+	async findByFeedback(grade: number): Promise<IOrders[]> {
+		const orders = Orders.find({
+			feedback: { $gte: grade }
+		}).populate({
+			path: 'menu',
+			model: Menus,
+			populate: { path: 'food', model: 'MenuItems'}
+		}).exec();
+		return orders;
 	},
 
 	async add(customer: ICustomers, bill: IBills, orderDate: Date, menu: IMenus, tone: ITones): Promise<IOrders | null> {
@@ -31,7 +42,7 @@ const OrdersController = {
 	async patchFeedback(orderID: string, feedback: number): Promise<IOrders | null> {
 		const patchedOrder = await Orders.findByIdAndUpdate(
 			orderID,
-			{feedback},
+			{ feedback },
 			{ new: true }
 		);
 
