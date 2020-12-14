@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { Grid, Paper, TextField, Typography, Slider, Button } from '@material-ui/core';
 
 interface IParamsProps {
-	fetchDatas: (datas: {
-		rate: number;
+	fetchDatas: (values: {
+		grade: number;
 		months: number;
-	}) => Promise<void>;
+	}) => Promise<void>
 }
 
 const Params: React.FC<IParamsProps> = ({ fetchDatas }) => {
 	const [formDatas, setFormDatas] = useState({
-		rate: 5,
+		grade: 5,
 		months: 6
 	});
 
@@ -39,17 +39,17 @@ const Params: React.FC<IParamsProps> = ({ fetchDatas }) => {
 						spacing={3}
 					>
 						<Grid item style={styles.block}>
-							<Typography id="rateLabel" gutterBottom>Rate</Typography>
+							<Typography id="gradeLabel" gutterBottom>Rate</Typography>
 							<Slider
 								defaultValue={5}
-								aria-labelledby="rateLabel"
+								aria-labelledby="gradeLabel"
 								step={1}
 								marks
 								min={1}
 								max={10}
 								valueLabelDisplay="on"
 								style={styles.slider}
-								onChange={(_event, value) => handleChanges('rate', value)}
+								onChange={(_event, value) => handleChanges('grade', value)}
 							/>
 						</Grid>
 						<Grid item style={styles.block}>
