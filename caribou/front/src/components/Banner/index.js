@@ -1,7 +1,5 @@
 import {useDispatch} from "react-redux";
 
-import Button from "../ui/Button";
-
 import './styles.css';
 import logo from '../../assets/images/caribou.svg';
 import LogoutIcon from "../../assets/images/exit.svg";

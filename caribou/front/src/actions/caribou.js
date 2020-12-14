@@ -4,7 +4,7 @@ import config from "../config";
 const registerCaribou = ({position}) => (dispatch) => {
   const {lat, lng} = position;
   return axios.post(`${config.API_HOST}/api/caribous`, {lat, lng}, {withCredentials: true})
-    .then(() => retrieveCaribous()(dispatch));
+    .then(() => dispatch(retrieveCaribous()));
 };
 
 const retrieveCaribous = () => (dispatch) => {

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
-import {login, register} from '../../actions/auth';
+import {login} from '../../actions/auth';
 
 import Input from "../ui/Input";
 import Button from "../ui/Button";
