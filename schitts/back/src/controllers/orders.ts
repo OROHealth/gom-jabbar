@@ -3,6 +3,7 @@ import { ICustomers } from "../models/customers";
 import { IMenus, Menus } from "../models/menus";
 import { Orders, IOrders } from "../models/orders";
 import { ITones } from "../models/tones";
+import subMonths from 'date-fns/subMonths';
 
 const OrdersController = {
 	async getAll(): Promise<IOrders[]> {
@@ -15,9 +16,13 @@ const OrdersController = {
 		return count;
 	},
 
-	async findByFeedback(grade: number): Promise<IOrders[]> {
+	async findByFeedback(grade: number, months: number): Promise<IOrders[]> {
+		//Calculate the date
+		const theDate = subMonths(new Date(), months);
+
 		const orders = Orders.find({
-			feedback: { $gte: grade }
+			feedback: { $gte: grade },
+			orderDate: { $gte: theDate}
 		}).populate({
 			path: 'menu',
 			model: Menus,

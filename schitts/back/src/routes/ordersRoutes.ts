@@ -14,10 +14,10 @@ router.get('/count', async (req: Request, res: Response) => {
 });
 
 /* GET ORDERS WITH FEEDBACK > n */
-router.get('/feedback/:grade', async (req: Request, res: Response) => {
-	const {grade} = req.params;
+router.get('/feedback', async (req: Request, res: Response) => {
+	const { grade, months } = req.query;
 
-	const list = await OrdersController.findByFeedback(parseInt(grade));
+	const list = await OrdersController.findByFeedback(parseInt(grade as string), parseInt(months as string));
 	try {
 		return res.status(200).send(list);
 	} catch (_err) {
