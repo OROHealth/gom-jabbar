@@ -7,4 +7,13 @@ module.exports = (Server) => {
       return CaribouLogic.register(Body);
     }
   });
+
+  Server.registerRoute({
+    method: "GET",
+    authenticationMethod: "OAuth",
+    path: "/api/caribous",
+    handler: (CaribouLogic, Body) => {
+      return CaribouLogic.getAll(Body);
+    }
+  });
 };

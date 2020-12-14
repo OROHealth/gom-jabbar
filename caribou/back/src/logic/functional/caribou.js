@@ -10,4 +10,10 @@ module.exports = class CaribouLogic {
       return caribou.save();
     });
   }
+
+  getAll() {
+    return this.mongoProvider((Caribou) => {
+      return Caribou.find();
+    });
+  }
 };
