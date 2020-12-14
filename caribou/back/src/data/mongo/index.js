@@ -7,7 +7,7 @@ module.exports = (Container, Configuration) => {
   dataContainer.registerValue("Mongo", mongoose);
   dataContainer.registerValue("Configuration", Configuration);
 
-  const mongoUrl = Configuration.host === "carimongo"
+  const mongoUrl = (Configuration.user && Configuration.password)
     ? `mongodb://${Configuration.user}:${Configuration.password}@${Configuration.host}:${Configuration.port}/${Configuration.database}`
     : `mongodb://${Configuration.host}:${Configuration.port}/${Configuration.database}`;
   mongoose.connect(mongoUrl, {useNewUrlParser: true, useUnifiedTopology: true})
