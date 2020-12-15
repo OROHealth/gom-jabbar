@@ -1,10 +1,8 @@
 ## Environnement
 You need:
-* nodeJS >= version 12
 * MongoDB >= version 4 if you choose to use your own database
 
 ## Configuration
-
 ### Ports
 By default, the ports are
 * 3085 for dev/production
@@ -29,16 +27,16 @@ You can change them in files:
 In the 2 cases, the password will be defined later in an environnement variable
 
 ## Start your engines !
-* Move to the folder ./gom-jabbar/schitts/back/
 * Configure the variable environnement mongo_pass
     * For Windows users:
 		
-	$env:mongo_pass="<Your_Password>"
-
+	`env:mongo_pass="<Your_Password>"`
 	* For Mac and Linux users:
 	
 	`export mongo_pass=<Your_Password>`
 * Run the transpilation TS -> JS
+
 	`npm run build`
 * Start the application
+
 	`npm run start`
