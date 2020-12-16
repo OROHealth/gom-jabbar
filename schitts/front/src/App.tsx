@@ -5,6 +5,7 @@ import MenuCard from './components/menuCard';
 
 //Parts
 import Database from './database/index';
+import Statistics from './statistics/index';
 import Overcooked from './overcooked/index';
 
 // Icons
@@ -13,7 +14,6 @@ import statistics from './img/statistics.png';
 import pot from './img/pot.png';
 
 function App() {
-
 	const parts = [
 		{
 			title: 'Database',
@@ -23,7 +23,7 @@ function App() {
 		{
 			title: 'Statistics',
 			icon: statistics,
-			component: null
+			component: <Statistics />
 		},
 		{
 			title: 'Overcooked ?',
