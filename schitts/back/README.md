@@ -46,7 +46,7 @@ In the 2 cases, the password will be defined later in an environnement variable
 
   - For Windows users:
 
-  `env:mongo_pass="<Your_Password>"`
+  `$env:mongo_pass="<Your_Password>"`
 
   - For Mac and Linux users:
 
