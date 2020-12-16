@@ -1,7 +1,9 @@
 ## Installation
+
 Execute
-	`npm i`
+`npm i`
 
 ## Start your engines !
+
 Execute
-	`npm start`
+`npm start`
