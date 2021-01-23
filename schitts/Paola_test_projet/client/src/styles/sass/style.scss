@@ -1,0 +1,15 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border_box;
+    list-style-type: none;
+    outline: none;
+    border: none;
+    text-decoration: none;
+
+    &::selection {
+        background: darkcyan;
+        color: white;
+    }
+}
+
