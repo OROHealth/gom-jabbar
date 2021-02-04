@@ -1,0 +1,90 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block extrahead %}{% endblock %}
+{% block title %}Comment | Schitt's Creek Cafe Tropical{% endblock %}
+{% block content %}
+<style>
+.addspace {
+    padding-bottom:10px;
+}
+
+</style>
+<div class='container'>
+    
+    <br>
+    <br><h3>Comment</h3>
+    <br>
+    <div class="alert alert-info">
+        <strong><i class="fa fa-info-circle" aria-hidden="true"></i></strong> Thanks a lot of taking time to add comment. This will help us improved our services.
+    </div>
+    <form id="commenteditform" method="POST" class="post-form">
+	    {% csrf_token %}
+        {{ form|crispy }}
+
+        <br><br>
+		<button id="add_comment" class="btn btn-primary" type="submit" style="width: 100px;">Save</button>
+		<a data-modal data-target="" class="btn btn-danger" href="{% url 'home' %}" style="width: 100px;">Cancel</a>
+	</form>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="comment_edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Schitt's Creek Cafe Tropical</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            Do you valid comment?
+            </div>
+            <div class="modal-footer">
+            <button id="comment_button_no" type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            <button id="comment_button_yes" data-redirect-url="" type="button" class="btn btn-primary">Yes</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block extrabody %}
+<script type="text/javascript">
+	var popup_comment;
+
+	$('.link-formset').formset({
+        addText: 'Add',
+		deleteText: 'Delete',
+		prefix: '{{ menu.prefix }}',
+        //hideLastAddForm: 'true'
+    });
+
+
+	$(document).ready(function() {
+
+
+		var prevent = false;
+
+		$("#commenteditform").submit(function(event) {
+			if(!prevent){
+				event.preventDefault();
+			}
+			
+        	popup_comment = $(this);
+        	$('#comment_edit').modal('show');
+
+    	});
+
+		$("body")
+    	.on('click','#comment_button_yes',function(event){
+        	prevent = true;
+        	popup_comment.submit();
+    	})
+
+    });
+
+</script>
+{% endblock %}

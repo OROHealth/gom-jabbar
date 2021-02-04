@@ -1,0 +1,39 @@
+# Pull the official base image
+FROM python:3.8.3-alpine
+
+# Set a work directory
+WORKDIR /usr/src/app
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# install psycopg2 dependencies
+RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
+
+# J LE CARROU - 21/09/2020 - Ajouts
+RUN apk --update add libxml2-dev libxslt-dev libffi-dev gcc musl-dev libgcc openssl-dev curl postgresql-dev postgresql-client
+RUN apk add jpeg-dev zlib-dev freetype-dev lcms2-dev openjpeg-dev tiff-dev tk-dev tcl-dev nano
+RUN pip3 install psycopg2 psycopg2-binary
+
+# install xgettext for i18n
+RUN apk add gettext
+
+# Install dependencies
+COPY requirements/ requirements/
+RUN pip install --upgrade pip && pip install -r requirements/preprod.txt
+
+# Copy the entrypoint.sh file
+COPY entrypoint.preprod.sh .
+
+# Copy the initdata sql file
+COPY initdata.preprod.sql .
+
+# Copy the project's files
+COPY . .
+
+# J LE CARROU - 21/09/2020 - Ajout
+RUN chmod +x entrypoint.preprod.sh
+
+# Run entrypoint.sh
+ENTRYPOINT [ "/usr/src/app/entrypoint.preprod.sh" ]

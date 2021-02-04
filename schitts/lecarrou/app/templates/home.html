@@ -1,0 +1,49 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load static i18n %}
+{% block title %}{% trans 'Homepage' %} | Schitt's Creek Cafe Tropical{% endblock %}
+{% block content %}
+
+<div class='container'>
+	<br>
+	<br>
+	{% if environment != 'PRODUCTION' %}
+	<div class="alert alert-warning">
+        <strong><i class="fa fa-info-circle" aria-hidden="true"></i> Warning<br></strong>Your have run the {{ environment|lower }} environment as mentionned in the footer.
+    </div><br>
+	{% endif %}
+	<div style="text-align: center;">
+
+		<h3>Schitt's Creek Cafe Tropical sale platform</h3><br><br>
+
+	</div>
+	<div>
+		<div class="alert alert-info">
+        	<strong><i class="fa fa-info-circle" aria-hidden="true"></i> Info<br></strong><br>
+			This apps/API have been developped using Django framework/Python and Docker.
+			<br><br>
+    	    This API is able to efficiently:
+    		<ul>
+				<li>store all customer's informations: Schitt's Creek Cafe Tropical's customers can create an account to send comment </li>
+				<li>store all customer's orders: see database diagram at <a data-modal data-target="" href="https://dbdiagram.io/d/5fd0815c9a6c525a03ba5f6f">https://dbdiagram.io/d/5fd0815c9a6c525a03ba5f6f</a></li>
+				<li>store all the menu items available: using <a data-modal data-target="" href="www.thecocktaildb.com" >www.thecocktaildb.com</a> API to create 'fake' datas</li>
+				<li>store the customer feedback once bill is paid</li>
+			</ul>
+			Goals achieved:
+    		<ul>
+				<li>demonstrate recovery from a complete crash of all instances: using asynchronous tasks with Celery and Celery-beats to make scheduled backup every day at midnight</li></li>
+				<li>simulate the insertion of 10.000 customer making between 2 to 14 orders per year on a span of 2 years: using <a data-modal data-target="" href="https://faker.readthedocs.io" >Faker</a> for generating dates,
+				<a data-modal data-target="" href="www.thecocktaildb.com" >www.thecocktaildb.com API</a> for drinks and <a data-modal data-target="" href="api.spoonacular.com" >api.spoonacular.com</a> for courses.
+				
+				</li>
+			</ul>
+
+    
+		
+		</div>
+	</div>
+
+
+</div>
+
+{% endblock %}

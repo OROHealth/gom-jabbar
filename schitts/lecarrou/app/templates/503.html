@@ -1,0 +1,12 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}503 | Schitt's Creek Cafe Tropical{% endblock %}
+{% block content %}
+<div class='container' style="text-align: center">
+    <br><br>
+    <img src="{% static 'images/cadena.png' %}" alt="site fermé" height="300px" width="300px" />
+    <br><br>
+    <h3>{% trans 'The backup randomization site is not opened.' %}</h3>
+</div>
+{% endblock %}

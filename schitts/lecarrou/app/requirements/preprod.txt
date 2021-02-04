@@ -1,0 +1,4 @@
+-r base.txt
+gunicorn==20.0.4
+randomuser==1.6
+Faker==5.0.2
