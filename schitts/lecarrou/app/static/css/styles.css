@@ -1,0 +1,40 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+
+.asteriskField{
+  display: none;
+}
+form .alert ul li{
+  list-style: none;
+}
+form .alert ul {
+  margin:0;
+  padding: 0;
+}
+body > div > div.col-6 > div > div > h2 {
+  font-size: 20px;
+}
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 40px;
+  line-height: 40px; /* Vertically center the text there */
+  background-color: #f5f5f5;
+  /* background-color: red; */
+
+}
+
+
+/* DatePicker */
+.ui-datepicker .ui-datepicker-header{
+  background-color: black;
+  color: white;
+}
+
+/* fontsize smaller pour Chrome */
+.fontsize_smaller {
+  font-size: smaller;
+}
+

@@ -1,0 +1,247 @@
+{% extends 'layouts/base.html' %}
+{% load i18n %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Dashboard | Schitt's Creek Cafe Tropical{% endblock %}
+{% block content %}
+
+<div class='container'>
+    <div class="alert alert-info">
+        <strong><i class="fa fa-info-circle" aria-hidden="true"></i> Info<br></strong>
+		This bar chart show the number of orders per month in the last 6 months.	
+	</div>
+    <div class="row" style="margin-top:50px;">
+    
+        <div class="col-md-12">
+            <form id="dashboard" data-pays-user-connected="" method="POST" class="post-form">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group col-md-6 mb-0">
+                        {{ form.start_date|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                        {{ form.end_date|as_crispy_field }}
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+    <div class="dropdown-divider" style="margin-bottom:50px;"></div>
+    <div class="row" >
+        
+        <div class="col-md-12">
+            <canvas id="myChart" width="400" height="100"></canvas>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+{% block extrabody %}
+<script>
+$(function(){ 
+
+    $("#id_start_date").datepicker({
+			dateFormat: 'dd/mm/yy',
+		}
+    );
+    $("#id_end_date").datepicker({
+			dateFormat: 'dd/mm/yy',
+		}
+    );
+
+});
+
+var start_date = $("#id_start_date").val();
+var end_date = $("#id_end_date").val();
+var default_labels;
+var default_data;
+var update_labels;
+var update_data;
+var tab_labels = [];
+var tab_data = [];
+
+$(document).ready(function () {
+
+ 
+    $("#id_start_date").on('change', function () {
+        tab_labels = [];
+        tab_data = [];
+        start_date = $(this).val();
+        //console.log(start_date)
+    });
+    
+    $("#id_end_date").on('change', function () {
+        tab_labels = [];
+        tab_data = [];
+        end_date = $(this).val();
+        ajax();
+    });    
+
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+
+    // requête Ajax pour récupérer des informations
+    function ajax() {
+        var csrftoken = getCookie('csrftoken');
+        $.ajax({
+            type: "POST",
+            url: '/cafe/dashboard_data/',
+            data: {
+                csrfmiddlewaretoken: csrftoken,
+                'start_date': start_date,
+                'end_date': end_date
+            },
+            dataType: 'json',
+            success: function (data) {
+                //alert($.parseJSON(data.data))
+                console.log('data.data',data.data)
+                //console.log(data.data[0].month)
+                getData(data.data);
+                //console.log('ajax',update_data)
+                updateChart();
+            },
+            error: function (resultat, statut, erreur) {
+
+            }
+        });
+    }
+
+    function monthDate(date_month,date_year) {
+        switch (date_month) {
+        case 1:
+            return 'Jan-'+date_year;
+            break;
+        case 2:
+            return 'Feb-'+date_year;
+            break;
+        case 3:
+            return 'Mar-'+date_year;
+            break;
+        case 4:
+            return 'Apr-'+date_year;
+            break;
+        case 5:
+            return 'May-'+date_year;
+            break;
+        case 6:
+            return 'Jun-'+date_year;
+            break;
+        case 7:
+            return 'Jul-'+date_year;
+            break;
+        case 8:
+            return 'Aug-'+date_year;
+            break;
+        case 9:
+            return 'Sep-'+date_year;
+            break;
+        case 10:
+            return 'Oct-'+date_year;
+            break;
+        case 11:
+            return 'Nov-'+date_year;
+            break;
+        case 12:
+            return 'Dec-'+date_year;
+            break;
+        default:
+            console.log('error when pasing date');
+        }        
+    }
+
+
+    function getData(data) {
+        data.forEach(function(item, index, array){
+            //console.log(item.month,item.number, index);
+            //console.log(item.month);
+            //console.log(new Date(item.month).getMonth());
+            tab_labels.push(monthDate(new Date(item.month).getMonth()+1,new Date(item.month).getFullYear()));
+            //tab_labels.push(new Date(item.month).getMonth()+1);
+            tab_data.push(item.number);
+        });
+        console.log('getData labels',tab_labels);
+        console.log('getData data',tab_data);  
+        update_labels = tab_labels;
+        update_data = tab_data;         
+    }
+
+    var default_data = [{% for item in qs %}'{{ item.number }}',{% endfor %}]
+    var default_labels = [{% for item in qs %}'{{ item.month|date:"M-Y"}}',{% endfor %}]
+    //console.log('default',default_labels);
+    //console.log('default',default_data)
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+            labels: default_labels,
+            datasets: [{
+                label: 'Orders',
+                data: default_data,
+                backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1,
+                            suggestedMax: 20
+                        }
+                    }]
+                }
+            }
+        });
+
+        $("#update").on('click', function () {
+            updateChart();
+        });    
+        
+        function updateChart(){
+            myChart.data.datasets[0].data = update_data
+            myChart.data.labels = update_labels
+            myChart.update();
+        };
+
+    });
+</script>
+{% endblock %}

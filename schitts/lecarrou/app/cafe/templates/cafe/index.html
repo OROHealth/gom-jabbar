@@ -1,0 +1,327 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load menus_extras %}
+{% load crispy_forms_tags %}
+{% block extrahead %}{% endblock %}
+{% block title %}Orders | Schitt's Creek Cafe Tropical{% endblock %}
+{% block content %}
+
+<div class='container'>
+    <br>        
+    <br>
+    <h1>Orders</h1>
+    <br>
+    <br>
+        <div class="alert alert-info">
+        <strong><i class="fa fa-info-circle" aria-hidden="true"></i>
+        </strong> Orders dashboard.
+        </div>
+    <br>
+    
+    <table id="table_id" class="table  table-stripped table-hover" style="width:100%">
+
+        <thead>
+            <tr>
+                <th>Order</th>
+                <th>Table</th>
+                <th>Date</th>
+                <th>Served</th>
+                <th>Bill</th>
+                <th colspan="2">Paiment</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+        
+                <tr>
+                    <td data-toggle="tooltip" data-placement="top" title="">
+                        {{ order.order_id }}
+                    </td>
+                    <td data-toggle="tooltip" data-placement="top" title="">
+                        {{ order.table_id }}
+                    </td>
+                    <td data-toggle="tooltip" data-placement="top" title="">
+                        {{ order.created_at|date:"D, d M, Y" }}
+                    </td>
+                    <td data-toggle="tooltip" data-placement="top" title="">
+                        {% if order.delivered %}
+                            <a style="margin-right: 40px;color:black;" data-order="{{ order.order_id }}" class="served" href="#"><i class="fa fa-check-square" aria-hidden="true"></i></a>
+                        {% else %}
+                            <a style="margin-right: 40px;color:black;" data-order="{{ order.order_id }}" class="served" href="#"><i class="fa fa-square-o" aria-hidden="true"></i></a>
+                        {% endif %}
+                    </td>
+                    <td data-toggle="tooltip" data-placement="top" title="">
+                    {% csrf_token %}
+                    <form id="bill_{{ order.order_id }}" class="bill" method="POST" class="post-form" data-order="{{ order.order_id }}">
+                        {% if order.split_bill == 1 %}
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1" checked>
+                            <label class="form-check-label" for="inlineRadio1">group</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2">
+                            <label class="form-check-label" for="inlineRadio2">person</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="3">
+                            <label class="form-check-label" for="inlineRadio3">ratio</label>
+                        </div>
+                        {% elif order.split_bill == 2 %}
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1">
+                            <label class="form-check-label" for="inlineRadio1">group</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2" checked>
+                            <label class="form-check-label" for="inlineRadio2">person</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="3">
+                            <label class="form-check-label" for="inlineRadio3">ratio</label>
+                        </div>
+                        {% elif order.split_bill == 3 %}
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1">
+                            <label class="form-check-label" for="inlineRadio1">group</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2">
+                            <label class="form-check-label" for="inlineRadio2">person</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="3" checked>
+                            <label class="form-check-label" for="inlineRadio3">ratio</label>
+                        </div>
+                        {% else %}
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1">
+                            <label class="form-check-label" for="inlineRadio1">group</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2">
+                            <label class="form-check-label" for="inlineRadio2">person</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="3">
+                            <label class="form-check-label" for="inlineRadio3">ratio</label>
+                        </div>
+                        {% endif %}
+                    </form>
+                    </td>
+                    <td data-toggle="tooltip" data-placement="top" title="">
+                        {{ order | total }}  
+                    </td>
+                    <td data-toggle="tooltip" data-placement="top" title="">
+                        $ CA <a style="margin-right: 40px;color:black;" data-order="{{ order.order_id }}" class="paiement" href="#"><i class="fa fa-cc-mastercard" style="margin-left: 20px;"></i></a>
+                    </td>
+                    <td data-toggle="tooltip" data-placement="top" title="">
+                        <a style="margin-right: 40px;color:black;" data-target="" class="" href="{% url 'cafe:update_order' order.order_id %}"><i class="fa fa-pencil"></i></a>
+                        <a style="margin-right: 40px;color:black;" data-target="" class="" href="#"><i class="fa fa-trash"></i></a>
+                        <a style="margin-right: 40px;color:black;" data-target="" class="" href="{% url 'cafe:ticket' order.order_id %}"><i class="fa fa-print" aria-hidden="true"></i></a>
+                    </td>
+                </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <div id='paiement_result'></div>
+    <!-- Modal -->
+	<div class="modal fade" id="paiement" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Schitt's Creek Cafe Tropical</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					Do you confirm payment?
+				</div>
+				<div class="modal-footer">
+					<button id="button_no" type="button" class="btn btn-secondary"
+						data-dismiss="modal">No</button>
+					<button id="button_yes" type="button" class="btn btn-primary">Yes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+{% endblock %}
+{% block extrabody %}
+
+
+<script>
+
+    var url = '';
+    var order_id;
+
+    $(document).ready( function () {
+        
+
+    url = window.location.href;
+
+        // http://live.datatables.net/ficemafo/1/edit
+        $("#table_id").one("preInit.dt", function () {
+                $("#table_id_filter label").append('<a data-target="" class="btn btn-primary" href="{% url "cafe:edit_order" %}" style="width: 190px;margin-left:10px;">New order</a>');
+
+        });
+       
+        var table = $('#table_id').DataTable({
+            lengthMenu: [5,10],
+            "pageLength": 5,
+            "bAutoWidth": false,
+            //"language": {
+            //"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+            //},
+            "columns": [
+                { "width": "8%" },
+                { "width": "8%" },
+                { "width": "15%" },
+                { "width": "10%" },
+                { "width": "25%" },
+                { "width": "15%" },
+                { "width": "4%" },
+                { "width": "15%" },
+            ],
+            // "oSearch": {"sSearch": "Valider"}
+            "aoSearchCols": [ // filtre sur les lignes pour lesquelles la colonne 'Paiement' dispose d'un lien
+                null,
+                null,
+                null,
+                null,
+                null,
+                null, //{ "sSearch": "^[A-Z]", "bEscapeRegex": false },
+                null,
+
+            ]
+        });
+        
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function bill() {
+            $("form").each(function (index){
+
+                var order_id = $(this).data("order");
+                //var value = $('input[name="inlineRadioOptions"]:checked','#bill_'+order_id).val();
+                console.log('order_id',order_id);
+                //console.log('value',value);
+
+                $(this).on("change", function (event) {
+                    var csrftoken = getCookie('csrftoken');
+                    var value = $('#bill_'+order_id+' input[name="inlineRadioOptions"]:checked').val();
+                    $.ajax({
+                        type: "POST",
+                        url: "/cafe/bill/",
+                        data: {
+                            csrfmiddlewaretoken: csrftoken,
+                            'bill': value,
+                            'order_id': order_id,
+                        },
+                        dataType: 'html',
+                        success: function (data) {
+                            console.log('success');
+
+                        }
+
+                    });
+                });
+            });
+        }
+  
+        // Paiement when user click on link: Orders models is updated
+
+        function paiement() {
+            console.log('click');
+            //var order_id = $('.paiement').data("order");
+            console.log('order_id',order_id);
+            var csrftoken = getCookie('csrftoken');
+
+            $.ajax({
+                type: "POST",
+                url: "/cafe/paiement/",
+                data: {
+                    csrfmiddlewaretoken: csrftoken,
+                    'paiement': 'True',
+                    'order_id': order_id,
+                },
+                dataType: 'html',
+                success: function (data) {
+                    console.log('success');
+                    console.log(data);
+                    $('#paiement_result').html(data);
+                    $('#paiement').modal('hide');
+                }
+
+            });
+        }
+
+
+        $("body")
+            .on('click', '#button_yes', function (event) {
+                paiement();
+            })
+            .on('click', '#button_no', function (event){
+                $(this).modal('hide');
+            })
+            .on("click", '.served', function (event) {
+                
+                console.log('click');
+                var order_id = $(this).data("order");
+                console.log('order_id',order_id);
+                var element = $(this)
+                var csrftoken = getCookie('csrftoken');
+
+                $.ajax({
+                    type: "POST",
+                    url: "/cafe/served/",
+                    data: {
+                        csrfmiddlewaretoken: csrftoken,
+                        'served': 'True',
+                        'order_id': order_id,
+                    },
+                    dataType: 'html',
+                    success: function (data) {
+                        console.log('success');
+                        console.log('this',element.parent());
+                        element.parent().html('<i class="fa fa-check-square"></i>');
+                        //element.remove();
+                        
+                    }
+
+                });
+            })
+            .on("click", ".paiement", function (event) {
+                order_id = $(this).data("order");
+                $('#paiement').modal('show');           
+            })
+            .on("click", '.bill', function (event) {
+                bill();
+            });
+
+
+
+    });
+</script>
+{% endblock %}
+

@@ -1,0 +1,35 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block extrahead %}{% endblock %}
+{% block title %}Tables | Schitt's Creek Cafe Tropical{% endblock %}
+{% block content %}
+
+<div class='container'>
+    <br>        
+    <br>
+    <h1>Choose a table</h1>
+    <br>
+    <br>
+    <br>
+    <form id="tableeditform" method="POST" class="post-form">
+	    {% csrf_token %}
+        {{ form|crispy }}
+		<button id="ajouter_projet" class="btn btn-primary" type="submit" style="width: 100px;">Save</button>
+		<a data-modal data-target="" class="btn btn-danger" href="{% url 'cafe:index' %}" style="width: 100px;">Cancel</a>
+	</form>
+</div>
+
+{% endblock %}
+{% block extrabody %}
+<!--DataTable
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+DataTable-->
+
+
+
+<script></script>
+{% endblock %}

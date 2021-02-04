@@ -1,0 +1,69 @@
+DROP DATABASE db_dev;
+CREATE DATABASE db_dev;
+GRANT ALL PRIVILEGES ON DATABASE db_dev TO user_dev;
+ALTER SEQUENCE "Comments_comment_id_seq" RESTART WITH 1;
+
+# To restore database
+connect with psql (SQL Shell (psql) client
+connect database to restore \c database
+run command : \i 'D:\\Users\\jl3\\DOCKER\\Apps\\cafe_tropical\\app\\backup\\default-876e6cada070-2021-01-04-140700.psql';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--DataTable-->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+<!--DataTable-->
+
+<!--Modal-->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!--Modal-->

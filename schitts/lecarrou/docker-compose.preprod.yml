@@ -1,0 +1,95 @@
+version: '3.7'
+
+services:
+    web:
+        restart: always
+        container_name: web
+        build: 
+            context: ./app
+            dockerfile: Dockerfile.preprod
+        restart: always
+        command: gunicorn core.wsgi:application --bind 0.0.0.0:8000
+        volumes:
+            - app_volume:/usr/src/app
+            - static_volume:/usr/src/app/static
+            - media_volume:/usr/src/app/media
+        expose:
+            - 8000
+        env_file:
+            - ./.env.preprod
+        depends_on:
+            - db
+            - redis
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+            interval: 30s
+            timeout: 10s
+            retries: 50
+            
+    redis:
+        container_name: redis
+        image: "redis:alpine"
+
+    celery:
+        container_name: celery
+        build: 
+            context: ./app
+            dockerfile: Dockerfile.preprod
+        command: celery -A core worker -l info
+        volumes:
+            - app_volume:/usr/src/app
+        env_file:
+            - ./.env.preprod
+        depends_on:
+            db:
+                condition: service_started
+            web:
+                condition: service_healthy
+            redis:
+                condition: service_started
+
+    celery-beat:
+        container_name: celery-beat
+        build: 
+            context: ./app
+            dockerfile: Dockerfile.preprod
+        command: celery -A core beat -l info
+        volumes:
+            - app_volume:/usr/src/app
+        env_file:
+            - ./.env.preprod
+        depends_on:
+            db:
+                condition: service_started
+            web:
+                condition: service_healthy
+            redis:
+                condition: service_started
+            
+    db:
+        container_name: db
+        image: postgres:12.0-alpine
+        volumes:
+            - postgres_data:/var/lib/postgresql/data/
+            - app_volume:/var/lib/postgresql/backup
+        env_file:
+            - ./.env.preprod.db
+   
+    nginx:
+        container_name: nginx
+        build: ./nginx
+        restart: always
+        volumes:
+            - static_volume:/usr/src/app/static
+            - media_volume:/usr/src/app/media
+        ports:
+            - 1340:80
+        depends_on:
+            web:
+                condition: service_healthy
+
+volumes:
+    postgres_data:
+    static_volume:
+    media_volume:
+    app_volume:

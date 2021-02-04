@@ -1,0 +1,213 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block extrahead %}{% endblock %}
+{% block title %}Order | Schitt's Creek Cafe Tropical{% endblock %}
+{% block content %}
+<style>
+.addspace {
+    padding-bottom:10px;
+}
+
+</style>
+<div class='container'>
+
+	<div id="template" style="display: none;">{{ template }}</div>
+    <br>
+    <br>
+    <br>
+    <form id="ordereditform" method="POST" class="post-form" data-tables="{{ tables }}">
+	    {% csrf_token %}
+        {% comment %} {{ form|crispy }} {% endcomment %}
+        <h2>Order</h2><br><br>
+		<div class="form-row">
+			<div class="form-group col-md-6 mb-0">
+				{{ form.table|as_crispy_field }}
+			</div>
+			<div class="form-group col-md-6 mb-0">
+				{{ form.customers|as_crispy_field }}
+			</div>
+		</div>
+
+		<br>
+		<!-- {{ menu|crispy }} --> <!-- curieusement si j'enlève cette ligne le style crispy disparait -->
+		<!-- subform Menu -->
+		{{ menu.management_form|crispy }}
+		
+			{% if menu.non_form_errors %}
+			<div id="non_form_errors" class="alert alert-block alert-danger" >
+				{% for error in menu.non_form_errors %}
+					<ul>
+						<li>{{ error|escape }}</li>
+					</ul>
+				{% endfor %}
+			</div>
+			{% endif %}	
+	    
+		<div class="row">
+			<div class="col-4"><p>Item</p></div>
+			<div class="col-3"><p>Cooking</p></div>
+            <div class="col-4"><p>Tone</p></div>
+			<div class="col-1"><p></p></div>
+		</div>		
+		{% for menu_form in menu %}
+		
+		<div class="row link-formset addspace">
+            <div class="col-4">
+					
+					{{ menu_form.menu }}
+					{% if menu_form.menu.errors %}
+						{% for error in menu_form.menu.errors %}
+						<span style="color:red;">{{ error|escape }}</span>
+						{% endfor %}
+					{% endif %}
+            
+            </div>
+			{% if menu_form.instance.pk %}{{ menu_form.DELETE }}{% endif %}
+			<div class="col-3">
+					
+					{{ menu_form.cooking }}
+					{% if menu_form.cooking.errors %}
+						{% for error in menu_form.cooking.errors %}
+						<span style="color:red;">{{ error|escape }}</span>
+						{% endfor %}
+					{% endif %}
+
+			</div>
+			<div class="col-4">
+
+					{{ menu_form.tone }}
+					{% if menu_form.tone.errors %}
+						{% for error in menu_form.tone.errors %}
+						<span style="color:red;">{{ error|escape }}</span>
+						{% endfor %}
+					{% endif %}
+
+			</div>
+			<div class="hidden">{{ menu_form.id }}</div>
+            
+		</div>
+
+		{% endfor %}
+		<br><br>
+		<!-- end subform Menu -->
+
+
+
+        <br><br>
+		<button id="ajouter_projet" class="btn btn-primary" type="submit" style="width: 100px;">Save</button>
+		<a data-modal data-target="" class="btn btn-danger" href="{% url 'cafe:index' %}" style="width: 100px;">Cancel</a>
+	</form>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="order_edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Schitt's Creek Cafe Tropical</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            Do you valid order?
+            </div>
+            <div class="modal-footer">
+            <button id="order_button_no" type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            <button id="order_button_yes" data-redirect-url="" type="button" class="btn btn-primary">Yes</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block extrabody %}
+
+
+
+<script type="text/javascript">
+	var popup_order;
+	var menunumber_subform; // nombre de sous formulaire affichés (1 par défaut puis ajout sur click .add-row)
+	var select_app;
+	var select_access;
+
+
+	$('.link-formset').formset({
+        addText: 'Add',
+		deleteText: 'Delete',
+		prefix: '{{ menu.prefix }}',
+        //hideLastAddForm: 'true'
+    });
+
+
+	$(document).ready(function() {
+
+
+		var prevent = false;
+		var menunumber_subform = menunumber(); // nombre de sous formulaire affichés (1 par défaut au chargement de la page)
+        var menuinitialnumber_subform = menuinitialnumber();
+        console.log($("#template").text())
+		if($("#template").text() == "update"){
+			// to add empty formset (by default, it clone previous frormset with its values)
+			$('.add-row').on('click',function(event){
+				i = menuinitialnumber_subform;
+				$('#id_orders_menus_set-'+i+'-menu').val('');
+				$('#id_orders_menus_set-'+i+'-cooking').val('');
+				$('#id_orders_menus_set-'+i+'-tone').val('');
+				menuinitialnumber_subform++;
+			})
+		}
+
+
+        var tables = {{ tables }}
+        //https://codepen.io/Lighty_46/pen/gpLZWx?editors=1010
+        // When an option is changed, search the above for matching choices
+        $('#id_table').on('change', function() {
+			
+            // Set selected option as variable
+            var selectValue = $(this).val();
+
+            // Empty the target field
+            $('#id_customers').empty();
+            
+            // For each choice in the selected option
+            for (i = 0; i < tables[selectValue].length; i++) {
+                // Output choice in the target field
+                $('#id_customers').append("<option value='" + tables[selectValue][i] + "'>" + tables[selectValue][i] + "</option>");
+			}
+			
+        });
+
+		$("#ordereditform").submit(function(event) {
+			if(!prevent){
+				event.preventDefault();
+			}
+			
+        	popup_order = $(this);
+        	$('#order_edit').modal('show');
+
+    	});
+
+		$("body")
+    	.on('click','#order_button_yes',function(event){
+        	prevent = true;
+        	popup_order.submit();
+    	})
+
+
+    });
+
+
+	// déterminer le nombre de sous-formulaire menu présents sur la page
+	function menunumber() {
+        return $("#id_orders_menus_set-TOTAL_FORMS").val();
+    };
+	// déterminer le nombre de sous-formulaire menu présents sur la page
+	function menuinitialnumber() {
+        return $("#id_orders_menus_set-INITIAL_FORMS").val();
+    };
+
+</script>
+{% endblock %}
