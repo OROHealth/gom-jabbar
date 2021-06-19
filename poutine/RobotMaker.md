@@ -1,11 +1,14 @@
 # Accelerating Poutine production
 
-We have a problem: Poutine is taking the world over, but our production is constrained by the amount of cook we have available. 
+We have a problem: Poutine is taking the world over, but our production is constrained by the amount of cook we have 
+available. 
 
-***True*** poutine requires a complex step-by-step process that only the most talented Montrealer cook can pretend to master:
+***True*** poutine requires a complex step-by-step process that only the most talented Montrealer cook can pretend to 
+master:
 
 1. take a handful of squeaky cheese
-2. squeeze it until it screams "I'm not a Montreal's bagel who are the best in the world, don't even talk to me about New York bagels, amateur!" 
+2. squeeze it until it screams "I'm not a Montreal's bagel who are the best in the world, don't even talk to me about 
+   New York bagels, amateur!" 
 3. cut the potatoes in exactly 1 inch per 1 inch cube
 4. dip the potatoes in maple sirup for 25 seconds
 5. put the dipped potatoes directly in boiling water
@@ -22,11 +25,11 @@ Now, since we are a smart company, we built Robot that are capable to individual
 
 - Outremona: take cheese from a box an squeeze it
 - Montroyashi: listen to other robots' environment sounds and display Leonard Cohen lyrics, detect drunk people
-- Verduny: cut potatoes in dynamicaly-sized cube and dip them in maple sirup
+- Verduny: cut potatoes in dynamically-sized cube and dip them in maple sirup
 - Nordo: boil potatoes and give their current softness level
-- Bizar: fry potatoes with mutiple oil choices
+- Bizar: fry potatoes with multiple oil choices
 - Oldoporto: keep things at a specific temperature in a pot
-- Pierre: mix ingredient in a cardboax, allow the box to be sent to needy user
+- Pierre: mix ingredient in a cardboard, allow the box to be sent to needy user
 
 
 
@@ -34,7 +37,8 @@ You are in charge of integrating all of this together.
 
 The robot making team will take care of making sure the robot answer to the RESTful APIs as specified.
 
-Now, we need to ensure the utmost quality and also be able to validate when we improve the design of the robots. For example, if we add a new oil choice, the whole process should still work perfectly.
+Now, we need to ensure the utmost quality and also be able to validate when we improve the design of the robots. For 
+example, if we add a new oil choice, the whole process should still work perfectly.
 
 
 
@@ -42,7 +46,8 @@ Now, we need to ensure the utmost quality and also be able to validate when we i
 
 - design the current version of each robot APIs as you understand them, ideally in an OpenAPI compatible format
 - build a test suite to automate the quality control of the Poutine making
-- show a fake Poutine making process as it would happen and show that we can change the oil choice and guarantee the delivery of a beautiful juicy Poutine
+- show a fake Poutine making process as it would happen and show that we can change the oil choice and guarantee the 
+  delivery of a beautiful juicy Poutine
 
 
 
