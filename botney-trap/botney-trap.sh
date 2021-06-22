@@ -13,4 +13,4 @@ set -o posix    # more strict failures in subshells
 IFS=$'\n\t'
 # ---- End unofficial bash strict mode boilerplate
 
-while true; do echo "Time to go to sleep Basherbot"; sleep 2; done
+while true; do echo "Time to go to sleep Basherbot from ${ENV}"; sleep 2; done
