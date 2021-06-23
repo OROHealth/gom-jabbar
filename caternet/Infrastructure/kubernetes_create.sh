@@ -29,7 +29,7 @@ gcloud init
 #create of the cluster
 
 gcloud container clusters create-auto CLUSTER_MIAOU \
-    --region northamerica-northeast1-a \
+    --region northamerica-northeast1 \
     --project=${PROJECT_ID}
 
 
