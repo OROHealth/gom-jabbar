@@ -31,3 +31,14 @@ gcloud init
 gcloud container clusters create-auto CLUSTER_MIAOU \
     --region northamerica-northeast1-a \
     --project=${PROJECT_ID}
+
+
+#deploy of cert manager
+
+kubectl create clusterrolebinding cluster-admin-binding \
+    --clusterrole=cluster-admin \
+    --user=$(gcloud config get-value core/account)
+
+kubectl apply -f cert-manager.yaml
+
+kubectl apply -f cert-manager-issuer.yaml
