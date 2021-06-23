@@ -1,0 +1,106 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pv-gitlab
+  labels:
+    type: gluster
+spec:
+  storageClassName: gluster
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: "100Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "gitlab"
+  namespace: "dev-apps"
+spec:
+  selector:
+    app: "gitlab"
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: http
+    name: http
+  - protocol: TCP
+    port: 443
+    targetPort: https
+    name: https
+  - protocol: TCP
+    port: 5432
+    targetPort: postgres
+    name: postgres
+  - protocol: TCP
+    port: 6379
+    targetPort: redis
+    name: redis
+  - protocol: TCP
+    port: 22
+    targetPort: ssh
+    name: ssh
+  - protocol: TCP
+    port: 5000
+    targetPort: registry
+    name: registry
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitlab
+  namespace: "dev-apps"
+  labels:
+    app: gitlab
+spec:
+  selector:
+    matchLabels:
+      app: gitlab
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gitlab
+    spec:
+      volumes:
+      - name: pv-storage-gitlab
+        persistentVolumeClaim:
+          claimName: pv-gitlab
+      nodeSelector:
+        node: compute
+      containers:
+      - name: gitlab
+        image: gitlab/gitlab-ce:12.10.8-ce.0
+        env:
+        - name: GITLAB_OMNIBUS_CONFIG
+          value: external_url 'https://#{url}/'; nginx['listen_port'] = 80; nginx['listen_https']
+            = false; registry_nginx['enable'] = true; registry_external_url 'https://#{url}:5000/';
+            registry_nginx['listen_https'] = false;
+        ports:
+        - containerPort: 80
+          name: http
+        - containerPort: 443
+          name: https
+        - containerPort: 22
+          name: ssh
+        - containerPort: 5000
+          name: registry
+        resources:
+          limits:
+            cpu: '2'
+            memory: 5Gi
+          requests:
+            cpu: 10m
+            memory: 1Mi
+        volumeMounts:
+        - mountPath: "/etc/gitlab"
+          name: pv-storage-gitlab
+          subPath: gitlab/etc
+        - mountPath: "/var/opt/gitlab"
+          name: pv-storage-gitlab
+          subPath: gitlab/data
+        - mountPath: "/var/log/gitlab"
+          name: pv-storage-gitlab
+          subPath: gitlab/log
