@@ -1,0 +1,60 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: CadaverExchange-${CI_COMMIT_REF_NAME}
+  namespace: apps
+  labels:
+    app: CadaverExchange-${CI_COMMIT_REF_NAME}
+    owner: miaou
+spec:
+  selector:
+    matchLabels:
+      app: CadaverExchange-${CI_COMMIT_REF_NAME}
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  revisionHistoryLimit: 1 # number of old replica sets to keep
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: CadaverExchange-${CI_COMMIT_REF_NAME}
+    spec:
+      imagePullSecrets:
+      - name: registry-key
+      containers:
+      - name: cadaverexchange
+        image: registry.miaou.net/miaou/cadaverexchange:${CI_COMMIT_REF_NAME}
+        imagePullPolicy : Always
+        resources:
+          requests:
+            memory: "1Mi"
+            cpu: "10m"
+          limits:
+            memory: "10Gi"
+            cpu: "5"
+        ports:
+        - containerPort: 5000
+          name: cadaverexchange
+        env:
+        - name:  CI_COMMIT_SHA
+          value: "${CI_COMMIT_SHA}"
+        livenessProbe:
+          tcpSocket:
+            port: 5000
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 4
+        readinessProbe:
+          tcpSocket:
+            port: 5000
+          initialDelaySeconds: 2
+          periodSeconds: 5
+          timeoutSeconds: 4
+          successThreshold: 1
+          failureThreshold: 3

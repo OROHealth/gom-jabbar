@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: cadaverexchange-${CI_COMMIT_REF_NAME}-miaou-net-ingress
+  namespace: apps
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: 512m
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "500"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "500"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "500" 
+    nginx.org/websocket-services: "CadaverExchange-${CI_COMMIT_REF_NAME}"
+spec:
+  tls:
+  - hosts:
+    - cadaverexchange-${CI_COMMIT_REF_NAME}.miaou.net
+    secretName: cadaverexchange-${CI_COMMIT_REF_NAME}-miaou-net-tls
+  rules:
+  - host: cadaverexchange-${CI_COMMIT_REF_NAME}.miaou.net
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: CadaverExchange-${CI_COMMIT_REF_NAME}
+          servicePort: 5000

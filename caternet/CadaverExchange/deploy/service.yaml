@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: CadaverExchange-${CI_COMMIT_REF_NAME}
+  namespace: apps
+spec:
+  selector:
+    app: CadaverExchange-${CI_COMMIT_REF_NAME}
+  ports:
+  - protocol: "TCP"
+    port: 5000
+    targetPort: cadaverexchange
+    name: cadaverexchange
+  type: NodePort
