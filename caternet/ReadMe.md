@@ -9,16 +9,16 @@ Mon infrastructure est principalement composée de deux grandes parties.
 
 La première partie est un **cluster Kubernetes déployé sur l’infrastructure de Google (GKE)**. Ce cluster est utilisé pour l’exécution des applications de production.
 
-La seconde partie est un ensemble de quatre (04) **serveurs physiques (Bare metal servers)** fournies par un cloud provider. 
+La seconde partie est un ensemble de quatre (04) **serveurs physiques (Bare metal servers)** fournis par un cloud provider. 
 
 ## Google Kubernetes Engine (GKE)
 
-Le cluster Kubernetes de Google à les caractéristiques suivantes :
+Le cluster Kubernetes de Google a les caractéristiques suivantes :
 
 - Il est composé de 3 masters (control planes) et de 3 slaves (nodes). Ceci est fourni par un GKE de type « autopilot ».
 - Le cluster est localisé au Canada.
 
-De plus, ce cluster vient avec des outils très utiles tel que le dashboard de GKE qui fournit des informations claires sur le monitoring des services en cours d’exécution ainsi que la gestion des logs. Ce cluster inclus aussi un load balancer fourni par Google.
+De plus, ce cluster vient avec des outils très utiles tels que le dashboard de GKE qui fournit des informations claires sur le monitoring des services en cours d’exécution ainsi que la gestion des logs. Ce cluster inclus aussi un load balancer fourni par Google.
 
 Le script ayant permis ce déploiement est disponible dans le fichier “caternet/infrastructure/gke_kubernetes_create.sh”.
 
@@ -28,23 +28,23 @@ Concernant le stockage des données, le besoin porte sur un volume qui est local
 
 ## Les serveurs dédiés (Bare metal servers)
 
-Ces servers sont au nombre de quatre et ont pour principal objectif de servir de support pour l’environnement DevOps de l’équipe. **Ils sont composés de deux serveurs avec une forte puissance de calcul (serveurs compute) et deux servers avec une forte capacité de stockage (serveurs storage)**.
+Ces servers sont au nombre de quatre (04) et ont pour principal objectif de servir de support pour l’environnement DevOps de l’équipe. **Ils sont composés de deux serveurs avec une forte puissance de calcul (serveurs compute) et deux servers avec une forte capacité de stockage (serveurs storage)**.
 
 L’architechture physique de ces serveurs est :
 
 ![Alt text](images/img1.png?raw=true "Architechture physique des serveurs dédiés.")
 
-Le vrack représente ici un réseau privé interne entre ces serveurs physiques et fourni par le provider.
+Le vrack représente ici un réseau privé interne entre ces serveurs et qui est mis à disposition par le fournisseur.
 
-Sur ces serveurs, nous envisageons bâtir un cluster Kubernetes (la distribution Kubeadm) avec un cluster de stockage glusterFS. L’architecture logique sera la suivante :
+Sur ces serveurs, nous envisageons bâtir un cluster Kubernetes (la distribution **Kubeadm**) avec **un cluster de stockage glusterFS**. L’architecture logique est la suivante :
 
 ![Alt text](images/img2.png?raw=true "Cluster Kubernetes interne.")
 
-Pour ce faire, nous installerons **un cluster d’hyperviseur** telle que Promox sur les serveurs physiques pour pourvoir les virtualisés. L’organisation des machines virtuelles sera la suivante :
+Pour se faire, nous installerons **un cluster d’hyperviseur** telle que **Promox** sur les serveurs physiques pour pourvoir les virtualisés. L’organisation des machines virtuelles est la suivante :
 
 ![Alt text](images/img3.png?raw=true "Organisation des machines virtuelles")
 
-L’accès à cette infrastructure par les administrateurs se fera par VPN via la solution openVPN.
+L’accès à cette infrastructure par les administrateurs se fera par VPN via la solution **openVPN ou Pritunl**.
 
 ![Alt text](images/img4.png?raw=true "Accès par VPN")
 
@@ -52,8 +52,8 @@ Dans ce cluster Kubernetes, nous allons déployer les outils suivants :
 
 - **Nginx Ingress controller** (voir le fichier nginx_ingress_load_balancer.yaml) comme load balancer de notre cluster.
 - **Cert manager** pour la gestion des certificats SSL.
-- **Kubernetes dashboard** (voir fichier kubernetes_dashboard.yaml) 
-- **Metric server** (metrics_server.yaml), **prometheus** et **grafana** pour le monitoring des services
+- **Kubernetes dashboard** (voir le fichier kubernetes_dashboard.yaml) 
+- **Metric server** (voir le fichier metrics_server.yaml), **prometheus** et **grafana** pour le monitoring des services
 - **La pile ELK** pour la gestion des logs.
 
 De plus, pour notre environnement de travail DevOps nous installerons :
@@ -76,43 +76,45 @@ Nous avons identifié **3 microservices** dans l’application à développer.
 
 Le premier microservice est **CatNodeJS**. Il s’agit du composant principal qui assure la gestion des utilisateurs et des informations du système. Je me suis appuyé sur une architecture BAAS (Bakend As A Service) et sur une implémentation disponible sur NodeJS du nom de ParseServer (https://parseplatform.org/).
 
-Le deuxième micro service est **CadaverExchange** pour l’échange des cadavres de rats et des souris. Ce microservice écoute la disponibilité des rats et souris pour les mettre à disposition sur le marché.
+Le deuxième micro service est **CadaverExchange** pour l’échange des cadavres de rats et des souris. Ce microservice écoute la disponibilité des rats et des souris pour les mettre à disposition sur le marché.
 
 Le troisième microservice **MouseTrap** pour attraper les souris et les rats. 
 
-La synchronisation de ces microservices se fait via Pub/Sub suivant l’architecture ci-après :
+La synchronisation de ces microservices se fait via **Pub/Sub** comme illustré sur l'image ci-après :
 
 ![Alt text](images/img5.png?raw=true "Communication entres microservices")
 
 NB :
 - Chacune de ces applications fait l’objet d’un repository séparé sur notre Gitlab.
 - Chaque repository contient les fichiers clés suivants :
-    - **.gitlab-ci.yml**  qui est le fichier de configuration de Gitlab CD/CI et donc contient les instructions des différents jobs des pipeline coté Gitlab.
-    - **Dockerfile** qui permet la construction de l’image docker pour cette application
-    - **docker-compose.yml** qui permet le lancement et l’exécution d’un environnement local de l’application
+    - **.gitlab-ci.yml**  qui est le fichier de configuration de Gitlab CD/CI et donc contient les instructions des différents jobs des pipelines coté Gitlab.
+    - **Dockerfile** qui permet la construction de l’image Docker pour cette application
+    - **docker-compose.yml** qui permet le lancement et l’exécution d’un environnement local de l’application.
 
 # Les environnements et le pipeline DevOps
 
 Pour ce travail, j’ai défini 4 environnements :
 
-- **Local** : qui correspond à l’environnement des développeurs
-- **Test** : qui est un environnement en ligne centralisé contenant une version de test centralisé et exploité par les développeurs.
-- **QA** :  une version de test destinée aux utilisateurs fini pour qu’il y valider les fonctionnalités développées.
-- **Staging** : un environnement qui est une copie très similaire de l’environnement de production
+- **Local** : qui correspond à l’environnement local principalement exploité par les développeurs.
+- **Test** : qui est un environnement en ligne contenant une version de test centralisé et exploité par les développeurs dans le but de combiner et tester les différents travaux.
+- **QA** :  une version de test destinée aux utilisateurs finaux ou les testeurs en charge de la validation des fonctionnalités développées.
+- **Staging** : un environnement qui est une copie très similaire de l’environnement de production.
 - **Production** : environnement utilisé par les utilisateurs finaux.
 
 **NB :** 
-- Les environnements de Test et QA sont sur notre cluster interne Kubernetes or les environnements Staging et Production sont sur GKE.
+- Les environnements de Test et QA sont sur notre cluster interne Kubernetes or les environnements de Staging et Production sont sur GKE.
 - Chaque environnement est matérialisé par une branche dans le projet concerné sur Gitlab et les différentes versions sont matérialisés par des tags.
 - Des restrictions d’accès sont appliqués dans les passages d’une version à une autre. Et les jobs de build et déploiement sont déclenché manuellement dans la branche de production.
 
 Pour ce qui est du pipeline DevOps nous avons les étapes :
-- Code review : effectuer automatiquement avec Sonaqube.
-- Build : qui consiste à construire l’image docker et à push dans le registry docker
-- Test : exécution des tests automatiques.
-- Deploy : déploiement de l’application. Cette phase est prise en charge par Spinnaker.
+- **Code review** : pour effectuer automatiquement les revues de code sources avec Sonaqube.
+- **Build** : qui consiste à construire l’image docker et à push dans le registry Docker.
+- **Test** : exécution des tests automatiques.
+- **Deploy** : déploiement de l’application. Cette phase est prise en charge par Spinnaker.
 
-Pour la sécurité des données manipulés par le pipeline et l’intégrité des jobs, Gitlab offre la possibilité de **stocker les fichiers gitlab-cli.yaml dans des emplacements sécurisés et externes aux repositories**. De plus, d’autres de ces paramètres seront manipulés par spinnaker qui est un espace sécurisé donc l’accès est restreint et contrôlé.
+Le déclenchement des actions de déploiment se font automatiquement par Spinnaker qui écoute l'ajout de nouvelles images sur le registry.
+
+Pour la sécurité des données manipulés par les pipelines et pour conserver l’intégrité des jobs, Gitlab offre la possibilité de **stocker les fichiers gitlab-cli.yaml dans des emplacements sécurisés et externes aux repositories**. De plus, d’autres de ces paramètres seront manipulés par spinnaker qui est un espace sécurisé donc l’accès est restreint et contrôlé.
 
 
 # Points d’amélioration

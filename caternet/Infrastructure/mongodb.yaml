@@ -51,7 +51,7 @@ spec:
             claimName: pv-mongo
       containers:
         - name: mongo
-          image: 'mongo:3.5'
+          image: 'mongo:4.0-xenial'
           ports:
             - name: mongo
               containerPort: 27017
