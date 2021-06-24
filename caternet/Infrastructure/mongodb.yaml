@@ -1,0 +1,74 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pv-mongo
+  labels:
+    type: gluster
+spec:
+  storageClassName: gluster
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: "100Gi"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mongo
+  namespace: apps
+spec:
+  ports:
+    - name: mongo
+      protocol: TCP
+      port: 27017
+      targetPort: mongo
+  selector:
+    app: mongo
+  type: NodePort
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: mongo
+  namespace: apps
+  labels:
+    app: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      volumes:
+        - name: pv-storage-mongo
+          persistentVolumeClaim:
+            claimName: pv-mongo
+      containers:
+        - name: mongo
+          image: 'mongo:3.5'
+          ports:
+            - name: mongo
+              containerPort: 27017
+              protocol: TCP
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: mongo
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: password
+          resources:
+            limits:
+              cpu: '4'
+              memory: 5Gi
+            requests:
+              cpu: 10m
+              memory: 1Mi
+          volumeMounts:
+            - name: pv-storage-mongo
+              mountPath: /data/db
+              subPath: mongo/data
