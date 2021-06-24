@@ -1,0 +1,35 @@
+stages:
+  - review
+  - build
+  - test
+
+code_review_sonaqube:
+  stage: review
+  image: docker:19.03.14
+  script:
+    - echo "Code review with a tool like sonaqube"
+
+
+build_internal_registry:
+  stage: build
+  image: docker:19.03.14
+  script:
+    - echo "Building the image"
+    - apk add --no-cache gettext
+    - export  MASTER_KEY=${MASTER_KEY} NODE_ENV=${NODE_ENV}  DATABASE_URL=${DATABASE_URL} PARSE_SERVER_URL=${PARSE_SERVER_URL} GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}
+    - rm .env
+    - envsubst < .env.tmpl > .env
+    - docker build -t registry.miaou.net/miaou/catnodejs .
+    - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD registry.miaou.net
+    - docker tag registry.miaou.net/miaou/catnodejs registry.miaou.net/miaou/catnodejs:$CI_COMMIT_REF_NAME
+    - docker push registry.miaou.net/miaou/catnodejs:$CI_COMMIT_REF_NAME
+  environment:
+    name: registry
+    url: https://dashboard.registry.miaou.net
+
+
+automated_test:
+  stage: test
+  image: docker:19.03.14
+  script:
+    - echo "automated test of the code"

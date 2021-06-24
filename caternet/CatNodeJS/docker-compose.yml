@@ -1,0 +1,26 @@
+version: '2.0'
+services:
+
+  mongodb:
+    image: mongo:4.0-xenial
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: catnodejs
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data:/data/db
+
+
+  catnodejs:
+    build: .
+    depends_on:
+      - mongodb
+    ports:
+      - "1337:1337"
+      - "1338:1338"
+    environment:
+      WAIT_HOSTS: mongodb:27017
+volumes:
+  mongodb_data:

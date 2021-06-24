@@ -1,0 +1,24 @@
+{
+  "name": "catnodejs",
+  "version": "0.0.1",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "freemail": "1.5.0",
+    "nodemailer": "6.3.0",
+    "nodemailer-express-handlebars": "3.1.0",
+    "parse": "^1.11.1",
+    "parse-dashboard": "^1.2.0",
+    "parse-server": "^2.7.2",
+    "request": "^2.88.0",
+    "@google-cloud/pubsub": "^2.15.1",
+    "request-promise": "^4.2.2"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "GABINHO",
+  "license": "Free"
+}
