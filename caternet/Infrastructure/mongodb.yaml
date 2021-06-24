@@ -61,6 +61,8 @@ spec:
               value: mongo
             - name: MONGO_INITDB_ROOT_PASSWORD
               value: password
+            - name: MONGO_INITDB_DATABASE
+              value: catnodejs
           resources:
             limits:
               cpu: '4'
