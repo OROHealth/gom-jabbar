@@ -1,7 +1,7 @@
 
-Bonjour, Je suis JEAN GABIN NGUENDA NANA. 
+Bonjour, Je suis **JEAN GABIN NGUENDA NANA**. 
 
-Ce travail est ma proposition suite à l’exigence de sa grandeur Miaou XII décrit ici https://github.com/OROHealth/gom-jabbar/blob/main/caternet/CatWeb.md.
+Ce travail est ma proposition suite à l’exigence de **sa grandeur Miaou XII** décrit ici https://github.com/OROHealth/gom-jabbar/blob/main/caternet/CatWeb.md.
 
 # Infrastructure
 
