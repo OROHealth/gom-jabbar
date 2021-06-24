@@ -124,5 +124,5 @@ Comme points d’amélioration à ce travail j’ai :
 - Définir des mécanismes de restauration automatique du service.
     - Provisioning automatique des services, du cluster ou des ressources (**Infrastructure as code**).
     - Rapatriement et restauration des données de backup.
-- Les applications doivent se déployer de facon transparente sur l’utilisateur. Kubernetes offre des mécanismes pour cela. (**Zero downtime deployment**). 
+- Les applications doivent se déployer de facon transparente pour l’utilisateur. Kubernetes offre des mécanismes pour cela. (**Zero downtime deployment**). 
 - Les données stockées doivent être cryptées.
