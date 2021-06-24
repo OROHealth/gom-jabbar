@@ -15,7 +15,7 @@ exports.createTopic = async (topicName) => {
 exports.sendMessageToTopic = async (topicName, message) => {
 
 
-  console.log("Topic " + topicName + " send message : " + message);
+  console.log("Pub/Sub : Send the message : " + message + " inside the topic " + topicName );
 
   try {
     // Creates a new topic
@@ -26,7 +26,7 @@ exports.sendMessageToTopic = async (topicName, message) => {
     topic.publish(Buffer.from(message));
 
   } catch (error) {
-    console.error(error)
+  //  console.error(error)
   }
 
 }
