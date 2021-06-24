@@ -2,6 +2,7 @@ stages:
   - review
   - build
   - test
+  - deploy
 
 code_review_sonaqube:
   stage: review
@@ -33,3 +34,27 @@ automated_test:
   image: docker:19.03.14
   script:
     - echo "automated test of the code"
+
+deploy_stage:
+  stage: deploy
+  image: kubectl_deployer:v1.18.3
+  script:
+    - echo "Deploy to kubernetes"
+    - envsubst < deploy/deployment.yaml > deploy/new-deployment.yaml
+    - rm deploy/deployment.yaml
+    - mv deploy/new-deployment.yaml deploy/deployment.yaml
+    - envsubst < deploy/service.yaml > deploy/new-service.yaml
+    - rm deploy/service.yaml
+    - mv deploy/new-service.yaml deploy/service.yaml
+    - envsubst < deploy/ingress.yaml > deploy/new-ingress.yaml
+    - rm deploy/ingress.yaml
+    - mv deploy/new-ingress.yaml deploy/ingress.yaml
+    - kubectl config set-cluster kubernetes --server="$K8S_URL" --insecure-skip-tls-verify=true
+    - kubectl config set-credentials kubernetes-admin --token="$K8S_TOKEN"
+    - kubectl config set-context default-context --cluster=kubernetes --user=kubernetes-admin
+    - kubectl config use-context default-context
+    - /bin/sh ./deploy/deploy-canal2-prod.sh
+
+  except:
+  - production
+  - stagging

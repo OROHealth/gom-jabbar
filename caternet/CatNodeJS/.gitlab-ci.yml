@@ -35,9 +35,9 @@ automated_test:
   script:
     - echo "automated test of the code"
 
-deploy_build:
+deploy_stage:
   stage: deploy
-  image: registry.acesy.net/acesy/kubectl_deployer:v1.18.3
+  image: kubectl_deployer:v1.18.3
   script:
     - echo "Deploy to kubernetes"
     - envsubst < deploy/deployment.yaml > deploy/new-deployment.yaml
