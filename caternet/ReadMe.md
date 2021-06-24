@@ -3,7 +3,7 @@ Bonjour, Je suis JEAN GABIN NGUENDA NANA.
 
 Ce travail est ma proposition suite à l’exigence de sa grandeur Miaou XII décrit ici https://github.com/OROHealth/gom-jabbar/blob/main/caternet/CatWeb.md.
 
-#Infrastructure
+# Infrastructure
 
 Mon infrastructure est principalement composée de deux grandes parties.
 
@@ -11,7 +11,7 @@ La première partie est un cluster Kubernetes déployé sur l’infrastructure d
 
 La seconde partie est un ensemble de quatre (04) serveurs physiques (Bare metal servers) fournies par un cloud provider. 
 
-##Google Kubernetes Engine (GKE)
+## Google Kubernetes Engine (GKE)
 
 Le cluster Kubernetes de Google à les caractéristiques suivantes :
 
@@ -26,7 +26,7 @@ Pour gérer les certificats HTTPS, nous allons déployer l’outil Cert Manager 
 
 Concernant le stockage des données, le besoin porte sur un volume qui est localisé au Canada et qui permet d’avoir une réplication des données dans deux datacenters différents du Canada. Nous avons donc choisi les “regional persistent disks” de GKE (voir le fichier gke_persistent_volume.yaml).
 
-##Les serveurs dédiés (Bare metal servers)
+## Les serveurs dédiés (Bare metal servers)
 
 Ces servers sont au nombre de quatre et ont pour principal objectif de servir de support pour l’environnement DevOps de l’équipe. Ils sont composés de deux serveurs avec une forte puissance de calcul (serveurs compute) et deux servers avec une forte capacité de stockage (serveurs storage).
 
@@ -63,14 +63,14 @@ De plus, pour notre environnement de travail DevOps nous installerons :
 - Sonarqube : outil d’inspection automatique du code.
 - Spinnaker : outil de continous delivery pouvant être déployer sur Google et fonctionnant avec plusieurs fournisseurs cloud (AWS, Azure, Oracle cloud, Google, Cloud foundry).
 
-##Autres outils pour notre infrastructure.
+## Autres outils pour notre infrastructure.
 
 Dans notre infrastructure, nous avons aussi besoin de :
 - Un bus de message pour la synchronisation des microservices : nous allons utiliser Pub/Sub de Google.
 - Une base de données sur le cluster de travail et une autre sur le cluster de production. Nous utiliserons MongoDB (voir mongodb.yaml).
 - Un moteur de recherche : Elasticsearch sur chaque cluster.
 
-#L’application à développer
+# L’application à développer
 
 Nous avons identifié 3 microservices dans l’application à développer.
 
@@ -91,7 +91,7 @@ NB :
     - Dockerfile qui permet la construction de l’image docker pour cette application
     - docker-compose.yml qui permet le lancement et l’exécution d’un environnement local de l’application
 
-#Les environnements et le pipeline DevOps
+# Les environnements et le pipeline DevOps
 
 Pour ce travail, j’ai défini 4 environnements :
 
@@ -115,7 +115,7 @@ Pour ce qui est du pipeline DevOps nous avons les étapes :
 Pour la sécurité des données manipulés par le pipeline et l’intégrité des jobs, Gitlab offre la possibilité de stocker les fichiers gitlab-cli.yaml dans des emplacements sécurisés et externes aux repositories. De plus, d’autres de ces paramètres seront manipulés par spinnaker qui est un espace sécurisé donc l’accès est restreint et contrôlé.
 
 
-Points d’amélioration
+# Points d’amélioration
 
 Comme points d’amélioration à ce travail j’ai :
 
@@ -123,4 +123,4 @@ Comme points d’amélioration à ce travail j’ai :
     - Provisioning automatique des services, du cluster ou des ressources (Infrastructure as code)
     - Rapatriement et restauration des données de backup
 - Les applications doivent se déployer de facon transparente sur l’utilisateur. Kubernetes offre des mécanismes pour cela. (Zero downtime deployment). 
--	 Les données stockées doivent être cryptées.
+- Les données stockées doivent être cryptées.
