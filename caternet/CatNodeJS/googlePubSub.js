@@ -30,3 +30,35 @@ exports.sendMessageToTopic = async (topicName, message) => {
   }
 
 }
+
+
+exports.subscribeToTopic = async (topicName) => {
+
+
+  console.log("Pub/Sub : subscribe to the topic " + topicName );
+
+  try {
+    // Creates a new topic
+    const [topic] = await pubsub.createTopic(topicName);
+    console.log(`Topic ${topic.name} created.`);
+
+   // Creates a subscription on that new topic
+   const [subscription] = await topic.createSubscription(subscriptionName);
+
+   // Receive callbacks for new messages on the subscription
+   subscription.on('message', message => {
+     console.log('Pub/Sub : Received message:', message.data.toString());
+     process.exit(0);
+   });
+ 
+   // Receive callbacks for errors on the subscription
+   subscription.on('error', error => {
+     console.error('Pub/Sub : Received error:', error);
+     process.exit(1);
+   });
+
+  } catch (error) {
+  //  console.error(error)
+  }
+
+}
