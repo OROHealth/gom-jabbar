@@ -1,0 +1,62 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: CatNodeJS-${CI_COMMIT_REF_NAME}
+  namespace: apps
+  labels:
+    app: CatNodeJS-${CI_COMMIT_REF_NAME}
+    owner: miaou
+spec:
+  selector:
+    matchLabels:
+      app: CatNodeJS-${CI_COMMIT_REF_NAME}
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  revisionHistoryLimit: 1 # number of old replica sets to keep
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: CatNodeJS-${CI_COMMIT_REF_NAME}
+    spec:
+      imagePullSecrets:
+      - name: registry-key
+      containers:
+      - name: catnodejs
+        image: registry.miaou.net/miaou/catnodejs:${CI_COMMIT_REF_NAME}
+        imagePullPolicy : Always
+        resources:
+          requests:
+            memory: "1Mi"
+            cpu: "10m"
+          limits:
+            memory: "10Gi"
+            cpu: "5"
+        ports:
+        - containerPort: 1337
+          name: catnodejs
+        - containerPort: 1338
+          name: dashboard
+        env:
+        - name:  CI_COMMIT_SHA
+          value: "${CI_COMMIT_SHA}"
+        livenessProbe:
+          tcpSocket:
+            port: 1337
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 4
+        readinessProbe:
+          tcpSocket:
+            port: 1337
+          initialDelaySeconds: 2
+          periodSeconds: 5
+          timeoutSeconds: 4
+          successThreshold: 1
+          failureThreshold: 3
