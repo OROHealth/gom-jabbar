@@ -1,0 +1,116 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pv-gitlab-runner
+  labels:
+    type: gluster
+spec:
+  storageClassName: gluster
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: "100Gi"
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: gitlab-runner
+  namespace: dev-apps
+
+  labels:
+    app: gitlab-runner
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: gitlab-runner
+  template:
+      labels:
+        name: gitlab-runner
+    spec:
+      volumes:
+        - name: pv-storage-gitlab-runner
+          persistentVolumeClaim:
+            claimName: pv-gitlab-runner
+      initContainers:
+        - name: init-runner
+          image: 'gitlab/gitlab-runner:v12.8.0'
+          args:
+            - register
+          env:
+            - name: CI_SERVER_URL
+              value: 'http://gitlab.dev-apps.svc.cluster.local/'
+            - name: REGISTER_NON_INTERACTIVE
+              value: 'true'
+            - name: REGISTRATION_TOKEN
+              value: 2xs_xYxHjEvK3HabyUsq
+            - name: RUNNER_EXECUTOR
+              value: kubernetes
+            - name: RUNNER_REQUEST_CONCURRENCY
+              value: '2'
+            - name: KUBERNETES_PRIVILEGED
+              value: 'true'
+          resources:
+            limits:
+              cpu: '3'
+              memory: 4Gi
+            requests:
+              cpu: 10m
+              memory: 1Mi
+          volumeMounts:
+            - name: pv-storage-gitlab-runner
+              mountPath: /etc/gitlab-runner
+              subPath: gitlab-runner/config
+            - name: pv-storage-gitlab-runner
+              readOnly: true
+              mountPath: /etc/ssl/certs
+              subPath: gitlab-runner/certs
+        - name: init-runner-volume
+          image: alpine
+          command:
+            - sh
+            - '-c'
+          args:
+            - |
+              cat <<EOF >> /etc/gitlab-runner/config.toml
+                [[runners.kubernetes.volumes.host_path]]
+                name = "docker-sock"
+                mount_path = "/var/run/docker.sock"
+                host_path = "/var/run/docker.sock"
+              EOF
+          resources:
+            limits:
+              cpu: '3'
+              memory: 4Gi
+            requests:
+              cpu: 10m
+              memory: 1Mi
+          volumeMounts:
+            - name: pv-storage-gitlab-runner
+              mountPath: /etc/gitlab-runner
+              subPath: gitlab-runner/config
+          imagePullPolicy: Always
+      containers:
+        - name: gitlab-runner
+          image: 'gitlab/gitlab-runner:v12.8.0'
+          args:
+            - run
+          resources:
+            limits:
+              cpu: '3'
+              memory: 4Gi
+            requests:
+              cpu: 10m
+              memory: 1Mi
+          volumeMounts:
+            - name: pv-storage-gitlab-runner
+              mountPath: /etc/gitlab-runner
+              subPath: gitlab-runner/config
+            - name: pv-storage-gitlab-runner
+              readOnly: true
+              mountPath: /etc/ssl/certs
+              subPath: gitlab-runner/certs
+      serviceAccountName: gitlab-runner
+      serviceAccount: gitlab-runner
