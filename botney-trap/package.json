@@ -17,10 +17,12 @@
   },
   "scripts": {
     "develop": "nodemon  --exec 'sh scripts/developmentContainer.sh' ",
-    "build": "node buildTrap.js",
-    "deploy": "node deployTrap.js",
+    "buildGCP": "node buildTrap.js",
+    "deployGCP": "node deployTrap.js",
+    "deployAZ": "node deployTrap.js",
+    "viewLogsGCP": "node deployTrap.js",
     "buildAndDeploy": "echo \"Error: no test specified\" && exit 1",
-    "deployReplica": "echo \"Error: no test specified\" && exit 1"
+    "manageGCPTraps": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
