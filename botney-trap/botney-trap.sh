@@ -1,1 +1,1 @@
-while true; do echo "Time to go to sleep Basherbot"; sleep 2; done
+while true; do echo "Time to go to sleep Basherbots"; sleep 3; done

@@ -1,0 +1,30 @@
+{
+  "name": "botney-trap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "command-exists": "^1.2.9",
+    "dotenv": "^10.0.0",
+    "nodemon": "^2.0.7",
+    "prompts": "^2.4.1",
+    "targz": "^1.0.1",
+    "unique-names-generator": "^4.5.0",
+    "yargs": "^17.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.29.0"
+  },
+  "scripts": {
+    "develop": "nodemon  --exec 'sh scripts/developmentContainer.sh' ",
+    "build": "node buildTrap.js",
+    "deploy": "node deployTrap.js",
+    "buildAndDeploy": "echo \"Error: no test specified\" && exit 1",
+    "deployReplica": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "nodemonConfig": {
+    "delay": 1969
+  }
+}
