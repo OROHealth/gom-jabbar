@@ -1,5 +1,5 @@
-var execProcess = require('./scripts/exec_process.js');
-const checkDependencies = require('./checkDependencies.js');
+const checkDependencies = require('./scripts/checkDependencies.js');
+const execProcess = require('./scripts/exec_process.js');
 const promptProjectSelection = require('./scripts/promptProjectSelection.js');
 
 require('dotenv').config();

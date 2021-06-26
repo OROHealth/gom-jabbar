@@ -1,4 +1,4 @@
-const checkDependencies = require('./checkDependencies.js');
+const checkDependencies = require('./scripts/checkDependencies.js');
 var execProcess = require('./scripts/exec_process.js');
 
 require('dotenv').config();
@@ -11,9 +11,10 @@ require('dotenv').config();
       `gcloud builds submit  --tag gcr.io/${process.env.GCP_PROJECT_ID}/botney-trap`
     );
 
-    if (buildError) {
+    if (!buildSuceeded) {
       throw new Error(buildError);
     }
+    console.log('the error is >>>>', buildError);
     console.log(buildSuceeded);
     return;
   }
