@@ -1,12 +1,11 @@
-const checkDependencies = require('./checkDependencies');
+const checkDependencies = require('./scripts/checkDependencies');
 const execProcess = require('./scripts/exec_process');
 const promptProjectSelection = require('./scripts/promptProjectSelection');
 require('dotenv').config();
-
 let logTrap = async (services) => {
   let getServiceLogs = (name) => {
     return execProcess(
-      `gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=${name}" --project ${process.env.GCP_PROJECT_ID} --limit 5 --format=table `
+      `gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=${name}" --project ${process.env.GCP_PROJECT_ID} --limit 5 --format="table[box](timestamp, textPayload,resource.labels.configuration_name, resource.labels.location)"   `
     );
   };
 
@@ -22,8 +21,7 @@ let logTrap = async (services) => {
         ({ stdout: serviceLogs, stderr: getLogsFailed } = await getServiceLogs(
           service
         ));
-        console.log(`Logs for  ${service} below`);
-        console.log(serviceLogs);
+
         if (serviceLogs) {
           console.log('\x1b[32m', `Logs for ${service} below !!!!`);
           console.log(serviceLogs);
