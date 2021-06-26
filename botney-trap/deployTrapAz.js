@@ -1,8 +1,7 @@
 var execProcess = require('./scripts/exec_process.js');
 
 const { uniqueNamesGenerator, animals } = require('unique-names-generator');
-const checkDependencies = require('./checkDependencies.js');
-
+const checkDependencies = require('./scripts/checkDependencies.js');
 require('dotenv').config();
 
 (async () => {
