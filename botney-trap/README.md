@@ -16,6 +16,7 @@ Let us explain how the provided arsenal maps to the required Infinity Sources po
 
 - **Space:** we can teletransport our trap from one Cloud provider to at least another
   - The `npm run deployGCP` and `npm run deployAZ` will deploy the traps on the desired Cloud Provider.
+  * in GCP you can deploy as many traps as you want. Each trap can scale horizontaly up to 5 simultaneous instances.
   * when those commands finish execution you will get the addess that will guide you to the trap. Watch your step!
 
 * **Mind:** we have a playground environment, and a "live" environment and can spawn as many more as we want with a
@@ -56,7 +57,7 @@ Actually, Each script will check for its dependencies and output a descriptive e
 
 ### Google Cloud.
 
-Once the Cloud SDK is installed in your system. **_Make sure the Cloud Build and Cloud Run APIs are enabled_** in your project as well as billing. After that please do the following:
+Once the Cloud SDK is installed in your system. **_Make sure the Cloud Build and Cloud Run APIs are enabled_** in your project [Check here](https://console.cloud.google.com/apis/library/cloudbuild.googleapis.com) and [here](https://console.cloud.google.com/apis/library/run.googleapis.com) . After that please do the following:
 
 1.  go ahead and authenticate using the `gcloud auth login` command.
 2.  Grab your project ID and paste it in the `.env` file located in the botney-trap folder. Set it as the value for the `GCP_PROJECT_ID` variable.
@@ -87,6 +88,7 @@ The following topics are missing on the current implementation or can be improve
 * Better promire rejection handling is necessary to improve code quality.
 * improve the folder structure and overall tidiness of the files.
 * streaming the stdout of the commands woudd have been pretty cool instead of dumping the logs all at once at the end.
+* automation was inevitably reduced by having the used manually enable the required APIs in GCP. Doing it in an automated way fails by returning: Cloud Build API has not been used in project nnnnnnnnnnn before or it is disabled. Enable it by visiting https:... Probably a security feature in GCP.
 
 ---
 
