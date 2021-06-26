@@ -59,7 +59,9 @@ Actually, Each script will check for its dependencies and output a descriptive e
 Once the Cloud SDK is installed in your system. Make sure the Cloud Build and Cloud Run APIs are enabled in your project as well as billing. After that please do the following:
 
 1.  go ahead and authenticate using the `gcloud auth login` command.
-2.  Grab your project ID and paste it in the `.env`file located in this same folder. Set it as the value for the `GCP_PROJECT_ID` variable.
+2.  Grab your project ID and paste it in the `.env` file located in the botney-trap folder. Set it as the value for the `GCP_PROJECT_ID` variable.
+3.  In your command line tool of preference sun the following command replacing PROJECT_ID with the projectID of your gcp project `gcloud config set project PROJECT_ID`
+4.  Having nodeJS installed in your system. Run `npm install` in the botney-trap folder.
 
 Please keep in mind that the google account that you logged in with must me allowed to trigger build opertions in Cloud builds and manage Services in Cloud Run
 
@@ -69,6 +71,21 @@ I assume you already have a subscription and resource group created in Azure por
 
 1. Run the `az login` command to authenticate.
 2. Grab the name of the resource group you will deploy your traps to and paste in the `.env` file as the value for the `AZ_RESOURCE_GROUP`variable.
+
+## Acknowledgements
+
+The following topics are missing on the current implementation or can be improved upon.
+
+- The Azure deployments create an Azure Container Registry (ACR) every time the the script is executed. Which is impractical.
+- The Azure deployments are not secured with a TLS encryption layer as required.
+- The DNS names cannot be changed on any of the deployments.
+
+* A Load balancer could be implemented in either GCP or Azure in order to not have the deployments publicly exposed. This would also allow us to change the DNS names and target specific traps to specefic user segments.
+* Implementing a load balancer in GCP would have required the creation of a network endpoint group (NEG) in between the actual services and the internet.
+* in order to have rollback capabilities in GCP. An application could have been built so that it does a `gcloud run service describe` operation which lists the past container images deployed to a service. Finally, the manage deployment script would have to be modified in order to accept a new contiainer image as parameter.
+* eventhough Client libraries could have been used in some parts of the GCP solution. I made the concious desition to use only nodejs' child_process.exe API in order to not require multiple authentication procedures, suchas as having to do `gcloud auth login` and then downloading Service account keys.
+* Better promire rejection handling is necessary to improve code quality.
+* improve the folder structure and overall tidiness of the files.
 
 ---
 
