@@ -6,7 +6,7 @@ require('dotenv').config();
 let logTrap = async (services) => {
   let getServiceLogs = (name) => {
     return execProcess(
-      `gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=${name}" --project ${process.env.GCP_PROJECT_ID} --limit 5 `
+      `gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=${name}" --project ${process.env.GCP_PROJECT_ID} --limit 5 --format=table `
     );
   };
 
