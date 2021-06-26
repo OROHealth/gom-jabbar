@@ -56,7 +56,7 @@ Actually, Each script will check for its dependencies and output a descriptive e
 
 ### Google Cloud.
 
-Once the Cloud SDK is installed in your system. Make sure the Cloud Build and Cloud Run APIs are enabled in your project as well as billing. After that please do the following:
+Once the Cloud SDK is installed in your system. **_Make sure the Cloud Build and Cloud Run APIs are enabled_** in your project as well as billing. After that please do the following:
 
 1.  go ahead and authenticate using the `gcloud auth login` command.
 2.  Grab your project ID and paste it in the `.env` file located in the botney-trap folder. Set it as the value for the `GCP_PROJECT_ID` variable.
@@ -86,6 +86,7 @@ The following topics are missing on the current implementation or can be improve
 * eventhough Client libraries could have been used in some parts of the GCP solution. I made the concious desition to use only nodejs' child_process.exe API in order to not require multiple authentication procedures, suchas as having to do `gcloud auth login` and then downloading Service account keys.
 * Better promire rejection handling is necessary to improve code quality.
 * improve the folder structure and overall tidiness of the files.
+* streaming the stdout of the commands woudd have been pretty cool instead of dumping the logs all at once at the end.
 
 ---
 
