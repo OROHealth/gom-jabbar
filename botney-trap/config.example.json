@@ -1,0 +1,60 @@
+{
+  "name": "botney-trap",
+  "version": "1.0.0",
+  "domain": "local.me",
+  "email": "local@gmail.com",
+  "backend": "local",
+  "clouds": {
+    "aws": {
+      "region": "us-west-2",
+      "nodes": 3,
+      "node_size": "t3.medium",
+      "enabled": true,
+      "credentials": {
+        "AWS_SECRET_ACCESS_KEY": "",
+        "AWS_ACCESS_KEY_ID": ""
+      }
+    },
+    "digitalocean": {
+      "region": "nyc1",
+      "nodes": 3,
+      "node_size": "s-2vcpu-2gb",
+      "enabled": true,
+      "credentials": {
+        "DIGITALOCEAN_ACCESS_TOKEN": ""
+      }
+    },
+    "environments": [
+      {
+        "name": "production",
+        "subdomain": "prod",
+        "origins": {
+          "aws": {
+            "weight": 90
+          },
+          "digitalocean": {
+            "weight": 10
+          }
+        }
+      },
+      {
+        "name": "testing",
+        "subdomain": "test",
+        "origins": {
+          "aws": {
+            "weight": 100
+          }
+        }
+      },
+      {
+        "name": "development",
+        "subdomain": "dev",
+        "origins": {
+          "digitalocean": {
+            "weight": 100
+          }
+        }
+      }
+    ]
+  }
+}

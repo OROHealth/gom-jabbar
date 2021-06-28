@@ -25,8 +25,18 @@ resource "aws_iam_policy" "cert_manager_policy" {
           "route53:ChangeResourceRecordSets",
           "route53:ListResourceRecordSets"
         ],
-        "Resource" : "arn:aws:route53:::hostedzone/${element(concat(aws_route53_zone.primary[*].zone_id, [""]), 0)}"
+        "Resource" : "arn:aws:route53:::hostedzone/*"
       },
+      {
+        "Effect": "Allow",
+        "Action": "route53:ListHostedZonesByName",
+        "Resource": "*"
+      },
+      {
+        "Effect": "Allow",
+        "Resource": "${module.cert_manager_irsa.iam_role_arn}",
+        "Action": "sts:AssumeRole"
+      }
     ]
   })
 }
@@ -51,8 +61,13 @@ resource "helm_release" "cert-manager" {
   namespace  = element(concat(resource.kubernetes_namespace.certmanager_namespace[*].metadata.0.name, [""]), 0)
 
   set {
+    name  = "installCRDs"
+    value = true
+  }
+
+  set {
     name  = "serviceAccount.create"
-    value = "true"
+    value = true
   }
 
   set {
@@ -62,12 +77,7 @@ resource "helm_release" "cert-manager" {
 
   set {
     name  = "securityContext.enabled"
-    value = "true"
-  }
-
-  set {
-    name  = "installCRDs"
-    value = "true"
+    value = true
   }
 
   set {

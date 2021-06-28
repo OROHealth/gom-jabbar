@@ -109,13 +109,12 @@ module "eks" {
     GithubOrg   = "terraform-aws-modules"
   }
 
-  # TODO: add variable to set worker nodes
   worker_groups = [
     {
       name                          = "worker-group-1"
-      instance_type                 = "t3.medium"
+      instance_type                 = "${var.node_size_aws}"
       additional_userdata           = "echo foo bar"
-      asg_desired_capacity          = var.number_nodes
+      asg_desired_capacity          = var.number_nodes_aws
       additional_security_group_ids = [element(concat(aws_security_group.worker_group_mgmt_one[*].id, [""]), 0)]
     }
   ]

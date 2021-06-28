@@ -1,24 +1,13 @@
-variable "aws_region" {
-  default = "us-west-2"
-}
+variable "aws_region" {}
 
-variable "domain" {
-  default = "sebastianfranco.me"
-}
+variable "domain" {}
 
-variable "email" {
-  default = "jhonsfran@gmail.com"
-}
+variable "email" {}
 
-variable "number_nodes" {
-  default = 3
-}
+variable "number_nodes_aws" {}
 
-variable "enable_aws" {
-  type = bool
-  default = true
-}
+variable "node_size_aws" {}
 
-variable "aws_weight" {
-  default = 90
-}
+variable "enable_aws" {}
+
+variable "aws_weight" {}

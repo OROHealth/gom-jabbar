@@ -1,6 +1,5 @@
 FROM alpine:3.14.0
 
-# hadolint ignore=DL3018
 RUN apk --no-cache add bash shadow tini
 SHELL ["/bin/bash", "-o", "pipefail", "-o", "errexit", "-u", "-c"]
 

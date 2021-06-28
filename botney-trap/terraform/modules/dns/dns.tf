@@ -8,7 +8,7 @@ resource "aws_route53_zone" "primary" {
 
 resource "aws_route53_record" "aws" {
   count   = var.enable_aws ? 1 : 0
-  zone_id = element(concat(aws_route53_zone.primary[*].zone_id, [""]), 0)
+  zone_id = element(concat(resource.aws_route53_zone.primary[*].zone_id, [""]), 0)
   name    = "*"
   type    = "CNAME"
   ttl     = "300"
