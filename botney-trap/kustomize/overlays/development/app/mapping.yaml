@@ -5,6 +5,4 @@ metadata:
 spec:
   host: dev.sebastianfranco.me
   prefix: /
-  service: botney-trap
-  timeout_ms: 55000000
-  idle_timeout_ms: 55000000
+  service: botney-trap:3000
