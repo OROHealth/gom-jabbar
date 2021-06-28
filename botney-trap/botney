@@ -1,0 +1,249 @@
+#!/usr/bin/env python3
+import argparse
+import boto3
+import contextlib
+import copy
+import getpass
+import io
+import json
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+import threading
+import time
+import yaml
+
+def main(args):
+    command, args = parse_command(args)
+    function = get_command_function(command)
+    function(args)
+
+def log(level, msg, *args):
+    msg = level + ': ' + msg + '\n'
+    if args:
+        msg %= args
+    sys.stdout.write(msg)
+
+def warn(msg, *args):
+    log('warn', msg, *args)
+
+def error(msg, *args):
+    log('error', msg, *args)
+    sys.exit(1)
+
+def usage(msg, *args):
+    log('usage', msg, *args)
+    sys.exit(1)
+
+def get_command_function(command):
+    function = COMMANDS.get(command)
+    if function is None:
+        usage('invalid command: botney %s ...', command)
+        sys.exit(1)
+    return function
+
+def parse_command(args):
+    if len(args) == 0:
+        usage('missing command: [command] ...')
+        sys.exit(1)
+    return args[0], args[1:]
+
+def parse_init_arguments(args):
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-f', '--file', metavar='FILE', help="The name of the configuration file")
+    return parser.parse_args(args)
+
+def command_init(args):
+    options = parse_init_arguments(args)
+    config = load_configuration(options.file)
+
+    if config.name:
+        if t.ami.get('source_ami') is None:
+            fetch_source_ami(t)
+        t.do('build', templates_dir=os.path.join(os.getcwd(), options.path), recurse=options.recurse)
+
+def parse_clouds(clouds):
+    if clouds is None:
+        return { }
+    return dict(split_setting(s) for s in clouds)
+
+def split_setting(s):
+    k, v = s.split('=', 1)
+    try:
+        v = yaml.load(io.StringIO(v))
+    except ValueError:
+        pass
+    return k, v
+
+def load_configuration(file, clouds=None):
+
+  botney_config = None
+
+  if file is None:
+    file = 'config.json'
+
+  try:
+    with open(os.path.join(file)) as f:
+      config = json.load(f)
+
+      if 'domain' not in config or 'email' not in config:
+          warn("skipping %s - neither 'domain' nor 'email' properties exist", config)
+
+      if 'clouds' not in config:
+          warn("skipping %s - 'clouds' property don't exist", config)
+
+      clouds = config.get('clouds')
+      if clouds is not None:
+        for k, v in clouds.items():
+          print(k, v)
+      else:
+        warn("skipping %s - 'clouds' property is null", config)
+
+      # TODO: add backend configuration - versioning
+      botney_config = Botney(
+        name      = "botney-trap",
+        version   = "1.0.0",
+        backend   = "local",
+        domain      = config.get('domain'),
+        email   = config.get('email'),
+        clouds    = config.get('clouds'),
+      )
+
+  except Exception as e:
+    warn('skipping %s - none or invalid config.json file: %s', file, e)
+
+  return botney_config
+
+class Botney(object):
+
+    def __init__(self, name=None, version=None, domain=None, email=None, clouds=None, backend="local"):
+        if name is None:
+            name = "botney-trap"
+
+        if clouds is None:
+            clouds = {}
+
+        if domain is None:
+            domain = ""
+
+        self.name       = name
+        self.version    = version
+        self.domain     = domain
+        self.email      = email
+        self.clouds     = clouds
+        self.backend     = backend
+
+        # self.begin = Script(
+        #     name    = 'pack-begin.sh',
+        #     content = BEGIN_SCRIPT,
+        # )
+
+        # self.end = Script(
+        #     name    = 'pack-end.sh',
+        #     content = END_SCRIPT,
+        # )
+
+    def __repr__(self):
+        return '\n'.join(self._repr([ ]))
+
+    def __str__(self):
+        return self.name
+
+    def _repr(self, parts, depth=0):
+        parts.append(2 * depth * ' ' + self.name)
+        depth += 1
+        for c in self.children:
+            c._repr(parts, depth)
+        return parts
+
+    def do_self(self, command, templates_dir=None, source_ami=None):
+        if templates_dir is None:
+            template_dir = '.'
+
+        pwd = tempfile.mkdtemp()
+
+        with open('/dev/null', 'rb') as stdin, \
+             open(os.path.join(pwd, 'stdout.log'), 'wb') as stdout, \
+             open(os.path.join(pwd, 'stderr.log'), 'wb') as stderr:
+
+            for d in ('root', 'scripts'):
+                shutil.copytree(os.path.join(templates_dir, self.name, d), os.path.join(pwd, d))
+
+            for s in (self.begin, self.end):
+                with open(os.path.join(pwd, s.name), 'w') as f:
+                    f.write(s.content)
+
+            with open(os.path.join(pwd, 'plan.json'), 'w') as f:
+                f.write(json.dumps(self.plan_self(source_ami=source_ami), sort_keys=True, indent=2, separators=(',', ': ')))
+
+            cmd = ['packer', command, 'plan.json']
+            self.log('working directory is %s', pwd)
+            self.log(' '.join(cmd))
+            packer = subprocess.Popen(cmd, stdin=stdin, stdout=stdout, stderr=stderr, cwd=pwd)
+            packer.wait()
+
+            if packer.returncode != 0:
+                raise Exception("Buliding %s failed: see logs in %s" % (self.name, pwd))
+
+            try:
+                ami = subprocess.check_output("grep ami- %s  | tail -n 1 | cut -d' ' -f2" % os.path.join(pwd, 'stdout.log'), shell=True)
+                ami = str(ami, 'utf-8').strip()
+                if ami:
+                    self.log(ami)
+                    return ami
+            except:
+                raise Exception("Reading AMI ID of %s failed: see logs in %s" % (self.name, pwd))
+
+    def log(self, msg, *args):
+        log('==> ' + self.name, msg, *args)
+
+class Script(object):
+
+    def __init__(self, name=None, content=None):
+        self.name    = name
+        self.content = content
+
+    def __repr__(self):
+        return 'Script { name = %s }' % self.name
+
+    def __str__(self):
+        return self.name
+
+TIMESTAMP = time.strftime('%Y.%m.%d-%H.%M.%S', time.gmtime())
+
+COMMANDS = {
+  'init' : command_init,
+}
+
+BEGIN_SCRIPT = """#!/bin/bash
+set -e
+if [ "$(ls -A /tmp/root)" ]
+then
+  cd /tmp/root
+  cp -r * /
+fi
+systemctl daemon-reload
+"""
+
+END_SCRIPT = """#!/bin/bash
+set -e
+if [ "$(ls -A /tmp/root)" ]
+then
+  cd /tmp/root
+  cp -r * /
+fi
+systemctl daemon-reload
+apt-get -y autoremove
+apt-get -y autoclean
+rm -rf /tmp/*
+rm -rf /var/tmp/*
+rm -rf $HOME/.ssh/authorized_keys
+for f in $(find /var/log -type f) ; do
+  dd if=/dev/null of=$f
+done
+"""
+
+if __name__ == '__main__':
+  main(sys.argv[1:])

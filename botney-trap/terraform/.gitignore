@@ -1,0 +1,7 @@
+.terraform
+.terraform.lock.hdl
+terraform.tfstate
+.terraform.tfstate*
+terraform.tfstate.backup
+
+kubeconfig*
