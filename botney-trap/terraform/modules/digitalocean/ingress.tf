@@ -1,12 +1,12 @@
 resource "kubernetes_namespace" "ambassador_namespace" {
-  count = var.enable_aws ? 1 : 0
+  count = var.enable_digitalocean ? 1 : 0
   metadata {
     name = "ambassador"
   }
 }
 
 module "ambassador" {
-  count = var.enable_aws ? 1 : 0
+  count = var.enable_digitalocean ? 1 : 0
 
   source           = "basisai/ambassador/helm"
   version          = "0.1.2"

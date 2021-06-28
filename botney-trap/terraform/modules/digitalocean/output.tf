@@ -1,9 +1,4 @@
-output "cluster_endpoint" {
-  description = "Endpoint for EKS control plane."
-  value       = element(concat(resource.digitalocean_kubernetes_cluster.botney[*].endpoint, [""]), 0)
-}
-
-output "region" {
-  description = "Digitalocean region."
-  value       = var.digitalocean_region
+output "digitalocean_ingress" {
+  description = "Digitalocean ingress ip."
+  value       = data.kubernetes_service.ambassador_loadbalancer.status.0.load_balancer.0.ingress.0.ip
 }

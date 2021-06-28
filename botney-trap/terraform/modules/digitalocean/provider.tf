@@ -1,5 +1,3 @@
-provider "digitalocean" {}
-
 provider "kubernetes" {
   host                   = element(concat(resource.digitalocean_kubernetes_cluster.botney[*].endpoint, [""]), 0)
   cluster_ca_certificate = base64decode(element(concat(resource.digitalocean_kubernetes_cluster.botney[*].kube_config.0.cluster_ca_certificate, [""]), 0))

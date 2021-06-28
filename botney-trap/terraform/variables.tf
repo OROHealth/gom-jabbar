@@ -6,10 +6,6 @@ variable "domain" {
   default = "sebastianfranco.me"
 }
 
-variable "email" {
-  default = "jhonsfran@gmail.com"
-}
-
 variable "number_nodes_aws" {
   default = 3
 }
@@ -21,10 +17,6 @@ variable "node_size_aws" {
 variable "enable_aws" {
   type = bool
   default = true
-}
-
-variable "aws_weight" {
-  default = 90
 }
 
 variable "digitalocean_region" {
@@ -44,6 +36,30 @@ variable "enable_digitalocean" {
   default = true
 }
 
-variable "digitalocean_weight" {
-  default = 10
+variable "environments" {
+  default = [
+    {
+      "name": "production",
+      "subdomain": "prod"
+      "origins": ["aws", "digitalocean"]
+    },
+    {
+      "name": "testing",
+      "subdomain": "test",
+      "origins": ["aws","digitalocean"]
+    },
+    {
+      "name": "development",
+      "subdomain": "dev",
+      "origins": ["digitalocean"]
+    },
+  ]
+}
+
+variable "weight_aws" {
+  default = 0.9
+}
+
+variable "weight_digitalocean" {
+  default = 0.1
 }
