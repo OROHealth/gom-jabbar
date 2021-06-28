@@ -4,12 +4,12 @@ on:
   push:
   pull_request:
 
+# TODO: add terraform dockerfile
 jobs:
-  hadolint:
-    runs-on: ubuntu-20.04
-    name: "Hadolint"
+  docker-lint:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: jbergstroem/hadolint-gh-action@v1
+      - uses: hadolint/hadolint-action@v1.5.0
         with:
-          dockerfile: ./**/Dockerfile
+          dockerfile: ./botney-trap/app/Dockerfile

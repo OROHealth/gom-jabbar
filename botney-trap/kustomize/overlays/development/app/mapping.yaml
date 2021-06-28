@@ -1,0 +1,10 @@
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: botney-trap
+spec:
+  host: dev.sebastianfranco.me
+  prefix: /
+  service: botney-trap
+  timeout_ms: 55000000
+  idle_timeout_ms: 55000000

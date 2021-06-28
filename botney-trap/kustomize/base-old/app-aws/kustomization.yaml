@@ -1,6 +1,0 @@
-resources:
-  - mapping-aws.yaml
-  - mapping-do.yaml
-  - botney-trap-aws.yaml
-  - frontend-aws.yaml
-  - frontend-do.yaml
