@@ -1,14 +1,15 @@
-name: "Linting"
+name: "Docker Linting"
 
 on:
   push:
   pull_request:
 
 jobs:
-  docker-lint:
-    runs-on: ubuntu-latest
+  hadolint:
+    runs-on: ubuntu-20.04
+    name: "Hadolint"
     steps:
       - uses: actions/checkout@v2
-      - uses: hadolint/hadolint-action@v1.5.0
+      - uses: jbergstroem/hadolint-gh-action@v1
         with:
-          dockerfile: ./botney-trap/Dockerfile
+          dockerfile: ./**/Dockerfile

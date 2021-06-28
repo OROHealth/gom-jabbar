@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: botney-trap-aws
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: botney-trap-aws
+spec:
+  selector:
+    app: botney-trap-aws
+  ports:
+    - port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: botney-trap-aws
+  name: botney-trap-aws
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: botney-trap-aws
+  template:
+    metadata:
+      annotations:
+        consul.hashicorp.com/connect-inject: "true"
+      labels:
+        app: botney-trap-aws
+    spec:
+      containers:
+        - name: botney-trap-aws
+          image: nicholasjackson/fake-service:v0.7.11
+          env:
+            - name: "LISTEN_ADDR"
+              value: "0.0.0.0:8080"
+            - name: "NAME"
+              value: "botney-trap-aws"
+            - name: "MESSAGE"
+              value: "Time to go to sleep Basherbot from AWS"
+          ports:
+            - containerPort: 8080
+              name: http

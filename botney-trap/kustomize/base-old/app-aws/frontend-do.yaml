@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: web-do
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-do
+  labels:
+    app: web-do
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-do
+  template:
+    metadata:
+      labels:
+        name: web-do
+        app: web-do
+      annotations:
+        consul.hashicorp.com/connect-inject: "true"
+        consul.hashicorp.com/connect-service-upstreams: "botney-trap-do:8080:dc2"
+    spec:
+      containers:
+        - name: web-do
+          image: nicholasjackson/fake-service:v0.7.11
+          ports:
+            - containerPort: 9090
+          env:
+            - name: "LISTEN_ADDR"
+              value: "0.0.0.0:9090"
+            - name: "UPSTREAM_URIS"
+              value: "http://localhost:8080"
+            - name: "NAME"
+              value: "botney-trap-do"
+            - name: "MESSAGE"
+              value: "Hello World from DigitalOcean"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-do
+spec:
+  selector:
+    app: web-do
+  ports:
+    - port: 9090
+      targetPort: 9090
+---
+

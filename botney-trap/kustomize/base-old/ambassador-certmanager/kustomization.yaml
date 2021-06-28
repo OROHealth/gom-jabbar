@@ -1,0 +1,4 @@
+resources:
+  - cert-certificate.yaml
+  - cert-issuer.yaml
+  - wilcard.yaml

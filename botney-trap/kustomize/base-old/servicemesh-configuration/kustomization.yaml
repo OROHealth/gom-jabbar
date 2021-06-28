@@ -1,0 +1,4 @@
+resources:
+  - consul-resolver.yaml
+  - proxy-defaults.yaml
+  - service-intention.yaml
