@@ -1,6 +1,7 @@
 name: "Tfsec - Terraform"
 
 on:
+  push:
   pull_request:
 
 jobs:

@@ -25,5 +25,5 @@ resource "digitalocean_kubernetes_cluster" "botney" {
 
 resource "local_file" "kubeconfig_file" {
   content     = element(concat(resource.digitalocean_kubernetes_cluster.botney[*].kube_config.0.raw_config, [""]), 0)
-  filename = "${path.module}/kubeconfig_${local.cluster_name}"
+  filename = "${path.module}/kubeconfig"
 }

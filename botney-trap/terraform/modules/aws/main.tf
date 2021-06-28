@@ -98,8 +98,7 @@ module "eks" {
   subnets         = module.vpc.private_subnets
   vpc_id          = module.vpc.vpc_id
 
-  write_kubeconfig = true
-  kubeconfig_output_path = "./"
+  write_kubeconfig = false
 
   enable_irsa = true
 
@@ -120,4 +119,9 @@ module "eks" {
   ]
 
   worker_additional_security_group_ids = [element(concat(aws_security_group.all_worker_mgmt[*].id, [""]), 0)]
+}
+
+resource "local_file" "kubeconfig_file" {
+  content     = element(concat(module.eks[*].kubeconfig, [""]), 0)
+  filename = "${path.module}/kubeconfig"
 }

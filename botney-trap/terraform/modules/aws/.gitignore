@@ -2,4 +2,4 @@
 .terraform.lock.hdl
 terraform.tfstate
 terraform.tfstate.backup
-kubeconfig_*
+kubeconfig*
