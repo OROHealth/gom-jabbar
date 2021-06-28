@@ -28,11 +28,13 @@ resource "aws_security_group" "worker_group_mgmt_one" {
   count = var.enable_aws ? 1 : 0
   name_prefix = "worker_group_mgmt_one"
   vpc_id      = module.vpc.vpc_id
+  description = "Allow SSH inbound traffic worker group"
 
   ingress {
     from_port = 22
     to_port   = 22
     protocol  = "tcp"
+    description = "SSH from VPC worker group"
 
     cidr_blocks = [
       "10.0.0.0/8",
@@ -44,11 +46,13 @@ resource "aws_security_group" "all_worker_mgmt" {
   count = var.enable_aws ? 1 : 0
   name_prefix = "all_worker_management"
   vpc_id      = module.vpc.vpc_id
+  description = "Allow SSH inbound traffic all workers"
 
   ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    description = "SSH from VPC all workers"
 
     cidr_blocks = [
       "10.0.0.0/8",

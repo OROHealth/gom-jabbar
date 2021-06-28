@@ -1,6 +1,7 @@
 FROM python:3.7-slim
 # RUN pip3 install mypy-lang==0.4 flake8==2.5.4 pyyaml
 
+# hadolint ignore=DL3018
 RUN apt-get update \
   && apt-get install -y curl unzip make \
   && apt-get clean
