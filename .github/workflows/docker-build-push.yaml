@@ -7,6 +7,7 @@ on:
 
 jobs:
   docker:
+    needs: [docker-lint, shellcheck, tfsec, yamlint]
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
@@ -24,5 +25,6 @@ jobs:
         with:
           push: true
           tags: jhonsfran/botney-trap:latest
+          file: ./botney-trap/app/Dockerfile
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
