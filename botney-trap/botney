@@ -118,22 +118,27 @@ def load_configuration(file, clouds=None):
 
 class Botney(object):
 
-    def __init__(self, name=None, version=None, domain=None, email=None, clouds=None, backend="local"):
+    def __init__(self, name=None, version=None, domain=None, clouds=None, environments=None):
         if name is None:
             name = "botney-trap"
 
-        if clouds is None:
-            clouds = {}
+        if version is None:
+            version = "1.0.0"
 
         if domain is None:
-            domain = ""
+            domain = error("Domain can't be null")
 
-        self.name       = name
-        self.version    = version
-        self.domain     = domain
-        self.email      = email
-        self.clouds     = clouds
-        self.backend     = backend
+        if clouds is None:
+            clouds = error("Cloud can't be null")
+
+        if environments is None:
+            environments = error("Environment can't be null")
+
+        self.name         = name
+        self.version      = version
+        self.domain       = domain
+        self.clouds       = clouds
+        self.environments = environments
 
         # self.begin = Script(
         #     name    = 'pack-begin.sh',
@@ -199,17 +204,6 @@ class Botney(object):
     def log(self, msg, *args):
         log('==> ' + self.name, msg, *args)
 
-class Script(object):
-
-    def __init__(self, name=None, content=None):
-        self.name    = name
-        self.content = content
-
-    def __repr__(self):
-        return 'Script { name = %s }' % self.name
-
-    def __str__(self):
-        return self.name
 
 TIMESTAMP = time.strftime('%Y.%m.%d-%H.%M.%S', time.gmtime())
 

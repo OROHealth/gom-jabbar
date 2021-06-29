@@ -23,5 +23,5 @@ const envApp = envalid.cleanEnv(
 
 exports.default = {
   CLOUD: envApp.CLOUD,
-  ENV: envApp.CLOUD,
+  ENV: envApp.ENV,
 };
