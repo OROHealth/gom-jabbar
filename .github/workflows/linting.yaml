@@ -1,9 +1,10 @@
-name: "Linting"
+name: "Docker Linting"
 
 on:
   push:
   pull_request:
 
+# TODO: add terraform dockerfile
 jobs:
   docker-lint:
     runs-on: ubuntu-latest
@@ -11,4 +12,4 @@ jobs:
       - uses: actions/checkout@v2
       - uses: hadolint/hadolint-action@v1.5.0
         with:
-          dockerfile: ./botney-trap/Dockerfile
+          dockerfile: ./botney-trap/app/Dockerfile

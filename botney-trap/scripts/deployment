@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+
+# Please Use Google Shell Style: https://google.github.io/styleguide/shell.xml
+
+# ---- Start unofficial bash strict mode boilerplate
+# http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -o errexit  # always exit on error
+set -o errtrace # trap errors in functions as well
+set -o pipefail # don't ignore exit codes when piping output
+set -o posix    # more strict failures in subshells
+# set -x          # enable debugging
+
+IFS="$(printf "\n\t")"
+# ---- End unofficial bash strict mode boilerplate
+
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
+
+script_path="$(dirname "${BASH_SOURCE[0]}")"
+source_path="${script_path}/kustomize/overlays"
+default_config="${source_path}/cloud/environment"
+kubeconfig="${script_path}/terraform/modules"
+level_dir=$(find "${default_config}/" | awk -F/ '{ print NF}' | sort -rn | tail -1)
+
+# declare global variables from stdin
+cloud="$1"
+action="$2"
+environment="$3"
+domain="$4"
+subdomain="$5"
+
+# shellcheck disable=SC2207
+declare -a files=($(find "${default_config}" -type f | cut -sd / -f "${level_dir}"-))
+
+
+function create_environment_config {
+  local path_environment_config="$1"
+
+  if [[ ! -d "${path_environment_config}" ]]; then
+	  mkdir -p "${path_environment_config}"
+  fi
+
+  # replacing files
+  if [[ -d "${default_config}" ]]; then
+	  echo "Copying new environment configuration"
+    cp -r "${default_config}/." "${path_environment_config}"
+  else
+    exit 1
+  fi
+}
+
+
+function update_environment_config () {
+  local path_environment_config="$1"
+
+  for i in "${files[@]}"
+  do
+    update_file "${path_environment_config}/${i}"
+  done
+}
+
+function update_file () {
+  local file="$1"
+
+	sed -i "s/--environment/${environment}/g" "${file}"
+	sed -i "s/--cloud/${cloud}/g" "${file}"
+	sed -i "s/--domain/${domain}/g" "${file}"
+	sed -i "s/--subdomain/${subdomain}/g" "${file}"
+
+  # shellcheck disable=SC2181
+  if [ $? -eq 0 ]; then
+		echo "Success!"
+	else
+		echo "Error!"
+	fi
+}
+
+dotenv () {
+  set -a
+  # shellcheck disable=SC1091
+  [ -f "${script_path}/.env" ] && . "${script_path}/.env"
+  set +a
+}
+
+function configure_kubectl () {
+  # export cloud credentials
+  dotenv
+
+  if [[ -f "${kubeconfig}/${cloud}/kubeconfig" ]]; then
+	  export KUBECONFIG="${kubeconfig}/${cloud}/kubeconfig"
+  else
+    echo "There is not kube configuration file for ${cloud}"
+    exit 1
+  fi
+}
+
+function deploy {
+  local path_environment_config="$1"
+  kubectl "${action}" -k "${path_environment_config}"
+}
+
+function main() {
+  set -e
+  path_environment_config="${source_path}/${cloud}/${environment}"
+  create_environment_config "${path_environment_config}"
+  update_environment_config "${path_environment_config}"
+  configure_kubectl
+  deploy "${path_environment_config}"
+}
+
+main

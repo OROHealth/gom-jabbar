@@ -1,0 +1,23 @@
+name: Yaml Lint
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lintAllTheThings:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: yaml-lint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          config_data: |
+            extends: default
+            rules:
+              new-line-at-end-of-file:
+                level: warning
+              document-start:
+                present: false
+              truthy:
+                check-keys: false

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: botney-trap
+  name: botney-trap
+spec:
+  # TODO: configure for post mortem
+  revisionHistoryLimit: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: botney-trap
+  template:
+    metadata:
+      labels:
+        app: botney-trap
+    spec:
+      containers:
+        - name: botney-trap
+          # TODO: add resources
+          # TODO: add readiness and liveness probes
+          # TODO: avoid using latest tag - versioning docker images
+          # TODO: add docker registry secret - regcred
+          image: jhonsfran/botney-trap:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              name: http
+          envFrom:
+            - secretRef:
+                name: botney-env
