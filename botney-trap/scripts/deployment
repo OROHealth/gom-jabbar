@@ -75,8 +75,8 @@ function update_file () {
 }
 
 dotenv () {
-  # shellcheck disable=SC1091
   set -a
+  # shellcheck disable=SC1091
   [ -f "${script_path}/.env" ] && . "${script_path}/.env"
   set +a
 }
