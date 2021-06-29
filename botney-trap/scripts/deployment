@@ -20,7 +20,6 @@ source_path="${script_path}/kustomize/overlays"
 default_config="${source_path}/cloud/environment"
 kubeconfig="${script_path}/terraform/modules"
 level_dir=$(find "${default_config}/" | awk -F/ '{ print NF}' | sort -rn | tail -1)
-base_image="jhonsfran\/botney-trap:latest"
 
 # declare global variables from stdin
 cloud="$1"
@@ -29,20 +28,21 @@ environment="$3"
 domain="$4"
 subdomain="$5"
 
-declare -a files=($(find $default_config -type f | cut -sd / -f $level_dir-))
+# shellcheck disable=SC2207
+declare -a files=($(find "${default_config}" -type f | cut -sd / -f "${level_dir}"-))
 
 
 function create_environment_config {
   local path_environment_config="$1"
 
   if [[ ! -d "${path_environment_config}" ]]; then
-	  mkdir -p $path_environment_config
+	  mkdir -p "${path_environment_config}"
   fi
 
   # replacing files
   if [[ -d "${default_config}" ]]; then
 	  echo "Copying new environment configuration"
-    cp -r "$default_config/." $path_environment_config
+    cp -r "${default_config}/." "${path_environment_config}"
   else
     exit 1
   fi
@@ -54,7 +54,6 @@ function update_environment_config () {
 
   for i in "${files[@]}"
   do
-    # echo "${path_environment_config}/${i}"
     update_file "${path_environment_config}/${i}"
   done
 }
@@ -62,11 +61,12 @@ function update_environment_config () {
 function update_file () {
   local file="$1"
 
-	sed -i "s/--environment/$environment/g" "${file}"
-	sed -i "s/--cloud/$cloud/g" "${file}"
-	sed -i "s/--domain/$domain/g" "${file}"
-	sed -i "s/--subdomain/$subdomain/g" "${file}"
+	sed -i "s/--environment/${environment}/g" "${file}"
+	sed -i "s/--cloud/${cloud}/g" "${file}"
+	sed -i "s/--domain/${domain}/g" "${file}"
+	sed -i "s/--subdomain/${subdomain}/g" "${file}"
 
+  # shellcheck disable=SC2181
   if [ $? -eq 0 ]; then
 		echo "Success!"
 	else
@@ -75,6 +75,7 @@ function update_file () {
 }
 
 dotenv () {
+  # shellcheck disable=SC1091
   set -a
   [ -f "${script_path}/.env" ] && . "${script_path}/.env"
   set +a
@@ -94,16 +95,16 @@ function configure_kubectl () {
 
 function deploy {
   local path_environment_config="$1"
-  kubectl $action -k "${path_environment_config}"
+  kubectl "${action}" -k "${path_environment_config}"
 }
 
 function main() {
   set -e
   path_environment_config="${source_path}/${cloud}/${environment}"
-  create_environment_config $path_environment_config
-  update_environment_config $path_environment_config
+  create_environment_config "${path_environment_config}"
+  update_environment_config "${path_environment_config}"
   configure_kubectl
-  deploy $path_environment_config
+  deploy "${path_environment_config}"
 }
 
 main
