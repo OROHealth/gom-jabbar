@@ -16,4 +16,4 @@ IFS="$(printf "\n\t")"
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 container_id=$(docker ps -qf "volume=botney")
-docker cp $1 $container_id:/usr/local/src/app/$1
+docker cp "${1}" "${container_id}:/usr/local/src/app/${1}"
