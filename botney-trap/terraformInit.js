@@ -1,5 +1,5 @@
 const { spawn } = require("child_process");
-const terraformPlan = spawn("terraform", ["-chdir=./terraform", "validate"]);
+const terraformPlan = spawn("terraform", ["-chdir=./terraform", "init"]);
 
 terraformPlan.stdout.on("data", (data) => {
   console.log(`stdout: ${data}`);

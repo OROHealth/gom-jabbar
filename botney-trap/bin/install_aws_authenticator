@@ -13,6 +13,20 @@ set -o posix    # more strict failures in subshells
 IFS="$(printf "\n\t")"
 # ---- End unofficial bash strict mode boilerplate
 
-cd "$(dirname "${BASH_SOURCE[0]}")/.."
+cd "$(mktemp -d)"
 
-docker build -t botney-trap:cli .
+version="1.19.6"
+echo -n "Installing aws-authenticator v${version}…"
+
+sudo_command=$(command -v sudo || true )
+
+url="https://amazon-eks.s3.us-west-2.amazonaws.com/${version}/2021-01-05/bin/linux/amd64/aws-iam-authenticator"
+curl --silent --location --fail --remote-name "${url}"
+
+if [ -z "${sudo_command}" ]; then
+  install -m 755 aws-iam-authenticator /usr/local/bin;
+else
+  "${sudo_command}" install -m 755 aws-iam-authenticator /usr/local/bin;
+fi
+
+echo '✓' installed "$(aws-iam-authenticator version)"

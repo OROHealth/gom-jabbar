@@ -1,20 +1,27 @@
+#!/usr/bin/env node
+
 /**
- * Checkbox list examples
+ * Botney-trap questions
  */
 
 "use strict";
+const clear = require("clear");
+const figlet = require("figlet");
+const chalk = require("chalk");
 const inquirer = require("inquirer");
+const clui = require("clui");
 const fs = require("fs");
+
+const Spinner = clui.Spinner;
+clear();
+
+console.log(chalk.yellow(figlet.textSync("Botney CLI")));
 
 const isValidDomain = (domain) => {
   return domain.match(
     new RegExp(/^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/i)
   );
 };
-
-let initConfig = {};
-let cloudsConfig = [];
-let environmentConfig = {};
 
 const questionsConfig = [
   {
@@ -267,16 +274,6 @@ const questionsConfig = [
         !!answers.cloudsNames.includes("aws", "digitalocean")
       );
     },
-    validate: async () => {
-      await new Promise((r) => setTimeout(r, 3000));
-      return true;
-    },
-    filter: async (answer) => {
-      await new Promise((r) => setTimeout(r, 3000));
-      return answer;
-    },
-    filteringText: "Validating your answer...",
-    validatingText: "Validating your configuration...",
   },
   {
     type: "confirm",
@@ -291,15 +288,42 @@ function askConfig() {
     answers.cloudsNames.forEach((cloud) => {
       answers.clouds[cloud].enabled = true;
     });
+
     const config = JSON.stringify(answers, null, "  ");
+    process.stdout.write("\n");
     console.log(config);
-    fs.writeFile("config.json", config, "utf8", (err) => {
-      if (err) {
-        console.error(err);
-        return;
+    process.stdout.write("\n");
+
+    const countdown = new Spinner("Validating your configuration...  ", [
+      "⣾",
+      "⣽",
+      "⣻",
+      "⢿",
+      "⡿",
+      "⣟",
+      "⣯",
+      "⣷",
+    ]);
+    countdown.start();
+
+    var number = 5;
+    setInterval(function () {
+      number--;
+      countdown.message("Exiting in " + number + " seconds...  ");
+      if (number === 0) {
+        process.stdout.write("\n");
+        process.stdout.write("\n");
+
+        fs.writeFile("config.json", config, "utf8", (err) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          console.log("File has been created");
+          process.exit(0);
+        });
       }
-      console.log("File has been created");
-    });
+    }, 1000);
   });
 }
 

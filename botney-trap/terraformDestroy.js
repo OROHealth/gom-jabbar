@@ -1,11 +1,10 @@
 require("dotenv").config();
-
 const { spawn } = require("child_process");
 const config = require("./config.json");
 
-const terraformArgs = [
+const terraformDestroy = spawn("terraform", [
   "-chdir=./terraform",
-  "plan",
+  "destroy",
   // General
   "-var",
   `environments=${JSON.stringify(config.environments)}`,
@@ -33,23 +32,21 @@ const terraformArgs = [
   `enable_digitalocean=${config.clouds?.digitalocean?.enabled || false}`,
   "-var",
   `weight_digitalocean=${config.clouds?.digitalocean?.weight || 0}`,
-  "-out=apply.tfplan",
-];
+  "-auto-approve",
+]);
 
-const terraformPlan = spawn("terraform", terraformArgs);
-
-terraformPlan.stdout.on("data", (data) => {
+terraformDestroy.stdout.on("data", (data) => {
   console.log(`stdout: ${data}`);
 });
 
-terraformPlan.stderr.on("data", (data) => {
+terraformDestroy.stderr.on("data", (data) => {
   console.log(`stderr: ${data}`);
 });
 
-terraformPlan.on("error", (error) => {
+terraformDestroy.on("error", (error) => {
   console.error(`error: ${error.message}`);
 });
 
-terraformPlan.on("close", (code) => {
+terraformDestroy.on("close", (code) => {
   console.log(`child process exited with code ${code}`);
 });

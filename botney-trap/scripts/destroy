@@ -15,4 +15,4 @@ IFS="$(printf "\n\t")"
 
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
-docker build -t botney-trap:cli .
+docker run --rm -it --env-file .env --network host -v botney:/usr/local/src/app botney-trap:cli npm run tf:destroy

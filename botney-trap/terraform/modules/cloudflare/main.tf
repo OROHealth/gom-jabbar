@@ -5,7 +5,7 @@ resource "cloudflare_zone" "dns_botney" {
 
 resource "cloudflare_record" "records" {
   # those records who has one origin can be routed as a normal DNS record
-  for_each = {for idx, env in var.environments: idx => env if length(env.origins) == 1}
+  for_each = {for idx, env in jsondecode(var.environments): idx => env if length(env.origins) == 1}
   zone_id = cloudflare_zone.dns_botney.id
   name = "${each.value.subdomain}.${var.domain}"
   # TODO: this only supports digitalocean and aws
@@ -19,13 +19,13 @@ resource "cloudflare_record" "records" {
 
 resource "cloudflare_load_balancer" "loadbalancers" {
   # If the environment has more than one origin, that means we have to loadbalancing traffic between them.
-  for_each = {for idx, env in var.environments: idx => env if length(env.origins) > 1}
+  for_each = {for idx, env in jsondecode(var.environments): idx => env if length(env.origins) > 1}
   zone_id = cloudflare_zone.dns_botney.id
   name = "${each.value.subdomain}.${var.domain}"
 
   fallback_pool_id = cloudflare_load_balancer_pool.botneypool.id
   default_pool_ids = [cloudflare_load_balancer_pool.botneypool.id]
-  description = "Botney load balancer using geo-balancing ${each.value.name}"
+  description = "Botney load balancer using geo-balancing ${each.key}"
   proxied = true
   steering_policy = "geo"
 }

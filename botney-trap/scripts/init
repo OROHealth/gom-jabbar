@@ -14,6 +14,5 @@ IFS="$(printf "\n\t")"
 # ---- End unofficial bash strict mode boilerplate
 
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
-docker_file="./terraform"
 
-docker build -t botney-trap:local $docker_file
+docker run --rm -it --env-file .env --network host -v botney:/usr/local/src/app botney-trap:cli npm run init
