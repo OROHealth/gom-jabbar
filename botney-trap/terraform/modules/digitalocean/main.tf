@@ -1,3 +1,6 @@
+data "digitalocean_kubernetes_versions" "version" {
+  version_prefix = "1.21."
+}
 resource "random_string" "suffix" {
   count   = var.enable_digitalocean ? 1 : 0
   length  = 5
@@ -14,7 +17,7 @@ resource "digitalocean_kubernetes_cluster" "botney" {
   count   = var.enable_digitalocean ? 1 : 0
   name    = "${local.cluster_name}"
   region  = "${var.digitalocean_region}"
-  version = "1.20.7-do.0"
+  version = data.digitalocean_kubernetes_versions.version.latest_version
 
   node_pool {
     name       = "worker-pool"

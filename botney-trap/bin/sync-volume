@@ -15,4 +15,5 @@ IFS="$(printf "\n\t")"
 
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
-docker build -t botney-trap:cli .
+container_id=$(docker ps -qf "volume=botney")
+docker cp "${1}" "${container_id}:/usr/local/src/app/${1}"

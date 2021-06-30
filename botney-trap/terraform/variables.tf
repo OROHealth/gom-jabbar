@@ -1,65 +1,23 @@
-variable "aws_region" {
-  default = "us-west-2"
-}
+variable "aws_region" {}
 
-variable "domain" {
-  default = "sebastianfranco.me"
-}
+variable "domain" {}
 
-variable "number_nodes_aws" {
-  default = 3
-}
+variable "number_nodes_aws" {}
 
-variable "node_size_aws" {
-  default = "t3.medium"
-}
+variable "node_size_aws" {}
 
-variable "enable_aws" {
-  type = bool
-  default = true
-}
+variable "enable_aws" {}
 
-variable "digitalocean_region" {
-  default = "nyc1"
-}
+variable "digitalocean_region" {}
 
-variable "number_nodes_do" {
-  default = 3
-}
+variable "number_nodes_do" {}
 
-variable "node_size_do" {
-  default = "s-2vcpu-2gb"
-}
+variable "node_size_do" {}
 
-variable "enable_digitalocean" {
-  type = bool
-  default = true
-}
+variable "enable_digitalocean" {}
 
-variable "environments" {
-  default = [
-    {
-      "name": "production",
-      "subdomain": "prod"
-      "origins": ["aws", "digitalocean"]
-    },
-    {
-      "name": "testing",
-      "subdomain": "test",
-      "origins": ["aws","digitalocean"]
-    },
-    {
-      "name": "development",
-      "subdomain": "dev",
-      "origins": ["digitalocean"]
-    },
-  ]
-}
+variable "environments" {}
 
-variable "weight_aws" {
-  default = 0.9
-}
+variable "weight_aws" {}
 
-variable "weight_digitalocean" {
-  default = 0.1
-}
+variable "weight_digitalocean" {}

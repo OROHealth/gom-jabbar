@@ -13,6 +13,21 @@ set -o posix    # more strict failures in subshells
 IFS="$(printf "\n\t")"
 # ---- End unofficial bash strict mode boilerplate
 
-cd "$(dirname "${BASH_SOURCE[0]}")/.."
+cd "$(mktemp -d)"
 
-docker build -t botney-trap:cli .
+version="1.21.2"
+echo -n "Installing kubectl v${version}…"
+# Use sudo if needed, empty string if not
+sudo_command=$(command -v sudo || true )
+
+url="https://dl.k8s.io/release/v${version}/bin/linux/amd64/kubectl"
+curl --silent --location --fail --remote-name "${url}"
+
+if [ -z "${sudo_command}" ]; then
+  install -m 755 kubectl /usr/local/bin;
+else
+  "${sudo_command}" install -m 755 kubectl /usr/local/bin;
+fi
+
+echo '✓' installed "${version}"
+

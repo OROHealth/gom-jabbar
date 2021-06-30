@@ -13,6 +13,14 @@ set -o posix    # more strict failures in subshells
 IFS="$(printf "\n\t")"
 # ---- End unofficial bash strict mode boilerplate
 
-cd "$(dirname "${BASH_SOURCE[0]}")/.."
+cd "$(mktemp -d)"
 
-docker build -t botney-trap:cli .
+version="1.0.1"
+echo -n "Installing terraform v${version}…"
+url="https://releases.hashicorp.com/terraform/${version}/terraform_${version}_linux_amd64.zip"
+
+curl -sL "${url}"> terraform.zip
+unzip terraform.zip
+mv terraform /usr/local/bin
+
+echo '✓' installed "$(terraform version)"

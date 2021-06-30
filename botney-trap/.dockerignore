@@ -1,7 +1,9 @@
+node_modules
+app/node_modules
 .env
 .terraform
 **/**/.terraform
+**/**/.terraform
 **/**/.terraform.lock.hcl
 config.json
-node_modules/
 *.tfplan

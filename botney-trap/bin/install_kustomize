@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# Please Use Google Shell Style: https://google.github.io/styleguide/shell.xml
+
+# ---- Start unofficial bash strict mode boilerplate
+# http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -o errexit  # always exit on error
+set -o errtrace # trap errors in functions as well
+set -o pipefail # don't ignore exit codes when piping output
+set -o posix    # more strict failures in subshells
+# set -x          # enable debugging
+
+IFS=$'\n\t'
+# ---- End unofficial bash strict mode boilerplate
+
+version="3.2.3"
+
+# Download kustomize
+cd "$(mktemp -d)"
+
+echo -n "Installing kustomize v${version}…"
+
+url="https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v${version}/kustomize_kustomize.v${version}_linux_amd64"
+
+# Use sudo if needed, empty string if not
+sudo_command=$(command -v sudo || true )
+
+curl --silent --location --fail --remote-name "${url}"
+
+if [ -z "${sudo_command}" ]; then
+  install -m 755 kustomize_kustomize.v"${version}"_linux_amd64 /usr/local/bin/kustomize;
+else
+  "${sudo_command}" install -m 755 kustomize_kustomize.v"${version}"_linux_amd64 /usr/local/bin/kustomize;
+fi
+
+echo '✓' installed "$(kustomize version)"

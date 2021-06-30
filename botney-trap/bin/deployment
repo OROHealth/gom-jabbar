@@ -15,7 +15,7 @@ IFS="$(printf "\n\t")"
 
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
-script_path="$(dirname "${BASH_SOURCE[0]}")"
+script_path="."
 source_path="${script_path}/kustomize/overlays"
 default_config="${source_path}/cloud/environment"
 kubeconfig="${script_path}/terraform/modules"
@@ -67,9 +67,7 @@ function update_file () {
 	sed -i "s/--subdomain/${subdomain}/g" "${file}"
 
   # shellcheck disable=SC2181
-  if [ $? -eq 0 ]; then
-		echo "Success!"
-	else
+  if [ ! $? -eq 0 ]; then
 		echo "Error!"
 	fi
 }
@@ -108,3 +106,8 @@ function main() {
 }
 
 main
+
+# usage
+
+# deployment cloud action environment domain subdomain
+# e.g. deployment aws apply production sebastianfranco.me prod

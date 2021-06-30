@@ -13,6 +13,14 @@ set -o posix    # more strict failures in subshells
 IFS="$(printf "\n\t")"
 # ---- End unofficial bash strict mode boilerplate
 
-cd "$(dirname "${BASH_SOURCE[0]}")/.."
+cd "$(mktemp -d)"
 
-docker build -t botney-trap:cli .
+version="1.61.0"
+echo -n "Installing doctl v${version}…"
+url="https://github.com/digitalocean/doctl/releases/download/v${version}/doctl-${version}-linux-amd64.tar.gz"
+
+curl -sL "${url}"> doctl.tar.gz
+tar xf doctl.tar.gz
+mv doctl /usr/local/bin
+
+echo '✓' installed "$(doctl version)"

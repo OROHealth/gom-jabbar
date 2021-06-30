@@ -1,0 +1,32 @@
+{
+  "name": "botney",
+  "version": "1.0.0",
+  "description": "Botney-trap CLI",
+  "main": "index.js",
+  "bin": {
+    "init": "./init.js"
+  },
+  "scripts": {
+    "init": "node init.js",
+    "deploy": "node deployment.js",
+    "infra": "npm run tf:init && npm run tf:apply",
+    "tf:validate": "node terraformValidate.js",
+    "tf:plan": "npm run tf:validate && node terraformPlan.js",
+    "tf:apply": "npm run tf:plan && node terraformApply.js",
+    "tf:destroy": "npm run tf:validate && node terraformDestroy.js",
+    "tf:init": "node terraformInit.js",
+    "tf:output": "node terraformOutput.js"
+  },
+  "author": "jhonsfran@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "child_process": "^1.0.2",
+    "clear": "^0.1.0",
+    "clui": "^0.3.6",
+    "dotenv": "^10.0.0",
+    "figlet": "^1.5.0",
+    "inquirer": "^8.1.1",
+    "minimist": "^1.2.5"
+  }
+}
