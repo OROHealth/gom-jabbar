@@ -21,3 +21,5 @@ jobs:
                 present: false
               truthy:
                 check-keys: false
+              line-length:
+                max: 100
