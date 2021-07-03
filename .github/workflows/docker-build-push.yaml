@@ -1,3 +1,5 @@
+name: "Publish"
+
 on:
   push:
     branches:
@@ -7,12 +9,12 @@ jobs:
   semantic-release:
     name: semantic-release
     runs-on: ubuntu-latest
-    needs: [docker]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v2
+        id: semantic_dry
         with:
           extra_plugins: |
             @semantic-release/changelog@3.0.0
@@ -21,9 +23,13 @@ jobs:
             @semantic-release/commit-analyzer
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      new_release_version: ${{ steps.semantic_dry.outputs.new_release_version }}
+
   docker:
     name: docker build and push
     runs-on: ubuntu-latest
+    needs: [semantic-release]
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -39,7 +45,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: jhonsfran/botney-trap:latest
+          tags: jhonsfran/botney-trap:${{ needs.semantic-release.outputs.new_release_version }}
           file: ./botney-trap/app/Dockerfile
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
