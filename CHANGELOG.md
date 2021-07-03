@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/jhonsfran1165/gom-jabbar/compare/v1.0.0...v1.0.1) (2021-07-03)
+
+
+### Bug Fixes
+
+* add version to docker build ([fdd5384](https://github.com/jhonsfran1165/gom-jabbar/commit/fdd53843c89bf1ba8238a519b82fdfa027a74124))
+
 # 1.0.0 (2021-07-03)
 
 
