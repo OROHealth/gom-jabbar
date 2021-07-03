@@ -32,8 +32,9 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
+          context: ./botney-trap/app
           push: true
           tags: jhonsfran/botney-trap:latest
-          file: ./botney-trap/app/Dockerfile
+          file: Dockerfile
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
