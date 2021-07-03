@@ -14,7 +14,7 @@ RUN chown node:node .
 RUN npm i -g npm@latest
 
 COPY --chown=node:node package.json package-lock.json ./
-COPY --chown=node:node ./src ./src
+COPY --chown=node:node ./botney-trap/app/src ./src
 
 USER node
 
