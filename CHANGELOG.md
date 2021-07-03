@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/jhonsfran1165/gom-jabbar/compare/v1.0.1...v1.0.2) (2021-07-03)
+
+
+### Bug Fixes
+
+* yaml lint config ([b0e996d](https://github.com/jhonsfran1165/gom-jabbar/commit/b0e996db1638bdf4539e8aa1d88b90fdf9bb3f83))
+
 ## [1.0.1](https://github.com/jhonsfran1165/gom-jabbar/compare/v1.0.0...v1.0.1) (2021-07-03)
 
 
