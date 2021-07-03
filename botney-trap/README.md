@@ -48,31 +48,39 @@ CLOUDFLARE_EMAIL=CLOUDFLARE_EMAIL
 
 If the `make` command fails at some point, you can rerun it.
 
-Configure docker image and env vars
+1. Configure docker image
 
 ```sh
 make
 ```
 
-Init configuration
+2. Configure the env vars in the .env file
+
+3. Init configuration
 
 ```sh
 make init
 ```
 
-Once the configuration was created successfully you can deploy the infrastructure.
+4. Once the configuration was created successfully you can deploy the infrastructure.
 
 ```sh
 make infra
 ```
 
-If the infrastructure was deployed you have to set the DNS sever names in you domain provider.
+5. If the infrastructure was deployed you have to set the DNS sever names in you domain provider.
 
-After that you can deploy the application.
+6. After that you can deploy the application.
 
 ```sh
 make deploy
 ```
+
+7. After a few minutes the domain should be available. Try to go to your subdomain depending on your environment.
+
+## <br>
+
+⚠️ **BE CAREFUL** ⚠️ the whole infrastructure is deployed with docker to avoid you install too much dependencies like terraform, AWS CLI, DO CLI, kustomize, kubectl, etc. Having said that I use docker volume to persist terraform's state. Don't clean the volume before to destroy the infrastructure because terraform would initiate another instance of the state which means you have to delete your created infrastructure manually.
 
 ## <br>
 
@@ -92,9 +100,7 @@ These are the available `make` commands in the root directory.
 
 ## Demo:
 
-###TODO: create demo
-
-You can see the demo here:
+You can see the demo (here)[https://www.loom.com/share/badf69716b744f95ae18fba3eb106044]
 
 ## <br>
 
