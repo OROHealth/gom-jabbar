@@ -171,6 +171,7 @@ const questionsConfig = [
     },
   },
   // environments configuration
+  // TODO: add configuration to deploy new envorionments
   {
     type: "checkbox",
     message:
