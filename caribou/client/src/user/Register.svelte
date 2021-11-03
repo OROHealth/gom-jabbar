@@ -1,48 +1,38 @@
 <script>
-    import {useLocation, useNavigate} from 'svelte-navigator';
-    import { user } from '../stores';
+    import { useLocation, useNavigate } from 'svelte-navigator';
+    import { message, btnDisabled, fields, registerInput } from '../stores';
+    import { email, required } from '../form/validate';
     import Button from '../form/Button';
     import Input from '../form/Input';
     import Password from '../form/Password';
+    import { makeCall } from './utils';
 
     const location = useLocation();
     const navigate = useNavigate();
 
-    let message = '';
-    let valid = false;
-    let fields = {email: '', validateEmail: '', password: ''};
-    let errors = {email: '', validateEmail: '', password: ''};
-    let dirty = {email: '', validateEmail: '', password: ''};
+    $registerInput = [
+		{ id:'email', type: Input, label: 'Email', validator: [email(), required()] },
+        { id:'validate-email', type: Input, label: 'Validate Email', validator: [email(), required()] },
+        { id:'password', type: Password, label: 'Password', validator: [required()] }
+    ];
 
     const handleOnSubmit = e => {
-        if (valid) {
-            fetch('/api/user/auth', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(fields),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    message = '';
+        if (!valid) {
+            delete fields['validate-email'];
 
-                    $user = json.email;
-                    navigate('/', { replace: true });
+            makeCall('/api/user/create', fields, (data) => {
+                if (data.success) {
+                    $message = '';
+                    navigate('/login', { replace: true });
                 } else {
-                    message = data.message;
+                    $message = 'Something went wrong';
                 }
-                console.log('Success:', data);
             })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
         }
     }
 
     const onClickHandler = () => {
-        navigate('/create', { 
+        navigate('/login', { 
             state: { from: location.pathname },
             replace: true
         });
@@ -51,31 +41,17 @@
 
 <div class=register-form__container>
     <form class="register-form" on:submit|preventDefault={handleOnSubmit}>
-        <Input 
-            label="Email"
-            id="email"
-            value={fields.email}
-        />
-
-         <Input 
-            label="Validate Email"
-            id="validate-email"
-            value={fields.validateEmail}
-        />
-
-        <Password 
-            label="Password"
-            id="password"
-            value={fields.password}
-        />
-
+        {#each $registerInput as item}
+			<svelte:component this={item.type} label={item.label} id={item.id} validator={item.validator}/>
+	    {/each}
+        
         <div class="register-form__field">
-            <Button text="Register" type="submit" classModifier="" btnDisabled={!valid} onClickHandler={()=>{}} />
-            <Button text="Back" type="button" classModifier="form__button--secondary" onClickHandler={() => navigate(-1)} />
+            <Button text="Register" type="submit" classModifier="" btnDisabled={$btnDisabled} onClickHandler={()=>{}} />
+            <Button text="Back" type="button" classModifier="form__button--secondary" btnDisabled={false} onClickHandler={onClickHandler} />
         </div>
-        {#if message}
+        {#if $message}
             <div class="register-form__label--error">
-                {message}
+                {$message}
             </div>
         {/if}
     </form>
@@ -84,6 +60,9 @@
 <style>
     .register-form {
         align-self: center;
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
         width: 100%;
     }
 

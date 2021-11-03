@@ -1,6 +1,8 @@
 <script>
     import {useLocation, useNavigate} from 'svelte-navigator';
-    import { user } from '../stores';
+    import { user, message, btnDisabled, fields, loginInput } from '../stores';
+    import { email, required } from '../form/validate';
+    import { makeCall } from './utils';
     import Button from '../form/Button';
     import Input from '../form/Input';
     import Password from '../form/Password';
@@ -8,41 +10,34 @@
     const location = useLocation();
     const navigate = useNavigate();
 
-    let message = '';
-    let valid = false;
-    let fields = {email: '', password: ''};
-    let errors = {email: '', password: ''};
-    let dirty = {email: '', password: ''};
+    $loginInput = [
+		{ id:'emailLogin', type: Input, label: 'Email', validator: [email(), required()] },
+        { id:'passwordLogin', type: Password, label: 'Password', validator: [required()] }
+    ];
 
     const handleOnSubmit = e => {
-        if (valid) {
-            fetch('/api/user/auth', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(fields),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    message = '';
+        const param = {
+            'email': fields.emailLogin,
+            'password': fields.passwordLogin
+        };
 
-                    $user = json.email;
-                    navigate('/', { replace: true });
-                } else {
-                    message = data.message;
-                }
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        }
+        makeCall('/api/user/auth', param, (data) => {
+            if (data.success) {
+                $message = '';
+                $user = fields.emailLogin;
+                navigate('/', { 
+                    state: { from: location.pathname },
+                    replace: true
+                });
+            } else {
+                $message = 'The username/password does not match';
+            }
+        })
     }
 
-    const onClickHandler = () => {
-        navigate('/create', { 
+    const onClickHandler = (e) => {        
+        $fields = {};
+        navigate('/register', { 
             state: { from: location.pathname },
             replace: true
         });
@@ -51,25 +46,18 @@
 
 <div class=login-form__container>
     <form class="login-form" on:submit|preventDefault={handleOnSubmit}>
-        <Input 
-            label="Email"
-            id="email"
-            value={fields.email}
-        />
-
-        <Password 
-            label="Password"
-            id="password"
-            value={fields.password}
-        />
+        
+        {#each $loginInput as item}
+			<svelte:component this={item.type} label={item.label} id={item.id} validator={item.validator}/>
+	    {/each}
 
         <div class="register-form__field">
-            <Button text="Login" type="submit" classModifier="" btnDisabled={!valid} onClickHandler={()=>{}} />
-            <Button text="Register" type="button" classModifier="form__button--secondary" onClickHandler={onClickHandler} />
+            <Button text="Login" type="submit" classModifier="" btnDisabled={$btnDisabled} onClickHandler={()=>{}} />
+            <Button text="Register" type="button" btnDisabled={false} classModifier="form__button--secondary" onClickHandler={onClickHandler} />
         </div>
-        {#if message}
+        {#if $message}
             <div class="register-form__label--error">
-                {message}
+                {$message}
             </div>
         {/if}
     </form>
@@ -78,6 +66,9 @@
 <style>
     .login-form {
         align-self: center;
+        border-radius: 10px;
+        background-color: #fff;
+        padding: 20px;
         width: 100%;
     }
 

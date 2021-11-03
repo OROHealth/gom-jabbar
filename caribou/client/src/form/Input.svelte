@@ -1,7 +1,12 @@
 <script>
+    import { onMount, onDestroy } from 'svelte';
+    import { validation } from './validate';
+    import { fields, errors } from '../stores';
     export let id;
     export let label;
-    export let value;
+    export let validator;
+    
+    const [ validate ] = validation(validator);
 </script>
 
 <div class="form__field-container">
@@ -11,9 +16,12 @@
         class="form__input" 
         id={id} 
         type="text"
-        bind:value={value}
+        bind:value={fields[id]}
+        use:validate={fields[id]}
         class:register-form__input--error={true} />
-    <label class="form__label--error" for={id}>Test</label>
+    {#if errors[id]}
+        <label class="form__label--error" for={id}>{errors[id]}</label>
+    {/if}
 </div>
 
 <style>

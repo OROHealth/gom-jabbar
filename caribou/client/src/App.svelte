@@ -12,11 +12,9 @@
   <Header />
 
   <main>
-	<Route path="/">
-		Test
-	</Route>
-	
-	<Route path="/map" component={Map} />
+	<PrivateRoute path="/">
+      <Map />
+    </PrivateRoute>
 
     <Route path="register" component={Register} />
 
@@ -27,12 +25,12 @@
 
 <style>
 	main {
-		display: flex;
-		flex-direction: column;
+		background: url('/images/background.jpeg') no-repeat;
+		background-size: cover;
 		height: calc(100vh - 60px);
 		margin: 0 auto;
-		max-width: 1440px;
 		padding: 0 20px;
+		position: relative;
 		width: 100%;
 	}
 </style>

@@ -1,7 +1,11 @@
 <script>
+    import { validation } from './validate';
+    import { fields, errors } from '../stores';
     export let id;
     export let label;
-    export let value;
+    export let validator;
+
+    const [ validate ] = validation(validator);
 </script>
 
 <div class="form__field-container">
@@ -11,9 +15,12 @@
         class="form__input" 
         id={id} 
         type="password"
-        bind:value={value}
-        class:register-form__input--error={true} />
-    <label class="form__label--error" for={id}>Test</label>
+        bind:value={fields[id]}
+        class:register-form__input--error={true}
+        use:validate={fields[id]} />
+    {#if errors[id]}
+        <label class="form__label--error" for={id}>{errors[id]}</label>
+    {/if}
 </div>
 
 <style>

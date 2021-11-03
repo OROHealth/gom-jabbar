@@ -60,6 +60,9 @@ module.exports = {
 	devtool: prod ? false : 'source-map',
 	devServer: {
 		hot: true,
+		historyApiFallback: {
+			index: 'index.html'
+		},
 		proxy: {
 			'/api': {
 				target: 'http://localhost:3001',
