@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Schitts Cafe API</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css')}}" />
+</head>
+<body>
+
+    <div class="row">
+        <div class="large-10 small-12 large-centered columns">
+            {% block content %}{% endblock content%}
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/js/foundation.min.js"
+            integrity="sha512-aPZP5EFQrbKpqux5Th+or0QDCS+ob5uYscmW5Rg3vbheeegHtyj1WY3vsZujqLNXQTjAPTT8hA2QKczu0lMcmg=="
+            crossorigin="anonymous"></script>
+</body>
+</html>

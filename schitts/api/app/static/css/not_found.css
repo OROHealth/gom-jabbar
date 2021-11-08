@@ -1,0 +1,18 @@
+div#not_found_header{
+    margin: 10% auto 0 auto;
+    max-width: 350px;
+    padding: 1rem;
+    text-align: center;
+}
+
+div#not_found_header image {
+    width: 100%;
+    height: 100%;
+}
+
+section#not_found_body {
+    margin: auto;
+    max-width: 350px;
+    padding: 1rem;
+    text-align: center;
+}

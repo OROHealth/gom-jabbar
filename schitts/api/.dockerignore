@@ -1,0 +1,10 @@
+.git
+venv
+Dockerfile
+docker-compose.yml
+__pycache__
+.idea
+celerybeat-schedule.bak
+celerybeat-schedule.dat
+celerybeat-schedule.dir
+dump.rdb
