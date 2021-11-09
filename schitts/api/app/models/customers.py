@@ -31,6 +31,7 @@ class Customer(db.Model):
         db.ForeignKey('customer_type.id', ondelete="CASCADE", onupdate="CASCADE"),
         nullable=False
     )
+    orders = db.relationship("CustomerOrder")
     customer_type = db.relationship('CustomerType', foreign_keys=[customer_type_id])
     preferences = db.relationship("MenuItem", secondary=customer_preferences)
     date_added = db.Column(db.DateTime(timezone=True), server_default=func.now())
@@ -61,6 +62,11 @@ class CustomerType(db.Model):
 
     def __init__(self, name: str):
         self.name = name
+
+    @property
+    def total(self):
+        count = self.query.count()
+        return count
 
 
 class CustomerTypeSchema(ma.Schema):
@@ -125,14 +131,12 @@ class CustomerOrder(db.Model):
     date_added = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
     def __init__(self,
-                 customer_id: int,
                  menu_item_id: int,
                  customer_reaction_id: int,
                  customer_count: int,
-                 bill_type: BillEnum,
-                 payment_status: PaymentStatusEnum,
+                 bill_type: str,
+                 payment_status: str,
                  ):
-        self.customer_id = customer_id
         self.menu_item_id = menu_item_id
         self.customer_reaction_id = customer_reaction_id
         self.customer_count = customer_count
