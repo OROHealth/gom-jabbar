@@ -4,7 +4,7 @@ import http
 from flask_restx import Namespace, Resource, reqparse
 
 from app.v1.controllers.menu_items import MenuItems
-from app.v1.types.menu_items import MenuItemType
+from app.v1.types.menu_items import MenuItemType, MenuItemCategory
 
 menu_items_ns = Namespace('menu_items', description='menu items namespace.')
 
@@ -28,6 +28,7 @@ class AddMenuItem(Resource):
             parser.add_argument('overcooked_level', type=int, required=True)
             parser.add_argument('storage_duration', type=int, required=True)
             parser.add_argument('recent_date', type=str, required=True)
+            parser.add_argument('category', type=str, required=True)
             args = parser.parse_args()
             result = loop.run_until_complete(
                 MenuItems.add_menu_item(
@@ -36,7 +37,8 @@ class AddMenuItem(Resource):
                         price=args.price,
                         overcooked_level=args.overcooked_level,
                         storage_duration=args.storage_duration,
-                        recent_date=args.recent_date
+                        recent_date=args.recent_date,
+                        category=args.category
                     ))
             )
             return result

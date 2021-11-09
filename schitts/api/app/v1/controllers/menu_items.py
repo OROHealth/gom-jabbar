@@ -16,7 +16,8 @@ class MenuItems:
                 price=data.price,
                 overcooked_level=data.overcooked_level,
                 storage_duration=data.storage_duration,
-                recent_date=data.recent_date
+                recent_date=data.recent_date,
+                category=data.category,
             )
 
             db.session.add(item)

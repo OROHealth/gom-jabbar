@@ -11,7 +11,7 @@ load_dotenv(find_dotenv())
 
 from app import create_app, db
 from app.v1.controllers.menu_items import MenuItems
-from app.v1.types.menu_items import MenuItemType
+from app.v1.types.menu_items import MenuItemType, MenuItemCategory
 
 application_json_header = "application/json"
 
@@ -48,7 +48,8 @@ class MenuItemsUnitTests(unittest.TestCase, MenuItems):
                     price=4.05,
                     overcooked_level=1,
                     storage_duration=2,
-                    recent_date=date.today()
+                    recent_date=date.today(),
+                    category="food"
                 ))
         )
 

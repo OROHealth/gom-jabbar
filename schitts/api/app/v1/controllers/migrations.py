@@ -110,3 +110,15 @@ class Migrations(Base, Customers, Simulations):
                        "message": "failed creating migration directory",
                        "error": str(e)
                    }, http.HTTPStatus.INTERNAL_SERVER_ERROR
+
+    @classmethod
+    def migrate_defaults(cls):
+        try:
+            cls.migrate_customer_types()
+            cls.migrate_customer_reaction()
+            return {"message": "migrated defaults"}, http.HTTPStatus.CREATED
+        except Exception as e:
+            return {
+                       "message": "failed creating migration directory",
+                       "error": str(e)
+                   }, http.HTTPStatus.INTERNAL_SERVER_ERROR

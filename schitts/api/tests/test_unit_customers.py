@@ -10,7 +10,7 @@ load_dotenv(find_dotenv())
 
 from app import create_app, db
 from app.v1.controllers.customers import Customers
-from app.models import MenuItem
+from app.models import MenuItem, Customer, CustomerOrder, CustomerType
 from app.v1.types.customers import CustomerOrderType, CustomerFeedbackType
 
 application_json_header = "application/json"
@@ -38,11 +38,18 @@ class CustomersUnitTests(unittest.TestCase, Customers):
 
     def test_add_customer(self):
 
+        customer_type_count = CustomerType.total.fget(CustomerType)
+
+        if customer_type_count < 1:
+            return
+
+        customer_type = CustomerType.query.first()
+
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
 
         test_customer = loop.run_until_complete(
-            self.add_customer(name="test_unit_customer", type_id=4)
+            self.add_customer(name="test_unit_customer", type_id=customer_type.id)
         )
 
         loop.close()
@@ -53,18 +60,22 @@ class CustomersUnitTests(unittest.TestCase, Customers):
 
     def test_add_customer_preference(self):
 
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-
         # Change this to handles 100000+ requests -> list of objects
 
         total_menu_count = MenuItem.total.fget(MenuItem)
+        customer_count = Customer.total.fget(Customer)
 
-        if total_menu_count < 1:
+        if total_menu_count < 1 or customer_count < 1:
             return
 
+        customer = Customer.query.first()
+        item = MenuItem.query.first()
+
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
         test_customer = loop.run_until_complete(
-            self.add_customer_preference(user_id=6, item_id=16)
+            self.add_customer_preference(user_id=customer.id, item_id=item.id)
         )
 
         loop.close()
@@ -75,14 +86,23 @@ class CustomersUnitTests(unittest.TestCase, Customers):
 
     def test_add_customer_order(self):
 
+        total_menu_count = MenuItem.total.fget(MenuItem)
+        customer_count = Customer.total.fget(Customer)
+
+        if total_menu_count < 1 or customer_count < 1:
+            return
+
+        customer = Customer.query.first()
+        item = MenuItem.query.first()
+
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
 
         test_customer = loop.run_until_complete(
             self.add_customer_order(
                 data=CustomerOrderType(
-                    customer_id=6,
-                    menu_item_id=16,
+                    customer_id=customer.id,
+                    menu_item_id=item.id,
                     customer_reaction_id=1,
                     customer_count=2
                 )
@@ -97,13 +117,21 @@ class CustomersUnitTests(unittest.TestCase, Customers):
 
     def test_add_customer_feedback(self):
 
+        total_menu_count = MenuItem.total.fget(MenuItem)
+        order_count = CustomerOrder.total.fget(CustomerOrder)
+
+        if total_menu_count < 1 or order_count < 1:
+            return
+
+        order = CustomerOrder.query.first()
+
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
 
         test_feedback = loop.run_until_complete(
             self.add_customer_feedback(
                 data=CustomerFeedbackType(
-                    order_id=1,
+                    order_id=order.id,
                     comment="test unit customer feedback comment",
                     service_rating=4
                 )

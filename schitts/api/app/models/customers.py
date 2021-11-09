@@ -130,6 +130,11 @@ class CustomerOrder(db.Model):
     is_ready = db.Column(db.BOOLEAN, default=False, nullable=False)
     date_added = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
+    @property
+    def total(self):
+        count = self.query.count()
+        return count
+
 
 class CustomerOrderSchema(ma.Schema):
     class Meta:

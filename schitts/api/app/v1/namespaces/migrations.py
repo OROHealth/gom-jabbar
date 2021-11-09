@@ -102,4 +102,19 @@ class SimulateCustomerOrders(Resource):
             return {
                        "message": "failed migrating customer reactions",
                        "error": str(e)
+                   }, http.HTTPStatus.INTERNAL_SERVER_ERROR\
+
+
+
+@migration_ns.route("/defaults")
+class MigrateDefaults(Resource):
+    def post(self):
+        """ mmigrate app default. """
+        try:
+            downgrade = Migrations.migrate_defaults()
+            return downgrade
+        except Exception as e:
+            return {
+                       "message": "failed migrating defaults",
+                       "error": str(e)
                    }, http.HTTPStatus.INTERNAL_SERVER_ERROR

@@ -40,10 +40,11 @@ class MenuItemsHTTPTests(unittest.TestCase, MenuItems):
 
         request_body = {
             "name": "test_http_menu_item",
-            "price": 4.50,
-            "overcooked_level": 1,
+            "price": 2,
+            "overcooked_level": 4,
             "storage_duration": 1,
-            "recent_date": "2021-11-08"
+            "category": "food",
+            "recent_date": "2021-11-09"
         }
 
         response = self.app.post(self.uri,
