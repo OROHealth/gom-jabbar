@@ -89,3 +89,17 @@ class AddCustomerReactions(Resource):
                        "message": "failed migrating customer reactions",
                        "error": str(e)
                    }, http.HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+@migration_ns.route("/simulate/customer-orders/<total>")
+class SimulateCustomerOrders(Resource):
+    def post(self, total):
+        """ migrate simulate create customer orders. """
+        try:
+            downgrade = Migrations.migrate_customers_orders_simulation(total)
+            return downgrade
+        except Exception as e:
+            return {
+                       "message": "failed migrating customer reactions",
+                       "error": str(e)
+                   }, http.HTTPStatus.INTERNAL_SERVER_ERROR

@@ -15,6 +15,7 @@ class MenuItem(db.Model):
     price = db.Column(db.FLOAT, nullable=False)
     overcooked_level = db.Column(db.INTEGER, nullable=False, default=0)
     storage_duration = db.Column(db.INTEGER, nullable=False, default=0)
+    orders = db.relationship("CustomerOrder", back_populates="menu_item")
     recent_date = db.Column(db.DATE)
     date_added = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
@@ -39,4 +40,14 @@ class MenuItem(db.Model):
 
 class MenuItemSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'name', 'price', 'overcooked_level', 'recent_date', 'storage_duration', 'date_added')
+        fields = (
+            'id',
+            'name',
+            'price',
+            'orders',
+            'overcooked_level',
+            'recent_date',
+            'storage_duration',
+            'date_added'
+        )
+    orders = ma.Nested("CustomerOrderSchema", many=True, exclude=["menu_item"])

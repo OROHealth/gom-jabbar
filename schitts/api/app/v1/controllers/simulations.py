@@ -1,4 +1,5 @@
 import http
+from datetime import datetime
 from random import randint, choice
 
 from app import db
@@ -19,7 +20,7 @@ class Simulations:
             item = MenuItem.query.first()
             customer_type = CustomerType.query.first()
 
-            customers = []
+            random_day_month = lambda x: x if x > 10 else str(randint(1, 29)).rjust(2, "0")
 
             for i in range(1, n):
 
@@ -31,6 +32,8 @@ class Simulations:
                         "customer_count": randint(1, 10),
                         "bill_type": choice(["person", "group", "ratio"]),
                         "payment_status": choice(["pending", "paid", "cancelled"]),
+                        "date_added": f"202{randint(0,1)}-{random_day_month(randint(1, 13))}-{random_day_month(randint(1, 29))}",
+
                     } for x in range(2, 15)],
                 }
 
@@ -45,14 +48,15 @@ class Simulations:
                         customer_reaction_id=value["customer_reaction_id"],
                         customer_count=value["customer_count"],
                         bill_type=value["bill_type"],
-                        payment_status=value["payment_status"]
+                        payment_status=value["payment_status"],
+                        date_added=datetime.strptime(value["date_added"], '%Y-%M-%d')
                     )
                     new_customer.orders.append(order)
 
                 db.session.add(new_customer)
 
             db.session.commit()
-            return True
+            return {"message": "success"}, http.HTTPStatus.CREATED
         except Exception as e:
             return {
                        "message": "failed creating migration directory",

@@ -1,8 +1,8 @@
 from sqlalchemy.sql import func
 
 from app import db, ma
+
 # Many-To-Many relationship between customers and menu items, producing customer-item preferences.
-from app.v1.types.customers import BillEnum, PaymentStatusEnum
 
 customer_preferences = db.Table('customer_preferences', db.Model.metadata,
                                 db.Column('customer_id',
@@ -105,7 +105,7 @@ class CustomerOrder(db.Model):
         db.ForeignKey("menu_item.id", ondelete="CASCADE", onupdate="CASCADE"),
         nullable=False
     )
-    menu_item = db.relationship("MenuItem", foreign_keys=[menu_item_id])
+    menu_item = db.relationship("MenuItem", back_populates="orders")
     customer_reaction_id = db.Column(
         db.INTEGER,
         db.ForeignKey("customer_reaction.id", ondelete="CASCADE", onupdate="CASCADE"),
@@ -129,19 +129,6 @@ class CustomerOrder(db.Model):
     )
     is_ready = db.Column(db.BOOLEAN, default=False, nullable=False)
     date_added = db.Column(db.DateTime(timezone=True), server_default=func.now())
-
-    def __init__(self,
-                 menu_item_id: int,
-                 customer_reaction_id: int,
-                 customer_count: int,
-                 bill_type: str,
-                 payment_status: str,
-                 ):
-        self.menu_item_id = menu_item_id
-        self.customer_reaction_id = customer_reaction_id
-        self.customer_count = customer_count
-        self.bill_type = bill_type
-        self.payment_status = payment_status
 
 
 class CustomerOrderSchema(ma.Schema):

@@ -1,5 +1,8 @@
 import http
 
+from sqlalchemy import or_
+from sqlalchemy.orm import load_only
+
 from app import db
 from app.models import Customer, CustomerSchema, CustomerType, CustomerTypeSchema, CustomerReaction, \
     CustomerReactionSchema, MenuItem, CustomerOrder, CustomerOrderSchema, CustomerFeedback, CustomerFeedbackSchema
@@ -162,6 +165,31 @@ class Customers:
             result = schema.dump(feedback)
 
             return result, http.HTTPStatus.CREATED
+        except Exception as e:
+            return {
+                       "message": "failed creating migration directory",
+                       "error": str(e)
+                   }, http.HTTPStatus.INTERNAL_SERVER_ERROR
+
+    @classmethod
+    async def search_out_of_town_customer(cls, name: str):
+        try:
+            conditions = [
+                Customer.name.ilike(name + "%"),
+            ]
+
+            client = Customer.query.options(
+                load_only('id', 'name')
+            ).filter(
+                or_(*conditions)
+            ).order_by(
+                Customer.date_added.desc()
+            ).all()
+
+            schema = CustomerSchema(many=True, only=('id', 'name', 'customer_type'))
+            result = schema.dump(client)
+
+            return {"count": len(result), "customers": result}, http.HTTPStatus.OK
         except Exception as e:
             return {
                        "message": "failed creating migration directory",

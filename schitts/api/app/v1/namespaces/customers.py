@@ -11,7 +11,8 @@ customers_ns = Namespace('customers', description='customers namespace.')
 from app.v1.models.customers import (
     add_customer_model,
     add_customer_order_model,
-    add_customer_order_feedback_model
+    add_customer_order_feedback_model,
+    search_out_of_town_customer_model
 )
 
 
@@ -149,7 +150,32 @@ class AddCustomerFeedback(Resource):
             return result
         except Exception as e:
             return {
-                       "message": "failed creating migration directory",
+                       "message": "failed to add customer feedback",
+                       "error": str(e)
+                   }, http.HTTPStatus.INTERNAL_SERVER_ERROR
+        finally:
+            loop.close()
+
+
+@customers_ns.route("/search/out-of-town")
+class SearchCustomersOutOfTown(Resource):
+    @customers_ns.expect(search_out_of_town_customer_model)
+    def post(self):
+        """ search customers out of town. """
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            loop = asyncio.get_event_loop()
+            parser = reqparse.RequestParser(bundle_errors=True)
+            parser.add_argument('name', type=str, required=True)
+            args = parser.parse_args()
+            result = loop.run_until_complete(
+                Customers.search_out_of_town_customer(args.name)
+            )
+            return result
+        except Exception as e:
+            return {
+                       "message": "failed searching ut of town",
                        "error": str(e)
                    }, http.HTTPStatus.INTERNAL_SERVER_ERROR
         finally:

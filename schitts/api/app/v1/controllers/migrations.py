@@ -2,10 +2,13 @@ import http
 import os
 import shutil
 from pathlib import Path
-from config import Base
-from app.v1.controllers.customers import Customers
 
-class Migrations(Base, Customers):
+from app.v1.controllers.customers import Customers
+from app.v1.controllers.simulations import Simulations
+from config import Base
+
+
+class Migrations(Base, Customers, Simulations):
 
     env_file: str = "env.py"
 
@@ -88,6 +91,20 @@ class Migrations(Base, Customers):
             customer_reactions = map(cls.add_customer_reaction, cls.DEFAULT_CUSTOMER_REACTIONS)
             result = [customer_reaction[0] for customer_reaction in customer_reactions]
             return result, http.HTTPStatus.CREATED
+        except Exception as e:
+            return {
+                       "message": "failed creating migration directory",
+                       "error": str(e)
+                   }, http.HTTPStatus.INTERNAL_SERVER_ERROR
+
+    @classmethod
+    def migrate_customers_orders_simulation(cls, total):
+        try:
+            result, status = cls.add_simulated_customers(n=int(total))
+            return {
+                       "message": f"completed {total} entries",
+                       "payload": result
+                   }, status
         except Exception as e:
             return {
                        "message": "failed creating migration directory",

@@ -10,6 +10,7 @@ v1 = Blueprint("api_v1", __name__, url_prefix="/v1/")
 from app.v1.namespaces.migrations import migration_ns
 from app.v1.namespaces.customers import customers_ns
 from app.v1.namespaces.menu_items import menu_items_ns
+from app.v1.namespaces.statistics import statistics_ns
 
 
 # Init api.
@@ -34,3 +35,4 @@ def swagger_ui():
 api.add_namespace(migration_ns)
 api.add_namespace(customers_ns)
 api.add_namespace(menu_items_ns)
+api.add_namespace(statistics_ns)

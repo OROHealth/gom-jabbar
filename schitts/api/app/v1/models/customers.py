@@ -21,3 +21,7 @@ add_customer_order_feedback_model = customers_ns.model("add customer order feedb
     "comment": fields.String(description="expected comment"),
     "service_rating": fields.Integer(description="expected rating")
 })
+
+search_out_of_town_customer_model = customers_ns.model("search out of town customer", {
+    "name": fields.String(description="expected customer name")
+})
