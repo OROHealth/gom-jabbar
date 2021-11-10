@@ -15,6 +15,10 @@ from app.v1.models.customers import (
     search_out_of_town_customer_model
 )
 
+pagination = customers_ns.parser()
+pagination.add_argument('limit', type=int, help="Result set limit", location='args', required=True, default=10)
+pagination.add_argument('page', type=int, help="Current page pagination", location='args', required=True, default=1)
+
 
 @customers_ns.route("", strict_slashes=False)
 class AddCustomer(Resource):
@@ -31,6 +35,29 @@ class AddCustomer(Resource):
             args = parser.parse_args()
             result = loop.run_until_complete(
                 Customers.add_customer(name=args.name, type_id=args.customer_type_id)
+            )
+            return result
+        except Exception as e:
+            return {
+                       "message": "failed creating migration directory",
+                       "error": str(e)
+                   }, http.HTTPStatus.INTERNAL_SERVER_ERROR
+        finally:
+            loop.close()
+
+    @customers_ns.expect(pagination)
+    def get(self):
+        """ get customers. """
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            loop = asyncio.get_event_loop()
+            parser = reqparse.RequestParser(bundle_errors=True)
+            parser.add_argument('page', type=int, required=True)
+            parser.add_argument('limit', type=int, required=True)
+            args = parser.parse_args()
+            result = loop.run_until_complete(
+                Customers.get_customers(page=args.page, limit=args.limit)
             )
             return result
         except Exception as e:
@@ -112,6 +139,36 @@ class AddCustomerOrder(Resource):
                         bill_type=args.bill_type,
                         payment_status=args.payment_status
                     )
+                )
+            )
+            return result
+        except Exception as e:
+            return {
+                       "message": "failed creating migration directory",
+                       "error": str(e)
+                   }, http.HTTPStatus.INTERNAL_SERVER_ERROR
+        finally:
+            loop.close()
+
+
+@customers_ns.route("/<customer_id>/orders")
+class GetCustomerOrders(Resource):
+    @customers_ns.expect(pagination)
+    def get(self, customer_id):
+        """ get customer orders. """
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            loop = asyncio.get_event_loop()
+            parser = reqparse.RequestParser(bundle_errors=True)
+            parser.add_argument('page', type=int, required=False)
+            parser.add_argument('limit', type=int, required=False)
+            args = parser.parse_args()
+            result = loop.run_until_complete(
+                Customers.get_customer_orders(
+                    customer_id=customer_id,
+                    page=args.page,
+                    limit=args.limit
                 )
             )
             return result

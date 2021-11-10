@@ -1,0 +1,22 @@
+stages:
+  - build
+
+## Set environment variables for folders in "cache" job settings for npm modules and Cypress binary
+variables:
+  npm_config_cache: '$CI_PROJECT_DIR/.npm'
+  CYPRESS_CACHE_FOLDER: '$CI_PROJECT_DIR/cache/Cypress'
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - cache/Cypress
+    - node_modules
+    - build
+
+## Install NPM dependencies and Cypress
+install:
+  image: cypress/browsers:node12.14.1-chrome85-ff81
+  stage: build
+  script:
+    - yarn install
+    - yarn testGitCypress

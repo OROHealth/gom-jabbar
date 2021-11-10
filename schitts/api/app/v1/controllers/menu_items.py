@@ -23,7 +23,7 @@ class MenuItems:
             db.session.add(item)
             db.session.commit()
 
-            schema = MenuItemSchema()
+            schema = MenuItemSchema(exclude=["orders"])
             result = schema.dump(item)
 
             return result, http.HTTPStatus.CREATED

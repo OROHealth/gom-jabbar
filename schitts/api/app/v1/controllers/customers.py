@@ -196,3 +196,47 @@ class Customers:
                        "error": str(e)
                    }, http.HTTPStatus.INTERNAL_SERVER_ERROR
 
+    @classmethod
+    async def get_customers(cls, page: int, limit: int):
+        try:
+
+            customers = Customer.query.order_by(
+                Customer.date_added.desc()
+            ).paginate(page, limit)
+
+            schema = CustomerSchema(many=True, only=('id', 'name', 'customer_type'))
+            result = schema.dump(customers.items)
+
+            return {
+                       "count": Customer.total.fget(Customer),
+                       "customers": result
+                   }, http.HTTPStatus.OK
+        except Exception as e:
+            return {
+                       "message": "failed creating migration directory",
+                       "error": str(e)
+                   }, http.HTTPStatus.INTERNAL_SERVER_ERROR
+
+    @classmethod
+    async def get_customer_orders(cls, customer_id: int, page: int, limit: int):
+        try:
+
+            orders = CustomerOrder.query.filter_by(
+                customer_id=customer_id
+            ).order_by(
+                CustomerOrder.date_added.desc()
+            ).paginate(page, limit)
+
+            schema = CustomerOrderSchema(many=True)
+            result = schema.dump(orders.items)
+
+            return {
+                       "count": CustomerOrder.total.fget(CustomerOrder),
+                       "orders": result
+                   }, http.HTTPStatus.OK
+        except Exception as e:
+            return {
+                       "message": "failed getting customer orders",
+                       "error": str(e)
+                   }, http.HTTPStatus.INTERNAL_SERVER_ERROR
+

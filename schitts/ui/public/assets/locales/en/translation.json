@@ -1,0 +1,12 @@
+{
+  "name": "name",
+  "field_required": "Field required",
+  "submit": "Submit",
+  "select_customer_type": "Select customer type",
+  "customer_created": "Customer created",
+  "customer_create_fail": "Failed to created customer",
+  "search_out_of_town_customers": "Search out of town customers",
+  "create_customer": "Create customer",
+  "total_customers": "Total number of customer",
+  "customers": "Customers"
+}
