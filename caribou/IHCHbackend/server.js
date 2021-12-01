@@ -1,7 +1,26 @@
+const { application } = require('express');
 const express = require('express');
 const server = express();
+const pool = require("./db");
 
+server.use(cors());
 server.use(express.json());
+
+
+//create a caribou
+server.post("/api/caribou", async(req,res)=>{
+    try{
+        const{name} = req.body;
+        const newCaribou = await pool.query("INSERT INTO caribou (name) VALUES($1) RETURNING *",[name]);
+        res.json(newCaribou.rows[0]);
+    }
+    catch(err){
+        console.log(err.message);
+    }
+});
+
+
+
 
 
 server.get('/api/test',(req,res)=>{
