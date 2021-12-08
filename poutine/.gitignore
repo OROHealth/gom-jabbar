@@ -1,5 +1,8 @@
 venv/
 
+.idea/
+poutine.iml
+
 *.pyc
 __pycache__/
 

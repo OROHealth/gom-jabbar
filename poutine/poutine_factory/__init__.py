@@ -1,6 +1,21 @@
 import os
 
-from flask import Flask
+from apispec import APISpec
+from apispec.ext.marshmallow import MarshmallowPlugin
+from apispec_webframeworks.flask import FlaskPlugin
+from flask import Flask, render_template
+from flask.json import jsonify
+
+from poutine_factory.model.recipe import RecipeSchema
+
+
+def openapi_spec():
+    return APISpec(
+        title="Poutine Factory",
+        version="1.0.0",
+        openapi_version="3.0.2",
+        plugins=[FlaskPlugin(), MarshmallowPlugin()],
+    )
 
 
 def create_app(test_config=None):
@@ -29,6 +44,17 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
 
+    spec = openapi_spec()
+    spec.components.schema("Recipe", schema=RecipeSchema)
+
+    @app.route('/swagger-resources')
+    def get_swagger_resources():
+        print('sending docs')
+        return jsonify(spec.to_dict())
+
+    @app.route('/api/docs')
+    def get_swagger_docs():
+        print('sending docs')
+        return render_template('swaggerui.html')
+
     return app
-
-
