@@ -1,6 +1,7 @@
 import time
 from enum import Enum
 
+from flask import current_app as app
 from marshmallow import post_load, fields, Schema
 
 from robot_maker.model.ingredient import Ingredient
@@ -32,7 +33,7 @@ class Robot(object):
     def __repr__(self):
         return f"<Robot(name={self.name}, actions={self.actions})>"
 
-    def execute(self, executed_actions: dict, actions_to_execute: list[Action], ingredients: list[Ingredient] = None):
+    def run(self, executed_actions: dict, actions_to_execute: list[str], ingredients: list[Ingredient] = None):
         """Execute robot actions
 
         :param dict executed_actions: A dictionary of already executed actions and their status
@@ -44,74 +45,87 @@ class Robot(object):
         is_execution_successful = False
         failed_actions = []
 
-        if any(action in self.actions for action in actions_to_execute):
+        actions = [x.name for x in self.actions]
+        if any(action in actions for action in actions_to_execute):
             for action_to_execute in actions_to_execute:
-                if action_to_execute == Action.TAKE_CHEESE:
-                    if ingredients is None or len(ingredients) == 0:
-                        self.log_failure(action_to_execute, "Cheese", messages)
-
-                    ingredient = [x for x in ingredients if x.name.lower() == 'Cheese'.lower()]
-                    ingredient = ingredient[0]
-
-                    if ingredient is None or ingredient.quantity == 0:
-                        self.log_failure(action_to_execute, "Cheese", messages)
-
+                if action_to_execute == Action.TAKE_CHEESE.name:
+                    ingredient = self.check_ingredients('Cheese', ingredients, executed_actions, action_to_execute,
+                                                        messages)
                     ingredients.remove(ingredient)
-                    ingredient.quantity -= 1
+                    ingredient.use()
                     ingredients.append(ingredient)
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, messages)
 
-                elif action_to_execute == Action.SQUEEZE_CHEESE:
+                elif action_to_execute == Action.SQUEEZE_CHEESE.name:
                     if not executed_actions.get(Action.TAKE_CHEESE.name):
-                        self.log_failure(action_to_execute, "Cheese", messages)
+                        self.log_failure(executed_actions, action_to_execute, "Cheese", messages)
 
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, messages)
 
-                elif action_to_execute == Action.DETECT_DRUNK_PEOPLE:
+                elif action_to_execute == Action.DETECT_DRUNK_PEOPLE.name:
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, messages)
 
-                elif action_to_execute == Action.DISPLAY_LYRICS:
+                elif action_to_execute == Action.DISPLAY_LYRICS.name:
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, messages)
 
-                elif action_to_execute == Action.LISTEN_ENVIRONMENT:
+                elif action_to_execute == Action.LISTEN_ENVIRONMENT.name:
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, messages)
 
-                elif action_to_execute == Action.CUT_POTATOES:
-                    if ingredients is None or ingredients == 0:
-                        self.log_failure(action_to_execute, "Potatoes", messages)
-
-                    ingredients -= 1
+                elif action_to_execute == Action.CUT_POTATOES.name:
+                    ingredient = self.check_ingredients('Potatoes', ingredients, executed_actions,
+                                                        action_to_execute, messages)
+                    ingredients.remove(ingredient)
+                    ingredient.use()
+                    ingredients.append(ingredient)
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, messages)
 
-                elif action_to_execute == Action.ADD_SYRUP:
+                elif action_to_execute == Action.ADD_SYRUP.name:
                     if not executed_actions.get(Action.CUT_POTATOES.name):
-                        self.log_failure(action_to_execute, "Potatoes", messages)
+                        self.log_failure(executed_actions, action_to_execute, "Potatoes", messages)
 
-                    time.sleep(25)  # Wait for 25 seconds
+                    ingredient = self.check_ingredients('Syrup', ingredients, executed_actions,
+                                                        action_to_execute, messages)
+                    ingredients.remove(ingredient)
+                    ingredient.use()
+                    ingredients.append(ingredient)
+
+                    # time.sleep(25)  # Wait for 25 seconds
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, messages)
 
-                elif action_to_execute == Action.BOIL_POTATOES:
+                elif action_to_execute == Action.BOIL_POTATOES.name:
                     if not executed_actions.get(Action.ADD_SYRUP.name):
-                        self.log_failure(action_to_execute, "Potatoes", messages)
+                        self.log_failure(executed_actions, action_to_execute, "Potatoes", messages)
 
+                    ingredient = self.check_ingredients('Water', ingredients, executed_actions,
+                                                        action_to_execute, messages)
+                    ingredients.remove(ingredient)
+                    ingredient.use()
+                    ingredients.append(ingredient)
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, messages)
 
-                elif action_to_execute == Action.FRY_POTATOES:
+                elif action_to_execute == Action.FRY_POTATOES.name:
                     if not executed_actions.get(Action.BOIL_POTATOES.name):
-                        self.log_failure(action_to_execute, "Potatoes", messages)
+                        self.log_failure(executed_actions, action_to_execute, "Potatoes", messages)
+
+                    ingredient = self.check_ingredients('Oil', ingredients, executed_actions,
+                                                        action_to_execute, messages)
+                    ingredients.remove(ingredient)
+                    ingredient.use()
+                    ingredients.append(ingredient)
+                    is_execution_successful = self.log_success(executed_actions, action_to_execute, messages)
+
+                elif action_to_execute == Action.REGULATE_TEMP.name:
+                    ingredient = self.check_ingredients('Gravy Sauce', ingredients, executed_actions,
+                                                        action_to_execute, messages)
+                    ingredients.remove(ingredient)
+                    ingredient.use()
+                    ingredients.append(ingredient)
 
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, messages)
 
-                elif action_to_execute == Action.REGULATE_TEMP:
-                    if ingredients is None or ingredients == 0:
-                        self.log_failure(action_to_execute, "Gravy Sauce", messages)
-
-                    is_execution_successful = self.log_success(executed_actions, action_to_execute, messages)
-
-                elif action_to_execute == Action.PACKAGE:
-                    requirements = [Action.SQUEEZE_CHEESE.name, Action.FRY_POTATOES.name, Action.REGULATE_TEMP.name]
-                    if requirements not in executed_actions.keys():
-                        self.log_failure(action_to_execute, requirements, messages)
+                elif action_to_execute == Action.PACKAGE.name:
+                    if False in list(executed_actions.values()):
+                        self.log_failure(executed_actions, action_to_execute, "All other steps", messages)
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, messages)
 
                 else:
@@ -119,7 +133,7 @@ class Robot(object):
                     failed_actions.append(action_to_execute)
                     message = f"ERROR : Failed to execute {action_to_execute}"
                     messages.append(message)
-                    print(f"ERROR : Failed to execute {action_to_execute}")
+                    app.logger.info(f"ERROR : Failed to execute {action_to_execute}")
 
         else:
             raise Exception(f"Action {actions_to_execute} are not supported by {self.name}")
@@ -127,27 +141,40 @@ class Robot(object):
         if not is_execution_successful and len(failed_actions) > 0:
             message = "FAILED : Some actions were not executed successfully"
             messages.append(message)
-            print("\n" + message)
+            app.logger.info("\n" + message)
         else:
             message = "SUCCESSFUL : All actions were executed successfully"
             messages.append(message)
-            print("\n" + message)
+            app.logger.info("\n" + message)
 
-        return is_execution_successful, message, messages
+        return is_execution_successful, executed_actions, message, messages
+
+    def check_ingredients(self, ingredient, ingredients, executed_actions, action_to_execute, messages):
+        if ingredients is None or len(ingredients) == 0:
+            self.log_failure(executed_actions, action_to_execute, ingredient, messages)
+
+        ingredient = [x for x in ingredients if x.name.lower() == ingredient.lower()]
+        ingredient = ingredient[0]
+
+        if ingredient is None or ingredient.quantity == 0:
+            self.log_failure(executed_actions, action_to_execute, ingredient, messages)
+
+        return ingredient
 
     @staticmethod
-    def log_success(executed_actions, action, messages):
-        executed_actions[action.name] = True
-        message = f"EXECUTED : {action.name}"
+    def log_success(executed_actions: dict, action: str, messages):
+        executed_actions[action] = True
+        message = f"EXECUTED : {Action[action].value}"
         messages.append(message)
-        print(message)
+        app.logger.info(message)
         return True
 
     @staticmethod
-    def log_failure(action, requirements, messages):
-        message = f"ERROR : Failed to execute {action.name}"
+    def log_failure(executed_actions: dict, action: str, requirements: any, messages: list[str]):
+        executed_actions[action] = True
+        message = f"ERROR - Failed to execute : {Action[action].value}"
         messages.append(message)
-        print(message)
+        app.logger.info(message)
         raise Exception(f"Missing {requirements}")
 
 

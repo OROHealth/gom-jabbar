@@ -49,12 +49,12 @@ def create_app(test_config=None):
 
     @app.route('/swagger-resources')
     def get_swagger_resources():
-        print('sending docs')
+        app.logger.info('Generating swagger resources')
         return jsonify(spec.to_dict())
 
     @app.route('/api/docs')
     def get_swagger_docs():
-        print('sending docs')
+        app.logger.info('Rendering swagger ui')
         return render_template('swagger-ui.html')
 
     return app
@@ -65,15 +65,24 @@ def register_openapi_paths(app, spec):
 
     with app.test_request_context():
         spec.path(view=robot_maker.recipes,
+                  parameters=[{"name": "recipe", "in": "path", "example": "poutine"},
+                              {"name": "is_default", "in": "query", "example": True}],
                   operations=dict(
                       post=dict(
-                          requestBody={"content": {"application/json": {"schema": {}}}},
-                          responses={"200": {"content": {"application/json": {}}}}
+                          description="Create a Poutine with a default custom recipe",
+                          requestBody={"content": {"application/json": {"schema": RecipeSchema}}},
+                          responses={"200": {"content": {"application/json": {"schema": Schema.from_dict({
+                              "success": fields.Bool(),
+                              "message": fields.Str()
+                          })}}}}
                       )
                   )) \
             .path(view=robot_maker.recipes,
+                  parameters=[{"name": "recipe", "in": "path", "example": "poutine"},
+                              {"name": "is_default", "in": "query", "example": True}],
                   operations=dict(
                       get=dict(
+                          description="Get Poutine recipe",
                           responses={"200": {"content": {"application/json": {"schema": RecipeSchema}}}}
                       )
                   )) \
@@ -86,14 +95,14 @@ def register_openapi_paths(app, spec):
                       )
                   )) \
             .path(view=robot_maker.execute_robot_action,
-                  parameters=[{"name": "robot", "in": "path"}],
+                  parameters=[{"name": "robot", "in": "path", "example": "Outremona"}],
                   operations=dict(
                       get=dict(
                           responses={"200": {"content": {"application/json": {"schema": RobotSchema}}}}
                       )
                   )) \
             .path(view=robot_maker.execute_robot_action,
-                  parameters=[{"name": "robot", "in": "path"}],
+                  parameters=[{"name": "robot", "in": "path", "example": "Outremona"}],
                   operations=dict(
                       post=dict(
                           requestBody={"content": {"application/json": {
