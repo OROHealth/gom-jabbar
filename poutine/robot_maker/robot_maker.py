@@ -1,12 +1,11 @@
 from flask import Blueprint, request, jsonify, abort
 
-from robot_maker import openapi_spec, IngredientSchema
+from robot_maker import IngredientSchema
 from robot_maker.model.ingredient import default_ingredients
 from robot_maker.model.recipe import Recipe, RecipeSchema
 from robot_maker.model.robot import init_poutine_robots, RobotSchema, Action
 from robot_maker.model.step import default_poutine_steps
 
-spec = openapi_spec()
 bp = Blueprint('robot_maker', __name__, url_prefix="/api")
 
 

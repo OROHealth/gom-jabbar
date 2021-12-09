@@ -3,6 +3,7 @@ from enum import Enum
 
 from flask import current_app as app
 from marshmallow import post_load, fields, Schema
+from marshmallow_enum import EnumField
 
 from robot_maker.model.ingredient import Ingredient
 
@@ -32,6 +33,10 @@ class Robot(object):
 
     def __repr__(self):
         return f"<Robot(name={self.name}, actions={self.actions})>"
+
+    def __eq__(self, other):
+        is_equal = False
+        is_equal = self.name == other.name
 
     def run(self, executed_actions: dict, actions_to_execute: list[str], ingredients: list[Ingredient] = None):
         """Execute robot actions
@@ -180,7 +185,7 @@ class Robot(object):
 
 class RobotSchema(Schema):
     name = fields.Str()
-    actions = fields.List(fields.Str())
+    actions = fields.List(EnumField(Action))
 
     @post_load
     def make_ingredient(self, data, **kwargs):
