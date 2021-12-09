@@ -8,6 +8,10 @@ flask = "*"
 marshmallow = "*"
 apispec = {extras = ["marshmallow", "yaml"], version = "*"}
 apispec-webframeworks = "*"
+pytest = "*"
+coverage = "*"
+marshmallow-enum = "*"
+click = "*"
 
 [dev-packages]
 
