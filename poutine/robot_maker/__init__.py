@@ -54,7 +54,7 @@ def create_app(test_config=None):
     @app.route('/api/docs')
     def get_swagger_docs():
         print('sending docs')
-        return render_template('swaggerui.html')
+        return render_template('swagger-ui.html')
 
     return app
 
