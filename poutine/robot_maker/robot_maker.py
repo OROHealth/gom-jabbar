@@ -7,6 +7,23 @@ spec = openapi_spec()
 bp = Blueprint('robot_maker', __name__, url_prefix="/api")
 
 
+@bp.route("/recipes/<recipe>", methods=('GET', 'POST'))
+def recipes(recipe):
+    """Retrieve a Poutine recipe or Make a Poutine
+
+    :param string recipe: The name of the Recipe
+    :return:
+    """
+    if not isinstance(recipe, str) and recipe != "poutine":
+        abort(405)
+
+    if request.method == 'GET':
+        pass
+
+    if request.method == 'POST':
+        pass
+
+
 @bp.route("/robots")
 def get_robots():
     """Fetch all Robots

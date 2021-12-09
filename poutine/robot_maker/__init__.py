@@ -8,6 +8,7 @@ from flask.json import jsonify
 from marshmallow import fields, Schema
 
 from robot_maker.model.ingredient import IngredientSchema
+from robot_maker.model.recipe import RecipeSchema
 from robot_maker.model.robot import RobotSchema
 
 
@@ -61,14 +62,26 @@ def create_app(test_config=None):
 
 def register_openapi_paths(app, spec):
     from . import robot_maker
-    spec.components.schema("Recipe", schema=RobotSchema)
 
     with app.test_request_context():
-        spec.path(view=robot_maker.get_robots,
+        spec.path(view=robot_maker.recipes,
+                  operations=dict(
+                      post=dict(
+                          requestBody={"content": {"application/json": {"schema": {}}}},
+                          responses={"200": {"content": {"application/json": {}}}}
+                      )
+                  )) \
+            .path(view=robot_maker.recipes,
+                  operations=dict(
+                      get=dict(
+                          responses={"200": {"content": {"application/json": {"schema": RecipeSchema}}}}
+                      )
+                  )) \
+            .path(view=robot_maker.get_robots,
                   operations=dict(
                       get=dict(
                           responses={"200": {"content": {"application/json": {
-                              "schema": {"type": "array", "items": "RobotSchema"}
+                              "schema": {"type": "array", "items": RobotSchema}
                           }}}}
                       )
                   )) \
@@ -76,7 +89,7 @@ def register_openapi_paths(app, spec):
                   parameters=[{"name": "robot", "in": "path"}],
                   operations=dict(
                       get=dict(
-                          responses={"200": {"content": {"application/json": {"schema": "RobotSchema"}}}}
+                          responses={"200": {"content": {"application/json": {"schema": RobotSchema}}}}
                       )
                   )) \
             .path(view=robot_maker.execute_robot_action,
