@@ -1,0 +1,100 @@
+import os
+
+from apispec import APISpec
+from apispec.ext.marshmallow import MarshmallowPlugin
+from apispec_webframeworks.flask import FlaskPlugin
+from flask import Flask, render_template
+from flask.json import jsonify
+from marshmallow import fields, Schema
+
+from robot_maker.model.ingredient import IngredientSchema
+from robot_maker.model.robot import RobotSchema
+
+
+def openapi_spec():
+    return APISpec(
+        title="Poutine Factory",
+        version="1.0.0",
+        openapi_version="3.0.2",
+        plugins=[FlaskPlugin(), MarshmallowPlugin()],
+    )
+
+
+def create_app(test_config=None):
+    # create and configure the app
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_mapping(
+        SECRET_KEY='dev',
+        DATABASE=os.path.join(app.instance_path, 'robot_maker.sqlite'),
+    )
+
+    if test_config is None:
+        # load the instance config, if it exists, when not testing
+        app.config.from_pyfile('config.py', silent=True)
+    else:
+        # load the test config if passed in
+        app.config.from_mapping(test_config)
+
+    # ensure the instance folder exists
+    try:
+        os.makedirs(app.instance_path)
+    except OSError:
+        pass
+
+    from . import robot_maker
+    app.register_blueprint(robot_maker.bp)
+    spec = robot_maker.spec
+    register_openapi_paths(app, spec)
+
+    @app.route('/swagger-resources')
+    def get_swagger_resources():
+        print('sending docs')
+        return jsonify(spec.to_dict())
+
+    @app.route('/api/docs')
+    def get_swagger_docs():
+        print('sending docs')
+        return render_template('swaggerui.html')
+
+    return app
+
+
+def register_openapi_paths(app, spec):
+    from . import robot_maker
+    spec.components.schema("Recipe", schema=RobotSchema)
+
+    with app.test_request_context():
+        spec.path(view=robot_maker.get_robots,
+                  operations=dict(
+                      get=dict(
+                          responses={"200": {"content": {"application/json": {
+                              "schema": {"type": "array", "items": "RobotSchema"}
+                          }}}}
+                      )
+                  )) \
+            .path(view=robot_maker.execute_robot_action,
+                  parameters=[{"name": "robot", "in": "path"}],
+                  operations=dict(
+                      get=dict(
+                          responses={"200": {"content": {"application/json": {"schema": "RobotSchema"}}}}
+                      )
+                  )) \
+            .path(view=robot_maker.execute_robot_action,
+                  parameters=[{"name": "robot", "in": "path"}],
+                  operations=dict(
+                      post=dict(
+                          requestBody={"content": {"application/json": {
+                              "schema": Schema.from_dict({
+                                  "executed_actions": fields.Dict(fields.Str(), fields.Bool()),
+                                  "actions_to_execute": fields.List(fields.Str()),
+                                  "ingredients": fields.List(fields.Nested(IngredientSchema))
+                              })
+                          }}},
+                          responses={"200": {"content": {"application/json": {
+                              "schema": Schema.from_dict({
+                                  "status": fields.Bool(),
+                                  "message": fields.Str(),
+                                  "messages": fields.List(fields.Str())})
+                          }}}}
+                      )
+                  ))
