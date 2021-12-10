@@ -2,9 +2,10 @@ import os
 
 from flask import Flask
 
-from robot_maker.model.ingredient import IngredientSchema
-from robot_maker.model.recipe import RecipeSchema
-from robot_maker.model.robot import RobotSchema
+from robot_maker.db import db_session
+from robot_maker.models.ingredient import IngredientSchema
+from robot_maker.models.recipe import RecipeSchema
+from robot_maker.models.robot import RobotSchema
 
 
 def create_app(test_config=None):
@@ -28,12 +29,18 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    from . import robot_maker
-    from . import openapi
-    app.register_blueprint(robot_maker.bp)
-    app.register_blueprint(openapi.bp)
+    from . import db
+    db.init_app(app)
 
+    from . import robot_maker
+    app.register_blueprint(robot_maker.bp)
+
+    from . import openapi
+    app.register_blueprint(openapi.bp)
     openapi.register_app_paths(app)
 
-    return app
+    @app.teardown_appcontext
+    def shutdown_session(exception=None):
+        db_session.remove()
 
+    return app

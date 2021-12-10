@@ -10,8 +10,11 @@ apispec = {extras = ["marshmallow", "yaml"], version = "*"}
 apispec-webframeworks = "*"
 pytest = "*"
 coverage = "*"
-marshmallow-enum = "*"
 click = "*"
+flask-sqlalchemy = "*"
+sqlalchemy = "*"
+werkzeug = "*"
+marshmallow-enum = "*"
 
 [dev-packages]
 

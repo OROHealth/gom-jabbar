@@ -31,7 +31,7 @@ def get_swagger_docs():
 def register_app_paths(app):
     with app.test_request_context():
         spec.path(view=robot_maker.recipes,
-                  parameters=[{"name": "recipe", "in": "path", "example": "poutine"},
+                  parameters=[{"name": "recipe", "in": "path", "example": "Poutine"},
                               {"name": "is_default", "in": "query", "example": True}],
                   operations=dict(
                       post=dict(
@@ -39,12 +39,13 @@ def register_app_paths(app):
                           requestBody={"content": {"application/json": {"schema": RecipeSchema}}},
                           responses={"200": {"content": {"application/json": {"schema": Schema.from_dict({
                               "success": fields.Bool(),
-                              "message": fields.Str()
+                              "message": fields.Str(),
+                              "log": fields.Dict()
                           })}}}}
                       )
                   )) \
             .path(view=robot_maker.recipes,
-                  parameters=[{"name": "recipe", "in": "path", "example": "poutine"},
+                  parameters=[{"name": "recipe", "in": "path", "example": "Poutine"},
                               {"name": "is_default", "in": "query", "example": True}],
                   operations=dict(
                       get=dict(
@@ -82,7 +83,7 @@ def register_app_paths(app):
                               "schema": Schema.from_dict({
                                   "status": fields.Bool(),
                                   "message": fields.Str(),
-                                  "messages": fields.List(fields.Str())})
+                                  "log": fields.List(fields.Str())})
                           }}}}
                       )
                   ))

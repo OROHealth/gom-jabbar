@@ -1,5 +1,6 @@
 venv/
 
+*.sqlite
 .idea/
 poutine.iml
 
