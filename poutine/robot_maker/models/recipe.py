@@ -34,9 +34,9 @@ class Recipe(Base):
     @staticmethod
     def validate(ingredients: list[Ingredient], steps: list[Step]):
         for step in steps:
-            for ingredient in step.ingredients:
-                if ingredient.name.lower() not in [ing.name.lower() for ing in ingredients]:
-                    raise Exception(f"{ingredient} is not a valid ingredient for this recipe")
+            for step_ingredient in step.ingredients:
+                if step_ingredient.name.lower() not in [ing.name.lower() for ing in ingredients]:
+                    raise Exception(f"{step_ingredient} is not a valid ingredient for this recipe")
 
     def cook(self):
         status = {}
@@ -49,9 +49,9 @@ class Recipe(Base):
             step_count += 1
 
         if any(stat == StatusEnum.FAILED for stat in status.values()):
-            return False, f"Failed to prepare Poutine at one of the steps", log
+            return False, f"Failed to prepare {self.name} at one of the steps. Check the logs for more info", log
         else:
-            return True, f"Successfully prepared Poutine", log
+            return True, f"Successfully prepared {self.name}", log
 
 
 class RecipeSchema(Schema):
