@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, abort
 
 from robot_maker import IngredientSchema
 from robot_maker.models.recipe import Recipe, RecipeSchema
-from robot_maker.models.robot import RobotSchema, Robot
+from robot_maker.models.robot import RobotSchema, Robot, Action
 
 bp = Blueprint('robot_maker', __name__, url_prefix="/api")
 
@@ -14,7 +14,7 @@ def recipes(recipe):
     :param string recipe: The name of the Recipe
     :return:
     """
-    if not isinstance(recipe, str) and recipe != "Poutine":
+    if not isinstance(recipe, str) or recipe != "Poutine":
         abort(405)
 
     if request.method == 'GET':
@@ -24,22 +24,18 @@ def recipes(recipe):
     if request.method == 'POST':
         is_default = request.args.get("is_default", default=False, type=lambda v: v.lower() == 'true')
 
-        if is_default is None:
-            abort(405)
-
         if isinstance(is_default, bool) and bool(is_default):
             poutine_recipe = Recipe.query.filter_by(name="Poutine").first()
             success, message, log = poutine_recipe.cook()
-
-            if success:
-                return jsonify(dict(success=success, message=message, log=log))
-            else:
-                abort(417, message, log)
+            return jsonify(dict(success=success, message=message, log=log))
 
         else:
             recipe = RecipeSchema().load(request.json)
             success, message, log = recipe.cook()
-            return jsonify(dict(success=success, message=message, log=log))
+            if success:
+                return jsonify(dict(success=success, message=message, log=log))
+            else:
+                return jsonify(dict(success=success, message=message, log=log)), 417
 
 
 @bp.route("/robots")
@@ -59,9 +55,6 @@ def execute_robot_action(robot):
     :param string robot: The name of the Robot
     :return:
     """
-    if not isinstance(robot, str):
-        abort(405)
-
     if request.method == 'GET':
         robot = Robot.query.filter_by(name=robot).first()
         return jsonify(RobotSchema().dump(robot))
@@ -71,5 +64,10 @@ def execute_robot_action(robot):
         ingredients = IngredientSchema().load(data=request.json.get("ingredients"), many=True)
         executed_actions = request.json.get("executed_actions")
         actions = request.json.get("actions_to_execute")
+        actions = [Action.query.filter_by(name=action).first() for action in actions]
         status, _, message, log = robot.run(executed_actions, actions, ingredients)
-        return jsonify({"status": status, "message": message, "log": log})
+        response = {"status": status, "message": message, "log": log}
+        if status:
+            return jsonify(response)
+        else:
+            return jsonify(response), 417

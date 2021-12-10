@@ -12,7 +12,8 @@ class Ingredient(Base):
     step_id = Column(Integer, ForeignKey('steps.id'), nullable=True)
     recipe_id = Column(Integer, ForeignKey('recipes.id'), nullable=True)
 
-    def __init__(self, name: str, quantity: int):
+    def __init__(self, name: str, quantity: int, id=None):
+        self.id = id
         self.name = self.validate(name)
         self.quantity = quantity
 
@@ -31,6 +32,7 @@ class Ingredient(Base):
 
 
 class IngredientSchema(Schema):
+    id = fields.Integer()
     name = fields.Str()
     quantity = fields.Int()
 

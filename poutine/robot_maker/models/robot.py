@@ -63,7 +63,7 @@ class Robot(Base):
         :param list[Ingredient] ingredients: A list of ingredients used in the action execution
         :return:
         """
-        log = []
+        log: list[dict] = []
         is_execution_successful = False
         failed_actions = []
 
@@ -148,30 +148,29 @@ class Robot(Base):
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
                 elif action_to_execute.name == ActionEnum.PACKAGE.name:
-                    if False in list(executed_actions.values()):
+                    if not executed_actions or False in list(executed_actions.values()):
                         self.log_failure(executed_actions, action_to_execute, "All other steps", log)
-                    is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
+                    else:
+                        is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
                 else:
                     is_execution_successful = False
                     failed_actions.append(action_to_execute)
                     message = f"ERROR : Failed to execute {action_to_execute}"
-                    log.append(message)
+                    log.append({"action": action_to_execute, "message": message})
                     app.logger.info(f"ERROR : Failed to execute {action_to_execute}")
 
         else:
-            message = f"Action {actions_to_execute} are not supported by {self.name}"
+            message = f"ERROR: {self.name} cannot perform {actions_to_execute}"
             app.logger.info("\n" + message)
-            log.append(message)
-            raise Exception(log)
+            log.append({"message": message})
+            is_execution_successful = False
 
-        if not is_execution_successful and len(failed_actions) > 0:
+        if not is_execution_successful > 0:
             message = "FAILED : Some actions were not executed successfully"
-            log.append(message)
             app.logger.info("\n" + message)
         else:
             message = "SUCCESS : All actions were executed successfully"
-            log.append(message)
             app.logger.info("\n" + message)
 
         return is_execution_successful, executed_actions, message, log
@@ -192,19 +191,19 @@ class Robot(Base):
     def log_success(executed_actions: dict, action: Action, log):
         executed_actions[action.name] = True
         message = f"EXECUTED : {action.value}"
-        log.append(message)
+        log.append({"action": action.name, "message": message})
         app.logger.info(message)
         return True
 
     @staticmethod
-    def log_failure(executed_actions: dict, action: Action, requirements: any, log: list[str]):
+    def log_failure(executed_actions: dict, action: Action, requirements: any, log):
         executed_actions[action.name] = False
         message = f"ERROR - Failed to execute : {action.value}"
 
         if requirements is not None:
             message += f", Missing : {requirements}"
 
-        log.append(message)
+        log.append({"action": action.name, "message": message})
         app.logger.info(message)
         return False
 

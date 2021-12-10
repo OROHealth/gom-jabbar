@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship, backref
 from robot_maker.db import Base
 from robot_maker.models.enums import StatusEnum
 from robot_maker.models.ingredient import Ingredient, IngredientSchema
-from robot_maker.models.robot import Robot, RobotSchema, Action
+from robot_maker.models.robot import Robot, RobotSchema, Action, ActionSchema
 
 step_ingredients = Table("step_ingredients", Base.metadata,
                          Column('step_id', Integer, ForeignKey('steps.id'), primary_key=True),
@@ -31,7 +31,8 @@ class Step(Base):
                                lazy='subquery',
                                backref=backref('steps', lazy=True))
 
-    def __init__(self, actions: list[Action], ingredients: list[Ingredient], robot: Robot = None):
+    def __init__(self, actions: list[Action], ingredients: list[Ingredient], robot: Robot = None, id=None):
+        self.id = id
         self.actions = actions
         self.ingredients = ingredients
         self.robot = robot
@@ -55,7 +56,8 @@ class Step(Base):
 
 
 class StepSchema(Schema):
-    actions = fields.Str()
+    id = fields.Integer()
+    actions = fields.List(fields.Nested(ActionSchema))
     ingredients = fields.List(fields.Nested(IngredientSchema))
     robot = fields.Nested(RobotSchema)
     status = fields.Str()

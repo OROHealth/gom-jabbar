@@ -83,7 +83,7 @@ def register_app_paths(app):
                               "schema": Schema.from_dict({
                                   "status": fields.Bool(),
                                   "message": fields.Str(),
-                                  "log": fields.List(fields.Str())})
+                                  "log": fields.List(fields.Dict())})
                           }}}}
                       )
                   ))

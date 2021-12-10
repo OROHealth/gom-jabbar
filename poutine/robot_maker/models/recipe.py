@@ -21,7 +21,8 @@ class Recipe(Base):
                                lazy='subquery',
                                backref=backref('recipes', lazy=True))
 
-    def __init__(self, name, ingredients: list[Ingredient], steps: list[Step]):
+    def __init__(self, name, ingredients: list[Ingredient], steps: list[Step], id=None):
+        self.id = id
         self.validate(ingredients, steps)
         self.name = name
         self.ingredients = ingredients
@@ -54,10 +55,11 @@ class Recipe(Base):
 
 
 class RecipeSchema(Schema):
+    id = fields.Integer()
     name = fields.Str()
     ingredients = fields.List(fields.Nested(IngredientSchema))
     steps = fields.List(fields.Nested(StepSchema))
 
     @post_load
     def make_ingredient(self, data, **kwargs):
-        return Step(**data)
+        return Recipe(**data)
