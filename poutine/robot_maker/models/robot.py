@@ -65,24 +65,25 @@ class Robot(Base):
         """
         log: list[dict] = []
         is_execution_successful = False
-        failed_actions = []
 
-        actions = [x.name for x in self.actions]
-        actions_to_execute = [x.name for x in actions_to_execute]
+        actions = [action.name for action in self.actions]
+        actions_to_execute = [action.name for action in actions_to_execute]
         if any(action in actions for action in actions_to_execute):
             for action_to_execute in actions_to_execute:
                 action_to_execute = Action.query.filter_by(name=action_to_execute).first()
                 if action_to_execute.name == ActionEnum.TAKE_CHEESE.name:
-                    ingredient = self.check_ingredients('Cheese', ingredients, executed_actions,
-                                                        action_to_execute, log)
-                    ingredients.remove(ingredient)
-                    ingredient.use()
-                    ingredients.append(ingredient)
-                    is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
+                    ingredient, status = self.check_ingredients('Cheese', ingredients, executed_actions,
+                                                                action_to_execute, log)
+                    if status:
+                        ingredients.remove(ingredient)
+                        ingredient.use()
+                        ingredients.append(ingredient)
+                        is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
                 elif action_to_execute.name == ActionEnum.SQUEEZE_CHEESE.name:
                     if not executed_actions.get(ActionEnum.TAKE_CHEESE.name):
                         self.log_failure(executed_actions, action_to_execute, "Cheese", log)
+                        continue
 
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
@@ -96,56 +97,64 @@ class Robot(Base):
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
                 elif action_to_execute.name == ActionEnum.CUT_POTATOES.name:
-                    ingredient = self.check_ingredients('Potatoes', ingredients, executed_actions,
-                                                        action_to_execute, log)
-                    ingredients.remove(ingredient)
-                    ingredient.use()
-                    ingredients.append(ingredient)
-                    is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
+                    ingredient, status = self.check_ingredients('Potatoes', ingredients, executed_actions,
+                                                                action_to_execute, log)
+                    if status:
+                        ingredients.remove(ingredient)
+                        ingredient.use()
+                        ingredients.append(ingredient)
+                        is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
                 elif action_to_execute.name == ActionEnum.ADD_SYRUP.name:
                     if not executed_actions.get(ActionEnum.CUT_POTATOES.name):
                         self.log_failure(executed_actions, action_to_execute, "Potatoes", log)
+                        continue
 
-                    ingredient = self.check_ingredients('Syrup', ingredients, executed_actions,
-                                                        action_to_execute, log)
-                    ingredients.remove(ingredient)
-                    ingredient.use()
-                    ingredients.append(ingredient)
+                    ingredient, status = self.check_ingredients('Syrup', ingredients, executed_actions,
+                                                                action_to_execute, log)
+                    if status:
+                        ingredients.remove(ingredient)
+                        ingredient.use()
+                        ingredients.append(ingredient)
 
-                    # time.sleep(25)  # Wait for 25 seconds
-                    is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
+                        # time.sleep(25)  # Wait for 25 seconds
+                        is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
                 elif action_to_execute.name == ActionEnum.BOIL_POTATOES.name:
                     if not executed_actions.get(ActionEnum.ADD_SYRUP.name):
                         self.log_failure(executed_actions, action_to_execute, "Potatoes", log)
+                        continue
 
-                    ingredient = self.check_ingredients('Water', ingredients, executed_actions,
-                                                        action_to_execute, log)
-                    ingredients.remove(ingredient)
-                    ingredient.use()
-                    ingredients.append(ingredient)
-                    is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
+                    ingredient, status = self.check_ingredients('Water', ingredients, executed_actions,
+                                                                action_to_execute, log)
+                    if status:
+                        ingredients.remove(ingredient)
+                        ingredient.use()
+                        ingredients.append(ingredient)
+                        is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
                 elif action_to_execute.name == ActionEnum.FRY_POTATOES.name:
                     if not executed_actions.get(ActionEnum.BOIL_POTATOES.name):
                         self.log_failure(executed_actions, action_to_execute, "Potatoes", log)
+                        continue
 
-                    ingredient = self.check_ingredients('Oil', ingredients, executed_actions,
-                                                        action_to_execute, log)
-                    ingredients.remove(ingredient)
-                    ingredient.use()
-                    ingredients.append(ingredient)
-                    is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
+                    ingredient, status = self.check_ingredients('Oil', ingredients, executed_actions,
+                                                                action_to_execute, log)
+                    if status:
+                        ingredients.remove(ingredient)
+                        ingredient.use()
+                        ingredients.append(ingredient)
+                        is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
                 elif action_to_execute.name == ActionEnum.REGULATE_TEMP.name:
-                    ingredient = self.check_ingredients('Gravy Sauce', ingredients, executed_actions,
-                                                        action_to_execute, log)
-                    ingredients.remove(ingredient)
-                    ingredient.use()
-                    ingredients.append(ingredient)
+                    ingredient, status = self.check_ingredients('Gravy Sauce', ingredients, executed_actions,
+                                                                action_to_execute, log)
+                    if status:
+                        ingredients.remove(ingredient)
+                        ingredient.use()
+                        ingredients.append(ingredient)
 
-                    is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
+                        is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
                 elif action_to_execute.name == ActionEnum.PACKAGE.name:
                     if not executed_actions or False in list(executed_actions.values()):
@@ -155,7 +164,6 @@ class Robot(Base):
 
                 else:
                     is_execution_successful = False
-                    failed_actions.append(action_to_execute)
                     message = f"ERROR : Failed to execute {action_to_execute}"
                     log.append({"action": action_to_execute, "message": message})
                     app.logger.info(f"ERROR : Failed to execute {action_to_execute}")
@@ -178,14 +186,16 @@ class Robot(Base):
     def check_ingredients(self, ingredient, ingredients, executed_actions, action_to_execute, log):
         if ingredients is None or len(ingredients) == 0:
             self.log_failure(executed_actions, action_to_execute, ingredient, log)
+            return ingredient, False
 
-        ingredient = [ing for ing in ingredients if ing.name.lower() == ingredient.lower()]
-        ingredient = ingredient[0]
+        else:
+            ingredient = [ing for ing in ingredients if ing.name.lower() == ingredient.lower()]
+            ingredient = ingredient[0]
 
-        if ingredient is None or ingredient.quantity == 0:
-            self.log_failure(executed_actions, action_to_execute, ingredient, log)
+            if ingredient is None or ingredient.quantity == 0:
+                self.log_failure(executed_actions, action_to_execute, ingredient, log)
 
-        return ingredient
+            return ingredient, True
 
     @staticmethod
     def log_success(executed_actions: dict, action: Action, log):
