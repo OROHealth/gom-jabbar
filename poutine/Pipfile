@@ -15,6 +15,9 @@ flask-sqlalchemy = "*"
 sqlalchemy = "*"
 werkzeug = "*"
 marshmallow-enum = "*"
+grpcio = "*"
+rich = "*"
+grpcio-tools = "*"
 
 [dev-packages]
 

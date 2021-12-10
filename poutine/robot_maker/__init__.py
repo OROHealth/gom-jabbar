@@ -30,11 +30,20 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    import warnings
+    warnings.filterwarnings(
+        "ignore",
+        message="Multiple schemas resolved to the name "
+    )
+
     from . import db
     db.init_app(app)
 
     from . import robot_maker
     app.register_blueprint(robot_maker.bp)
+
+    from . import commands
+    commands.init_app_commands(app)
 
     from . import openapi
     app.register_blueprint(openapi.bp)
@@ -48,4 +57,29 @@ def create_app(test_config=None):
     def shutdown_session(exception=None):
         db_session.remove()
 
+    from robot_maker.logger import console
+    console.rule()
     return app
+
+
+ASCIIART = """
+    ##########################################################################################################
+    
+            ###########      #######    ###########      #######    ############        
+            ###       ###  ###     ###  ###       ###  ###     ###      ###             
+            ###########    ###     ###  ###########    ###     ###      ###             
+            #########      ###     ###  ###########    ###     ###      ###             
+            ###    ###     ###     ###  ###       ###  ###     ###      ###             
+            ###     ####     #######    ###########      #######        ###             
+            
+                    #####     #####        ###        ###    ###    ############  ###########
+                    ### ### ### ###      ### ###      ###   ###     ###           ###       ###
+                    ###   ###   ###     ###   ###     ########      #########     ###########
+                    ###    #    ###    ###########    ##########    #########     #########
+                    ###         ###   #############   ###     ###   ###           ###    ###
+                    ###         ###  ###         ###  ###      ###  ############  ###     ####
+                    
+    #########################################################################################################
+    """
+
+ASCIISTYLE = 'purple'

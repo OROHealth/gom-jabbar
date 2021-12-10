@@ -1,11 +1,17 @@
-from flask import current_app as app
+import logging
+import time
+
 from marshmallow import post_load, fields, Schema
 from sqlalchemy import Column, String, Table, Integer, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
 from robot_maker.db import Base
+from robot_maker.logger import get_logger
 from robot_maker.models.enums import ActionEnum
 from robot_maker.models.ingredient import Ingredient
+
+
+logger = get_logger()
 
 
 class Action(Base):
@@ -79,6 +85,7 @@ class Robot(Base):
                         ingredient.use()
                         ingredients.append(ingredient)
                         is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
+                        time.sleep(1)  # Wait for 1 seconds
 
                 elif action_to_execute.name == ActionEnum.SQUEEZE_CHEESE.name:
                     if not executed_actions.get(ActionEnum.TAKE_CHEESE.name):
@@ -86,15 +93,19 @@ class Robot(Base):
                         continue
 
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
+                    time.sleep(1)  # Wait for 1 seconds
 
                 elif action_to_execute.name == ActionEnum.DETECT_DRUNK_PEOPLE.name:
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
+                    time.sleep(1)  # Wait for 1 seconds
 
                 elif action_to_execute.name == ActionEnum.DISPLAY_LYRICS.name:
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
+                    time.sleep(1)  # Wait for 1 seconds
 
                 elif action_to_execute.name == ActionEnum.LISTEN_ENVIRONMENT.name:
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
+                    time.sleep(1)  # Wait for 1 seconds
 
                 elif action_to_execute.name == ActionEnum.CUT_POTATOES.name:
                     ingredient, status = self.check_ingredients('Potatoes', ingredients, executed_actions,
@@ -104,6 +115,7 @@ class Robot(Base):
                         ingredient.use()
                         ingredients.append(ingredient)
                         is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
+                        time.sleep(1)  # Wait for 1 seconds
 
                 elif action_to_execute.name == ActionEnum.ADD_SYRUP.name:
                     if not executed_actions.get(ActionEnum.CUT_POTATOES.name):
@@ -117,7 +129,7 @@ class Robot(Base):
                         ingredient.use()
                         ingredients.append(ingredient)
 
-                        # time.sleep(25)  # Wait for 25 seconds
+                        time.sleep(1)  # Wait for 1 seconds
                         is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
                 elif action_to_execute.name == ActionEnum.BOIL_POTATOES.name:
@@ -131,6 +143,7 @@ class Robot(Base):
                         ingredients.remove(ingredient)
                         ingredient.use()
                         ingredients.append(ingredient)
+                        time.sleep(1)  # Wait for 1 seconds
                         is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
                 elif action_to_execute.name == ActionEnum.FRY_POTATOES.name:
@@ -144,6 +157,7 @@ class Robot(Base):
                         ingredients.remove(ingredient)
                         ingredient.use()
                         ingredients.append(ingredient)
+                        time.sleep(1)  # Wait for 1 seconds
                         is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
                 elif action_to_execute.name == ActionEnum.REGULATE_TEMP.name:
@@ -153,6 +167,7 @@ class Robot(Base):
                         ingredients.remove(ingredient)
                         ingredient.use()
                         ingredients.append(ingredient)
+                        time.sleep(1)  # Wait for 1 seconds
 
                         is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
@@ -160,26 +175,27 @@ class Robot(Base):
                     if not executed_actions or False in list(executed_actions.values()):
                         self.log_failure(executed_actions, action_to_execute, "All other steps", log)
                     else:
+                        time.sleep(1)  # Wait for 1 seconds
                         is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
                 else:
                     is_execution_successful = False
                     message = f"ERROR : Failed to execute {action_to_execute}"
                     log.append({"action": action_to_execute, "message": message})
-                    app.logger.info(f"ERROR : Failed to execute {action_to_execute}")
+                    logger.info("[green]" + message + "[/]")
 
         else:
             message = f"ERROR: {self.name} cannot perform {actions_to_execute}"
-            app.logger.info("\n" + message)
+            logger.info("[red]" + message + "[/]")
             log.append({"message": message})
             is_execution_successful = False
 
         if not is_execution_successful > 0:
             message = "FAILED : Some actions were not executed successfully"
-            app.logger.info("\n" + message)
+            logger.info("[bold red]" + message + "[/]\n")
         else:
             message = "SUCCESS : All actions were executed successfully"
-            app.logger.info("\n" + message)
+            logger.info("[bold green]" + message + "[/]\n")
 
         return is_execution_successful, executed_actions, message, log
 
@@ -202,7 +218,7 @@ class Robot(Base):
         executed_actions[action.name] = True
         message = f"EXECUTED : {action.value}"
         log.append({"action": action.name, "message": message})
-        app.logger.info(message)
+        logger.info("[yellow]" + message + "[/]")
         return True
 
     @staticmethod
@@ -214,7 +230,7 @@ class Robot(Base):
             message += f", Missing : {requirements}"
 
         log.append({"action": action.name, "message": message})
-        app.logger.info(message)
+        logger.info("[purple]" + message + "[/]")
         return False
 
 
