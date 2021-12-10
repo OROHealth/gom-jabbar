@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from werkzeug.exceptions import HTTPException
 
 from robot_maker.db import db_session
 from robot_maker.models.ingredient import IngredientSchema
@@ -38,6 +39,10 @@ def create_app(test_config=None):
     from . import openapi
     app.register_blueprint(openapi.bp)
     openapi.register_app_paths(app)
+
+    from . import exceptions
+    app.register_error_handler(Exception, exceptions.handle_exception)
+    app.register_error_handler(HTTPException, exceptions.handle_http_exception)
 
     @app.teardown_appcontext
     def shutdown_session(exception=None):
