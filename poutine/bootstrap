@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+export FLASK_APP=robot_maker
+source $(pipenv --venv)/Scripts/activate
+flask run -h 0.0.0.0
