@@ -1,0 +1,3 @@
+graft robot_maker/static
+graft robot_maker/templates
+global-exclude *.pyc
