@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+//import "google/protobuf/struct.proto";
+
+package protos;
+
+service RobotMaker {
+  rpc CookRecipe (CookRecipeRequest) returns (ListCookRecipeResponse) {}
+}
+
+message CookRecipeRequest {
+  int32 quantity = 1;
+  int32 count = 2;
+}
+
+message ListCookRecipeResponse{
+  repeated CookRecipeResponse responses = 1;
+  int32 count = 2;
+}
+
+message CookRecipeResponse {
+  bool status = 1;
+  string message = 2;
+//  google.protobuf.Struct log = 3;
+}
+
