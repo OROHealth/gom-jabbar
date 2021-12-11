@@ -61,12 +61,18 @@ class Robot(Base):
     def __repr__(self):
         return f"<Robot(name={self.name!r})>"
 
-    def run(self, executed_actions: dict, actions_to_execute: list[Action], ingredients: list[Ingredient] = None):
+    def run(self,
+            executed_actions: dict,
+            actions_to_execute: list[Action],
+            ingredients: list[Ingredient] = None,
+            time_scale=0
+            ):
         """Execute robot actions
 
         :param dict executed_actions: A dictionary of already executed actions and their status
         :param list[Action] actions_to_execute: A list of Actions to execute
         :param list[Ingredient] ingredients: A list of ingredients used in the action execution
+        :param time_scale: Time multiplication factor
         :return:
         """
         log: list[dict] = []
@@ -85,7 +91,7 @@ class Robot(Base):
                         ingredient.use()
                         ingredients.append(ingredient)
                         is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
-                        time.sleep(1)  # Wait for 1 seconds
+                        time.sleep(1*time_scale)  # Wait for 1 seconds
 
                 elif action_to_execute.name == ActionEnum.SQUEEZE_CHEESE.name:
                     if not executed_actions.get(ActionEnum.TAKE_CHEESE.name):
@@ -93,19 +99,19 @@ class Robot(Base):
                         continue
 
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
-                    time.sleep(1)  # Wait for 1 seconds
+                    time.sleep(1*time_scale)  # Wait for 1 seconds
 
                 elif action_to_execute.name == ActionEnum.DETECT_DRUNK_PEOPLE.name:
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
-                    time.sleep(1)  # Wait for 1 seconds
+                    time.sleep(1*time_scale)  # Wait for 1 seconds
 
                 elif action_to_execute.name == ActionEnum.DISPLAY_LYRICS.name:
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
-                    time.sleep(1)  # Wait for 1 seconds
+                    time.sleep(1*time_scale)  # Wait for 1 seconds
 
                 elif action_to_execute.name == ActionEnum.LISTEN_ENVIRONMENT.name:
                     is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
-                    time.sleep(1)  # Wait for 1 seconds
+                    time.sleep(1*time_scale)  # Wait for 1 seconds
 
                 elif action_to_execute.name == ActionEnum.CUT_POTATOES.name:
                     ingredient, status = self.check_ingredients('Potatoes', ingredients, executed_actions,
@@ -115,7 +121,7 @@ class Robot(Base):
                         ingredient.use()
                         ingredients.append(ingredient)
                         is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
-                        time.sleep(1)  # Wait for 1 seconds
+                        time.sleep(1*time_scale)  # Wait for 1 seconds
 
                 elif action_to_execute.name == ActionEnum.ADD_SYRUP.name:
                     if not executed_actions.get(ActionEnum.CUT_POTATOES.name):
@@ -129,7 +135,7 @@ class Robot(Base):
                         ingredient.use()
                         ingredients.append(ingredient)
 
-                        time.sleep(1)  # Wait for 1 seconds
+                        time.sleep(1*time_scale)  # Wait for 1 seconds
                         is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
                 elif action_to_execute.name == ActionEnum.BOIL_POTATOES.name:
@@ -143,7 +149,7 @@ class Robot(Base):
                         ingredients.remove(ingredient)
                         ingredient.use()
                         ingredients.append(ingredient)
-                        time.sleep(1)  # Wait for 1 seconds
+                        time.sleep(1*time_scale)  # Wait for 1 seconds
                         is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
                 elif action_to_execute.name == ActionEnum.FRY_POTATOES.name:
@@ -157,7 +163,7 @@ class Robot(Base):
                         ingredients.remove(ingredient)
                         ingredient.use()
                         ingredients.append(ingredient)
-                        time.sleep(1)  # Wait for 1 seconds
+                        time.sleep(1*time_scale)  # Wait for 1 seconds
                         is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
                 elif action_to_execute.name == ActionEnum.REGULATE_TEMP.name:
@@ -167,7 +173,7 @@ class Robot(Base):
                         ingredients.remove(ingredient)
                         ingredient.use()
                         ingredients.append(ingredient)
-                        time.sleep(1)  # Wait for 1 seconds
+                        time.sleep(1*time_scale)  # Wait for 1 seconds
 
                         is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
@@ -175,7 +181,7 @@ class Robot(Base):
                     if not executed_actions or False in list(executed_actions.values()):
                         self.log_failure(executed_actions, action_to_execute, "All other steps", log)
                     else:
-                        time.sleep(1)  # Wait for 1 seconds
+                        time.sleep(1*time_scale)  # Wait for 1 seconds
                         is_execution_successful = self.log_success(executed_actions, action_to_execute, log)
 
                 else:
