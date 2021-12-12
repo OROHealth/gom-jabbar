@@ -68,8 +68,8 @@ def serve():
 
     try:
         while True:
-            console.log("Server Running : thread count %i" % (threading.active_count()), markup=True)
-            time.sleep(10)
+            with console.status("Server Running : thread count %i" % (threading.active_count()), spinner="line"):
+                time.sleep(10)
     except (KeyboardInterrupt, ProgrammingError) as e:
         console.log("Process Terminated" + "" if bool(e) else " : cause {e.__str__()}", markup=True)
         server.stop(0)
@@ -91,4 +91,5 @@ if __name__ == "__main__":
     os.unlink(db_path)
 
     with app.app_context():
+        console.rule("Running Server", )
         serve()

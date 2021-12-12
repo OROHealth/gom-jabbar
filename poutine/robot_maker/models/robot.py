@@ -1,5 +1,6 @@
 import logging
 import time
+from typing import List
 
 from marshmallow import post_load, fields, Schema
 from sqlalchemy import Column, String, Table, Integer, ForeignKey
@@ -53,7 +54,7 @@ class Robot(Base):
                            lazy='subquery',
                            backref=backref('robots', lazy=True))
 
-    def __init__(self, name: str, actions: list[Action], id=None):
+    def __init__(self, name: str, actions: List[Action], id=None):
         self.id = id
         self.name = name
         self.actions = actions
@@ -63,19 +64,19 @@ class Robot(Base):
 
     def run(self,
             executed_actions: dict,
-            actions_to_execute: list[Action],
-            ingredients: list[Ingredient] = None,
+            actions_to_execute: List[Action],
+            ingredients: List[Ingredient] = None,
             time_scale=0
             ):
         """Execute robot actions
 
         :param dict executed_actions: A dictionary of already executed actions and their status
-        :param list[Action] actions_to_execute: A list of Actions to execute
-        :param list[Ingredient] ingredients: A list of ingredients used in the action execution
+        :param List[Action] actions_to_execute: A list of Actions to execute
+        :param List[Ingredient] ingredients: A list of ingredients used in the action execution
         :param time_scale: Time multiplication factor
         :return:
         """
-        log: list[dict] = []
+        log: List[dict] = []
         is_execution_successful = False
 
         actions = [action.name for action in self.actions]

@@ -1,3 +1,4 @@
+from typing import List
 from marshmallow import Schema, fields, post_load
 from sqlalchemy import String, Integer, Column, Table, ForeignKey
 from sqlalchemy.orm import relationship, backref
@@ -21,7 +22,7 @@ class Recipe(Base):
                                lazy='subquery',
                                backref=backref('recipes', lazy=True))
 
-    def __init__(self, name, ingredients: list[Ingredient], steps: list[Step], id=None):
+    def __init__(self, name, ingredients: List[Ingredient], steps: List[Step], id=None):
         self.id = id
         self.validate(ingredients, steps)
         self.name = name
@@ -32,7 +33,7 @@ class Recipe(Base):
         return f"<Recipe(name={self.name!r})>"
 
     @staticmethod
-    def validate(ingredients: list[Ingredient], steps: list[Step]):
+    def validate(ingredients: List[Ingredient], steps: List[Step]):
         for step in steps:
             for step_ingredient in step.ingredients:
                 if step_ingredient.name.lower() not in [ing.name.lower() for ing in ingredients]:

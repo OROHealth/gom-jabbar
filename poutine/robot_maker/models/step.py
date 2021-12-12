@@ -1,3 +1,4 @@
+from typing import List
 from marshmallow import post_load, fields, Schema
 from sqlalchemy import Column, Integer, ForeignKey, Table
 from sqlalchemy.orm import relationship, backref
@@ -31,7 +32,7 @@ class Step(Base):
                                lazy='subquery',
                                backref=backref('steps', lazy=True))
 
-    def __init__(self, actions: list[Action], ingredients: list[Ingredient], robot: Robot = None, id=None):
+    def __init__(self, actions: List[Action], ingredients: List[Ingredient], robot: Robot = None, id=None):
         self.id = id
         self.actions = actions
         self.ingredients = ingredients

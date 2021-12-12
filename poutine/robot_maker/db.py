@@ -5,9 +5,11 @@ from pathlib import Path
 import click
 from flask import current_app, g
 from flask.cli import with_appcontext
+from robot_maker.logger import console
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlite3 import OperationalError
 
 
 def get_db():
@@ -39,16 +41,26 @@ def close_db(e=None):
 @with_appcontext
 def init_db_command():
     """Clear the existing data and create new tables."""
-    init_db('schema.sql')
-    click.echo('Initialized the database.')
+    try:
+        with console.status("Loading examples db", spinner="line"):
+            init_db('schema.sql')
+    except OperationalError as e:
+        console.log("[bold red]An error occured while applying DB schema[/]", markup=True)
+        
+    console.log("[bold green]Successfully applied database schema[/]", markup=True)
 
 
 @click.command('dump-db')
 @with_appcontext
 def dump_db_command():
     """Clear the existing data and create new tables."""
-    init_db('dump.sql')
-    click.echo('Applied DB Dump')
+    try:
+        with console.status("Loading examples db", spinner="line"):
+            init_db('dump.sql')
+    
+    except OperationalError as e:
+        console.log("[bold red]An error occured while loading example DB[/]", markup=True)
+    console.log('[bold green]Successfully loaded example DB[/]', markup=True)
 
 
 instance_path = os.path.join(Path(__file__).parent.parent, 'instance')

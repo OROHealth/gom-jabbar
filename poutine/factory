@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+# isort: skip
+
+import os
+import sys
+
+if sys.version_info.major != 3 or sys.version_info.minor < 8:
+    print("ERROR! Make sure you use Python 3.8+ !!")
+    sys.exit(1)
+
+import subprocess
+from pathlib import Path
+
+def get_venv():
+    return subprocess.run([sys.executable, "-m", "pipenv", "--venv"], capture_output=True, check=True)
+
+def needs_install():
+    try:
+        get_venv()
+        return False
+    except subprocess.CalledProcessError:
+        return True
+   
+try:
+    if needs_install():
+        try:
+            subprocess.run([sys.executable, "-m", "pip", "install", "pipenv"], check=True)
+            subprocess.run([sys.executable, "-m", "pipenv", "sync"], check=True)
+        except subprocess.CalledProcessError as e:
+            print(e)
+
+
+    try:
+        subprocess.run([sys.executable, "-m", "pipenv", "shell"], check=True)
+    except subprocess.CalledProcessError:
+        pass
+
+    virtual_env = Path(get_venv().stdout.decode("utf-8").rstrip("\n").strip())
+
+    if os.name == 'nt': # If system is windows
+        venv = f"{virtual_env}\\Scripts\\python.exe"
+    else:
+        venv = virtual_env / "bin" / "python"
+
+    factory = Path(__file__).parent.resolve() / "cli" / "factory.py"
+
+    try:
+        subprocess.run([f"{venv}", f"{factory}"] + sys.argv[1:], check=True)
+    except subprocess.CalledProcessError:
+        pass
+
+except:
+    pass
