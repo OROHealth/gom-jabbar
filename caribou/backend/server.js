@@ -1,5 +1,5 @@
-const { application } = require('express');
 const express = require('express');
+const cors = require('cors');
 const server = express();
 const pool = require("./db");
 
@@ -20,7 +20,9 @@ server.post("/api/caribou", async(req,res)=>{
 });
 
 
-
+process.on('uncaughtException', function (err) {
+    console.log(err);
+}); 
 
 
 server.get('/api/test',(req,res)=>{
