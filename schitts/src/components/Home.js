@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Grid, CssBaseline, Button } from '@mui/material';
+import { Container, CssBaseline, Button, Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { logout, fetchOrders } from '../store/utils/thunkCreators';
 import { clearOnLogout } from '../store/index';
 import SnackbarError from './SnackbarError';
 
 import Login from './Login';
+import OrderTabs from './OrderTabs/OrderTabs';
+
+import schitts_creek from "../assets/Schitt's_Creek_logo.png";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  container: {
     height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  img: {
+    height: '100px',
   },
 }));
 
@@ -19,6 +28,8 @@ const Home = (props) => {
   const { user, orders, logout, fetchOrders } = props;
   const [errorMessage, setErrorMessage] = useState('');
   const [snackBarOpen, setSnackBarOpen] = useState(false);
+
+  const [tempUser, setTempUser] = useState({ id: 'Twyla' });
 
   useEffect(() => {
     if (user.error) {
@@ -36,9 +47,9 @@ const Home = (props) => {
     fetchOrders();
   }, [fetchOrders]);
 
-  // if (props.user.isFetchingUsers) {
-  //   return <div>Loading...</div>;
-  // }
+  if (props.user.isFetchingUsers) {
+    return <div>Loading...</div>;
+  }
 
   const handleLogout = async () => {
     await logout(user.id);
@@ -46,7 +57,6 @@ const Home = (props) => {
 
   return (
     <>
-      <h1>hi</h1>
       {snackBarOpen && (
         <SnackbarError
           setSnackBarOpen={setSnackBarOpen}
@@ -54,13 +64,27 @@ const Home = (props) => {
           snackBarOpen={snackBarOpen}
         />
       )}
-      <Button className={classes.logout} onClick={handleLogout}>
+      {/* <Button className={classes.logout} onClick={handleLogout}>
         Logout
-      </Button>
-      <Grid container component='main' className={classes.root}>
-        <Login />
+      </Button> */}
+      <Container maxWidth='lg' className={classes.container}>
+        <img
+          src={schitts_creek}
+          alt='schitts creek logo'
+          className={classes.img}
+        />
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '70%',
+          }}
+        >
+          {tempUser ? <OrderTabs /> : <Login />}
+        </Box>
         <CssBaseline />
-      </Grid>
+      </Container>
     </>
   );
 };

@@ -16,12 +16,12 @@ export const theme = createTheme({
         fontWeight: 'bold',
       },
       label: {
-        color: '#B0B0B0',
+        color: '#8931FE',
       },
     },
   },
   palette: {
-    primary: { main: '#3A8DFF' },
+    primary: { main: '#8931FE' },
     secondary: { main: '#B0B0B0' },
   },
 });
