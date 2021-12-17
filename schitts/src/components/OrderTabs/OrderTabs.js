@@ -8,7 +8,7 @@ import Preferences from './CustomerInfo/Preferences';
 import TimePicker from './Order/TimePicker';
 import Choices from './Order/Choices';
 import Feedback from './Order/Feedback';
-import MenuModal from './Menu/AddEditModal';
+import MenuModal from './Menu/Modal';
 import Menu from './Menu/MenuDisplay';
 
 const SubmitButton = styled(Button)({
