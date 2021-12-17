@@ -13,12 +13,31 @@ const style = {
   p: 4,
 };
 
-const openModalButtonStyle = {
+const addButtonStyle = {
   background: 'black',
-  alignSelf: 'center',
+  fontSize: '1.5rem',
+  p: 2,
   color: '#F1C70F',
   '&:hover': {
-    background: '#8931FE',
+    background: '#515151',
+  },
+};
+
+const editButtonStyle = {
+  background: '#8931FE',
+  fontSize: '1.5rem',
+  p: 2,
+  color: '#F4D74D',
+  '&:hover': {
+    background: '#A665FE',
+  },
+};
+
+const deleteButtonStyle = {
+  fontSize: '1.5rem',
+  p: 2,
+  '&:hover': {
+    background: '#EB6956',
   },
 };
 
@@ -29,9 +48,15 @@ export default function MenuModal() {
 
   return (
     <div>
-      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Button onClick={handleOpen} sx={openModalButtonStyle}>
-          Add / Edit menu item
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 7 }}>
+        <Button onClick={handleOpen} sx={addButtonStyle}>
+          Add item
+        </Button>
+        <Button onClick={handleOpen} sx={editButtonStyle}>
+          Edit item
+        </Button>
+        <Button onClick={handleOpen} sx={deleteButtonStyle} color='error'>
+          Delete item
         </Button>
       </Box>
       <Modal

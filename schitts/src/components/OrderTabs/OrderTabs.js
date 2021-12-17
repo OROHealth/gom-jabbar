@@ -7,6 +7,7 @@ import TypeOfCustomer from './CustomerInfo/TypeOfCustomer';
 import Preferences from './CustomerInfo/Preferences';
 import TimePicker from './Order/TimePicker';
 import Choices from './Order/Choices';
+import Feedback from './Order/Feedback';
 import MenuModal from './Menu/AddEditModal';
 import Menu from './Menu/MenuDisplay';
 
@@ -56,6 +57,7 @@ const Order = (props) => {
           <Box component='form' sx={boxStyle}>
             <TimePicker />
             <Choices />
+            <Feedback />
             <SubmitButton>Submit</SubmitButton>
           </Box>
         </>
