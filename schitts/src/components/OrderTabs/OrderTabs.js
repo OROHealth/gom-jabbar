@@ -53,6 +53,7 @@ const Order = (props) => {
             >
               <TimePicker />
               <Choices />
+              <SubmitButton>Submit</SubmitButton>
             </Box>
           </>
         )}

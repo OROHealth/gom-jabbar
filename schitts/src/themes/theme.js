@@ -10,16 +10,6 @@ export const theme = createTheme({
       fontWeight: 'bold',
     },
   },
-  overrides: {
-    MuiInput: {
-      input: {
-        fontWeight: 'bold',
-      },
-      label: {
-        color: '#8931FE',
-      },
-    },
-  },
   palette: {
     primary: { main: '#8931FE' },
     secondary: { main: '#B0B0B0' },

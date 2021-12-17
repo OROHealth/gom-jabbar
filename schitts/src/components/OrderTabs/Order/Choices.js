@@ -11,6 +11,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  TextField,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -19,24 +20,18 @@ const UserButton = styled(Button)({
   background: '#8931FE',
   color: '#F4D74D',
   fontSize: '1.5rem',
-  '&:hover': {
-    background: '#A665FE',
-  },
-  '&:focus': {
-    background: 'black',
-    color: '#F1C70F',
-  },
 });
 
 export default function BasicSelect() {
-  const [selectedItems, setSelectedItems] = useState('');
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [menuItems, setMenuItems] = useState([
     { name: 'mocha', price: 4 },
     { name: 'pizza', price: 5 },
     { name: 'cheesecake', price: 3 },
   ]);
   const [numberOfCustomers, setnumberOfCustomers] = useState('');
-  const [splitOfBill, setSplitOfBill] = useState('');
+  const [splitOfBill, setSplitOfBill] = useState(1);
 
   const tones = [
     'Angry',
@@ -56,9 +51,24 @@ export default function BasicSelect() {
     if (param === 'Split of bill') setSplitOfBill(event.target.value);
   };
 
-  const handleClick = (e, item) => {
-    setSelectedItems([...selectedItems, item]);
-    console.log(selectedItems);
+  // button color focus and selected items handling
+  const handleClick = (e, item, idx) => {
+    if (item.focus === true) {
+      item.focus = false;
+      setMenuItems([...menuItems, menuItems[idx] === item]);
+    } else {
+      item.focus = true;
+      setMenuItems([...menuItems, menuItems[idx] === item]);
+    }
+    if (selectedItems.includes(item.name)) {
+      const filter = selectedItems.filter((a) => a !== item.name);
+      setSelectedItems(filter);
+      setTotalPrice(totalPrice - item.price);
+    } else {
+      setSelectedItems([...selectedItems, item.name]);
+      setTotalPrice(totalPrice + item.price);
+    }
+    console.log(selectedItems, totalPrice);
   };
 
   return (
@@ -66,15 +76,22 @@ export default function BasicSelect() {
       sx={{ minWidth: 120, display: 'flex', flexDirection: 'column', gap: 2 }}
     >
       <Grid container spacing={1}>
-        {menuItems.map((item) => (
-          <Grid item xs={4} key={item.name}>
+        {menuItems.map((item, idx) => (
+          <Grid
+            item
+            xs={4}
+            sx={{ display: item === true ? 'none' : 'block' }}
+            key={idx}
+          >
             <UserButton
               fullWidth
               sx={{
-                background: item.focus ? 'black' : '#8931FE',
-                // color: '#F1C70F',
+                background: item.focus === true ? 'black' : '#8931FE',
+                '&:hover': {
+                  background: item.focus === true ? '#515151' : '#A665FE',
+                },
               }}
-              onClick={(e) => handleClick(e, item)}
+              onClick={(e) => handleClick(e, item, idx)}
             >
               {item.name}
             </UserButton>
@@ -98,42 +115,75 @@ export default function BasicSelect() {
           ))}
         </RadioGroup>
       </FormControl>
-      <FormControl>
-        <InputLabel id='demo-simple-select-label'>
-          How many customers?
-        </InputLabel>
-        <Select
-          labelId='demo-simple-select-label'
-          id='demo-simple-select'
-          value={numberOfCustomers}
-          label='How many customers?'
-          onChange={(e) => handleChange(e, 'Number of customers')}
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <FormControl fullWidth>
+            <InputLabel id='demo-simple-select-label'>
+              How many customers?
+            </InputLabel>
+            <Select
+              labelId='demo-simple-select-label'
+              id='demo-simple-select'
+              value={numberOfCustomers}
+              label='How many customers?'
+              onChange={(e) => handleChange(e, 'Number of customers')}
+            >
+              {fifteen.map((number) => (
+                <MenuItem value={number} key={number}>
+                  {number}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={6}>
+          <FormControl fullWidth>
+            <InputLabel id='demo-simple-select-label'>
+              Split how many ways?
+            </InputLabel>
+            <Select
+              labelId='demo-simple-select-label'
+              id='demo-simple-select'
+              value={splitOfBill}
+              label='Split how many ways?'
+              onChange={(e) => handleChange(e, 'Split of bill')}
+            >
+              {fifteen.map((number) => (
+                <MenuItem value={number} key={number}>
+                  {number === 1 ? `${number}-way` : `${number}-ways`}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: 2,
+            margin: '20px 0',
+          }}
         >
-          {fifteen.map((number) => (
-            <MenuItem value={number} key={number}>
-              {number}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <FormControl>
-        <InputLabel id='demo-simple-select-label'>
-          Split how many ways?
-        </InputLabel>
-        <Select
-          labelId='demo-simple-select-label'
-          id='demo-simple-select'
-          value={splitOfBill}
-          label='Split how many ways?'
-          onChange={(e) => handleChange(e, 'Split of bill')}
-        >
-          {fifteen.map((number) => (
-            <MenuItem value={number} key={number}>
-              {number === 1 ? `${number}-way` : `${number}-ways`}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+          <TextField
+            InputProps={{
+              readOnly: true,
+            }}
+            id='readonly'
+            label='Total'
+            value={`$${totalPrice}`}
+          />
+          <TextField
+            InputProps={{
+              readOnly: true,
+            }}
+            id='readonly'
+            label='Total per bill'
+            value={totalPrice / splitOfBill}
+          />
+        </Grid>
+      </Grid>
     </Box>
   );
 }
