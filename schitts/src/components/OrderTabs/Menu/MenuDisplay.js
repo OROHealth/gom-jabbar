@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {
   Grid,
   Accordion,
@@ -34,7 +33,7 @@ export default function AlignItemsList() {
 
   return (
     <>
-      <Grid container sx={{ maxWidth: '750px' }}>
+      <Grid container>
         <Grid item xs={6}>
           <Typography
             variant='h5'

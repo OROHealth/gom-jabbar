@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Container, CssBaseline, Button, Box } from '@mui/material';
+import { Container, CssBaseline, Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { logout, fetchOrders } from '../store/utils/thunkCreators';
 import { clearOnLogout } from '../store/index';
@@ -68,21 +68,27 @@ const Home = (props) => {
         Logout
       </Button> */}
       <Container maxWidth='lg' className={classes.container}>
-        <img
-          src={schitts_creek}
-          alt='schitts creek logo'
-          className={classes.img}
-        />
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '70%',
-          }}
-        >
-          {tempUser ? <OrderTabs /> : <Login />}
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <img
+            src={schitts_creek}
+            alt='schitts creek logo'
+            className={classes.img}
+          />
         </Box>
+        {tempUser ? (
+          <OrderTabs />
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '70%',
+            }}
+          >
+            <Login />
+          </Box>
+        )}
         <CssBaseline />
       </Container>
     </>
