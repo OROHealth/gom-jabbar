@@ -180,7 +180,7 @@ export default function BasicSelect() {
             }}
             id='readonly'
             label='Total per bill'
-            value={totalPrice / splitOfBill}
+            value={`$${totalPrice / splitOfBill}`}
           />
         </Grid>
       </Grid>

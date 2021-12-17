@@ -7,6 +7,7 @@ import TypeOfCustomer from './CustomerInfo/TypeOfCustomer';
 import Preferences from './CustomerInfo/Preferences';
 import TimePicker from './Order/TimePicker';
 import Choices from './Order/Choices';
+import Menu from './Menu/MenuDisplay';
 
 const SubmitButton = styled(Button)({
   background: 'black',
@@ -17,7 +18,7 @@ const SubmitButton = styled(Button)({
 });
 
 const Order = (props) => {
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState(2);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -57,6 +58,7 @@ const Order = (props) => {
             </Box>
           </>
         )}
+        {value === 2 && <Menu />}
       </Box>
     </>
   );
