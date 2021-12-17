@@ -1,0 +1,54 @@
+Installation des packages
+
+== nodemon
+== mysql2 (connexion au SGBD mySQL) [https://github.com/sidorares/node-mysql2]
+== sequelize (ORM) | https://sequelize.org/master/manual/model-basics.html
+== cors (Cross origin Resource Sharing)
+== express (ExpressJS Framework) ou typeORM [https://expressjs.com/en/5x/api.html#router]
+== dotenv (Edition du fichier d'environnement) [https://github.com/motdotla/dotenv]
+== log4js (Activer le systeme de Logging) [https://github.com/log4js-node/log4js-node]
+== get-current-line (get current script file and line) [https://github.com/bevry/get-current-line]
+== uuid (generer et valider les uuids) [https://github.com/uuidjs/uuid]
+
+===============================================
+DATABASE CONFIGURATION
+===============================================
+La base de données se configure depuis config/dbConfig.js
+
+===============================================
+SEQUELIZE INITIALIZATION
+===============================================
+L'initialisation de l'orm sequelize se fait depuis models/index.js
+db.products = require('./Product.js')(sequelize, DataTypes)
+`Il suffit d'ajouter les tables mises en relation depuis votre BD en dupliquant la ligne`
+
+===============================================
+MODEL
+===============================================
+Prendre en exemple le modèle "product.js"
+le fichier [models/relatedModels.js] permet d'établir des relations entre les modèles.
+
+===============================================
+ROUTING
+===============================================
+Le fichier de routing se situe dans routes/api.js 
+pour les api et routes/web.js pour le rendu des pages web.
+
+===============================================
+CONTROLLER 
+===============================================
+Les controlleurs se mettent en place dans le dossier 'controllers', 
+il est possible de dupliquer et ou d'ameliorer le contenu du controleur ProductController.
+
+==============================================
+Logger
+==============================================
+le logging se configure dans le fichier config/log4js.json 
+
+==============================================
+Advanced options
+==============================================
+In utils.js we have set a [groupByField] method
+that we can apply to iterable
+items.groupByField('field')
+

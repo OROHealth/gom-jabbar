@@ -1,0 +1,14 @@
+{
+    "appenders": {
+      "out": { "type": "stdout" },
+      "app": {
+        "type": "file",
+        "filename": "schitts/log/app.log",
+        "maxLogSize": 10485760,
+        "numBackups": 3
+      }
+    },
+    "categories": {
+      "default": { "appenders": [ "app", "out" ], "level": "debug" }
+    }
+}
