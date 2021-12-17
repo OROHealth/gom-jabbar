@@ -6,6 +6,7 @@ import { Tabs, Tab, Box, Button } from '@mui/material';
 import TypeOfCustomer from './CustomerInfo/TypeOfCustomer';
 import Preferences from './CustomerInfo/Preferences';
 import TimePicker from './Order/TimePicker';
+import Choices from './Order/Choices';
 
 const SubmitButton = styled(Button)({
   background: 'black',
@@ -51,6 +52,7 @@ const Order = (props) => {
               sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
             >
               <TimePicker />
+              <Choices />
             </Box>
           </>
         )}

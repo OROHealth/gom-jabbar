@@ -21,6 +21,11 @@ const CustomerInfo = () => {
           label='Out of town'
         />
         <FormControlLabel value='in town' control={<Radio />} label='In town' />
+        <FormControlLabel
+          value="part of Rose's family"
+          control={<Radio />}
+          label="Part of Rose's family"
+        />
       </RadioGroup>
     </FormControl>
   );
