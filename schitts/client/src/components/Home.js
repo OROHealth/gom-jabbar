@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Container, CssBaseline, Box, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { fetchOrders } from '../store/utils/thunkCreators';
-import { clearOnLogout } from '../store/index';
+import { clearOnLogout } from '../store/user';
 import SnackbarError from './SnackbarError';
 
 import Login from './Login';

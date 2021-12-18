@@ -3,6 +3,7 @@
 const GET_USER = 'GET_USER';
 const GET_ALL_USERS = 'GET_ALL_USER';
 const SET_FETCHING_STATUS = 'SET_FETCHING_STATUS';
+const CLEAR_ON_LOGOUT = 'CLEAR_ON_LOGOUT';
 
 // ACTION CREATORS
 
@@ -20,6 +21,12 @@ export const gotAllUsers = (allUsers) => {
   };
 };
 
+export const clearOnLogout = () => {
+  return {
+    type: CLEAR_ON_LOGOUT,
+  };
+};
+
 export const setFetchingStatus = (isFetching) => ({
   type: SET_FETCHING_STATUS,
   isFetching,
@@ -33,6 +40,8 @@ const reducer = (state = { isFetching: true }, action) => {
       return { ...state, activeUser: action.user };
     case GET_ALL_USERS:
       return action.allUsers;
+    case CLEAR_ON_LOGOUT:
+      return { ...state, activeUser: null };
     case SET_FETCHING_STATUS:
       return {
         ...state,
