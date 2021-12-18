@@ -7,7 +7,6 @@ const SET_FETCHING_STATUS = 'SET_FETCHING_STATUS';
 // ACTION CREATORS
 
 export const gotUser = (user) => {
-  console.log(user);
   return {
     type: GET_USER,
     user,

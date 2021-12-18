@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Container, CssBaseline, Box } from '@mui/material';
+import { Container, CssBaseline, Box, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { logout, fetchOrders } from '../store/utils/thunkCreators';
+import { fetchOrders } from '../store/utils/thunkCreators';
 import { clearOnLogout } from '../store/index';
 import SnackbarError from './SnackbarError';
 
@@ -49,8 +49,8 @@ const Home = (props) => {
     return <div>Loading...</div>;
   }
 
-  const handleLogout = async () => {
-    await logout(user.id);
+  const handleLogout = () => {
+    logout();
   };
 
   return (
@@ -62,9 +62,13 @@ const Home = (props) => {
           snackBarOpen={snackBarOpen}
         />
       )}
-      {/* <Button className={classes.logout} onClick={handleLogout}>
+      <Button
+        className={classes.logout}
+        sx={{ visibility: user.activeUser ? 'visible' : 'hidden' }}
+        onClick={handleLogout}
+      >
         Logout
-      </Button> */}
+      </Button>
       <Container maxWidth='lg' className={classes.container}>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <img
@@ -102,8 +106,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logout: (id) => {
-      dispatch(logout(id));
+    logout: () => {
       dispatch(clearOnLogout());
     },
     fetchOrders: () => {

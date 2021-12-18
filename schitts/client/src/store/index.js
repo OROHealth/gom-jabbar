@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunkMiddleware from 'redux-thunk';
+import { deleteActiveUser } from './utils/reducerFunctions';
 
 // temporary dev
 import loggerMiddleware from 'redux-logger';
@@ -22,7 +23,7 @@ const appReducer = combineReducers({
 const rootReducer = (state, action) => {
   if (action.type === CLEAR_ON_LOGOUT) {
     // set state to initial state
-    state = undefined;
+    return deleteActiveUser(state);
   }
   return appReducer(state, action);
 };

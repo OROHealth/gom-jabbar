@@ -4,6 +4,7 @@ import { Button, Grid, Box, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { fetchUsers } from '../store/utils/thunkCreators';
 import { gotUser } from '../store/user';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const UserButton = styled(Button)({
   height: '80px',
@@ -22,10 +23,6 @@ const AddButton = styled(Button)({
     background: '#8931FE',
   },
 });
-
-const typographyStyle = {
-  margin: '0 auto',
-};
 
 const Login = (props) => {
   const { fetchUsers, user, gotUser } = props;
@@ -51,9 +48,22 @@ const Login = (props) => {
             </Grid>
           ))
         ) : (
-          <Typography sx={typographyStyle} variant='h4' color='error'>
-            Something went wrong
-          </Typography>
+          <>
+            <CircularProgress
+              color='secondary'
+              sx={{ display: user.isFetching ? 'block' : 'none' }}
+            />
+            <Typography
+              sx={{
+                display: !user.isFetching ? 'block' : 'none',
+                margin: '0 auto',
+              }}
+              variant='h4'
+              color='error'
+            >
+              Something went wrong
+            </Typography>
+          </>
         )}
         <Grid item xs={12}>
           <Box
