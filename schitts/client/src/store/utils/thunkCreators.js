@@ -67,7 +67,7 @@ export const postOrder = (credentials) => async (dispatch) => {
 export const postCustomer = (credentials) => async (dispatch) => {
   dispatch(setPostingCustomerStatus(true));
   try {
-    await axios.post('/api/orders/newOrder', credentials);
+    await axios.post('/api/customer/newCustomer', credentials);
     dispatch(setPostingCustomerStatus('success'));
   } catch (error) {
     console.error(error);

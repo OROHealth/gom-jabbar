@@ -7,9 +7,9 @@ import {
 } from '@mui/material';
 
 const CustomerInfo = (props) => {
-  const { setType } = props;
+  const { type, setType } = props;
 
-  const handleClick = (event) => {
+  const handleChange = (event) => {
     setType(event.target.value);
   };
 
@@ -20,24 +20,19 @@ const CustomerInfo = (props) => {
         row
         aria-label='Type of customer'
         name='row-radio-buttons-group'
+        value={type}
+        onChange={handleChange}
       >
         <FormControlLabel
           value='out of town'
           control={<Radio />}
           label='Out of town'
-          onClick={handleClick}
         />
-        <FormControlLabel
-          value='in town'
-          control={<Radio />}
-          label='In town'
-          onClick={handleClick}
-        />
+        <FormControlLabel value='in town' control={<Radio />} label='In town' />
         <FormControlLabel
           value="part of Rose's family"
           control={<Radio />}
           label="Part of Rose's family"
-          onClick={handleClick}
         />
       </RadioGroup>
     </FormControl>
