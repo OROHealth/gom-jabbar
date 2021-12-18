@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { connect } from 'react-redux';
 import { Box, InputLabel, MenuItem, FormControl, Select } from '@mui/material';
 
-export default function BasicSelect() {
-  const [food, setFood] = useState('');
-  const [drink, setDrink] = useState('');
-  const drinks = ['mocha', 'frappaccino', 'milk'];
-  const foods = ['pizza', 'bagel', 'cheesecake'];
+const BasicSelect = (props) => {
+  const { items, food, drink, setFood, setDrink } = props;
+  const drinks = items.drinks;
+  const foods = items.food;
 
   const handleChange = (event, setting) => {
     setting === 'food'
@@ -27,8 +26,8 @@ export default function BasicSelect() {
           onChange={(e) => handleChange(e, 'drink')}
         >
           {drinks.map((drink) => (
-            <MenuItem value={drink} key={drink}>
-              {drink}
+            <MenuItem value={drink.name} key={drink.name}>
+              {drink.name}
             </MenuItem>
           ))}
         </Select>
@@ -43,12 +42,20 @@ export default function BasicSelect() {
           onChange={(e) => handleChange(e, 'food')}
         >
           {foods.map((food) => (
-            <MenuItem value={food} key={food}>
-              {food}
+            <MenuItem value={food.name} key={food.name}>
+              {food.name}
             </MenuItem>
           ))}
         </Select>
       </FormControl>
     </Box>
   );
-}
+};
+
+const mapStateToProps = (state) => {
+  return {
+    items: state.items,
+  };
+};
+
+export default connect(mapStateToProps, null)(BasicSelect);

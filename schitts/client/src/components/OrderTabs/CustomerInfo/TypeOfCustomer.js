@@ -6,7 +6,13 @@ import {
   Radio,
 } from '@mui/material';
 
-const CustomerInfo = () => {
+const CustomerInfo = (props) => {
+  const { setType } = props;
+
+  const handleClick = (event) => {
+    setType(event.target.value);
+  };
+
   return (
     <FormControl component='fieldset'>
       <FormLabel component='legend'>Type of customer</FormLabel>
@@ -19,12 +25,19 @@ const CustomerInfo = () => {
           value='out of town'
           control={<Radio />}
           label='Out of town'
+          onClick={handleClick}
         />
-        <FormControlLabel value='in town' control={<Radio />} label='In town' />
+        <FormControlLabel
+          value='in town'
+          control={<Radio />}
+          label='In town'
+          onClick={handleClick}
+        />
         <FormControlLabel
           value="part of Rose's family"
           control={<Radio />}
           label="Part of Rose's family"
+          onClick={handleClick}
         />
       </RadioGroup>
     </FormControl>
