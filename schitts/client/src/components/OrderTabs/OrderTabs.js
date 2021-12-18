@@ -28,7 +28,7 @@ const boxStyle = {
 };
 
 const Order = (props) => {
-  const [value, setValue] = useState(2);
+  const [value, setValue] = useState(1);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
