@@ -6,8 +6,7 @@ import { Tabs, Tab, Box, Button } from '@mui/material';
 import TypeOfCustomer from './CustomerInfo/TypeOfCustomer';
 import Preferences from './CustomerInfo/Preferences';
 import Order from './Order/index';
-import MenuModal from './Menu/Modal';
-import Menu from './Menu/MenuDisplay';
+import Menu from './Menu/index';
 
 const SubmitButton = styled(Button)({
   background: 'black',
@@ -52,14 +51,7 @@ const OrderTabs = (props) => {
         </>
       )}
       {value === 1 && <Order />}
-      {value === 2 && (
-        <>
-          <Box sx={boxStyle}>
-            <MenuModal />
-            <Menu />
-          </Box>
-        </>
-      )}
+      {value === 2 && <Menu />}
     </>
   );
 };

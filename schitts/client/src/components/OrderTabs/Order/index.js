@@ -57,15 +57,18 @@ const Order = (props) => {
   const [splitOfBill, setSplitOfBill] = useState(1);
   const [feedback, setFeedback] = useState(2);
   const [tone, setTone] = useState('');
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (orders.isPosting === false) {
+    if (orders.isPosting === 'success') {
       handleClear();
       setOpen(true);
-      setTimeout(() => setOpen(false), 1500);
+      setTimeout(() => {
+        setOpen(false);
+        orders.isPosting = false;
+      }, 1500);
     }
-  }, [orders.isPosting]);
+  }, [orders, orders.isPosting]);
 
   const handleClose = () => setOpen(false);
 

@@ -54,7 +54,7 @@ export const postOrder = (credentials) => async (dispatch) => {
   dispatch(setPostingStatus(true));
   try {
     await axios.post('/api/orders/newOrder', credentials);
-    dispatch(setPostingStatus(false));
+    dispatch(setPostingStatus('success'));
     dispatch(clearItemFocus());
   } catch (error) {
     console.error(error);
