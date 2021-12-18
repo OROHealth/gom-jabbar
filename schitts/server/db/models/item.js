@@ -23,7 +23,7 @@ const Item = db.define('item', {
     allowNull: false,
   },
   lengthOfTime: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     allowNull: false,
   },
 });

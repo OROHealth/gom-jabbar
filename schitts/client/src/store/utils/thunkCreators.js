@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { gotUser, gotAllUsers, setFetchingStatus } from '../user';
-import { gotOrders } from '../orders';
+import { gotOrders, setPostingStatus } from '../orders';
+import { gotAllItems, clearItemFocus } from '../items';
 
 // SERVER THUNK CREATORS
 
@@ -28,6 +29,18 @@ export const fetchUsers = () => async (dispatch) => {
   }
 };
 
+export const fetchItems = () => async (dispatch) => {
+  dispatch(setFetchingStatus(true));
+  try {
+    const { data } = await axios.get('/api/items');
+    dispatch(gotAllItems(data));
+  } catch (error) {
+    console.error(error);
+  } finally {
+    dispatch(setFetchingStatus(false));
+  }
+};
+
 export const fetchOrders = (credentials) => async (dispatch) => {
   try {
     const { data } = await axios.get('/api/orders', credentials);
@@ -38,11 +51,13 @@ export const fetchOrders = (credentials) => async (dispatch) => {
   }
 };
 export const postOrder = (credentials) => async (dispatch) => {
+  dispatch(setPostingStatus(true));
   try {
-    const { data } = await axios.post('/api/orders/newOrder', credentials);
-    console.log(data);
+    await axios.post('/api/orders/newOrder', credentials);
+    dispatch(setPostingStatus(false));
+    dispatch(clearItemFocus());
   } catch (error) {
     console.error(error);
-    dispatch(gotOrders({ error: error.response.data.error || 'Server Error' }));
+    dispatch(setPostingStatus('Something went wrong'));
   }
 };

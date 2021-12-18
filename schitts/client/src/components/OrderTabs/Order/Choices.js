@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Button,
   Grid,
@@ -14,6 +13,7 @@ import {
   TextField,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { connect } from 'react-redux';
 
 const UserButton = styled(Button)({
   height: '80px',
@@ -22,16 +22,19 @@ const UserButton = styled(Button)({
   fontSize: '1.5rem',
 });
 
-export default function BasicSelect() {
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [menuItems, setMenuItems] = useState([
-    { name: 'mocha', price: 4 },
-    { name: 'pizza', price: 5 },
-    { name: 'cheesecake', price: 3 },
-  ]);
-  const [numberOfCustomers, setnumberOfCustomers] = useState('');
-  const [splitOfBill, setSplitOfBill] = useState(1);
+const BasicSelect = (props) => {
+  const {
+    items,
+    selectedItems,
+    setSelectedItems,
+    totalPrice,
+    setTotalPrice,
+    numberOfCustomers,
+    setnumberOfCustomers,
+    splitOfBill,
+    setSplitOfBill,
+    setTone,
+  } = props;
 
   const tones = [
     'Angry',
@@ -49,16 +52,15 @@ export default function BasicSelect() {
     if (param === 'Number of customers')
       setnumberOfCustomers(event.target.value);
     if (param === 'Split of bill') setSplitOfBill(event.target.value);
+    if (param === 'tone') setTone(event.target.value);
   };
 
   // button color focus and selected items handling
   const handleClick = (e, item, idx) => {
     if (item.focus === true) {
       item.focus = false;
-      setMenuItems([...menuItems, menuItems[idx] === item]);
     } else {
       item.focus = true;
-      setMenuItems([...menuItems, menuItems[idx] === item]);
     }
     if (selectedItems.includes(item.name)) {
       const filter = selectedItems.filter((a) => a !== item.name);
@@ -68,7 +70,6 @@ export default function BasicSelect() {
       setSelectedItems([...selectedItems, item.name]);
       setTotalPrice(totalPrice + item.price);
     }
-    console.log(selectedItems, totalPrice);
   };
 
   return (
@@ -76,27 +77,28 @@ export default function BasicSelect() {
       sx={{ minWidth: 120, display: 'flex', flexDirection: 'column', gap: 2 }}
     >
       <Grid container spacing={1}>
-        {menuItems.map((item, idx) => (
-          <Grid
-            item
-            xs={4}
-            sx={{ display: item === true ? 'none' : 'block' }}
-            key={idx}
-          >
-            <UserButton
-              fullWidth
-              sx={{
-                background: item.focus === true ? 'black' : '#8931FE',
-                '&:hover': {
-                  background: item.focus === true ? '#515151' : '#A665FE',
-                },
-              }}
-              onClick={(e) => handleClick(e, item, idx)}
+        {items.allItems &&
+          items.allItems.map((item, idx) => (
+            <Grid
+              item
+              xs={4}
+              sx={{ display: item === true ? 'none' : 'block' }}
+              key={idx}
             >
-              {item.name}
-            </UserButton>
-          </Grid>
-        ))}
+              <UserButton
+                fullWidth
+                sx={{
+                  background: item.focus === true ? 'black' : '#8931FE',
+                  '&:hover': {
+                    background: item.focus === true ? '#515151' : '#A665FE',
+                  },
+                }}
+                onClick={(e) => handleClick(e, item, idx)}
+              >
+                {item.name}
+              </UserButton>
+            </Grid>
+          ))}
       </Grid>
       <FormControl component='fieldset'>
         <FormLabel component='legend'>Tone of customer</FormLabel>
@@ -111,6 +113,7 @@ export default function BasicSelect() {
               key={tone}
               control={<Radio />}
               label={tone}
+              onChange={(e) => handleChange(e, 'tone')}
             />
           ))}
         </RadioGroup>
@@ -186,4 +189,12 @@ export default function BasicSelect() {
       </Grid>
     </Box>
   );
-}
+};
+
+const mapStateToProps = (state) => {
+  return {
+    items: state.items,
+  };
+};
+
+export default connect(mapStateToProps, null)(BasicSelect);

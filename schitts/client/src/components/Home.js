@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Container, CssBaseline, Box, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { fetchOrders } from '../store/utils/thunkCreators';
+import { fetchItems } from '../store/utils/thunkCreators';
 import { clearOnLogout } from '../store/user';
 import SnackbarError from './SnackbarError';
 
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = (props) => {
   const classes = useStyles();
-  const { user, orders, logout, fetchOrders } = props;
+  const { user, logout, fetchItems } = props;
   const [errorMessage, setErrorMessage] = useState('');
   const [snackBarOpen, setSnackBarOpen] = useState(false);
 
@@ -41,9 +41,9 @@ const Home = (props) => {
     }
   }, [user.error]);
 
-  // useEffect(() => {
-  //   fetchOrders();
-  // }, [fetchOrders]);
+  useEffect(() => {
+    fetchItems();
+  }, [fetchItems]);
 
   if (props.user.isFetchingUsers) {
     return <div>Loading...</div>;
@@ -100,7 +100,6 @@ const Home = (props) => {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
-    orders: state.orders,
   };
 };
 
@@ -109,8 +108,8 @@ const mapDispatchToProps = (dispatch) => {
     logout: () => {
       dispatch(clearOnLogout());
     },
-    fetchOrders: () => {
-      dispatch(fetchOrders());
+    fetchItems: () => {
+      dispatch(fetchItems());
     },
   };
 };

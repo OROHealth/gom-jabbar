@@ -5,9 +5,7 @@ import { Tabs, Tab, Box, Button } from '@mui/material';
 
 import TypeOfCustomer from './CustomerInfo/TypeOfCustomer';
 import Preferences from './CustomerInfo/Preferences';
-import TimePicker from './Order/TimePicker';
-import Choices from './Order/Choices';
-import Feedback from './Order/Feedback';
+import Order from './Order/index';
 import MenuModal from './Menu/Modal';
 import Menu from './Menu/MenuDisplay';
 
@@ -17,6 +15,7 @@ const SubmitButton = styled(Button)({
   '&:hover': {
     background: '#8931FE',
   },
+  marginBottom: '50px',
 });
 
 const boxStyle = {
@@ -27,7 +26,7 @@ const boxStyle = {
   margin: '0 auto',
 };
 
-const Order = (props) => {
+const OrderTabs = (props) => {
   const [value, setValue] = useState(1);
 
   const handleChange = (event, newValue) => {
@@ -52,19 +51,10 @@ const Order = (props) => {
           </Box>
         </>
       )}
-      {value === 1 && (
-        <>
-          <Box component='form' sx={boxStyle}>
-            <TimePicker />
-            <Choices />
-            <Feedback />
-            <SubmitButton>Submit</SubmitButton>
-          </Box>
-        </>
-      )}
+      {value === 1 && <Order />}
       {value === 2 && (
         <>
-          <Box component='form' sx={boxStyle}>
+          <Box sx={boxStyle}>
             <MenuModal />
             <Menu />
           </Box>
@@ -74,4 +64,4 @@ const Order = (props) => {
   );
 };
 
-export default connect(null, null)(Order);
+export default connect(null, null)(OrderTabs);

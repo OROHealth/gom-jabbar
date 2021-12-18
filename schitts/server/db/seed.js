@@ -28,6 +28,60 @@ async function seed() {
     username: 'Luca',
   });
 
+  await Item.create({
+    type: 'drink',
+    name: 'Frappaccino',
+    price: 5,
+    acceptableLevel: 7,
+    date: Date.now(),
+    lengthOfTime: '2 days',
+  });
+
+  await Item.create({
+    type: 'drink',
+    name: 'Mocha',
+    price: 4,
+    acceptableLevel: 7,
+    date: Date.now(),
+    lengthOfTime: '1 day',
+  });
+
+  await Item.create({
+    type: 'drink',
+    name: 'Milk',
+    price: 3,
+    acceptableLevel: 7,
+    date: Date.now(),
+    lengthOfTime: '10 days',
+  });
+
+  await Item.create({
+    type: 'food',
+    name: 'Pizza',
+    price: 4,
+    acceptableLevel: 7,
+    date: Date.now(),
+    lengthOfTime: '1 day',
+  });
+
+  await Item.create({
+    type: 'food',
+    name: 'Bagel',
+    price: 4,
+    acceptableLevel: 7,
+    date: Date.now(),
+    lengthOfTime: '12 hours',
+  });
+
+  await Item.create({
+    type: 'food',
+    name: 'Cheesecake',
+    price: 5,
+    acceptableLevel: 7,
+    date: Date.now(),
+    lengthOfTime: '4 days',
+  });
+
   console.log(`seeded users and orders`);
 }
 

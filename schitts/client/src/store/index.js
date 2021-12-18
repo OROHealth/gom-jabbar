@@ -6,24 +6,14 @@ import loggerMiddleware from 'redux-logger';
 
 import user from './user';
 import orders from './orders';
-
-const CLEAR_ON_LOGOUT = 'CLEAR_ON_LOGOUT';
-
-export const clearOnLogout = () => {
-  return {
-    type: CLEAR_ON_LOGOUT,
-  };
-};
+import items from './items';
 
 const appReducer = combineReducers({
   user,
   orders,
+  items,
 });
 const rootReducer = (state, action) => {
-  // if (action.type === CLEAR_ON_LOGOUT) {
-  //   // return deleteActiveUser(state);
-  //   return { ...state, user: delete state.user.activeUser };
-  // }
   return appReducer(state, action);
 };
 

@@ -1,6 +1,30 @@
 const router = require('express').Router();
 const { Item } = require('../../db/models');
 
+router.get('/', async (req, res, next) => {
+  try {
+    const items = await Item.findAll();
+
+    if (!items) {
+      console.log({ error: 'Something went wrong' });
+      res.status(401).json({ error: 'Something went wrong' });
+    } else {
+      const allItems = new Array();
+
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        const itemJSON = item.toJSON();
+        allItems.push(itemJSON);
+      }
+      res.json({
+        allItems,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post('/addItem', async (req, res, next) => {
   try {
     if (!req.name) {

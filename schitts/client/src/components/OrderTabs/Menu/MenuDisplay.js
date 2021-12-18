@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export default function AlignItemsList() {
+export default function AlignItemsList(props) {
   const drinks = [
     { name: 'mocha', price: 4, scale: 7, date: Date.now(), time: '2 days' },
     {

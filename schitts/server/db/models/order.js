@@ -31,11 +31,11 @@ const Order = db.define('order', {
     allowNull: false,
   },
   totalPerBill: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.DECIMAL,
     allowNull: false,
   },
   feedback: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     allowNull: false,
   },
 });
