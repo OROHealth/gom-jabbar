@@ -8,6 +8,7 @@ const User = db.define('user', {
   },
   photoUrl: {
     type: Sequelize.STRING,
+    allowNull: true,
   },
 });
 

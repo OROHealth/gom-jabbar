@@ -8,6 +8,26 @@ async function seed() {
   await db.sync({ force: true });
   console.log('db synced!');
 
+  await User.create({
+    username: 'Twyla',
+  });
+
+  await User.create({
+    username: 'Eric',
+  });
+
+  await User.create({
+    username: 'Tom',
+  });
+
+  await User.create({
+    username: 'Patricia',
+  });
+
+  await User.create({
+    username: 'Luca',
+  });
+
   console.log(`seeded users and orders`);
 }
 

@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { Order } = require('../../db/models');
 // const { Op } = require('sequelize');
 
-router.get('/orders', async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
     const orders = await Order.findAll();
 
@@ -19,7 +19,7 @@ router.get('/orders', async (req, res, next) => {
   }
 });
 
-router.post('/order', async (req, res, next) => {
+router.post('/newOrder', async (req, res, next) => {
   try {
     // expects { date, user, items, tone, numberOfCustomers, splitOfBill, total, totalPerBill, feedback } in req.body
     const {
