@@ -29,8 +29,6 @@ const Home = (props) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [snackBarOpen, setSnackBarOpen] = useState(false);
 
-  const [tempUser, setTempUser] = useState({ id: 'Twyla' });
-
   useEffect(() => {
     if (user.error) {
       // check to make sure error is what we expect, in case we get an unexpected server error object
@@ -43,9 +41,9 @@ const Home = (props) => {
     }
   }, [user.error]);
 
-  useEffect(() => {
-    fetchOrders();
-  }, [fetchOrders]);
+  // useEffect(() => {
+  //   fetchOrders();
+  // }, [fetchOrders]);
 
   if (props.user.isFetchingUsers) {
     return <div>Loading...</div>;
@@ -75,7 +73,7 @@ const Home = (props) => {
             className={classes.img}
           />
         </Box>
-        {tempUser ? (
+        {user.activeUser ? (
           <OrderTabs />
         ) : (
           <Box

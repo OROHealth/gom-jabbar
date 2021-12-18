@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { gotUser, setFetchingStatus } from '../user';
+import { gotUser, gotAllUsers, setFetchingStatus } from '../user';
 import { gotOrders } from '../orders';
 
 // SERVER THUNK CREATORS
@@ -14,15 +14,15 @@ export const register = (credentials) => async (dispatch) => {
   }
 };
 
-export const login = (credentials) => async (dispatch) => {
-  try {
-    const { data } = await axios.post('/auth/login', credentials);
-    dispatch(gotUser(data));
-  } catch (error) {
-    console.error(error);
-    dispatch(gotUser({ error: error.response.data.error || 'Server Error' }));
-  }
-};
+// export const login = (credentials) => async (dispatch) => {
+//   try {
+//     const { data } = await axios.post('/auth/login', credentials);
+//     dispatch(gotUser(data));
+//   } catch (error) {
+//     console.error(error);
+//     dispatch(gotUser({ error: error.response.data.error || 'Server Error' }));
+//   }
+// };
 
 export const logout = (id) => async (dispatch) => {
   try {
@@ -39,7 +39,7 @@ export const fetchUsers = () => async (dispatch) => {
   dispatch(setFetchingStatus(true));
   try {
     const { data } = await axios.get('/api/users');
-    dispatch(gotUser(data));
+    dispatch(gotAllUsers(data));
   } catch (error) {
     console.error(error);
   } finally {
@@ -58,7 +58,7 @@ export const fetchOrders = (credentials) => async (dispatch) => {
 };
 export const postOrder = (credentials) => async (dispatch) => {
   try {
-    const { data } = await axios.post('/api/order', credentials);
+    const { data } = await axios.post('/api/orders/newOrder', credentials);
     console.log(data);
   } catch (error) {
     console.error(error);

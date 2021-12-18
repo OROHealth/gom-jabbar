@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Button, Grid, Box, TextField } from '@mui/material';
+import { Button, Grid, Box, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { fetchUsers } from '../store/utils/thunkCreators';
+import { gotUser } from '../store/user';
 
 const UserButton = styled(Button)({
   height: '80px',
@@ -22,29 +23,38 @@ const AddButton = styled(Button)({
   },
 });
 
-const Login = (props) => {
-  const { fetchUsers } = props;
+const typographyStyle = {
+  margin: '0 auto',
+};
 
-  const tempUsers = [
-    { id: 'Twyla' },
-    { id: 'Eric' },
-    { id: 'Tom' },
-    { id: 'Patricia' },
-    { id: 'Luca' },
-  ];
+const Login = (props) => {
+  const { fetchUsers, user, gotUser } = props;
 
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
 
+  const handleClick = (event) => {
+    const username = event.target.innerText;
+    gotUser(username);
+  };
+
   return (
     <>
       <Grid container spacing={1}>
-        {tempUsers.map((name) => (
-          <Grid item xs={4} key={name.id}>
-            <UserButton fullWidth>{name.id}</UserButton>
-          </Grid>
-        ))}
+        {user.allUsers ? (
+          user.allUsers.map((user) => (
+            <Grid item xs={4} key={user.username}>
+              <UserButton fullWidth onClick={handleClick}>
+                {user.username}
+              </UserButton>
+            </Grid>
+          ))
+        ) : (
+          <Typography sx={typographyStyle} variant='h4' color='error'>
+            Something went wrong
+          </Typography>
+        )}
         <Grid item xs={12}>
           <Box
             component='form'
@@ -76,6 +86,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchUsers: () => {
       dispatch(fetchUsers());
+    },
+    gotUser: (user) => {
+      dispatch(gotUser(user));
     },
   };
 };
