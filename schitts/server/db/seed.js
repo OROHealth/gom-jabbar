@@ -8,25 +8,23 @@ async function seed() {
   await db.sync({ force: true });
   console.log('db synced!');
 
-  await User.create({
-    username: 'Twyla',
-  });
+  const names = [
+    'Twyla',
+    'Eric',
+    'Tom',
+    'Patricia',
+    'Luca',
+    'Alex',
+    'Joe',
+    'Rebecca',
+    'Patricia',
+  ];
 
-  await User.create({
-    username: 'Eric',
-  });
-
-  await User.create({
-    username: 'Tom',
-  });
-
-  await User.create({
-    username: 'Patricia',
-  });
-
-  await User.create({
-    username: 'Luca',
-  });
+  for (let i = 0; i < names.length; i++) {
+    await User.create({
+      username: names[i],
+    });
+  }
 
   await Item.create({
     type: 'drink',

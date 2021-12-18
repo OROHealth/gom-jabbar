@@ -16,6 +16,17 @@ router.get('/', async (req, res, next) => {
         const userJSON = user.toJSON();
         allUsers.push(userJSON);
       }
+
+      allUsers.sort(function (a, b) {
+        if (a.username < b.username) {
+          return -1;
+        }
+        if (a.username > b.username) {
+          return 1;
+        }
+        return 0;
+      });
+
       res.json({
         allUsers,
       });

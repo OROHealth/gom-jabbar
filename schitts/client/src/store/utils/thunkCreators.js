@@ -1,5 +1,10 @@
 import axios from 'axios';
-import { gotUser, gotAllUsers, setFetchingStatus } from '../user';
+import {
+  addUser,
+  gotAllUsers,
+  setFetchingStatus,
+  setPostingUserStatus,
+} from '../user';
 import { gotOrders, setPostingOrderStatus } from '../orders';
 import { gotAllItems, clearItemFocus } from '../items';
 import { setPostingCustomerStatus } from '../customer';
@@ -7,12 +12,14 @@ import { setPostingCustomerStatus } from '../customer';
 // SERVER THUNK CREATORS
 
 export const register = (credentials) => async (dispatch) => {
+  dispatch(setPostingUserStatus(true));
   try {
     const { data } = await axios.post('/auth/register', credentials);
-    dispatch(gotUser(data));
+    dispatch(setPostingUserStatus('success'));
+    dispatch(addUser(data));
   } catch (error) {
     console.error(error);
-    dispatch(gotUser({ error: error.response.data.error || 'Server Error' }));
+    dispatch(setPostingUserStatus('Something went wrong'));
   }
 };
 
