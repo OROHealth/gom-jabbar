@@ -62,7 +62,7 @@ router.get('/', async (req, res, next) => {
 
 router.post('/addItem', async (req, res, next) => {
   try {
-    if (!req.name) {
+    if (!req.body.name) {
       return res.sendStatus(401);
     }
 
@@ -81,7 +81,7 @@ router.post('/addItem', async (req, res, next) => {
 
 router.patch('/editItem/:item', async (req, res, next) => {
   try {
-    if (!req.name) {
+    if (!req.body.name) {
       return res.sendStatus(401);
     }
     const { date, type, name, price, acceptableLevel, lengthOfTime } = req.body;
@@ -89,7 +89,7 @@ router.patch('/editItem/:item', async (req, res, next) => {
 
     const item = await Item.findOne({
       where: {
-        name: name,
+        name: itemName,
       },
     });
 
@@ -97,7 +97,7 @@ router.patch('/editItem/:item', async (req, res, next) => {
       console.log({ error: `No item found for item: ${name}` });
       res.status(401).json({ error: 'Wrong item' });
     } else {
-      Item.update(
+      await Item.update(
         {
           date: date,
           type: type,
@@ -119,13 +119,14 @@ router.patch('/editItem/:item', async (req, res, next) => {
   }
 });
 
-router.delete('/deleteItem/:item', (req, res, next) => {
+router.delete('/deleteItem/:item', async (req, res, next) => {
   try {
-    Item.destroy({
+    await Item.destroy({
       where: {
         name: req.params.item,
       },
     });
+    res.sendStatus(204);
   } catch (error) {
     next(error);
   }

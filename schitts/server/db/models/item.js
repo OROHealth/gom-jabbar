@@ -13,6 +13,7 @@ const Item = db.define('item', {
   name: {
     type: Sequelize.STRING,
     allowNull: false,
+    primaryKey: true,
   },
   price: {
     type: Sequelize.INTEGER,

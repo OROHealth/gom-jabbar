@@ -17,7 +17,6 @@ async function seed() {
     'Alex',
     'Joe',
     'Rebecca',
-    'Patricia',
   ];
 
   for (let i = 0; i < names.length; i++) {
@@ -26,12 +25,14 @@ async function seed() {
     });
   }
 
+  const date = new Date();
+
   await Item.create({
     type: 'drink',
     name: 'Frappaccino',
     price: 5,
     acceptableLevel: 7,
-    date: Date.now(),
+    date: date.toString(),
     lengthOfTime: '2 days',
   });
 
@@ -40,7 +41,7 @@ async function seed() {
     name: 'Mocha',
     price: 4,
     acceptableLevel: 7,
-    date: Date.now(),
+    date: date.toString(),
     lengthOfTime: '1 day',
   });
 
@@ -49,7 +50,7 @@ async function seed() {
     name: 'Milk',
     price: 3,
     acceptableLevel: 7,
-    date: Date.now(),
+    date: date.toString(),
     lengthOfTime: '10 days',
   });
 
@@ -58,7 +59,7 @@ async function seed() {
     name: 'Pizza',
     price: 4,
     acceptableLevel: 7,
-    date: Date.now(),
+    date: date.toString(),
     lengthOfTime: '1 day',
   });
 
@@ -67,7 +68,7 @@ async function seed() {
     name: 'Bagel',
     price: 4,
     acceptableLevel: 7,
-    date: Date.now(),
+    date: date.toString(),
     lengthOfTime: '12 hours',
   });
 
@@ -76,7 +77,7 @@ async function seed() {
     name: 'Cheesecake',
     price: 5,
     acceptableLevel: 7,
-    date: Date.now(),
+    date: date.toString(),
     lengthOfTime: '4 days',
   });
 

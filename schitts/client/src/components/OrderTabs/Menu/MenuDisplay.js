@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import {
   Grid,
   Accordion,
@@ -7,29 +8,10 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export default function AlignItemsList(props) {
-  const drinks = [
-    { name: 'mocha', price: 4, scale: 7, date: Date.now(), time: '2 days' },
-    {
-      name: 'frappaccino',
-      price: 5,
-      scale: 7,
-      date: Date.now(),
-      time: '2 days',
-    },
-    { name: 'milk', price: 3, scale: 7, date: Date.now(), time: '2 days' },
-  ];
-  const foods = [
-    { name: 'pizza', price: 4, scale: 7, date: Date.now(), time: '2 days' },
-    { name: 'bagel', price: 5, scale: 7, date: Date.now(), time: '2 days' },
-    {
-      name: 'cheesecake',
-      price: 3,
-      scale: 7,
-      date: Date.now(),
-      time: '2 days',
-    },
-  ];
+const AlignItemsList = (props) => {
+  const { items } = props;
+  const drinks = items.drinks;
+  const foods = items.food;
 
   return (
     <>
@@ -54,14 +36,15 @@ export default function AlignItemsList(props) {
                 <AccordionDetails>
                   <Typography>Price: {food.price}</Typography>
                   <Typography>
-                    Level of acceptable over-coooked-ness: {food.scale}
+                    Level of acceptable over-coooked-ness:{' '}
+                    {food.acceptableLevel}
                   </Typography>
                   <Typography>
                     Last date where the item was made: {food.date}
                   </Typography>
                   <Typography>
                     Length of time can be kept in fridge and be served:
-                    {food.time}
+                    {food.lengthOfTime}
                   </Typography>
                 </AccordionDetails>
               </Accordion>
@@ -88,14 +71,15 @@ export default function AlignItemsList(props) {
                 <AccordionDetails>
                   <Typography>Price: {drink.price}</Typography>
                   <Typography>
-                    Level of acceptable over-coooked-ness: {drink.scale}
+                    Level of acceptable over-coooked-ness:{' '}
+                    {drink.acceptableLevel}
                   </Typography>
                   <Typography>
                     Last date where the item was made: {drink.date}
                   </Typography>
                   <Typography>
                     Length of time can be kept in fridge and be served:
-                    {drink.time}
+                    {drink.lengthOfTime}
                   </Typography>
                 </AccordionDetails>
               </Accordion>
@@ -105,4 +89,12 @@ export default function AlignItemsList(props) {
       </Grid>
     </>
   );
-}
+};
+
+const mapStateToProps = (state) => {
+  return {
+    items: state.items,
+  };
+};
+
+export default connect(mapStateToProps, null)(AlignItemsList);

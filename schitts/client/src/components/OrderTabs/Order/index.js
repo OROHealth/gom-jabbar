@@ -83,8 +83,9 @@ const Order = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const date = new Date();
     const reqBody = {
-      date: Date.now(),
+      date: date.toString(),
       user: user.activeUser,
       items: selectedItems,
       tone: tone,

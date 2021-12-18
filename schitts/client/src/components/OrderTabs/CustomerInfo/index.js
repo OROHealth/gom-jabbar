@@ -81,8 +81,9 @@ const CustomerInfo = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const date = new Date();
     const reqBody = {
-      date: Date.now(),
+      date: date.toString(),
       name: name,
       type: type,
       drinkPreference: drink,

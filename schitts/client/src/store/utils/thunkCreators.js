@@ -6,7 +6,13 @@ import {
   setPostingUserStatus,
 } from '../user';
 import { gotOrders, setPostingOrderStatus } from '../orders';
-import { gotAllItems, clearItemFocus } from '../items';
+import {
+  gotItem,
+  gotAllItems,
+  clearItemFocus,
+  setPostingItemStatus,
+  removeItem,
+} from '../items';
 import { setPostingCustomerStatus } from '../customer';
 
 // SERVER THUNK CREATORS
@@ -23,7 +29,7 @@ export const register = (credentials) => async (dispatch) => {
   }
 };
 
-// FETCH ORDERS AND DATA
+// API CALLS
 
 export const fetchUsers = () => async (dispatch) => {
   dispatch(setFetchingStatus(true));
@@ -46,6 +52,48 @@ export const fetchItems = () => async (dispatch) => {
     console.error(error);
   } finally {
     dispatch(setFetchingStatus(false));
+  }
+};
+
+export const addItem = (credentials) => async (dispatch) => {
+  dispatch(setPostingItemStatus(true));
+  try {
+    const { data } = await axios.post('/api/items/addItem', credentials);
+    dispatch(setPostingItemStatus('added'));
+    dispatch(gotItem(data));
+  } catch (error) {
+    console.error(error);
+    dispatch(setPostingItemStatus('Something went wrong'));
+  }
+};
+
+export const editItem = (credentials) => async (dispatch) => {
+  dispatch(setPostingItemStatus(true));
+  try {
+    await axios.patch(
+      `/api/items/editItem/${credentials.oldName}`,
+      credentials
+    );
+    dispatch(setPostingItemStatus('edited'));
+    dispatch(gotItem(credentials));
+  } catch (error) {
+    console.error(error);
+    dispatch(setPostingItemStatus('Something went wrong'));
+  }
+};
+
+export const deleteItem = (credentials) => async (dispatch) => {
+  dispatch(setPostingItemStatus(true));
+  try {
+    await axios.delete(
+      `/api/items/deleteItem/${credentials.name}`,
+      credentials
+    );
+    dispatch(setPostingItemStatus('deleted'));
+    dispatch(removeItem(credentials));
+  } catch (error) {
+    console.error(error);
+    dispatch(setPostingItemStatus('Something went wrong'));
   }
 };
 
