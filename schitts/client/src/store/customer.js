@@ -1,12 +1,12 @@
 // ACTIONS
 
-const SET_POSTING_STATUS = 'SET_POSTING_STATUS';
+const SET_POSTING_STATUS_CUSTOMER = 'SET_POSTING_STATUS_CUSTOMER';
 
 // ACTION CREATORS
 
 export const setPostingCustomerStatus = (isPosting) => {
   return {
-    type: SET_POSTING_STATUS,
+    type: SET_POSTING_STATUS_CUSTOMER,
     isPosting,
   };
 };
@@ -15,7 +15,7 @@ export const setPostingCustomerStatus = (isPosting) => {
 
 const reducer = (state = { isPosting: false }, action) => {
   switch (action.type) {
-    case SET_POSTING_STATUS:
+    case SET_POSTING_STATUS_CUSTOMER:
       return { ...state, isPosting: action.isPosting };
     default:
       return state;

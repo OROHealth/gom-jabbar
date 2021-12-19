@@ -2,7 +2,7 @@ import axios from 'axios';
 import {
   addUser,
   gotAllUsers,
-  setFetchingStatus,
+  setFetchingStatusUser,
   setPostingUserStatus,
 } from '../user';
 import { gotOrders, setPostingOrderStatus } from '../orders';
@@ -12,6 +12,7 @@ import {
   clearItemFocus,
   setPostingItemStatus,
   removeItem,
+  setFetchingStatusItem,
 } from '../items';
 import { setPostingCustomerStatus } from '../customer';
 
@@ -32,26 +33,26 @@ export const register = (credentials) => async (dispatch) => {
 // API CALLS
 
 export const fetchUsers = () => async (dispatch) => {
-  dispatch(setFetchingStatus(true));
+  dispatch(setFetchingStatusUser(true));
   try {
     const { data } = await axios.get('/api/users');
     dispatch(gotAllUsers(data));
   } catch (error) {
     console.error(error);
   } finally {
-    dispatch(setFetchingStatus(false));
+    dispatch(setFetchingStatusUser(false));
   }
 };
 
 export const fetchItems = () => async (dispatch) => {
-  dispatch(setFetchingStatus(true));
+  dispatch(setFetchingStatusItem(true));
   try {
     const { data } = await axios.get('/api/items');
     dispatch(gotAllItems(data));
   } catch (error) {
     console.error(error);
   } finally {
-    dispatch(setFetchingStatus(false));
+    dispatch(setFetchingStatusItem(false));
   }
 };
 

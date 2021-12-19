@@ -5,9 +5,9 @@ import { addUserToStore } from './utils/reducerFunctions';
 const ADD_USER = 'ADD_USER';
 const GET_USER = 'GET_USER';
 const GET_ALL_USERS = 'GET_ALL_USER';
-const SET_FETCHING_STATUS = 'SET_FETCHING_STATUS';
+const SET_FETCHING_STATUS_USER = 'SET_FETCHING_STATUS_USER';
 const CLEAR_ON_LOGOUT = 'CLEAR_ON_LOGOUT';
-const SET_POSTING_STATUS = 'SET_POSTING_STATUS';
+const SET_POSTING_STATUS_USER = 'SET_POSTING_STATUS_USER';
 
 // ACTION CREATORS
 
@@ -38,14 +38,14 @@ export const clearOnLogout = () => {
   };
 };
 
-export const setFetchingStatus = (isFetching) => ({
-  type: SET_FETCHING_STATUS,
+export const setFetchingStatusUser = (isFetching) => ({
+  type: SET_FETCHING_STATUS_USER,
   isFetching,
 });
 
 export const setPostingUserStatus = (isPosting) => {
   return {
-    type: SET_POSTING_STATUS,
+    type: SET_POSTING_STATUS_USER,
     isPosting,
   };
 };
@@ -62,9 +62,9 @@ const reducer = (state = { isFetching: true }, action) => {
       return action.allUsers;
     case CLEAR_ON_LOGOUT:
       return { ...state, activeUser: null };
-    case SET_POSTING_STATUS:
+    case SET_POSTING_STATUS_USER:
       return { ...state, isPosting: action.isPosting };
-    case SET_FETCHING_STATUS:
+    case SET_FETCHING_STATUS_USER:
       return {
         ...state,
         isFetching: action.isFetching,

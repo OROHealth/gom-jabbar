@@ -89,7 +89,7 @@ const Login = (props) => {
         aria-describedby='modal-modal-description'
       >
         <Box sx={modalBoxStyle}>
-          <Typography variant='h4'>Customer added</Typography>
+          <Typography variant='h4'>User added</Typography>
         </Box>
       </Modal>
       <Grid container spacing={1}>

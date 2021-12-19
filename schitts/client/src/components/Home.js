@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Container, CssBaseline, Box, Button } from '@mui/material';
+import { Container, CssBaseline, Box, Button, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { fetchItems } from '../store/utils/thunkCreators';
 import { clearOnLogout } from '../store/user';
@@ -20,6 +20,10 @@ const useStyles = makeStyles((theme) => ({
   },
   img: {
     height: '100px',
+  },
+  navbarBox: {
+    display: 'flex',
+    justifyContent: 'space-between',
   },
 }));
 
@@ -62,13 +66,40 @@ const Home = (props) => {
           snackBarOpen={snackBarOpen}
         />
       )}
-      <Button
-        className={classes.logout}
-        sx={{ visibility: user.activeUser ? 'visible' : 'hidden' }}
-        onClick={handleLogout}
-      >
-        Logout
-      </Button>
+      <Box className={classes.navbarBox}>
+        <Button
+          sx={{ visibility: user.activeUser ? 'visible' : 'hidden' }}
+          onClick={handleLogout}
+        >
+          Logout
+        </Button>
+        <Box
+          sx={{ display: 'flex', gap: 2, alignItems: 'center', pt: 1, mr: 2 }}
+        >
+          <Typography
+            sx={{
+              visibility: user.activeUser ? 'visible' : 'hidden',
+              paddingTop: '4px',
+              fontWeight: 'bold',
+            }}
+            variant='caption'
+            color='secondary'
+          >
+            Logged in as
+          </Typography>
+          <Typography
+            sx={{
+              visibility: user.activeUser ? 'visible' : 'hidden',
+
+              fontWeight: 'bold',
+            }}
+            variant='h6'
+            color='primary'
+          >
+            {user.activeUser && `${user.activeUser}`}
+          </Typography>
+        </Box>
+      </Box>
       <Container maxWidth='lg' className={classes.container}>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <img
