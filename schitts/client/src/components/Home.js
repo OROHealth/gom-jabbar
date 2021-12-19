@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Container, CssBaseline, Box, Button, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { fetchItems } from '../store/utils/thunkCreators';
 import { clearOnLogout } from '../store/user';
 import SnackbarError from './SnackbarError';
+import AnalyticsIcon from '@mui/icons-material/Analytics';
 
 import Login from './Login';
 import OrderTabs from './OrderTabs/OrderTabs';
@@ -24,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
   navbarBox: {
     display: 'flex',
     justifyContent: 'space-between',
+  },
+  link: {
+    textDecoration: 'none',
   },
 }));
 
@@ -67,14 +72,28 @@ const Home = (props) => {
         />
       )}
       <Box className={classes.navbarBox}>
+        <Box sx={{ display: user.activeUser ? 'none' : 'block' }}>
+          <Link to='/analytics' className={classes.link}>
+            <Button sx={{ display: 'flex', gap: 1 }}>
+              <AnalyticsIcon />
+              Analytics
+            </Button>
+          </Link>
+        </Box>
         <Button
-          sx={{ visibility: user.activeUser ? 'visible' : 'hidden' }}
+          sx={{ display: user.activeUser ? 'block' : 'none', pl: 2 }}
           onClick={handleLogout}
         >
           Logout
         </Button>
         <Box
-          sx={{ display: 'flex', gap: 2, alignItems: 'center', pt: 1, mr: 2 }}
+          sx={{
+            display: 'flex',
+            gap: 2,
+            alignItems: 'center',
+            mr: 2,
+            height: '50px',
+          }}
         >
           <Typography
             sx={{
@@ -90,7 +109,6 @@ const Home = (props) => {
           <Typography
             sx={{
               visibility: user.activeUser ? 'visible' : 'hidden',
-
               fontWeight: 'bold',
             }}
             variant='h6'

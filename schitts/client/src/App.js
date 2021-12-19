@@ -6,6 +6,7 @@ import store from './store';
 
 import { theme } from './themes/theme';
 import Home from './components/Home';
+import Analytics from './components/Analytics';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route exact path='/' element={<Home />} />
+            <Route exact path='/analytics' element={<Analytics />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
