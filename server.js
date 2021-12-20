@@ -10,9 +10,34 @@ const path = require('path')
 const pkg = require('get-current-line').default // get current script filename and line
 const log4js = require('./schitts/config/log4js')
 var log = log4js.getLogger('app') // enable logging
+const swaggerUI = require('swagger-ui-express')
+const swaggerJsDoc = require('swagger-jsdoc')
 // import utils
-
 const whiteList = [`${process.env.APP_URL}:${port}`, `http://127.0.0.1:${port}`, 'http://www.yoursite.com']
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Library API',
+      version: '1.0.0',
+      description: 'Express Library API',
+      contact: {
+        name: 'Nkodo Mbe Jean Yves'
+      }
+    },
+    server: [
+      {
+        url: whiteList[0]
+      }
+    ]
+  },
+  // api definition
+  apis: ['./schitts/routes/api.js']
+}
+
+const specs = swaggerJsDoc(swaggerOptions)
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs))
+
 var corsOptions = {
   origin: (_origin, callback) => { // _origin is the allowed client address
     if (whiteList.indexOf(_origin) !== -1 || !_origin) {
@@ -55,7 +80,7 @@ app.get('*', (req, res) => {
   res.status(404)
   if (req.accepts('html')) {
     res.json({ error: '404 Not Found' })
-    // res.sendFile(path.join(__dirname, 'link to 404.html'))
+    // res.senFile(path.join(__dirname, 'link to 404.html'))
   } else if (req.accepts('json')) {
     res.json({ error: '404 Not Found' })
   } else {

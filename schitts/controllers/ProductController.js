@@ -91,7 +91,7 @@ const store = async (req, res) => {
 
 /**
  *  @description Fetch specific product
- *  @route GET /api/v1/product/:id
+ *  @route GET /api/v1/product/:product_id
  */
 const edit = async (req, res) => {
   var responseObject = {
@@ -125,7 +125,7 @@ const edit = async (req, res) => {
 
 /**
  *  @description Update specific product
- *  @route PATCH /api/v1/product/:id
+ *  @route PATCH /api/v1/product/:product_id
  */
 const update = async (req, res) => {
   var responseObject = {
@@ -170,7 +170,7 @@ const update = async (req, res) => {
 
 /**
  *  @description Destroy specific product
- *  @route delete /api/v1/product/:id
+ *  @route delete /api/v1/product/:product_id
  */
 const destroy = async (req, res) => {
   var responseObject = {
