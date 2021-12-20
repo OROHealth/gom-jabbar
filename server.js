@@ -15,6 +15,7 @@ const swaggerJsDoc = require('swagger-jsdoc')
 // import utils
 const whiteList = [`${process.env.APP_URL}:${port}`, `http://127.0.0.1:${port}`, 'http://www.yoursite.com']
 const swaggerOptions = {
+  explorer: true,
   definition: {
     openapi: '3.0.0',
     info: {
@@ -32,7 +33,7 @@ const swaggerOptions = {
     ]
   },
   // api definition
-  apis: ['./schitts/routes/api.js']
+  apis: ['./schitts/routes/api/*.js']
 }
 
 const specs = swaggerJsDoc(swaggerOptions)

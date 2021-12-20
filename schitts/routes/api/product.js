@@ -1,4 +1,4 @@
-const ProductController = require('../controllers/ProductController')
+const ProductController = require('../../controllers/ProductController')
 // const asyncTryCatchMiddleware = require('./root').asyncTryCatchMiddleware
 const router = require('express').Router()
 let prefix = 'product'
@@ -31,10 +31,8 @@ let prefix = 'product'
  *          type: string
  *          description: the description of the product
  *      example:
- *        id: 1
  *        title: the title of the product
  *        description: the description of the product
- *        reference: the reference of the product
  *        price: 12500
  *        published: true
  */
@@ -49,20 +47,43 @@ let prefix = 'product'
 /**
  * @swagger
  * /api/v1/product:
- * get:
- *  summary: returns the list of all products
- *  tags: [Product]
- *  responses:
- *    200:
- *      description: the list of the products
- *      content:
- *       application/json:
- *        schema:
- *          type: array
- *          items:
- *            $ref: '#/components/schemas/Product'
+ *  get:
+ *    summary: returns the list of all products
+ *    tags: [Product]
+ *    responses:
+ *      200:
+ *        description: the list of the products
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Product'
  */
 router.get(`/${prefix}`, ProductController.index)
+
+/**
+ * @swagger
+ * /api/v1/product:
+ *  post:
+ *    summary: store a new product
+ *    tags: [Product]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Product'
+ *    responses:
+ *      200:
+ *        description: the new product
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Product'
+ *      500:
+ *        description: Server Error
+ */
 router.post(`/${prefix}`, ProductController.store)
 
 /**
@@ -89,7 +110,61 @@ router.post(`/${prefix}`, ProductController.store)
  *        description: The product was not found
  */
 router.get(`/${prefix}/:product_id`, ProductController.edit)
+
+/**
+ * @swagger
+ * /api/v1/product/{id}:
+ *  patch:
+ *    summary: update the product by id
+ *    tags: [Product]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: the product id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Product'
+ *    responses:
+ *      200:
+ *        description: The updated product
+ *        contens:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Product'
+ *      404:
+ *        description: The product was not found
+ */
 router.patch(`/${prefix}/:product_id`, ProductController.update)
+
+/**
+ * @swagger
+ * /api/v1/product/{id}:
+ *  delete:
+ *    summary: delete the product by id
+ *    tags: [Product]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: the product id
+ *    responses:
+ *      200:
+ *        description: the product description by id
+ *        contens:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Product'
+ *      404:
+ *        description: The product was not found
+ */
 router.delete(`/${prefix}/:product_id`, ProductController.destroy)
 
 /* router.route(`/${prefix}`)

@@ -9,6 +9,8 @@ Installation des packages
 == log4js (Activer le systeme de Logging) [https://github.com/log4js-node/log4js-node]
 == get-current-line (get current script file and line) [https://github.com/bevry/get-current-line]
 == uuid (generer et valider les uuids) [https://github.com/uuidjs/uuid]
+== swagger-ui-express (api documentation) [https://github.com/scottie1984/swagger-ui-express]
+== swagger-jsDoc (api documentation) [https://github.com/Surnet/swagger-jsdoc]
 
 ===============================================
 DATABASE CONFIGURATION
@@ -44,6 +46,12 @@ il est possible de dupliquer et ou d'ameliorer le contenu du controleur ProductC
 Logger
 ==============================================
 le logging se configure dans le fichier config/log4js.json 
+
+==============================================
+SWAGGER 
+==============================================
+to load api-documentation using swagger, just type
+hhtp://server/api-docs
 
 ==============================================
 Advanced options
