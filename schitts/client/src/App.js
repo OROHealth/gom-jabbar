@@ -6,7 +6,7 @@ import store from './store';
 
 import { theme } from './themes/theme';
 import Home from './components/Home';
-import Analytics from './components/Analytics';
+import Analytics from './components/Analytics/Analytics';
 
 function App() {
   return (

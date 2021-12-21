@@ -62,12 +62,12 @@ const BasicSelect = (props) => {
     } else {
       item.focus = true;
     }
-    if (selectedItems.includes(item.name)) {
-      const filter = selectedItems.filter((a) => a !== item.name);
+    if (selectedItems.includes(item)) {
+      const filter = selectedItems.filter((a) => a !== item);
       setSelectedItems(filter);
       setTotalPrice(totalPrice - item.price);
     } else {
-      setSelectedItems([...selectedItems, item.name]);
+      setSelectedItems([...selectedItems, item]);
       setTotalPrice(totalPrice + item.price);
     }
   };

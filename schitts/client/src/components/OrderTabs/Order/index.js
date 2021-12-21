@@ -14,6 +14,7 @@ import Choices from './Choices';
 import Feedback from './Feedback';
 
 import { postOrder } from '../../../store/utils/thunkCreators';
+import axios from 'axios';
 
 const modalBoxStyle = {
   position: 'absolute',
