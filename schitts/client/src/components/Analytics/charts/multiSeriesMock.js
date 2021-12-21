@@ -4,7 +4,6 @@ let CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const Chart = (props) => {
   const { mocktails, reviews } = props;
-  console.log(mocktails);
   const options = {
     theme: 'light2',
     animationEnabled: true,

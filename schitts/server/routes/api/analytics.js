@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Order } = require('../../db/models');
+const { Order, Customer } = require('../../db/models');
 const { Op } = require('sequelize');
 
 router.get('/8rated-6months/:user', async (req, res, next) => {
@@ -215,6 +215,72 @@ router.get('/mocktailToReview/:user', async (req, res, next) => {
       }
     }
     res.json({ mocktails, reviews });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/out-of-town-customers', async (req, res, next) => {
+  try {
+    const customers = await Customer.findAll({
+      where: {
+        type: 'out of town',
+      },
+    });
+
+    if (!customers) {
+      console.log({ error: 'Something went wrong' });
+      res.status(401).json({ error: 'Something went wrong' });
+    } else {
+      const allCustomers = new Array();
+
+      for (let i = 0; i < customers.length; i++) {
+        const customer = customers[i];
+        const customerJSON = customer.toJSON();
+        allCustomers.push(customerJSON);
+      }
+
+      allCustomers.sort(function (a, b) {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      });
+
+      res.json({
+        allCustomers,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/find-customer/:customer', async (req, res, next) => {
+  try {
+    if (!req.params.customer) {
+      return res.status(401).json({ error: 'Customer required' });
+    }
+
+    const customer = await Customer.findOne({
+      where: {
+        name: req.params.customer,
+      },
+    });
+
+    if (!customer) {
+      console.log({
+        error: `No customer found for customer: ${req.params.customer}`,
+      });
+      res.status(401).json({ error: 'Wrong customer name' });
+    } else {
+      res.json({
+        customer,
+      });
+    }
   } catch (error) {
     next(error);
   }

@@ -8,6 +8,7 @@ import { fetchUsers, fetchItems } from '../../store/utils/thunkCreators';
 import Rated from './8rated';
 import DrinkEvolution from './drinkEvolution';
 import Mocktails from './mocktails';
+import OutofTown from './outoftown';
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -48,11 +49,9 @@ const Analytics = (props) => {
           </Grid>
           <Grid item xs={6}>
             <Mocktails />
-            -the evolution of Moira's mocktails choices compared to her review
-            over time
           </Grid>
           <Grid item xs={6}>
-            -search an out-of-town customer's name
+            <OutofTown />
           </Grid>
         </Grid>
       </Container>
