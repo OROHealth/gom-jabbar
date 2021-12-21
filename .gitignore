@@ -2,3 +2,4 @@
 .env
 /log/app.log
 /.idea
+/schitts/log/app.log
