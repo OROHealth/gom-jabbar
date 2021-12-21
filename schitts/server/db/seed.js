@@ -9,6 +9,8 @@ async function seed() {
   console.log('db synced!');
 
   const names = [
+    'Alexis',
+    'Moira',
     'Twyla',
     'Eric',
     'Tom',
@@ -24,6 +26,20 @@ async function seed() {
       username: names[i],
     });
   }
+
+  await Customer.create({
+    name: 'Arlo',
+    type: 'out of town',
+    drinkPreference: 'Frappaccino',
+    foodPreference: 'Pizza',
+  });
+
+  await Customer.create({
+    name: 'Jobs',
+    type: 'out of town',
+    drinkPreference: 'Mocha',
+    foodPreference: 'Bagel',
+  });
 
   const date = new Date();
 
@@ -79,6 +95,24 @@ async function seed() {
     acceptableLevel: 7,
     date: date.toString(),
     lengthOfTime: '4 days',
+  });
+
+  await Item.create({
+    type: 'mocktail',
+    name: 'Abracadabra',
+    price: 12,
+    acceptableLevel: 10,
+    date: date.toString(),
+    lengthOfTime: '0',
+  });
+
+  await Item.create({
+    type: 'mocktail',
+    name: 'Yippicayay',
+    price: 9,
+    acceptableLevel: 10,
+    date: date.toString(),
+    lengthOfTime: '0',
   });
 
   console.log(`seeded users and orders`);
