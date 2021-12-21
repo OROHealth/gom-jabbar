@@ -48,7 +48,6 @@ router.get('/8rated-6months/:user', async (req, res, next) => {
       // find median rating for 8-rated items
       if (orderJSON.ratedMeals > 0) {
         orderJSON.medianRatedRating = orderJSON.feedback / orderJSON.ratedMeals;
-        console.log(orderJSON.feedback);
       }
 
       orders[i] = orderJSON;
@@ -59,6 +58,90 @@ router.get('/8rated-6months/:user', async (req, res, next) => {
     res.json({ orders_past_6months });
   } catch (error) {
     next(error);
+  }
+});
+
+router.get('/drinks-taken/:user1/:user2', async (req, res, next) => {
+  try {
+    if (!req.params.user1 || !req.params.user2) {
+      return res.status(401).json({ error: 'Both users required' });
+    }
+
+    const { user1, user2 } = req.params;
+
+    const orders = await Order.findAll({
+      where: {
+        [Op.or]: [
+          {
+            user: user1,
+          },
+          { user: user2 },
+        ],
+      },
+    });
+
+    let count1 = 0;
+    let count2 = 0;
+    let evolution1 = new Array();
+    let evolution2 = new Array();
+    let together = new Array();
+
+    for (let i = 0; i < orders.length; i++) {
+      const order = orders[i];
+      const orderJSON = order.toJSON();
+      for (let j = 0; j < orderJSON.items.length; j++) {
+        orderJSON.items[j] = JSON.parse(orderJSON.items[j]);
+        if (orderJSON.items[j].type === 'drink') {
+          if (orderJSON.user === user1) {
+            count1++;
+          }
+          if (orderJSON.user === user2) {
+            count2++;
+          }
+        }
+        let date = new Date(orderJSON.date);
+        let day = date.getDate();
+        let month = date.getMonth();
+
+        const months = [
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'June',
+          'July',
+          'Aug',
+          'Sept',
+          'Oct',
+          'Nov',
+          'Dec',
+        ];
+
+        const label = `${months[month]}` + ` ` + `${day}`;
+
+        together.push({
+          label: label,
+          evo1: count1,
+          evo2: count2,
+          y: count1 + count2,
+        });
+      }
+    }
+
+    for (let i = 0; i < together.length; i++) {
+      const a = together[i];
+      evolution1.push({ label: a.label, y: a.evo1 });
+      evolution2.push({ label: a.label, y: a.evo2 });
+    }
+
+    res.json({
+      evolution1,
+      evolution2,
+      together,
+    });
+  } catch (err) {
+    next(err);
   }
 });
 

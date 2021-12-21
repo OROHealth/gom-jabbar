@@ -1,8 +1,12 @@
+import { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Box, Button, Container, Grid } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { fetchUsers } from '../../store/utils/thunkCreators';
 
 import Rated from './8rated';
+import DrinkEvolution from './drinkEvolution';
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -17,8 +21,13 @@ const containerStyle = {
   alignItems: 'center',
 };
 
-const Analytics = () => {
+const Analytics = (props) => {
   const classes = useStyles();
+  const { fetchUsers } = props;
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   return (
     <>
@@ -28,13 +37,12 @@ const Analytics = () => {
         </Link>
       </Box>
       <Container maxWidth='lg' sx={containerStyle}>
-        <Grid container>
+        <Grid container spacing={2}>
           <Grid item xs={6}>
             <Rated />
           </Grid>
           <Grid item xs={6}>
-            -what is the evolution of the number of drinks that Alexis and David
-            have taken alone compared to the number together over time
+            <DrinkEvolution />
           </Grid>
           <Grid item xs={6}>
             -the evolution of Moira's mocktails choices compared to her review
@@ -49,4 +57,12 @@ const Analytics = () => {
   );
 };
 
-export default Analytics;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchUsers: () => {
+      dispatch(fetchUsers());
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Analytics);

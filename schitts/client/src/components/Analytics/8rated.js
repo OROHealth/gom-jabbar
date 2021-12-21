@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Box, InputLabel, MenuItem, FormControl, Select } from '@mui/material';
 import axios from 'axios';
 
-import Chart from './canvasjs';
+import Chart from './charts/canvasjs';
 
 const Rated = (props) => {
   const { user } = props;
@@ -20,7 +20,6 @@ const Rated = (props) => {
     const { data } = await axios.get(
       `/api/analytics/8rated-6months/${selectedUser}`
     );
-    console.log(data.orders_past_6months);
     let qt = 0,
       tE = 0,
       rT = 0,
