@@ -12,6 +12,7 @@ router.get('/', async (req, res, next) => {
       const allItems = new Array();
       const food = new Array();
       const drinks = new Array();
+      const mocktails = new Array();
 
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
@@ -19,6 +20,7 @@ router.get('/', async (req, res, next) => {
         allItems.push(itemJSON);
         if (itemJSON.type === 'food') food.push(itemJSON);
         if (itemJSON.type === 'drink') drinks.push(itemJSON);
+        if (itemJSON.type === 'mocktail') mocktails.push(itemJSON);
       }
 
       allItems.sort(function (a, b) {
@@ -53,6 +55,7 @@ router.get('/', async (req, res, next) => {
         allItems,
         food,
         drinks,
+        mocktails,
       });
     }
   } catch (error) {

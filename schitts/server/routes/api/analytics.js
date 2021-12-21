@@ -145,4 +145,79 @@ router.get('/drinks-taken/:user1/:user2', async (req, res, next) => {
   }
 });
 
+router.get('/mocktailToReview/:user', async (req, res, next) => {
+  try {
+    if (!req.params.user) {
+      return res.status(401).json({ error: 'Something went wrong' });
+    }
+
+    const orders = await Order.findAll({
+      where: {
+        user: req.params.user,
+      },
+    });
+
+    let mocktails = new Array();
+    let reviews = new Array();
+
+    for (let i = 0; i < orders.length; i++) {
+      const order = orders[i];
+      const orderJSON = order.toJSON();
+      for (let j = 0; j < orderJSON.items.length; j++) {
+        orderJSON.items[j] = JSON.parse(orderJSON.items[j]);
+        if (orderJSON.items[j].type === 'mocktail') {
+          let d = new Date(orderJSON.date);
+          let day = d.getDate();
+          let month = d.getMonth();
+
+          const months = [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'June',
+            'July',
+            'Aug',
+            'Sept',
+            'Oct',
+            'Nov',
+            'Dec',
+          ];
+
+          const date = `${months[month]}` + ` ` + `${day}`;
+
+          // populate mocktails list without pre-determined mocktail list
+          // **must not need to change code if boss adds mocktail to menu
+          const idx = mocktails.findIndex(
+            (a) => a.name === orderJSON.items[j].name
+          );
+          if (idx === -1) {
+            mocktails.push({
+              name: orderJSON.items[j].name,
+              data: [{ x: date, y: 1 }],
+            });
+          } else {
+            if (mocktails[idx].data.date === date) {
+              mocktails[idx].data.y += 1;
+            } else {
+              mocktails[idx].data.push({
+                name: orderJSON.items[j].name,
+                data: [{ x: date, y: 1 }],
+              });
+            }
+          }
+          reviews.push({
+            x: date,
+            y: orderJSON.feedback,
+          });
+        }
+      }
+    }
+    res.json({ mocktails, reviews });
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

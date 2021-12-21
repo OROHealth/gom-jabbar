@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Box, Button, Container, Grid } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { fetchUsers } from '../../store/utils/thunkCreators';
+import { fetchUsers, fetchItems } from '../../store/utils/thunkCreators';
 
 import Rated from './8rated';
 import DrinkEvolution from './drinkEvolution';
+import Mocktails from './mocktails';
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const containerStyle = {
-  height: '90vh',
+  height: 'maxContent',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -23,11 +24,12 @@ const containerStyle = {
 
 const Analytics = (props) => {
   const classes = useStyles();
-  const { fetchUsers } = props;
+  const { fetchUsers, fetchItems } = props;
 
   useEffect(() => {
     fetchUsers();
-  }, [fetchUsers]);
+    fetchItems();
+  }, [fetchUsers, fetchItems]);
 
   return (
     <>
@@ -45,6 +47,7 @@ const Analytics = (props) => {
             <DrinkEvolution />
           </Grid>
           <Grid item xs={6}>
+            <Mocktails />
             -the evolution of Moira's mocktails choices compared to her review
             over time
           </Grid>
@@ -61,6 +64,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchUsers: () => {
       dispatch(fetchUsers());
+    },
+    fetchItems: () => {
+      dispatch(fetchItems());
     },
   };
 };

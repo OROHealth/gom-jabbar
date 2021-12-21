@@ -250,6 +250,7 @@ const MenuModal = (props) => {
             >
               <ToggleButton value='food'>Food</ToggleButton>
               <ToggleButton value='drink'>Drink</ToggleButton>
+              <ToggleButton value='mocktail'>Mocktail</ToggleButton>
             </ToggleButtonGroup>
             <FormControl variant='filled' fullWidth>
               <InputLabel htmlFor='filled-adornment-name'>Name</InputLabel>
