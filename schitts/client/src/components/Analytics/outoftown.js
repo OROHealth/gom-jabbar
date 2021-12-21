@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   InputLabel,
@@ -35,7 +35,6 @@ const Rated = () => {
       `/api/analytics/find-customer/${event.target.value}`
     );
     setCustomer(data.customer);
-    console.log(data);
   };
 
   return (
