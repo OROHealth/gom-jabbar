@@ -35,14 +35,14 @@ db.sequelize = sequelize
 // instead of above [table structure codes] we do : under models folder we get all files and initialize model corresponding to each file
 fs.readdirSync(path.join(__dirname)).forEach(file => {
   var model = null
-  if (file !== 'index.js' && file !== 'relatedModels.js') {
+  if (file !== 'index.js' && file !== 'RelationalsModels.js') {
     model = require(path.join(__dirname, file))(sequelize, DataTypes)
     db[model.name] = model
   }
 })
 
 // load relation between models
-require('./relatedModels')(db)
+require('./RelationalsModels')(db)
 if (isTrue(process.env.APP_SYNC)) {
   db.sequelize.sync({ force: true }) // sync database everytime app is running, wipe all table and re-create
     .then(() => {

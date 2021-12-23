@@ -5,5 +5,5 @@ module.exports = (db) => {
   * The possible choices are RESTRICT, CASCADE, NO ACTION, SET DEFAULT and SET NULL.
   */
   db.Product.hasMany(db.Review, { as: 'Reviews' })
-  db.Review.belongsTo(db.Product, { as: 'Product', foreignKey: { allowNull: false, onDelete: 'CASCADE', onUpdate: 'RESTRICT' } })
+  db.Review.belongsTo(db.Product, { as: 'Product', foreignKey: { allowNull: false, onDelete: 'CASCADE', onUpdate: 'RESTRICT' } }) 
 }

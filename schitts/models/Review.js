@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Review = sequelize.define('Review', {
+  const Model = sequelize.define('Review', {
     title: {
       type: DataTypes.STRING,
       allowNull: false
@@ -24,5 +24,5 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: true
   })
 
-  return Review
+  return Model
 }

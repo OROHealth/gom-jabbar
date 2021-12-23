@@ -6,5 +6,7 @@ a nodeJS api template using sequelize, mysql or MongoDB
 
 # Example : \api\v1\product { Get | Post }
 # Example : \api\v1\product\:id { Get | Put | Patch | Delete }
+# dependencies installation "npm install"
+
 # start server "npm start"
 # Entry Point "server.js

@@ -1,10 +1,32 @@
 const { isUUID, generateUuidV4 } = require('../helpers/helpers')
 
 module.exports = (sequelize, DataTypes) => {
-  const Model = sequelize.define('Product', {
-    title: {
+  const Model = sequelize.define('Customer', {
+    first_name: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    last_name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        notNull: false,
+        notEmpty: false,
+        isEmail: { args: true, msg: 'The email is not in correct format' }
+      }
+    },
+    phone_number: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        is: { args: /\+\d{3}\s\d{9,}$/i, msg: 'This phone number is not valid' }
+      }
     },
     reference: {
       type: DataTypes.UUID,
@@ -18,21 +40,6 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: false,
         isUUID: (value) => isUUID(value)
       }
-    },
-    price: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-      validate: {
-        isInt: { args: true, msg: 'The price must be numeric' }
-      }
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: true
-    },
-    published: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true
     }
   }, {
     hooks: {
@@ -40,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
         this.reference = generateUuidV4()
       }
     },
-    tableName: 'products',
+    tableName: 'customers',
     timestamps: true,
     // I want updatedAt to actually be called updateTimestamp
     updatedAt: 'updated_at',
