@@ -1,10 +1,2 @@
-[2021-12-21T18:49:48.693] [INFO] app - Fetching products. ProductController@:32
-[2021-12-21T19:26:11.394] [INFO] app - Fetching customers. CustomerController@:32
-[2021-12-21T19:26:48.175] [INFO] app - Fetching customers. CustomerController@:32
-[2021-12-21T21:36:26.108] [INFO] app - New customer created. CustomerController@:70
-[2021-12-21T21:36:50.997] [INFO] app - Fetching customers. CustomerController@:30
-[2021-12-21T21:37:30.606] [INFO] app - Product updated, id: 1. CustomerController@:150
-[2021-12-21T21:37:56.977] [ERROR] app - SequelizeUniqueConstraintError: Validation error. CustomerController@store:84
-[2021-12-21T21:49:27.974] [ERROR] app - SequelizeValidationError: Validation error: This phone number is not valid. CustomerController@store:84
-[2021-12-21T21:50:05.050] [ERROR] app - SequelizeValidationError: Validation error: The email is not in correct format,
-Validation error: This phone number is not valid. CustomerController@store:84
+[2021-12-23T17:53:53.102] [ERROR] app - SequelizeEagerLoadingError: Review is associated to Product using an alias. You've included an alias (Reviews), but it does not match the alias(es) defined in your association (reviews).. ProductController@:37
+[2021-12-23T17:55:14.673] [INFO] app - Fetching products. ProductController@:32
