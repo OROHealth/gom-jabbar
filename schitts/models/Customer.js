@@ -40,6 +40,26 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: false,
         isUUID: (value) => isUUID(value)
       }
+    },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: false,
+        notEmpty: { args: true, msg: 'Address field must be provided' }
+      }
+    },
+    city: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: false,
+        notEmpty: { args: true, msg: 'City field must be provided' }
+      }
+    },
+    favorite_dish: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     hooks: {
