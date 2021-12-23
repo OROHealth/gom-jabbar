@@ -1,4 +1,5 @@
 const { isUUID, generateUuidV4 } = require('../helpers/helpers')
+const tableName = 'customers'
 
 module.exports = (sequelize, DataTypes) => {
   const Model = sequelize.define('Customer', {
@@ -43,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       validate: {
         notNull: false,
         notEmpty: { args: true, msg: 'Address field must be provided' }
@@ -51,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     city: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       validate: {
         notNull: false,
         notEmpty: { args: true, msg: 'City field must be provided' }
@@ -67,7 +68,7 @@ module.exports = (sequelize, DataTypes) => {
         this.reference = generateUuidV4()
       }
     },
-    tableName: 'customers',
+    tableName: tableName,
     timestamps: true,
     // I want updatedAt to actually be called updateTimestamp
     updatedAt: 'updated_at',

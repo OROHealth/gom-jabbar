@@ -1,11 +1,21 @@
 const { isUUID, generateUuidV4 } = require('../helpers/helpers')
-const tableName = 'products'
+const tableName = 'dishes'
 
 module.exports = (sequelize, DataTypes) => {
-  const Model = sequelize.define('Product', {
-    title: {
+  const Model = sequelize.define('Dish', {
+    name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: { args: true, msg: 'the name field must be provided' }
+      }
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: { args: true, msg: 'the description field must be provided' }
+      }
     },
     reference: {
       type: DataTypes.UUID,
@@ -21,19 +31,11 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     price: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
+      type: DataTypes.FLOAT,
+      allowNull: false,
       validate: {
-        isInt: { args: true, msg: 'The price must be numeric' }
+        isFloat: { args: true, msg: 'the price must be a decimal' },
       }
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: true
-    },
-    published: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true
     }
   }, {
     hooks: {

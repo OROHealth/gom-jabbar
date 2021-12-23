@@ -1,11 +1,12 @@
 const { isUUID, generateUuidV4 } = require('../helpers/helpers')
-const tableName = 'products'
+const tableName = 'bookings'
 
 module.exports = (sequelize, DataTypes) => {
-  const Model = sequelize.define('Product', {
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false
+  const Model = sequelize.define('Booking', {
+    party_size: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
     },
     reference: {
       type: DataTypes.UUID,
@@ -20,20 +21,12 @@ module.exports = (sequelize, DataTypes) => {
         isUUID: (value) => isUUID(value)
       }
     },
-    price: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
+    reservation_date: {
+      type: DataTypes.DATE,
       validate: {
-        isInt: { args: true, msg: 'The price must be numeric' }
+        isDate: { args: true, msg: 'the reservation date must be a date format' },
+        isAfter: { args: new Date(), msg: 'the reservation date must be later' }
       }
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: true
-    },
-    published: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true
     }
   }, {
     hooks: {

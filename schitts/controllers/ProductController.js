@@ -1,5 +1,5 @@
 // autoload index.js
-const db = require('../models')
+const db = require('../models/_index')
 var consoleLog = require('../helpers/helpers').consoleLog // output into console regarding .env Log flag
 const log4js = require('../config/log4js')
 var log = log4js.getLogger('app') // enable logging
@@ -103,7 +103,7 @@ const edit = async (req, res) => {
 
   try {
     const id = req.params.product_id
-    await Product.findOne({ where: { id: id }, include: { model: db.Review, as: 'Reviews' } }).then(
+    await Product.findOne({ where: { id: id }, include: { model: db.Review, as: 'reviews' } }).then(
       (updated) => {
         if (updated === null) {
           throw new Error('product not found')

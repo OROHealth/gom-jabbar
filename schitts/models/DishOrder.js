@@ -1,19 +1,13 @@
-const tableName = 'reviews'
+const { isUUID, generateUuidV4 } = require('../helpers/helpers')
+const tableName = 'dishes_orders'
 
 module.exports = (sequelize, DataTypes) => {
-  const Model = sequelize.define('Review', {
-    title: {
-      type: DataTypes.STRING,
+  const Model = sequelize.define('DishOrder', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
       allowNull: false
-    },
-    price: {
-      type: DataTypes.INTEGER
-    },
-    description: {
-      type: DataTypes.TEXT
-    },
-    published: {
-      type: DataTypes.BOOLEAN
     }
   }, {
     tableName: tableName,
@@ -23,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: 'created_at',
     deletedAt: 'deleted_at',
     sequelize,
-    paranoid: true
+    paranoid: true // soft-deletion
   })
 
   return Model

@@ -3,6 +3,9 @@ const { Sequelize, DataTypes } = require('sequelize')
 const path = require('path')
 const fs = require('fs')
 const { isTrue } = require('../helpers/helpers')
+const log4js = require('../config/log4js')
+var log = log4js.getLogger('app') // enable logging
+const pkg = require('get-current-line').default // get current script filename and line
 
 const sequelize = new Sequelize(
   dbConfig.DATABASE,
@@ -29,36 +32,28 @@ db.Sequelize = Sequelize
 db.sequelize = sequelize
 
 // table structure
-/* db.Product = require('./Product.js')(sequelize, DataTypes)
-db.Review = require('./Review.js')(sequelize, DataTypes)
-db.Customer = require('./Customer')(sequelize, DataTypes)
-db.Order = require('./Order')(sequelize, DataTypes)
-db.Dish = require('./Dish')(sequelize, DataTypes)
-db.OrderDish = require('./OrderDish')(sequelize, DataTypes) */
+/* db.Product = require('./Product.js')(sequelize, DataTypes) */
 
 // instead of above [table structure codes] we do : under models folder we get all files and initialize model corresponding to each file
 fs.readdirSync(path.join(__dirname)).forEach(file => {
   var model = null
-  if (file !== 'index.js' && file !== 'RelationalsModels.js') {
+  if (file !== '_index.js' && file !== '_connections.js') {
     model = require(path.join(__dirname, file))(sequelize, DataTypes)
     db[model.name] = model
   }
 })
 
 // load relation between models
-require('./RelationalsModels')(db)
-try {
-  if (isTrue(process.env.APP_SYNC)) {
-    db.sequelize.sync({ force: true }) // sync database everytime app is running, wipe all table and re-create
-      .then(() => {
-        console.log('Database synchronised successfully ')
-      }).catch(err => { // SequelizeValidationError
-        throw (err)
-      })
-  }
-} catch (err) {
-  console.log(err)
-  console.log('GET THERE')
+require('./_connections')(db)
+
+if (isTrue(process.env.APP_SYNC)) {
+  db.sequelize.sync({ force: true }) // sync database everytime app is running, wipe all table and re-create
+    .then(() => {
+      console.log('Database synchronised successfully ')
+    }).catch(err => { // SequelizeValidationError
+      log.error(`${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+      throw (err)
+    })
 }
 
 module.exports = db

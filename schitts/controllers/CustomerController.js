@@ -1,5 +1,5 @@
 // autoload index.js
-const db = require('../models')
+const db = require('../models/_index')
 var consoleLog = require('../helpers/helpers').consoleLog // output into console regarding .env Log flag
 const log4js = require('../config/log4js')
 var log = log4js.getLogger('app') // enable logging

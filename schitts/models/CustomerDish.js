@@ -1,19 +1,12 @@
-const tableName = 'reviews'
+const tableName = 'customer_dishes'
 
 module.exports = (sequelize, DataTypes) => {
-  const Model = sequelize.define('Review', {
-    title: {
-      type: DataTypes.STRING,
+  const Model = sequelize.define('CustomerDish', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
       allowNull: false
-    },
-    price: {
-      type: DataTypes.INTEGER
-    },
-    description: {
-      type: DataTypes.TEXT
-    },
-    published: {
-      type: DataTypes.BOOLEAN
     }
   }, {
     tableName: tableName,
@@ -23,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: 'created_at',
     deletedAt: 'deleted_at',
     sequelize,
-    paranoid: true
+    paranoid: true // soft-deletion
   })
 
   return Model
