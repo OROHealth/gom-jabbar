@@ -1,4 +1,4 @@
-const dbConfig = require('../config/dbConfig')
+const dbConfig = require('../config/dbConfig').development
 const { Sequelize, DataTypes } = require('sequelize')
 const path = require('path')
 const fs = require('fs')
@@ -6,7 +6,7 @@ const { isTrue } = require('../helpers/helpers')
 const log4js = require('../config/log4js')
 var log = log4js.getLogger('app') // enable logging
 const pkg = require('get-current-line').default // get current script filename and line
-
+const dbSeed = require('../seed/dbSeeder')
 const sequelize = new Sequelize(
   dbConfig.DATABASE,
   dbConfig.USER,
@@ -50,6 +50,9 @@ if (isTrue(process.env.APP_SYNC)) {
   db.sequelize.sync({ force: true }) // sync database everytime app is running, wipe all table and re-create
     .then(() => {
       console.log('Database synchronised successfully ')
+      if (process.env.APP_SEED) {
+        dbSeed(db)
+      }
     }).catch(err => { // SequelizeValidationError
       log.error(`${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
       throw (err)

@@ -4,7 +4,7 @@
   "description": "Node Rest Api With Sequelize",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server --trace-warnings",
+    "start": "nodemon server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
