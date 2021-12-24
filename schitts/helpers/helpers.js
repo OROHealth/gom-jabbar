@@ -15,7 +15,15 @@ const consoleLog = ($value) => {
  * @param {$value} value
  * @returns boolean
  */
-const isTrue = ($value) => ($value === 'true')
+const isTrue = ($value) => ($value === 'true' || $value === true || $value === 1)
+
+const pattern = /\d+/
+/**
+ * description check if value is a number
+ * @param {$value} value
+ * @returns boolean
+ */
+const isNumber = ($value) => (pattern.test($value))
 
 /**
  * description generate a custom uuidV4
@@ -29,4 +37,4 @@ const isUUID = ($value) => (uuidValidate($value) && uuidVersion === '4')
 
 const randomBytes64 = () => require('crypto').randomBytes(64).toString('hex')
 
-module.exports = { consoleLog, isTrue, generateUuidV4, isUUID, randomBytes64 }
+module.exports = { consoleLog, isTrue, generateUuidV4, isUUID, randomBytes64, isNumber }

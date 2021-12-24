@@ -8,16 +8,14 @@ const pkg = require('get-current-line').default // get current script filename a
 var path = require('path')
 var validationError = {}
 // create main Model
-const Product = db.Product
-
+const Order = db.Order
+const Customer = db.Customer
 // Methods
 /**
- * @route GET /api/v1/product
- * @description Fetch products
+ * @route GET /api/v1/order
+ * @description Fetch order
  * @summary summary
- * @param {paramType} paramId.paramType - paramDescription
- * @param {requestBodyType} request.body - requestBodyDescription
- * @return {responseType} status - responseDescription - responseContentType
+ * @return {array} status - responseDescription - responseContentType
  */
 const index = async (req, res) => {
   var responseObject = {
@@ -27,10 +25,10 @@ const index = async (req, res) => {
     msg: ''
   }
   const offset = db.limit * (isNumber(req.query.page) ? req.query.page : 0)
-  await Product.findAll({ attributes: ['id', 'reference', 'title', 'price', 'description', 'published'], include: { model: db.Review, as: 'reviews', foreignKey: 'product_id' }, limit: db.limit, offset: offset }).then(
-    (products) => {
-      responseObject.data = products.groupByField('price')
-      log.info(`Fetching products. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+  await Order.findAll({ attributes: ['reference', 'order_date', 'CustomerId'], limit: db.limit, offset: offset }).then(
+    (orders) => {
+      responseObject.data = orders
+      log.info(`Fetching orders. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
       res.status(200).json(responseObject)
     }
   ).catch(err => {
@@ -43,8 +41,11 @@ const index = async (req, res) => {
 }
 
 /**
- *  @description Store new product
- *  @route POST /api/v1/product
+ * @route POST /api/v1/order
+ * @description Store new order
+ * @summary summary
+ * @param {requestBodyType} request.body - requestBodyDescription
+ * @return {responseType} status - responseDescription - responseContentType
  */
 const store = async (req, res) => {
   var responseObject = {
@@ -57,17 +58,26 @@ const store = async (req, res) => {
   try {
     await db.sequelize.transaction(async (transaction) => {
       const info = {
-        title: req.body.title,
-        price: req.body.price,
-        reference: req.body.reference,
-        description: req.body.description,
-        published: req.body.published ? req.body.published : false
+        order_date: req.body.order_date,
+        CustomerId: req.body.customer_id
       }
 
-      await Product.create(info, { fields: ['title', 'reference', 'description', 'price', 'published'], transaction }).then(newProduct => {
-        responseObject.data = newProduct.dataValues
+      // check if favorite_dish already exists
+      await Customer.findOne({ where: { reference: info.CustomerId } }).then(
+        (found) => {
+          if (found === null) {
+            throw new Error('dish not found')
+          }
+          info.CustomerId = found.id
+        }
+      ).catch(error => {
+        throw new Error(error)
+      })
+
+      await Order.create(info, { fields: ['order_date', 'CustomerId'], transaction }).then(newly => {
+        responseObject.data = newly.dataValues
         consoleLog(responseObject.data)
-        log.info(`New product created. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+        log.info(`New order created. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
         return res.status(201).json(responseObject)
       }).catch(err => { // SequelizeValidationError
         throw (err)
@@ -91,8 +101,8 @@ const store = async (req, res) => {
 }
 
 /**
- *  @description Fetch specific product
- *  @route GET /api/v1/product/:product_id
+ *  @description Fetch specific order
+ *  @route GET /api/v1/order/:customer_id
  */
 const edit = async (req, res) => {
   var responseObject = {
@@ -103,11 +113,11 @@ const edit = async (req, res) => {
   }
 
   try {
-    const id = req.params.product_id
-    await Product.findOne({ where: { id: id }, include: { model: db.Review, as: 'reviews' } }).then(
+    const reference = req.params.reference
+    await Order.findOne({ where: { reference: reference } }).then(
       (updated) => {
         if (updated === null) {
-          throw new Error('product not found')
+          throw new Error('order not found')
         }
 
         responseObject.data = updated.dataValues
@@ -125,8 +135,9 @@ const edit = async (req, res) => {
 }
 
 /**
- *  @description Update specific product
- *  @route PATCH /api/v1/product/:product_id
+ * @route PATCH /api/v1/order/:reference
+ * @description Update specific order
+ * @param {string} reference - the order's reference
  */
 const update = async (req, res) => {
   var responseObject = {
@@ -137,14 +148,28 @@ const update = async (req, res) => {
   }
 
   try {
+    // check if customer already exists
+    if (req.body.customer_id) {
+      await Customer.findOne({ where: { reference: req.body.customer_id } }).then(
+        (found) => {
+          if (found === null) {
+            throw new Error('customer not found')
+          }
+          req.body.CustomerId = found.id
+        }
+      ).catch(error => {
+        throw new Error(error)
+      })
+    }
+
     await db.sequelize.transaction(
       async (transaction) => {
-        const id = req.params.product_id
-        await Product.update(req.body, { where: { id: id }, fields: ['title', 'description', 'price', 'published'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
+        const reference = req.params.reference
+        await Order.update(req.body, { where: { reference: reference }, fields: ['order_date', 'CustomerId'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
           .then(
             (updated) => {
               consoleLog(updated)
-              log.info(`Product updated, id: ${id}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+              log.info(`Product updated, reference: ${reference}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
               responseObject.data = updated
               res.status(200).json(responseObject)
             }
@@ -170,8 +195,8 @@ const update = async (req, res) => {
 }
 
 /**
- *  @description Destroy specific product
- *  @route delete /api/v1/product/:product_id
+ *  @description Destroy specific order
+ *  @route delete /api/v1/order/:reference
  */
 const destroy = async (req, res) => {
   var responseObject = {
@@ -180,31 +205,15 @@ const destroy = async (req, res) => {
     error: {},
     msg: ''
   }
-  const id = req.params.product_id
-  await Product.findOne({
-    where: { id: id }
-  }).then(
-    (product) => {
-      if (product === null) {
-        log.debug(`Product not found, id: ${id}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
-        throw new Error('Product not found')
-      } else {
-        deleteProductAsync(responseObject, id, res)
+  const reference = req.params.reference
+  await Order.destroy({ where: { reference: reference } }).then(
+    (order) => {
+      log.debug(order)
+      if (order === 0) {
+        log.debug(`Order not found, reference: ${reference}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+        throw new Error('Order not found')
       }
-    }
-  ).catch(error => {
-    log.debug(`${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
-    responseObject.status = false
-    responseObject.msg = error.message
-    return res.status(400).json(responseObject)
-  })
-}
-
-const deleteProductAsync = async (responseObject, id, res) => {
-  await Product.destroy({ where: { id: id } }).then(
-    (product) => {
-      consoleLog(product)
-      responseObject.msg = 'product successfully deleted'
+      responseObject.msg = 'order successfully deleted'
       res.status(200).json(responseObject)
     }
   ).catch(err => {

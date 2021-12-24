@@ -1,6 +1,7 @@
 // autoload index.js
 const db = require('../models/_index')
 var consoleLog = require('../helpers/helpers').consoleLog // output into console regarding .env Log flag
+var isNumber = require('../helpers/helpers').isNumber
 const log4js = require('../config/log4js')
 var log = log4js.getLogger('app') // enable logging
 const pkg = require('get-current-line').default // get current script filename and line
@@ -8,6 +9,7 @@ var path = require('path')
 var validationError = {}
 // create main Model
 const Customer = db.Customer
+const Dish = db.Dish
 
 // Methods
 /**
@@ -24,7 +26,8 @@ const index = async (req, res) => {
     msg: ''
   }
 
-  await Customer.findAll({ attributes: ['id', 'first_name', 'last_name', 'email', 'reference'] }).then(
+  const offset = db.limit * (isNumber(req.query.page) ? req.query.page : 0)
+  await Customer.findAll({ attributes: ['first_name', 'last_name', 'email', 'reference', 'phone_number', 'address', 'city', 'favorite_dish'], limit: db.limit, offset: offset }).then(
     (customers) => {
       responseObject.data = customers
       log.info(`Fetching customers. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
@@ -61,10 +64,25 @@ const store = async (req, res) => {
         last_name: req.body.last_name,
         reference: req.body.reference,
         email: req.body.email,
-        phone_number: req.body.phone_number
+        phone_number: req.body.phone_number,
+        address: req.body.address,
+        city: req.body.city,
+        favorite_dish: req.body.favorite_dish
       }
 
-      await Customer.create(info, { fields: ['first_name', 'last_name', 'email', 'phone_number', 'reference'], transaction }).then(newCustomer => {
+      // check if favorite_dish already exists
+      await Dish.findOne({ where: { reference: info.favorite_dish } }).then(
+        (found) => {
+          if (found === null) {
+            throw new Error('dish not found')
+          }
+          info.favorite_dish = found.id
+        }
+      ).catch(error => {
+        throw new Error(error)
+      })
+
+      await Customer.create(info, { fields: ['first_name', 'last_name', 'email', 'phone_number', 'address', 'city', 'favorite_dish'], transaction }).then(newCustomer => {
         responseObject.data = newCustomer.dataValues
         consoleLog(responseObject.data)
         log.info(`New customer created. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
@@ -103,13 +121,12 @@ const edit = async (req, res) => {
   }
 
   try {
-    const id = req.params.customer_id
-    await Customer.findOne({ where: { id: id } }).then(
+    const reference = req.params.reference
+    await Customer.findOne({ where: { reference: reference } }).then(
       (updated) => {
         if (updated === null) {
           throw new Error('customer not found')
         }
-
         responseObject.data = updated.dataValues
         return res.status(200).json(responseObject)
       }
@@ -140,14 +157,26 @@ const update = async (req, res) => {
   }
 
   try {
+    // check if favorite_dish already exists
+    await Dish.findOne({ where: { reference: req.body.favorite_dish || 0 } }).then(
+      (found) => {
+        if (found === null) {
+          throw new Error('dish not found')
+        }
+        req.body.favorite_dish = found.id
+      }
+    ).catch(error => {
+      throw new Error(error)
+    })
+
     await db.sequelize.transaction(
       async (transaction) => {
-        const id = req.params.customer_id
-        await Customer.update(req.body, { where: { id: id }, fields: ['first_name', 'last_name', 'phone_number'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
+        const reference = req.params.reference
+        await Customer.update(req.body, { where: { reference: reference }, fields: ['first_name', 'last_name', 'phone_number', 'address', 'city', 'favorite_dish'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
           .then(
             (updated) => {
               consoleLog(updated)
-              log.info(`Product updated, id: ${id}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+              log.info(`Product updated, reference: ${reference}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
               responseObject.data = updated
               res.status(200).json(responseObject)
             }
@@ -183,16 +212,16 @@ const destroy = async (req, res) => {
     error: {},
     msg: ''
   }
-  const id = req.params.customer_id
+  const reference = req.params.reference
   await Customer.findOne({
-    where: { id: id }
+    where: { reference: reference }
   }).then(
     (product) => {
       if (product === null) {
-        log.debug(`Customer not found, id: ${id}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+        log.debug(`Customer not found, reference: ${reference}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
         throw new Error('Customer not found')
       } else {
-        deleteProductAsync(responseObject, id, res)
+        deleteModelAsync(responseObject, reference, res)
       }
     }
   ).catch(error => {
@@ -203,8 +232,8 @@ const destroy = async (req, res) => {
   })
 }
 
-const deleteProductAsync = async (responseObject, id, res) => {
-  await Customer.destroy({ where: { id: id } }).then(
+const deleteModelAsync = async (responseObject, reference, res) => {
+  await Customer.destroy({ where: { reference: reference } }).then(
     (customer) => {
       consoleLog(customer)
       responseObject.msg = 'customer successfully deleted'

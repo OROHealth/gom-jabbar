@@ -46,10 +46,17 @@ let prefix = 'product'
 
 /**
  * @swagger
- * /api/v1/product:
+ * /api/v1/product?page=:
  *  get:
  *    summary: returns the list of all products
  *    tags: [Product]
+ *    parameters:
+ *      - in: query
+ *        name: page
+ *        schema:
+ *          type: integer
+ *        required: false
+ *        description: the pagination page
  *    responses:
  *      200:
  *        description: the list of the products

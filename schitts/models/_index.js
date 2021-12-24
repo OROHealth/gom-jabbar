@@ -30,7 +30,7 @@ const db = {}
 
 db.Sequelize = Sequelize
 db.sequelize = sequelize
-
+db.limit = 10 // pagination
 // table structure
 /* db.Product = require('./Product.js')(sequelize, DataTypes) */
 
@@ -50,7 +50,7 @@ if (isTrue(process.env.APP_SYNC)) {
   db.sequelize.sync({ force: true }) // sync database everytime app is running, wipe all table and re-create
     .then(() => {
       console.log('Database synchronised successfully ')
-      if (process.env.APP_SEED) {
+      if (isTrue(process.env.APP_SEED)) {
         dbSeed(db)
       }
     }).catch(err => { // SequelizeValidationError

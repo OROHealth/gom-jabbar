@@ -14,6 +14,9 @@ const prefix = 'customer'
  *        - last_name
  *        - email
  *        - phone_number
+ *        - address
+ *        - city
+ *        - favorite_dish
  *      properties:
  *        id:
  *          type: integer
@@ -33,11 +36,23 @@ const prefix = 'customer'
  *        phone_number:
  *          type: string
  *          description: The customer's phone number
+ *        address:
+ *          type: string
+ *          description: The customer's address
+ *        city:
+ *          type: string
+ *          description: The customer's city
+ *        favorite_dish:
+ *          type: string
+ *          description: The customer's favorite dish id
  *      example:
  *        first_name: David
  *        last_name: DuChovni
  *        email: david_duchovni@example.com
  *        phone_number: +235 965854625
+ *        address: 15 rue du fevre
+ *        city: paris
+ *        favorite_dish: 7dc36efb-0533-4d9f-b4fb-62f757c08b3a
  */
 
 /**
@@ -49,10 +64,17 @@ const prefix = 'customer'
 
 /**
  * @swagger
- * /api/v1/customer:
+ * /api/v1/customer?page=:
  *  get:
  *    summary: returns the list of all customers
  *    tags: [Customer]
+ *    parameters:
+ *      - in: query
+ *        name: page
+ *        schema:
+ *          type: integer
+ *        required: false
+ *        description: the pagination page
  *    responses:
  *      200:
  *        description: the list of the customers
@@ -91,7 +113,7 @@ router.post(`/${prefix}`, CustomerController.store)
 
 /**
   * @swagger
-  * /api/v1/customer/{id}:
+  * /api/v1/customer/{reference}:
   *  get:
   *    summary: get the customer by id
   *    tags: [Customer]
@@ -112,11 +134,11 @@ router.post(`/${prefix}`, CustomerController.store)
   *      404:
   *        description: The customer was not found
   */
-router.get(`/${prefix}/:customer_id`, CustomerController.edit)
+router.get(`/${prefix}/:reference`, CustomerController.edit)
 
 /**
   * @swagger
-  * /api/v1/customer/{id}:
+  * /api/v1/customer/{reference}:
   *  patch:
   *    summary: update the customer by id
   *    tags: [Customer]
@@ -143,11 +165,11 @@ router.get(`/${prefix}/:customer_id`, CustomerController.edit)
   *      404:
   *        description: The customer was not found
   */
-router.patch(`/${prefix}/:customer_id`, CustomerController.update)
+router.patch(`/${prefix}/:reference`, CustomerController.update)
 
 /**
   * @swagger
-  * /api/v1/customer/{id}:
+  * /api/v1/customer/{reference}:
   *  delete:
   *    summary: delete the customer by id
   *    tags: [Customer]
@@ -168,15 +190,6 @@ router.patch(`/${prefix}/:customer_id`, CustomerController.update)
   *      404:
   *        description: The customer was not found
   */
-router.delete(`/${prefix}/:product_id`, CustomerController.destroy)
-
-/* router.route(`/${prefix}`)
-   .get(CustomerController.index)
-   .post(CustomerController.store)
-
- router.route(`/${prefix}/:product_id`)
-   .get(CustomerController.edit)
-   .patch(CustomerController.update)
-   .delete(CustomerController.destroy) */
+router.delete(`/${prefix}/:reference`, CustomerController.destroy)
 
 module.exports = router
