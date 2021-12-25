@@ -10,7 +10,8 @@ var validationError = {}
 // create main Model
 const Customer = db.Customer
 const Dish = db.Dish
-
+const Order = db.Order
+const Booking = db.Booking
 // Methods
 /**
  * @route GET /api/v1/customer
@@ -27,7 +28,7 @@ const index = async (req, res) => {
   }
 
   const offset = db.limit * (isNumber(req.query.page) ? req.query.page : 0)
-  await Customer.findAll({ attributes: ['first_name', 'last_name', 'email', 'reference', 'phone_number', 'address', 'city', 'favorite_dish'], limit: db.limit, offset: offset }).then(
+  await Customer.findAll({ include: [{ model: Dish, require: false, as: 'Dishes' }, { model: Order, require: false, as: 'Orders' }, { model: Booking, require: false, as: 'Bookings' }], attributes: ['first_name', 'last_name', 'email', 'reference', 'phone_number', 'address', 'city', 'favorite_dish'], limit: db.limit, offset: offset }).then(
     (customers) => {
       responseObject.data = customers
       log.info(`Fetching customers. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
@@ -122,7 +123,7 @@ const edit = async (req, res) => {
 
   try {
     const reference = req.params.reference
-    await Customer.findOne({ where: { reference: reference } }).then(
+    await Customer.findOne({ where: { reference: reference }, include: [{ model: Dish, require: false, as: 'Dishes' }, { model: Order, require: false, as: 'Orders' }, { model: Booking, require: false, as: 'Bookings' }] }).then(
       (updated) => {
         if (updated === null) {
           throw new Error('customer not found')

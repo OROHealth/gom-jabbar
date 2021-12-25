@@ -11,6 +11,7 @@ const prefix = 'order'
  *      type: object
  *      required:
  *        - order_date
+ *        - tone
  *        - CustomerId
  *      properties:
  *        id:
@@ -22,11 +23,16 @@ const prefix = 'order'
  *        reference:
  *          type: string
  *          description: The order's reference
+ *        tone:
+ *          type: string
+ *          description: The tone at which the order was passed
+ *          enum: [angry, happy, overhelmed, pregnant, moody, bored, excited]
  *        CustomerId:
  *          type: string
  *          description: The customer id
  *      example:
  *        order_date: 1982-05-06
+ *        tone: happy
  *        customer_id: 7dc36efb-0533-4d9f-b4fb-62f757c08b3a
  */
 

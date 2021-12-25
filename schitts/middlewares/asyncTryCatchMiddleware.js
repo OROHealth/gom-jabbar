@@ -1,4 +1,5 @@
 module.exports = (req, res, next) => {
+  // use this middleware to define your common route logic
   try {
     // res.status(400).json({ status: 'success' })
     console.log('Middleware reached!')

@@ -8,6 +8,15 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
       allowNull: false
+    },
+    quantity: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 1,
+      validate: {
+        isNumeric: { args: true, msg: 'the quantity must be numeric' },
+        min: { args: 1, msg: 'the quantity must be greater or equal then 1' }
+      }
     }
   }, {
     tableName: tableName,

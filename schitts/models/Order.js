@@ -20,7 +20,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
       validate: {
+        isAfter: { args: (new Date()).toString(), msg: 'the reservation date must be later' },
         isDate: { args: true, msg: 'the order_date field must be a date format' }
+      }
+    },
+    tone: {
+      type: DataTypes.ENUM(['angry', 'happy', 'overhelmed', 'pregnant', 'moody', 'bored', 'excited']),
+      allowNull: false,
+      validate: {
+        isIn: { args: [['angry', 'happy', 'overhelmed', 'pregnant', 'moody', 'bored', 'excited']], msg: 'The order tone must match one of requested' }
       }
     }
   }, {

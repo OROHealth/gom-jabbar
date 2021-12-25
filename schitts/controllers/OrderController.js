@@ -25,9 +25,9 @@ const index = async (req, res) => {
     msg: ''
   }
   const offset = db.limit * (isNumber(req.query.page) ? req.query.page : 0)
-  await Order.findAll({ attributes: ['reference', 'order_date', 'CustomerId'], limit: db.limit, offset: offset }).then(
+  await Order.findAll({ include: { all: true, nested: true }, attributes: ['reference', 'order_date', 'tone', 'CustomerId'], limit: db.limit, offset: offset }).then(
     (orders) => {
-      responseObject.data = orders
+      responseObject.data = orders.groupByField('tone')
       log.info(`Fetching orders. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
       res.status(200).json(responseObject)
     }
@@ -59,14 +59,15 @@ const store = async (req, res) => {
     await db.sequelize.transaction(async (transaction) => {
       const info = {
         order_date: req.body.order_date,
-        CustomerId: req.body.customer_id
+        CustomerId: req.body.customer_id,
+        tone: req.body.tone
       }
 
       // check if favorite_dish already exists
       await Customer.findOne({ where: { reference: info.CustomerId } }).then(
         (found) => {
           if (found === null) {
-            throw new Error('dish not found')
+            throw new Error('customer not found')
           }
           info.CustomerId = found.id
         }
@@ -74,7 +75,7 @@ const store = async (req, res) => {
         throw new Error(error)
       })
 
-      await Order.create(info, { fields: ['order_date', 'CustomerId'], transaction }).then(newly => {
+      await Order.create(info, { fields: ['order_date', 'tone', 'CustomerId'], transaction }).then(newly => {
         responseObject.data = newly.dataValues
         consoleLog(responseObject.data)
         log.info(`New order created. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
@@ -165,11 +166,11 @@ const update = async (req, res) => {
     await db.sequelize.transaction(
       async (transaction) => {
         const reference = req.params.reference
-        await Order.update(req.body, { where: { reference: reference }, fields: ['order_date', 'CustomerId'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
+        await Order.update(req.body, { where: { reference: reference }, fields: ['order_date', 'tone', 'CustomerId'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
           .then(
             (updated) => {
               consoleLog(updated)
-              log.info(`Product updated, reference: ${reference}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+              log.info(`Order updated, reference: ${reference}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
               responseObject.data = updated
               res.status(200).json(responseObject)
             }

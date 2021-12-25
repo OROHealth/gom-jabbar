@@ -119,11 +119,11 @@ router.post(`/${prefix}`, CustomerController.store)
   *    tags: [Customer]
   *    parameters:
   *      - in: path
-  *        name: id
+  *        name: reference
   *        schema:
   *          type: string
   *        required: true
-  *        description: the customer id
+  *        description: the customer reference
   *    responses:
   *      200:
   *        description: fetch customer by id
@@ -140,15 +140,15 @@ router.get(`/${prefix}/:reference`, CustomerController.edit)
   * @swagger
   * /api/v1/customer/{reference}:
   *  patch:
-  *    summary: update the customer by id
+  *    summary: update the customer by reference
   *    tags: [Customer]
   *    parameters:
   *      - in: path
-  *        name: id
+  *        name: reference
   *        schema:
   *          type: string
   *        required: true
-  *        description: the customer id
+  *        description: the customer reference
   *    requestBody:
   *      required: true
   *      content:
@@ -171,15 +171,15 @@ router.patch(`/${prefix}/:reference`, CustomerController.update)
   * @swagger
   * /api/v1/customer/{reference}:
   *  delete:
-  *    summary: delete the customer by id
+  *    summary: delete the customer by reference
   *    tags: [Customer]
   *    parameters:
   *      - in: path
-  *        name: id
+  *        name: reference
   *        schema:
   *          type: string
   *        required: true
-  *        description: the customer id
+  *        description: the customer reference
   *    responses:
   *      200:
   *        description: the customer description by id

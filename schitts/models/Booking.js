@@ -23,9 +23,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     reservation_date: {
       type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
       validate: {
-        isDate: { args: true, msg: 'the reservation date must be a date format' },
-        isAfter: { args: new Date(), msg: 'the reservation date must be later' }
+        isAfter: { args: (new Date()).toString(), msg: 'the reservation date must be later' },
+        isDate: { args: true, msg: 'the reservation date must be a date format' }
       }
     }
   }, {

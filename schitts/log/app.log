@@ -1,0 +1,5 @@
+[2021-12-25T20:23:31.536] [INFO] app - DishOrder inserted, count: 2. ManagerController@:192
+[2021-12-25T20:23:31.646] [INFO] app - CustomerDishes inserted, count: 2 ManagerController@:200
+[2021-12-25T20:24:20.921] [INFO] app - Fetching customers. CustomerController@:34
+[2021-12-25T20:24:23.857] [INFO] app - Fetching customers. CustomerController@:34
+[2021-12-25T20:24:53.830] [INFO] app - Fetching orders. OrderController@:31
