@@ -1,26 +1,37 @@
-version: "3.8"
 services:
-  db:
-    image: postgres
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-    volumes:
-      - ./pgdata:/var/lib/postgresql/data
-      - ./db/database.sql:/docker-entrypoint-initdb.d/database.sql
-    ports:
-      - '5432:5432'
+  #db:
+  #  image: postgres
+  #  environment:
+  #    POSTGRES_PASSWORD: postgres
+  #    POSTGRES_USER: postgres
+  #    POSTGRES_DB: caribDB
+  #  volumes:
+  #    - ./pgdata:/var/lib/postgresql/data
+  #    - ./db/database.sql:/docker-entrypoint-initdb.d/database.sql
+  #  ports:
+  #   - '5432:5432'
   backend: 
     build:
       context: ./backend
       dockerfile: ./Dockerfile
-    depends_on:
-      - db
+  #  depends_on:
+  #    - db
+    environment:
+      - CHOKIDAR_USEPOLLING=true
     ports:
       - '5050:5050'  
-  frontend:
+    volumes:
+      - /backdir/node_modules
+      - ./backend:/backdir
+  caribou:
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - FAST_REFRESH= false
     build:
       context: ./frontend
       dockerfile: ./Dockerfile
-    ports: 
-      - 3000:3000
+    volumes:
+      - /frontdir/node_modules
+      - ./frontend:/frontdir
+    ports:
+      - "3000:3000"
