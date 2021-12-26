@@ -23,15 +23,13 @@ services:
     volumes:
       - /backdir/node_modules
       - ./backend:/backdir
-  caribou:
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-      - FAST_REFRESH= false
+  frontend:
     build:
       context: ./frontend
       dockerfile: ./Dockerfile
     volumes:
-      - /frontdir/node_modules
       - ./frontend:/frontdir
+    environment:
+      - CHOKIDAR_USEPOLLING=true
     ports:
       - "3000:3000"
