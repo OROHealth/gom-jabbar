@@ -1,0 +1,10 @@
+.map{
+    width:100%;
+    height: 100%;
+    position: relative;
+}
+.icon{
+    width: 2em;
+    height: 2em;
+    transform: translate(-50%,-50%);
+}

@@ -8,7 +8,7 @@
     justify-content: space-between;
 }
 /* Responsive layout - makes a one column layout instead of a two-column layout */
-@media (max-width: 800px) {
+@media (max-width: 800px),(orientation:portrait) {
     .App {
         margin: 0px;
         padding: 0px;
@@ -22,5 +22,6 @@
 .lorem{
     flex-grow: 123;
 }
+
 
 
