@@ -1,6 +1,6 @@
 // autoload index.js
 const db = require('../models/_index')
-const { consoleLog, isIterable } = require('../helpers/helpers') // output into console regarding .env Log flag
+const { consoleLog } = require('../helpers/helpers') // output into console regarding .env Log flag
 var isNumber = require('../helpers/helpers').isNumber
 const log4js = require('../config/log4js')
 var log = log4js.getLogger('app') // enable logging
@@ -9,7 +9,6 @@ var path = require('path')
 var validationError = {}
 // create main Model
 const Dish = db.Dish
-const Customer = db.Customer
 // Methods
 /**
  * @route GET /api/v1/dish
@@ -26,7 +25,7 @@ const index = async (req, res) => {
   }
   const offset = db.limit * (isNumber(req.query.page) ? req.query.page : 0)
   await Dish.findAll({ include: { all: true, nested: true }, attributes: ['reference', 'name', 'description', 'price', 'last_preparation_date', 'conservation_time', 'active'], limit: db.limit, offset: offset }).then(
-    (dishes) => { 
+    (dishes) => {
       responseObject.data = dishes
       log.info(`Fetching dishes. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
       res.status(200).json(responseObject)

@@ -12,6 +12,7 @@ const log4js = require('./schitts/config/log4js')
 var log = log4js.getLogger('app') // enable logging
 const swaggerUI = require('swagger-ui-express')
 const swaggerJsDoc = require('swagger-jsdoc')
+const logErrorMiddleware = require('./schitts/middlewares/logErrorMiddleware')
 // import utils
 const whiteList = [`${process.env.APP_URL}:${port}`, `http://127.0.0.1:${port}`, 'http://www.yoursite.com']
 const swaggerOptions = {
@@ -71,6 +72,9 @@ process.on('UnhandledPromiseRejectionWarning', (err) => {
   console.log('whoops! there was an UnhandledPromiseRejectionWarning' + err)
   log.error(`${err} | ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
 })
+
+// log Application error
+app.use(logErrorMiddleware)
 
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome in our NodeJS Api template' })
