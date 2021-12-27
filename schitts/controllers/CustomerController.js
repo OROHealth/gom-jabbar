@@ -214,29 +214,12 @@ const destroy = async (req, res) => {
     msg: ''
   }
   const reference = req.params.reference
-  await Customer.findOne({
-    where: { reference: reference }
-  }).then(
-    (product) => {
-      if (product === null) {
+  await Customer.destroy({ where: { reference: reference } }).then(
+    (result) => {
+      if (result === 0) {
         log.debug(`Customer not found, reference: ${reference}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
         throw new Error('Customer not found')
-      } else {
-        deleteModelAsync(responseObject, reference, res)
       }
-    }
-  ).catch(error => {
-    log.debug(`${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
-    responseObject.status = false
-    responseObject.msg = error.message
-    return res.status(400).json(responseObject)
-  })
-}
-
-const deleteModelAsync = async (responseObject, reference, res) => {
-  await Customer.destroy({ where: { reference: reference } }).then(
-    (customer) => {
-      consoleLog(customer)
       responseObject.msg = 'customer successfully deleted'
       res.status(200).json(responseObject)
     }

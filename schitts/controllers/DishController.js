@@ -1,6 +1,6 @@
 // autoload index.js
 const db = require('../models/_index')
-var consoleLog = require('../helpers/helpers').consoleLog // output into console regarding .env Log flag
+const { consoleLog, isIterable } = require('../helpers/helpers') // output into console regarding .env Log flag
 var isNumber = require('../helpers/helpers').isNumber
 const log4js = require('../config/log4js')
 var log = log4js.getLogger('app') // enable logging
@@ -8,16 +8,14 @@ const pkg = require('get-current-line').default // get current script filename a
 var path = require('path')
 var validationError = {}
 // create main Model
-const Product = db.Product
-
+const Dish = db.Dish
+const Customer = db.Customer
 // Methods
 /**
- * @route GET /api/v1/product
- * @description Fetch products
+ * @route GET /api/v1/dish
+ * @description Fetch dish
  * @summary summary
- * @param {paramType} paramId.paramType - paramDescription
- * @param {requestBodyType} request.body - requestBodyDescription
- * @return {responseType} status - responseDescription - responseContentType
+ * @return {array} status - responseDescription - responseContentType
  */
 const index = async (req, res) => {
   var responseObject = {
@@ -27,10 +25,10 @@ const index = async (req, res) => {
     msg: ''
   }
   const offset = db.limit * (isNumber(req.query.page) ? req.query.page : 0)
-  await Product.findAll({ attributes: ['id', 'reference', 'title', 'price', 'description', 'published'], include: { model: db.Review, as: 'reviews', foreignKey: 'product_id' }, limit: db.limit, offset: offset }).then(
-    (products) => {
-      responseObject.data = products.groupByField('price')
-      log.info(`Fetching products. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+  await Dish.findAll({ include: { all: true, nested: true }, attributes: ['reference', 'name', 'description', 'price', 'over_cooked_level', 'last_preparation_date', 'conservation_time', 'active'], limit: db.limit, offset: offset }).then(
+    (dishes) => {
+      responseObject.data = dishes.groupByField('over_cooked_level')
+      log.info(`Fetching dishes. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
       res.status(200).json(responseObject)
     }
   ).catch(err => {
@@ -43,8 +41,11 @@ const index = async (req, res) => {
 }
 
 /**
- *  @description Store new product
- *  @route POST /api/v1/product
+ * @route POST /api/v1/dish
+ * @description Store new dish
+ * @summary summary
+ * @param {requestBodyType} request.body - requestBodyDescription
+ * @return {responseType} status - responseDescription - responseContentType
  */
 const store = async (req, res) => {
   var responseObject = {
@@ -57,19 +58,22 @@ const store = async (req, res) => {
   try {
     await db.sequelize.transaction(async (transaction) => {
       const info = {
-        title: req.body.title,
-        price: req.body.price,
-        reference: req.body.reference,
+        name: req.body.name,
         description: req.body.description,
-        published: req.body.published ? req.body.published : false
+        price: req.body.price,
+        over_cooked_level: req.body.over_cooked_level,
+        conservation_time: req.body.conservation_time,
+        last_preparation_date: req.body.last_preparation_date,
+        active: req.body.active
       }
 
-      await Product.create(info, { fields: ['title', 'reference', 'description', 'price', 'published'], transaction }).then(newProduct => {
-        responseObject.data = newProduct.dataValues
+      await Dish.create(info, { fields: ['name', 'reference', 'description', 'price', 'over_cooked_level', 'last_preparation_date', 'conservation_time', 'active'], transaction }).then(newly => {
+        responseObject.data = newly.dataValues
         consoleLog(responseObject.data)
-        log.info(`New product created. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+        log.info(`New dish created. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
         return res.status(201).json(responseObject)
       }).catch(err => { // SequelizeValidationError
+        log.debug(`${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
         throw (err)
       })
     })
@@ -91,8 +95,8 @@ const store = async (req, res) => {
 }
 
 /**
- *  @description Fetch specific product
- *  @route GET /api/v1/product/:product_id
+ *  @description Fetch specific dish
+ *  @route GET /api/v1/dish/:customer_id
  */
 const edit = async (req, res) => {
   var responseObject = {
@@ -103,11 +107,11 @@ const edit = async (req, res) => {
   }
 
   try {
-    const id = req.params.product_id
-    await Product.findOne({ where: { id: id }, include: { model: db.Review, as: 'reviews' } }).then(
+    const reference = req.params.reference
+    await Dish.findOne({ where: { reference: reference } }).then(
       (updated) => {
         if (updated === null) {
-          throw new Error('product not found')
+          throw new Error('dish not found')
         }
 
         responseObject.data = updated.dataValues
@@ -125,8 +129,9 @@ const edit = async (req, res) => {
 }
 
 /**
- *  @description Update specific product
- *  @route PATCH /api/v1/product/:product_id
+ * @route PATCH /api/v1/dish/:reference
+ * @description Update specific dish
+ * @param {string} reference - the dish's reference
  */
 const update = async (req, res) => {
   var responseObject = {
@@ -139,12 +144,12 @@ const update = async (req, res) => {
   try {
     await db.sequelize.transaction(
       async (transaction) => {
-        const id = req.params.product_id
-        await Product.update(req.body, { where: { id: id }, fields: ['title', 'description', 'price', 'published'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
+        const reference = req.params.reference
+        await Dish.update(req.body, { where: { reference: reference }, fields: ['name', 'description', 'price', 'over_cooked_level', 'last_preparation_date', 'conservation_time', 'active'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
           .then(
             (updated) => {
               consoleLog(updated)
-              log.info(`Product updated, id: ${id}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+              log.info(`Dish updated, reference: ${reference}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
               responseObject.data = updated
               res.status(200).json(responseObject)
             }
@@ -170,8 +175,8 @@ const update = async (req, res) => {
 }
 
 /**
- *  @description Destroy specific product
- *  @route delete /api/v1/product/:product_id
+ *  @description Destroy specific dish
+ *  @route delete /api/v1/dish/:reference
  */
 const destroy = async (req, res) => {
   var responseObject = {
@@ -181,13 +186,13 @@ const destroy = async (req, res) => {
     msg: ''
   }
   const reference = req.params.reference
-  await Product.destroy({ where: { reference: reference } }).then(
-    (result) => {
-      if (result === 0) {
-        log.debug(`Product not found, reference: ${reference}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
-        throw new Error('Product not found')
+  await Dish.destroy({ where: { reference: reference } }).then(
+    (dish) => {
+      if (dish === 0) {
+        log.debug(`Order not found, reference: ${reference}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+        throw new Error('Order not found')
       }
-      responseObject.msg = 'product successfully deleted'
+      responseObject.msg = 'dish successfully deleted'
       res.status(200).json(responseObject)
     }
   ).catch(err => {

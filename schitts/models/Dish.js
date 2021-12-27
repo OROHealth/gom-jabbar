@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       defaultValue: DataTypes.NOW,
       validate: {
-        isAfter: { args: (new Date()).toString(), msg: 'the preparation date date must be later' },
+        isAfter: { args: (new Date(new Date().setHours(0, 0, 0, 0))).toString(), msg: 'the preparation date date must be later' },
         isDate: { args: true, msg: 'the preparation date field must be a date format' }
       }
     },
