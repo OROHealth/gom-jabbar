@@ -1,5 +1,10 @@
-const { isUUID, generateUuidV4 } = require('../helpers/helpers')
+const { isUUID, generateUuidV4, isIterable } = require('../helpers/helpers')
+const log4js = require('../config/log4js')
+var log = log4js.getLogger('app') // enable logging
+const pkg = require('get-current-line').default // get current script filename and line
+var path = require('path')
 const tableName = 'orders'
+const Arr = JSON.stringify([])
 
 module.exports = (sequelize, DataTypes) => {
   const Model = sequelize.define('Order', {
@@ -20,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
       validate: {
-        isAfter: { args: (new Date()).toString(), msg: 'the reservation date must be later' },
+        isAfter: { args: (new Date(new Date().setHours(0, 0, 0, 0))).toString(), msg: 'the order date date must be later' },
         isDate: { args: true, msg: 'the order_date field must be a date format' }
       }
     },
@@ -30,6 +35,34 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isIn: { args: [['angry', 'happy', 'overhelmed', 'pregnant', 'moody', 'bored', 'excited']], msg: 'The order tone must match one of requested' }
       }
+    },
+    party_size: {
+      type: DataTypes.INTEGER,
+      validate: {
+        isInt: { args: true, msg: 'the party_size must be an integer' }
+      }
+    },
+    customers: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      defaultValue: Arr,
+      validate: {
+        isArray (value) {
+          if (!isIterable(JSON.parse(value))) {
+            log.info(`New order created. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+            throw new Error('Only array of values are allowed!')
+          }
+        }
+      }
+    },
+    feedback: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    status: {
+      type: DataTypes.ENUM(['PAID', 'UNPAID', 'REJECTED', 'ACCEPTED']),
+      allowNull: true,
+      defaultValue: 'ACCEPTED'
     }
   }, {
     hooks: {

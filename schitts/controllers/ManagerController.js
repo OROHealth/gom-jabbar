@@ -78,7 +78,7 @@ const store = async (req, res) => {
 
 /**
  * @route PATCH /api/v1/manager/booking/{reference}:
- * @description Update specific customer
+ * @description Update specific customer booking
  * @param {string} first_name - the customer's first name
  * @param {string} last_name - the customer's last name
  * @param {string} phone_number - the customer's phone number
@@ -138,7 +138,7 @@ const update = async (req, res) => {
 
 /**
  * @route POST /api/v1/manager/booking
- * @description Store new booking
+ * @description Store new dishes ordered
  * @summary summary
  * @param {requestBodyType} request.body - requestBodyDescription
  * @return {responseType} status - responseDescription - responseContentType
@@ -153,10 +153,6 @@ const order = async (req, res) => {
 
   try {
     await db.sequelize.transaction(async (transaction) => {
-      const info = {
-        OrderId: req.params.reference
-      }
-
       var elts = []
       const customerDishes = []
       // make $items unique regarding DishId property
@@ -176,18 +172,19 @@ const order = async (req, res) => {
       $items.map(
         function (item, key) {
           const obj = { ...item } // { DishRef, quantity}
-          const dishID = dishIds.find(x => x.reference === obj.DishId)
-          if (dishID === undefined) throw new Error('One dish doesnt match our records: ' + obj.DishId)
-          obj.DishId = dishID.id
+          const dish = dishIds.find(x => x.reference === obj.DishId)
+          if (dish === undefined) throw new Error('One dish doesnt match our records: ' + obj.DishId)
+          obj.DishId = dish.id
+          obj.price = dish.price
           obj.OrderId = order.id
           elts.push(obj)
-          const customerDishObj = { CustomerId: order.CustomerId, DishId: dishID.id }
+          const customerDishObj = { CustomerId: order.CustomerId, DishId: dish.id }
           customerDishes.push(customerDishObj)
         }
       )
 
       // check if favorite_dish already exists
-      await DishOrder.bulkCreate(elts, { fields: ['OrderId', 'DishId', 'quantity'], transaction }).then(
+      await DishOrder.bulkCreate(elts, { fields: ['OrderId', 'DishId', 'quantity', 'price'], transaction }).then(
         (inserted) => {
           log.info(`DishOrder inserted, count: ${inserted.length}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
         }

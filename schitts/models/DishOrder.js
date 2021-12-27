@@ -17,6 +17,13 @@ module.exports = (sequelize, DataTypes) => {
         isNumeric: { args: true, msg: 'the quantity must be numeric' },
         min: { args: 1, msg: 'the quantity must be greater or equal then 1' }
       }
+    },
+    price: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+      validate: {
+        isFloat: { args: true, msg: 'the price must be a decimal' }
+      }
     }
   }, {
     tableName: tableName,

@@ -37,4 +37,12 @@ const isUUID = ($value) => (uuidValidate($value) && uuidVersion === '4')
 
 const randomBytes64 = () => require('crypto').randomBytes(64).toString('hex')
 
-module.exports = { consoleLog, isTrue, generateUuidV4, isUUID, randomBytes64, isNumber }
+const isIterable = function (obj) {
+  // checks for null and undefined
+  if (obj === null || obj === undefined) {
+    return false
+  }
+  return typeof obj[Symbol.iterator] === 'function' && Array.isArray(obj)
+}
+
+module.exports = { consoleLog, isTrue, generateUuidV4, isUUID, randomBytes64, isNumber, isIterable }

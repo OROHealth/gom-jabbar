@@ -30,10 +30,29 @@ const prefix = 'order'
  *        CustomerId:
  *          type: string
  *          description: The customer id
+ *        party_size:
+ *          type: integer
+ *          description: The involved customers count regarding order
+ *        feedback:
+ *          type: integer
+ *          description: The involved customers feedback
+ *        status:
+ *          type: string
+ *          description: The order status
+ *          enum: [PAID, UNPAID, REJECTED, ACCEPTED]
+ *        customers:
+ *          type: array
+ *          description: The involved customers reference number
+ *          items:
+ *            type: string
+ *            example: [7dc36efb-0533-4d9f-b4fb-62f757c08b3a, 7dc36efb-0533-4d9f-b4fb-62f757c08b3a]
  *      example:
  *        order_date: 1982-05-06
  *        tone: happy
- *        customer_id: 7dc36efb-0533-4d9f-b4fb-62f757c08b3a
+ *        status: ACCEPTED
+ *        feedback: your feedback
+ *        CustomerId: 7dc36efb-0533-4d9f-b4fb-62f757c08b3a
+ *        customers: ["7dc36efb-0533-4d9f-b4fb-62f757c08b3a", "7dc36efb-0533-4d9f-b4fb-62f757c08b3a"]
  */
 
 /**

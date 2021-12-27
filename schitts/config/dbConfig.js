@@ -6,6 +6,7 @@ module.exports = {
     DATABASE: process.env.DB_DATABASE,
     PORT: process.env.DB_PORT,
     dialect: 'mysql',
+    logging: true,
 
     pool: {
       max: 5,

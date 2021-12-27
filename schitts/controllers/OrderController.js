@@ -1,6 +1,6 @@
 // autoload index.js
 const db = require('../models/_index')
-var consoleLog = require('../helpers/helpers').consoleLog // output into console regarding .env Log flag
+const { consoleLog, isIterable } = require('../helpers/helpers') // output into console regarding .env Log flag
 var isNumber = require('../helpers/helpers').isNumber
 const log4js = require('../config/log4js')
 var log = log4js.getLogger('app') // enable logging
@@ -25,7 +25,7 @@ const index = async (req, res) => {
     msg: ''
   }
   const offset = db.limit * (isNumber(req.query.page) ? req.query.page : 0)
-  await Order.findAll({ include: { all: true, nested: true }, attributes: ['reference', 'order_date', 'tone', 'CustomerId'], limit: db.limit, offset: offset }).then(
+  await Order.findAll({ include: { all: true, nested: true }, attributes: ['reference', 'order_date', 'tone', 'party_size', 'feedback', 'status', 'customers', 'CustomerId'], limit: db.limit, offset: offset }).then(
     (orders) => {
       responseObject.data = orders.groupByField('tone')
       log.info(`Fetching orders. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
@@ -59,8 +59,12 @@ const store = async (req, res) => {
     await db.sequelize.transaction(async (transaction) => {
       const info = {
         order_date: req.body.order_date,
-        CustomerId: req.body.customer_id,
-        tone: req.body.tone
+        CustomerId: req.body.CustomerId,
+        tone: req.body.tone,
+        customers: JSON.stringify(req.body.customers),
+        feedback: req.body.feedback,
+        status: req.body.status,
+        party_size: isIterable(req.body.customers) ? req.body.customers.length : 0
       }
 
       // check if favorite_dish already exists
@@ -75,12 +79,13 @@ const store = async (req, res) => {
         throw new Error(error)
       })
 
-      await Order.create(info, { fields: ['order_date', 'tone', 'CustomerId'], transaction }).then(newly => {
+      await Order.create(info, { fields: ['order_date', 'reference', 'tone', 'CustomerId', 'customers', 'party_size'], transaction }).then(newly => {
         responseObject.data = newly.dataValues
         consoleLog(responseObject.data)
         log.info(`New order created. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
         return res.status(201).json(responseObject)
       }).catch(err => { // SequelizeValidationError
+        log.debug(`${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
         throw (err)
       })
     })
@@ -166,7 +171,7 @@ const update = async (req, res) => {
     await db.sequelize.transaction(
       async (transaction) => {
         const reference = req.params.reference
-        await Order.update(req.body, { where: { reference: reference }, fields: ['order_date', 'tone', 'CustomerId'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
+        await Order.update(req.body, { where: { reference: reference }, fields: ['order_date', 'tone', 'CustomerId', 'feedback', 'status', 'customers'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
           .then(
             (updated) => {
               consoleLog(updated)

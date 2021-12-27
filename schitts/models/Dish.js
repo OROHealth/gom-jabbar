@@ -34,7 +34,41 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
       validate: {
-        isFloat: { args: true, msg: 'the price must be a decimal' },
+        isFloat: { args: true, msg: 'the price must be a decimal' }
+      }
+    },
+    over_cooked_level: {
+      type: DataTypes.ENUM(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']),
+      allowNull: false,
+      defaultValue: 5,
+      validate: {
+        isIn: { args: [['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']], msg: 'The over cooked level must be greater than 1 and less than 10' }
+      }
+    },
+    last_preparation_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: DataTypes.NOW,
+      validate: {
+        isAfter: { args: (new Date()).toString(), msg: 'the preparation date date must be later' },
+        isDate: { args: true, msg: 'the preparation date field must be a date format' }
+      }
+    },
+    conservation_time: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 60,
+      comment: 'the time of conservation at freeze',
+      validate: {
+        isInt: { args: true, msg: 'The time of conservation must be numeric' }
+      }
+    },
+    active: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1,
+      validate: {
+        isInt: { args: true, msg: 'Only o or 1 values are allowed' }
       }
     }
   }, {
