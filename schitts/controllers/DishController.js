@@ -25,9 +25,9 @@ const index = async (req, res) => {
     msg: ''
   }
   const offset = db.limit * (isNumber(req.query.page) ? req.query.page : 0)
-  await Dish.findAll({ include: { all: true, nested: true }, attributes: ['reference', 'name', 'description', 'price', 'over_cooked_level', 'last_preparation_date', 'conservation_time', 'active'], limit: db.limit, offset: offset }).then(
-    (dishes) => {
-      responseObject.data = dishes.groupByField('over_cooked_level')
+  await Dish.findAll({ include: { all: true, nested: true }, attributes: ['reference', 'name', 'description', 'price', 'last_preparation_date', 'conservation_time', 'active'], limit: db.limit, offset: offset }).then(
+    (dishes) => { 
+      responseObject.data = dishes
       log.info(`Fetching dishes. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
       res.status(200).json(responseObject)
     }
@@ -67,7 +67,7 @@ const store = async (req, res) => {
         active: req.body.active
       }
 
-      await Dish.create(info, { fields: ['name', 'reference', 'description', 'price', 'over_cooked_level', 'last_preparation_date', 'conservation_time', 'active'], transaction }).then(newly => {
+      await Dish.create(info, { fields: ['name', 'reference', 'description', 'price', 'last_preparation_date', 'conservation_time', 'active'], transaction }).then(newly => {
         responseObject.data = newly.dataValues
         consoleLog(responseObject.data)
         log.info(`New dish created. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)

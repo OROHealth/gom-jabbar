@@ -177,6 +177,7 @@ const order = async (req, res) => {
           obj.DishId = dish.id
           obj.price = dish.price
           obj.OrderId = order.id
+          obj.over_cooked_level = req.body.over_cooked_level
           elts.push(obj)
           const customerDishObj = { CustomerId: order.CustomerId, DishId: dish.id }
           customerDishes.push(customerDishObj)
@@ -184,7 +185,7 @@ const order = async (req, res) => {
       )
 
       // check if favorite_dish already exists
-      await DishOrder.bulkCreate(elts, { fields: ['OrderId', 'DishId', 'quantity', 'price'], transaction }).then(
+      await DishOrder.bulkCreate(elts, { fields: ['OrderId', 'DishId', 'quantity', 'price', 'over_cooked_level'], transaction }).then(
         (inserted) => {
           log.info(`DishOrder inserted, count: ${inserted.length}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
         }

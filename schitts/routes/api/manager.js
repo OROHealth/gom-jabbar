@@ -54,9 +54,14 @@ const prefix = 'manager'
  *        quantity:
  *          type: integer
  *          description: ordered dishes quantity
+ *        over_cooked_level:
+ *          type: string
+ *          description: ordered dishes quantity
+ *          enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
  *      example:
  *        DishId: 7dc36efb-0533-4d9f-b4fb-62f757c08b3a
  *        quantity: 11
+ *        over_cooked_level: 5
  */
 
 /**
@@ -133,7 +138,7 @@ router.patch(`/${prefix}/booking/:reference`, ManagerController.update)
  *        schema:
  *          type: string
  *        required: true
- *        description: the booking's reference
+ *        description: the order's reference
  *    requestBody:
  *      required: true
  *      content:
@@ -144,7 +149,6 @@ router.patch(`/${prefix}/booking/:reference`, ManagerController.update)
  *              $ref: '#/components/schemas/OrderedDishes'
  *            require:
  *              -  DishId
- *              -  OrderId
  *              -  quantity
  *    responses:
  *      200:
@@ -152,7 +156,7 @@ router.patch(`/${prefix}/booking/:reference`, ManagerController.update)
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/Booking'
+ *              $ref: '#/components/schemas/OrderedDishes'
  *      500:
  *        description: Server Error
  */

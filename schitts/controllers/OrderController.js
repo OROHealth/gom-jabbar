@@ -27,7 +27,7 @@ const index = async (req, res) => {
   const offset = db.limit * (isNumber(req.query.page) ? req.query.page : 0)
   await Order.findAll({ include: { all: true, nested: true }, attributes: ['reference', 'order_date', 'tone', 'party_size', 'feedback', 'status', 'customers', 'CustomerId'], limit: db.limit, offset: offset }).then(
     (orders) => {
-      responseObject.data = orders.groupByField('tone')
+      responseObject.data = orders
       log.info(`Fetching orders. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
       res.status(200).json(responseObject)
     }

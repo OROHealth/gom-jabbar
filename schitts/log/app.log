@@ -1,3 +1,408 @@
 [2021-12-27T12:03:58.934] [INFO] app - Fetching dishes. DishController@:31
 [2021-12-27T12:11:33.171] [INFO] app - Fetching customers. CustomerController@:34
 [2021-12-27T12:12:05.568] [INFO] app - Fetching customers. CustomerController@:34
+[2021-12-27T12:41:42.502] [INFO] app - Fetching dishes. DishController@:31
+[2021-12-27T12:43:14.793] [INFO] app - Fetching customers. CustomerController@:34
+[2021-12-27T12:44:50.822] [INFO] app - Fetching orders. OrderController@:31
+[2021-12-27T12:46:12.227] [INFO] app - Fetching orders. OrderController@:31
+[2021-12-27T13:34:43.108] [INFO] app - Fetching orders. OrderController@:31
+[2021-12-27T13:35:25.129] [INFO] app - Fetching dishes. DishController@:31
+[2021-12-27T13:43:12.756] [INFO] app - Fetching customers. CustomerController@:34
+[2021-12-27T13:43:35.198] [INFO] app - Fetching dishes. DishController@:31
+[2021-12-27T13:44:02.288] [INFO] app - Fetching orders. OrderController@:31
+[2021-12-27T13:44:23.452] [ERROR] app - SequelizeEagerLoadingError: Review is associated to Product using an alias. You've included an alias (reviews), but it does not match the alias(es) defined in your association (Reviews).. ProductController@:38
+[2021-12-27T13:49:14.330] [INFO] app - DishOrder inserted, count: 1. ManagerController@:190
+[2021-12-27T13:49:14.339] [INFO] app - CustomerDishes inserted, count: 1 ManagerController@:198
+[2021-12-27T13:51:38.236] [DEBUG] app - [
+  Dish {
+    dataValues: {
+      reference: 'c856bce9-fa2c-449c-b775-2c6b99aa98f7',
+      name: 'Parmesan Deviled Eggs ',
+      description: 'These delectable little bites are made with organic eggs, fresh Parmesan, and chopped pine nuts.  ',
+      price: 8,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [Array],
+      Customers: [Array]
+    },
+    _previousDataValues: {
+      reference: 'c856bce9-fa2c-449c-b775-2c6b99aa98f7',
+      name: 'Parmesan Deviled Eggs ',
+      description: 'These delectable little bites are made with organic eggs, fresh Parmesan, and chopped pine nuts.  ',
+      price: 8,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [Array],
+      Customers: [Array]
+    },
+    _changed: Set(0) {},
+    _options: {
+      isNewRecord: false,
+      _schema: null,
+      _schemaDelimiter: '',
+      include: [Array],
+      includeNames: [Array],
+      includeMap: [Object],
+      includeValidated: true,
+      attributes: [Array],
+      raw: true
+    },
+    isNewRecord: false,
+    Orders: [ [Order] ],
+    Customers: [ [Customer] ]
+  },
+  Dish {
+    dataValues: {
+      reference: '04e1d694-256a-49d0-8a9f-24547b2a7bb0',
+      name: 'Artichokes with Garlic Aioli',
+      description: 'Our artichokes are brushed with an olive oil and rosemary blend and then broiled to perfection. Served with a side of creamy garlic aioli.',
+      price: 9,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [],
+      Customers: []
+    },
+    _previousDataValues: {
+      reference: '04e1d694-256a-49d0-8a9f-24547b2a7bb0',
+      name: 'Artichokes with Garlic Aioli',
+      description: 'Our artichokes are brushed with an olive oil and rosemary blend and then broiled to perfection. Served with a side of creamy garlic aioli.',
+      price: 9,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [],
+      Customers: []
+    },
+    _changed: Set(0) {},
+    _options: {
+      isNewRecord: false,
+      _schema: null,
+      _schemaDelimiter: '',
+      include: [Array],
+      includeNames: [Array],
+      includeMap: [Object],
+      includeValidated: true,
+      attributes: [Array],
+      raw: true
+    },
+    isNewRecord: false,
+    Orders: [],
+    Customers: []
+  },
+  Dish {
+    dataValues: {
+      reference: '32a4a801-b0b7-4f41-9101-292c55591d9e',
+      name: 'French Onion Soup',
+      description: 'Caramelized onions slow cooked in a savory broth, topped with sourdough and a provolone cheese blend. Served with sourdough bread.',
+      price: 7,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [],
+      Customers: []
+    },
+    _previousDataValues: {
+      reference: '32a4a801-b0b7-4f41-9101-292c55591d9e',
+      name: 'French Onion Soup',
+      description: 'Caramelized onions slow cooked in a savory broth, topped with sourdough and a provolone cheese blend. Served with sourdough bread.',
+      price: 7,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [],
+      Customers: []
+    },
+    _changed: Set(0) {},
+    _options: {
+      isNewRecord: false,
+      _schema: null,
+      _schemaDelimiter: '',
+      include: [Array],
+      includeNames: [Array],
+      includeMap: [Object],
+      includeValidated: true,
+      attributes: [Array],
+      raw: true
+    },
+    isNewRecord: false,
+    Orders: [],
+    Customers: []
+  },
+  Dish {
+    dataValues: {
+      reference: '7c264faa-c76b-4190-9724-29e74edc360a',
+      name: 'Mini Cheeseburgers ',
+      description: 'These mini cheeseburgers are served on a fresh baked pretzel bun with lettuce, tomato, avocado, and your choice of cheese.',
+      price: 8,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [],
+      Customers: []
+    },
+    _previousDataValues: {
+      reference: '7c264faa-c76b-4190-9724-29e74edc360a',
+      name: 'Mini Cheeseburgers ',
+      description: 'These mini cheeseburgers are served on a fresh baked pretzel bun with lettuce, tomato, avocado, and your choice of cheese.',
+      price: 8,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [],
+      Customers: []
+    },
+    _changed: Set(0) {},
+    _options: {
+      isNewRecord: false,
+      _schema: null,
+      _schemaDelimiter: '',
+      include: [Array],
+      includeNames: [Array],
+      includeMap: [Object],
+      includeValidated: true,
+      attributes: [Array],
+      raw: true
+    },
+    isNewRecord: false,
+    Orders: [],
+    Customers: []
+  },
+  Dish {
+    dataValues: {
+      reference: '9ad8c017-c571-40f5-b9cc-a8b589ed967d',
+      name: 'Panko Stuffed Mushrooms ',
+      description: 'Large mushroom caps are filled a savory cream cheese, bacon and panko breadcrumb stuffing, topped with cheddar cheese. ',
+      price: 7,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [],
+      Customers: []
+    },
+    _previousDataValues: {
+      reference: '9ad8c017-c571-40f5-b9cc-a8b589ed967d',
+      name: 'Panko Stuffed Mushrooms ',
+      description: 'Large mushroom caps are filled a savory cream cheese, bacon and panko breadcrumb stuffing, topped with cheddar cheese. ',
+      price: 7,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [],
+      Customers: []
+    },
+    _changed: Set(0) {},
+    _options: {
+      isNewRecord: false,
+      _schema: null,
+      _schemaDelimiter: '',
+      include: [Array],
+      includeNames: [Array],
+      includeMap: [Object],
+      includeValidated: true,
+      attributes: [Array],
+      raw: true
+    },
+    isNewRecord: false,
+    Orders: [],
+    Customers: []
+  },
+  Dish {
+    dataValues: {
+      reference: '4bb3cd24-af90-46d6-bbb6-60f8bdd8ccf9',
+      name: 'Garden Buffet',
+      description: 'Choose from our fresh local, organically grown ingredients to make a custom salad.',
+      price: 9.99,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [],
+      Customers: []
+    },
+    _previousDataValues: {
+      reference: '4bb3cd24-af90-46d6-bbb6-60f8bdd8ccf9',
+      name: 'Garden Buffet',
+      description: 'Choose from our fresh local, organically grown ingredients to make a custom salad.',
+      price: 9.99,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [],
+      Customers: []
+    },
+    _changed: Set(0) {},
+    _options: {
+      isNewRecord: false,
+      _schema: null,
+      _schemaDelimiter: '',
+      include: [Array],
+      includeNames: [Array],
+      includeMap: [Object],
+      includeValidated: true,
+      attributes: [Array],
+      raw: true
+    },
+    isNewRecord: false,
+    Orders: [],
+    Customers: []
+  },
+  Dish {
+    dataValues: {
+      reference: '797bcd3e-c52a-4198-95dc-5aeae6b675ee',
+      name: 'House Salad',
+      description: 'Our house salad is made with romaine lettuce and spinach, topped with tomatoes, cucumbers, red onions and carrots. Served with a dressing of your choice.',
+      price: 7,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [],
+      Customers: []
+    },
+    _previousDataValues: {
+      reference: '797bcd3e-c52a-4198-95dc-5aeae6b675ee',
+      name: 'House Salad',
+      description: 'Our house salad is made with romaine lettuce and spinach, topped with tomatoes, cucumbers, red onions and carrots. Served with a dressing of your choice.',
+      price: 7,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [],
+      Customers: []
+    },
+    _changed: Set(0) {},
+    _options: {
+      isNewRecord: false,
+      _schema: null,
+      _schemaDelimiter: '',
+      include: [Array],
+      includeNames: [Array],
+      includeMap: [Object],
+      includeValidated: true,
+      attributes: [Array],
+      raw: true
+    },
+    isNewRecord: false,
+    Orders: [],
+    Customers: []
+  },
+  Dish {
+    dataValues: {
+      reference: 'cb35a49a-e07c-4f9f-accd-451800a6cebd',
+      name: "Chef's Salad",
+      description: "The chef's salad has cucumber, tomatoes, red onions, mushrooms, hard-boiled eggs, cheese, and hot grilled chicken on a bed of romaine lettuce. Served with croutons and your choice of dressing.",
+      price: 9,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [],
+      Customers: []
+    },
+    _previousDataValues: {
+      reference: 'cb35a49a-e07c-4f9f-accd-451800a6cebd',
+      name: "Chef's Salad",
+      description: "The chef's salad has cucumber, tomatoes, red onions, mushrooms, hard-boiled eggs, cheese, and hot grilled chicken on a bed of romaine lettuce. Served with croutons and your choice of dressing.",
+      price: 9,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [],
+      Customers: []
+    },
+    _changed: Set(0) {},
+    _options: {
+      isNewRecord: false,
+      _schema: null,
+      _schemaDelimiter: '',
+      include: [Array],
+      includeNames: [Array],
+      includeMap: [Object],
+      includeValidated: true,
+      attributes: [Array],
+      raw: true
+    },
+    isNewRecord: false,
+    Orders: [],
+    Customers: []
+  },
+  Dish {
+    dataValues: {
+      reference: '6fef9e52-a78a-44db-9503-b9b4c6d7489a',
+      name: 'Quinoa Salmon Salad',
+      description: 'Our quinoa salad is served with quinoa, tomatoes, cucumber, scallions, and smoked salmon. Served with your choice of dressing.',
+      price: 9.99,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [],
+      Customers: []
+    },
+    _previousDataValues: {
+      reference: '6fef9e52-a78a-44db-9503-b9b4c6d7489a',
+      name: 'Quinoa Salmon Salad',
+      description: 'Our quinoa salad is served with quinoa, tomatoes, cucumber, scallions, and smoked salmon. Served with your choice of dressing.',
+      price: 9.99,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [],
+      Customers: []
+    },
+    _changed: Set(0) {},
+    _options: {
+      isNewRecord: false,
+      _schema: null,
+      _schemaDelimiter: '',
+      include: [Array],
+      includeNames: [Array],
+      includeMap: [Object],
+      includeValidated: true,
+      attributes: [Array],
+      raw: true
+    },
+    isNewRecord: false,
+    Orders: [],
+    Customers: []
+  },
+  Dish {
+    dataValues: {
+      reference: '0a848b5f-ca3c-4168-8caf-afeac2d272b9',
+      name: 'Classic Burger',
+      description: 'Our classic burger is made with 100% pure angus beef, served with lettuce, tomatoes, onions, pickles, and cheese of your choice. Veggie burger available upon request. Served with French fries, fresh fruit, or a side salad.',
+      price: 9.99,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [],
+      Customers: []
+    },
+    _previousDataValues: {
+      reference: '0a848b5f-ca3c-4168-8caf-afeac2d272b9',
+      name: 'Classic Burger',
+      description: 'Our classic burger is made with 100% pure angus beef, served with lettuce, tomatoes, onions, pickles, and cheese of your choice. Veggie burger available upon request. Served with French fries, fresh fruit, or a side salad.',
+      price: 9.99,
+      last_preparation_date: null,
+      conservation_time: 60,
+      active: 1,
+      Orders: [],
+      Customers: []
+    },
+    _changed: Set(0) {},
+    _options: {
+      isNewRecord: false,
+      _schema: null,
+      _schemaDelimiter: '',
+      include: [Array],
+      includeNames: [Array],
+      includeMap: [Object],
+      includeValidated: true,
+      attributes: [Array],
+      raw: true
+    },
+    isNewRecord: false,
+    Orders: [],
+    Customers: []
+  }
+]
+[2021-12-27T13:51:38.350] [INFO] app - Fetching dishes. DishController@:31

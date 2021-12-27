@@ -37,14 +37,6 @@ module.exports = (sequelize, DataTypes) => {
         isFloat: { args: true, msg: 'the price must be a decimal' }
       }
     },
-    over_cooked_level: {
-      type: DataTypes.ENUM(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']),
-      allowNull: false,
-      defaultValue: 5,
-      validate: {
-        isIn: { args: [['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']], msg: 'The over cooked level must be greater than 1 and less than 10' }
-      }
-    },
     last_preparation_date: {
       type: DataTypes.DATE,
       allowNull: true,

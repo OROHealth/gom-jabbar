@@ -14,7 +14,6 @@ const prefix = 'dish'
  *        - description
  *        - reference
  *        - price
- *        - over_cooked_level
  *        - last_preparation_date
  *        - conservation_time
  *        - active
@@ -34,9 +33,6 @@ const prefix = 'dish'
  *        price:
  *          type: string
  *          description: the dish's price
- *        over_cooked_level:
- *          type: string
- *          description: the dish'over cooked level
  *        last_preparation_date:
  *          type: string
  *          description: the last preparation date of dish
@@ -50,7 +46,6 @@ const prefix = 'dish'
  *        name: cheeseburgers
  *        description: These mini cheeseburgers are served on a fresh baked pretzel bun with lettuce, tomato, avocado, and your choice of cheese.
  *        price: 10.52
- *        over_cooked_level: 4
  *        conservation_time: 120
  *        last_preparation_date: "2021-02-29"
  *        active: '1'
