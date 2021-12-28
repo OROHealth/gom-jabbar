@@ -1,0 +1,11 @@
+.slider{
+
+    padding: 1em;
+    color:var(--text);
+    background-color: rgba(0,0,0,0.7);
+    transform: translate(-50%,-110%);
+    border-radius: 0.5em;
+
+    
+}
+
