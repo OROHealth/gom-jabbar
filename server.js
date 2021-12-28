@@ -13,6 +13,10 @@ var log = log4js.getLogger('app') // enable logging
 const swaggerUI = require('swagger-ui-express')
 const swaggerJsDoc = require('swagger-jsdoc')
 const logErrorMiddleware = require('./schitts/middlewares/logErrorMiddleware')
+const cron = require('node-cron')
+const shell = require('shelljs')
+const { isTrue } = require('./schitts/helpers/helpers')
+
 // import utils
 const whiteList = [`${process.env.APP_URL}:${port}`, `http://127.0.0.1:${port}`, 'http://www.yoursite.com']
 const swaggerOptions = {
@@ -49,6 +53,21 @@ var corsOptions = {
     }
   },
   optionsSuccessStatus: 200
+}
+
+// To backup a database
+if (isTrue(process.env.APP_BACKUP)) {
+  cron.schedule('* */60 * * * *', function () {
+    console.log('---------------------')
+    console.log('Running Database Backup Cron Job every sixty minutes')
+    const command = 'node schitts/recovery/backup.js'
+    // const command = 'node schitts/recovery/restore.js'
+    if (shell.exec(command).code !== 0) {
+      shell.exit(1)
+    } else {
+      shell.echo('Database Backup Cron Job complete')
+    }
+  })
 }
 
 /* middlewares */
