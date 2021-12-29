@@ -4,10 +4,12 @@ import "./Prompt.css";
 import { motion } from "framer-motion";
 import Map from "../Map/Map";
 
-const Prompt = ({ lat, lng }) => {
+const Prompt = ({ lat, lng,test }) => {
+  var bool = "false";
+  if(test) bool="true";
   return (
     <div className="slider" style={{ width: 130 }}>
-      <h3>Singal human presence</h3>
+      <h3>Signal human presence</h3>
       Trashing Levels:
       <Slider
         size="small"
@@ -22,16 +24,16 @@ const Prompt = ({ lat, lng }) => {
         aria-label="Small"
         valueLabelDisplay="auto"
       />
-      <motion.button
+      {bool}
+      {/*<motion.button
         whileHover={{
           scale: 1.1,
           color: "#4787c7",
           border: "1px solid #4787c7",
         }}
-        onClick={{ scale: 1 }}
       >
         Submit
-      </motion.button>
+      </motion.button>*/}
     </div>
   );
 };
