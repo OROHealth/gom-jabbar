@@ -11,6 +11,7 @@ Installation des packages
 == uuid (generer et valider les uuids) [https://github.com/uuidjs/uuid]
 == swagger-ui-express (api documentation) [https://github.com/scottie1984/swagger-ui-express]
 == swagger-jsDoc (api documentation) [https://github.com/Surnet/swagger-jsdoc]
+== node-cron (cron Job) [https://github.com/node-cron/node-cron]
 
 ===============================================
 DATABASE CONFIGURATION
@@ -59,4 +60,9 @@ Advanced options
 In utils.js we have set a [groupByField] method
 that we can apply to iterable
 items.groupByField('field')
+
+==============================================
+Cron-node syntax
+==============================================
+https://crontab.guru/
 

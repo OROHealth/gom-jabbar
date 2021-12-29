@@ -1,7 +1,7 @@
 # node_api
 a nodeJS api template using sequelize, mysql or MongoDB
 
-# configure .env file
+# rename .env.example file to .env file
 # set APP_SYNC = true the first time you launch the server
 # set APP_SEED = true the first time you launch the server
 

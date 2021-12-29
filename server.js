@@ -57,9 +57,9 @@ var corsOptions = {
 
 // To backup a database
 if (isTrue(process.env.APP_BACKUP)) {
-  cron.schedule('* */60 * * * *', function () {
+  cron.schedule('* */24 * * *', function () {
     console.log('---------------------')
-    console.log('Running Database Backup Cron Job every sixty minutes')
+    console.log('Running Database Backup Cron Job every day at midnight')
     const command = 'node schitts/recovery/backup.js'
     // const command = 'node schitts/recovery/restore.js'
     if (shell.exec(command).code !== 0) {

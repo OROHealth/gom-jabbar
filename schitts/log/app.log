@@ -1,2 +1,7 @@
 [2021-12-27T18:48:43.492] [ERROR] app - TypeError: require(...) is not a function | server@process.<anonymous>:68
 [2021-12-27T18:55:43.758] [INFO] app - Fetching customers. CustomerController@:34
+[2021-12-29T13:25:17.606] [ERROR] app - DATABASE BACKUP COMPLETED. File Located at: C:\laragon\www\gom-jabbar\schitts\recovery\29_12_2021_backup.sql backup@WriteStream.<anonymous>:33
+[2021-12-29T13:27:02.572] [ERROR] app - DATABASE BACKUP COMPLETED. File Located at: C:\laragon\www\gom-jabbar\schitts\recovery\29_12_2021_backup.sql backup@WriteStream.<anonymous>:33
+[2021-12-29T13:36:03.170] [ERROR] app - DATABASE BACKUP COMPLETED. File Located at: C:\laragon\www\gom-jabbar\schitts\recovery\29_12_2021_backup.sql backup@WriteStream.<anonymous>:33
+[2021-12-29T13:37:02.485] [ERROR] app - DATABASE BACKUP COMPLETED. File Located at: C:\laragon\www\gom-jabbar\schitts\recovery\29_12_2021_backup.sql backup@WriteStream.<anonymous>:33
+[2021-12-29T13:38:03.079] [ERROR] app - DATABASE BACKUP COMPLETED. File Located at: C:\laragon\www\gom-jabbar\schitts\recovery\29_12_2021_backup.sql backup@WriteStream.<anonymous>:33
