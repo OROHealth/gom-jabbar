@@ -2,7 +2,8 @@ CREATE TABLE "caribou" (
     "id" serial NOT NULL,
     "email" VARCHAR(255) NOT NULL UNIQUE,
     "password" VARCHAR(255) NOT NULL,
-    "img" VARCHAR(255) NOT NULL,
+    "img" VARCHAR(255),
+    "name" VARCHAR(255) NOT NULL,
     CONSTRAINT "caribou_pk" PRIMARY KEY ("id")
 ) WITH (OIDS = FALSE);
 

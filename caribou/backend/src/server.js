@@ -10,12 +10,15 @@ server.use(express.json());
 //create a caribou
 server.post("/api/caribou", async(req,res)=>{
     try{
-        const{name} = req.body;
-        const newCaribou = await pool.query("INSERT INTO caribou (name) VALUES($1) RETURNING *",[name]);
-        res.json(newCaribou.rows[0]);
+        const query = `INSERT INTO caribou (email, password, name) VALUES ($1, $2, $3) RETURNING *`;
+        const values = [req.query.email,req.query.password,req.query.name];
+        const newCaribou = await pool.query(query,values,function (err, result) {
+            if (err) throw err;
+          });
+        res.json(newCaribou);
     }
     catch(err){
-        console.log(err.message);
+        res.status(500).json("Could not insert new caribou into database")
     }
 });
 
