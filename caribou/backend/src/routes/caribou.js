@@ -5,10 +5,10 @@ const router = express.Router();
 //create a caribou
 router.post("/createCaribou", async(req,res)=>{
     try{
-        const query = `INSERT INTO caribou (email, password, name) VALUES ($1, $2, $3) RETURNING *`;
+        const query = `INSERT INTO caribou (email, password, name) VALUES ($1, $2, $3);`;
         const values = [req.query.email,req.query.password,req.query.name];
-        const newCaribou = await pool.query(query,values);
-        res.json(newCaribou.rows);
+        await pool.query(query,values);
+        res.json("Succesfully created caribou");
     }
     catch(err){
         res.status(500).json("Could not insert new caribou into database")
