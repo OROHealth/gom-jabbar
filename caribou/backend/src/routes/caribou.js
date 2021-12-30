@@ -1,7 +1,14 @@
 const express = require("express");
 const pool = require("../db/db");
 const router = express.Router();
+const bcrypt = require("bcrypt");
 
+
+//login
+router.route("/login").get(async (req,res)=>{}).post(async (req,res)=>{
+    //TODO validate input
+    const caribou = await pool.query("SELECT id, name, password FROM users ")
+})
 //create a caribou
 router.post("/createCaribou", async(req,res)=>{
     try{
@@ -17,7 +24,7 @@ router.post("/createCaribou", async(req,res)=>{
 
 //allows the user to signal that it is ready to antler-exchange
 router.put('/signalAntlerExchange',(req,res)=>{
-    //TODO 
+    //TODO
 });
 
 

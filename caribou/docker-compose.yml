@@ -22,7 +22,7 @@ services:
       - '5050:5050'  
     volumes:
       - /backdir/node_modules
-      - ./backend:/backdir
+      - ./backend/src:/backdir/src
   frontend:
     build:
       context: ./frontend

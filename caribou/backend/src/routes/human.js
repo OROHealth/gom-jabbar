@@ -8,11 +8,16 @@ router.post("/signal", (req, res) => {
   let lng = req.query.long;
   let trashingLevel = req.query.trashingLevel;
   let excitementLevel = req.query.excitementLevel;
-  res.send({
+  res.json({
     response: `you sucessfully reported a human at lat: ${lat} long:${lng} `,
     trashingLevelRes: "You reported a trashing level of:" + trashingLevel,
     excitementLevelRes: `You reported an excitement leve of:${excitementLevel}`
   });
+});
+
+router.get("/getAllHumans",(req,res)=>{
+  const query = `SELECT * FROM human`;
+  res.json(query);
 });
 
 //request presence of human in radius around a specific latitude and longitude
