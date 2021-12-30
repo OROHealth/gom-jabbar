@@ -30,19 +30,20 @@ const Map = ({ center, zoom, test2 }) => {
 
   const disableMap = () =>{
     setHover(true);
-    mapInstance.setOptions({ gestureHandling: "none",disableDefaultUI: true });
+    mapInstance.setOptions({ gestureHandling: "none", disableDefaultUI: true });
     console.log("toggle hovering");
   }
 
   const enableMap = () =>{
     setHover(false);
-    mapInstance.setOptions({ gestureHandling: "greedy"});
+    mapInstance.setOptions({ gestureHandling: "greedy", disableDefaultUI: true});
     console.log("toggle hovering");
   }
   const closPrompt = () =>{
     setPrompt({
       show: false,
     });
+    mapInstance.setOptions({ gestureHandling: "greedy", disableDefaultUI: true});
   }
 
   return (
