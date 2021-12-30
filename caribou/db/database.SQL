@@ -1,27 +1,34 @@
 CREATE TABLE "caribou" (
-    "id" serial NOT NULL,
+    "id" SERIAL PRIMARY KEY,
     "email" VARCHAR(255) NOT NULL UNIQUE,
     "password" VARCHAR(255) NOT NULL,
     "img" VARCHAR(255),
     "name" VARCHAR(255) NOT NULL,
-    "antler_exchange_status" BOOLEAN DEFAULT false,
-    CONSTRAINT "caribou_pk" PRIMARY KEY ("id")
+    "antler_exchange_status" BOOLEAN DEFAULT false
 ) WITH (OIDS = FALSE);
 CREATE TABLE "inbox" (
-    "id" serial NOT NULL,
-    "user_id" integer NOT NULL,
-    "sender_id" integer NOT NULL,
-    "seen" BOOLEAN NOT NULL,
-    CONSTRAINT "inbox_pk" PRIMARY KEY ("id")
+    "id" SERIAL PRIMARY KEY ,
+    "user1_id" integer NOT NULL,
+    "user2_id" integer NOT NULL,
+    UNIQUE ("user1_id","user2_id"),
+    "seen1" BOOLEAN DEFAULT false,
+    "seen2" BOOLEAN DEFAULT false,
+    CONSTRAINT "inbox_fk0" FOREIGN KEY ("user1_id") REFERENCES "caribou"("id"),
+    CONSTRAINT "inbox_fk1" FOREIGN KEY ("user2_id") REFERENCES "caribou"("id")
 ) WITH (OIDS = FALSE);
-CREATE TABLE "chat" (
+CREATE TABLE "message" (
     "id" serial NOT NULL,
+    "inbox_id" integer NOT NULL,
     "sender_id" integer NOT NULL,
     "reciever_id" integer NOT NULL,
     "message" VARCHAR(255) NOT NULL,
+    "created_timestamp" timestamp not NULL DEFAULT current_timestamp,
     "file" VARCHAR(255),
     "meta" VARCHAR(255),
-    CONSTRAINT "chat_pk" PRIMARY KEY ("id")
+    CONSTRAINT "message_pk" PRIMARY KEY ("id"),
+    CONSTRAINT "message_fk0" FOREIGN KEY ("inbox_id") REFERENCES "inbox"("id"),
+    CONSTRAINT "message_fk1" FOREIGN KEY ("sender_id") REFERENCES "caribou"("id"),
+    CONSTRAINT "message_fk2" FOREIGN KEY ("reciever_id") REFERENCES "caribou"("id")
 ) WITH (OIDS = FALSE);
 CREATE TABLE "human" (
     "id" serial NOT NULL,
@@ -31,14 +38,7 @@ CREATE TABLE "human" (
     "lng" integer NOT NULL,
     CONSTRAINT "human_pk" PRIMARY KEY ("id")
 ) WITH (OIDS = FALSE);
-ALTER TABLE "inbox"
-ADD CONSTRAINT "inbox_fk0" FOREIGN KEY ("user_id") REFERENCES "caribou"("id");
-ALTER TABLE "inbox"
-ADD CONSTRAINT "inbox_fk1" FOREIGN KEY ("sender_id") REFERENCES "caribou"("id");
-ALTER TABLE "chat"
-ADD CONSTRAINT "chat_fk0" FOREIGN KEY ("sender_id") REFERENCES "caribou"("id");
-ALTER TABLE "chat"
-ADD CONSTRAINT "chat_fk1" FOREIGN KEY ("reciever_id") REFERENCES "caribou"("id");
+
 INSERT INTO caribou ("email", "password", "name")
 VALUES (
         'georgecari@gmail.com',
