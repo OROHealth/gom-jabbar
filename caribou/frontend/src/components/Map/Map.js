@@ -3,28 +3,47 @@ import "../Map/Map.css";
 import IHCHicon from "../../img/IHCH.png";
 import Prompt from "../Prompt/Prompt";
 import React, { useState } from "react";
+import { unstable_createChainedFunction } from "@mui/utils";
 
 
-const Map = ({ center, zoom }) => {
+const Map = ({ center, zoom, test2 }) => {
 
-  const [prompt, setPrompt] = useState({ show: "false", lat: "0", lng: "0" });
+  const [prompt, setPrompt] = useState({ show: false, lat: "0", lng: "0" });
   const [promptHover, setHover] = useState(false);
+  const [mapInstance, setMapInstance] = useState(undefined);
 
   const apiLoaded = (map, maps) => {
     map.setOptions({ disableDefaultUI: true });
-
+    setMapInstance(map);
     map.addListener("click", (mapsMouseEvent) => {
+      console.log(promptHover);
+      if(!promptHover){
       setPrompt({
-        show: "true",
+        show: true,
         lat: mapsMouseEvent.latLng.lat(),
         lng: mapsMouseEvent.latLng.lng(),
       });
       console.log(JSON.stringify(mapsMouseEvent.latLng.toJSON()));
-      map.setOptions({
-        gestureHandling: "none",
-      });
+    }
     });
   };
+
+  const disableMap = () =>{
+    setHover(true);
+    mapInstance.setOptions({ gestureHandling: "none",disableDefaultUI: true });
+    console.log("toggle hovering");
+  }
+
+  const enableMap = () =>{
+    setHover(false);
+    mapInstance.setOptions({ gestureHandling: "greedy"});
+    console.log("toggle hovering");
+  }
+  const closPrompt = () =>{
+    setPrompt({
+      show: false,
+    });
+  }
 
   return (
     <div className="map">
@@ -41,15 +60,16 @@ const Map = ({ center, zoom }) => {
           src={IHCHicon}
           lat="45.50391"
           lng="-73.5575758"
+          minZoom="10"
+          
         />
-        <Prompt
+        {prompt.show&&<Prompt
           lat={prompt.lat}
           lng={prompt.lng}
-          test={promptHover}
-          onMouseEnter={()=>setHover(true)}
-          onMouseLeave={()=>setHover(false)}
-
-        />
+          enter={disableMap}
+          leave={enableMap}
+          submit={closPrompt}
+        />}
       </GoogleMapReact>
     </div>
   );

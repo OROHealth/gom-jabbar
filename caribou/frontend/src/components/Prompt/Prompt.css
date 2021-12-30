@@ -9,3 +9,16 @@
     
 }
 
+button{
+    color: var(--text);
+    padding: 10px 30px;
+    font-size: 1em;
+    background: transparent;
+    border-radius: 15px;
+    border: 1px solid var(--text);
+    margin: 10px;
+    cursor: pointer;
+    opacity: 1;
+    white-space: nowrap;
+}
+
