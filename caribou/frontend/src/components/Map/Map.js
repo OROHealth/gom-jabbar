@@ -3,7 +3,7 @@ import "../Map/Map.css";
 import IHCHicon from "../../img/IHCH.png";
 import Prompt from "../Prompt/Prompt";
 import React, { useState } from "react";
-import { LazyMotion } from "framer-motion";
+
 
 const Map = ({ center, zoom }) => {
 
@@ -11,7 +11,7 @@ const Map = ({ center, zoom }) => {
   const [promptHover, setHover] = useState(false);
 
   const apiLoaded = (map, maps) => {
-    //map.setOptions({ clickableIcons: false });
+    map.setOptions({ disableDefaultUI: true });
 
     map.addListener("click", (mapsMouseEvent) => {
       setPrompt({
@@ -21,7 +21,6 @@ const Map = ({ center, zoom }) => {
       });
       console.log(JSON.stringify(mapsMouseEvent.latLng.toJSON()));
       map.setOptions({
-        zoomControl: true,
         gestureHandling: "none",
       });
     });
@@ -36,13 +35,13 @@ const Map = ({ center, zoom }) => {
         yesIWantToUseGoogleMapApiInternals
         onGoogleApiLoaded={({ map, maps }) => apiLoaded(map, maps)}
       >
-        {/*<img
+        <img
           className="icon"
           alt="IHCH headquarters"
           src={IHCHicon}
           lat="45.50391"
           lng="-73.5575758"
-        />*/}
+        />
         <Prompt
           lat={prompt.lat}
           lng={prompt.lng}

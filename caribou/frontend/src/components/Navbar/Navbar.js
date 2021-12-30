@@ -7,7 +7,7 @@ const NavBar = () => {
   return (
     <div className="navbar">
       <img src = {caribou} className="mainIcon" alt="Caribou icon"/>
-      <motion.button
+      <motion.button className="menuButton"
         whileHover={{
           scale: 1.1,
           boxShadow: "0px 0px 4px rgb(255,255,255)",
@@ -18,7 +18,7 @@ const NavBar = () => {
         Sign in
       </motion.button>
 
-      <motion.button
+      <motion.button className="menuButton"
         whileHover={{
           scale: 1.1,
           boxShadow: "0px 0px 4px rgb(255,255,255)",
@@ -29,7 +29,7 @@ const NavBar = () => {
         Sign in
       </motion.button>
 
-      <motion.button
+      <motion.button className="menuButton"
         whileHover={{
           scale: 1.1,
           boxShadow: "0px 0px 4px rgb(255,255,255)",
@@ -40,7 +40,7 @@ const NavBar = () => {
         Sign in
       </motion.button>
 
-      <motion.button
+      <motion.button className="menuButton"
         whileHover={{
           scale: 1.1,
           boxShadow: "0px 0px 4px rgb(255,255,255)",
@@ -51,7 +51,7 @@ const NavBar = () => {
         Sign in
       </motion.button>
 
-      <motion.button
+      <motion.button className="menuButton"
         whileHover={{
           scale: 1.1,
           boxShadow: "0px 0px 4px rgb(255,255,255)",

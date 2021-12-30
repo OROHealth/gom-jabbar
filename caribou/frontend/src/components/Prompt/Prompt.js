@@ -1,8 +1,6 @@
 import React from "react";
 import Slider from "@mui/material/Slider";
 import "./Prompt.css";
-import { motion } from "framer-motion";
-import Map from "../Map/Map";
 
 const Prompt = ({ lat, lng,test }) => {
   var bool = "false";
