@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
       validate: {
-        isAfter: { args: (new Date(new Date().setHours(0, 0, 0, 0))).toString(), msg: 'the order date date must be later' },
+        isAfter: { args: (new Date(new Date().setHours(0, 0, 0, 0))).toString(), msg: 'the order date must be later' },
         isDate: { args: true, msg: 'the order_date field must be a date format' }
       }
     },
@@ -58,6 +58,17 @@ module.exports = (sequelize, DataTypes) => {
     feedback: {
       type: DataTypes.TEXT,
       allowNull: true
+    },
+    server: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'servers', // refers to table name
+        key: 'id' // 'id' refers to column name in current table
+      },
+      validate: {
+        isInt: { args: true, msg: 'the favorite drink must be numeric' }
+      }
     },
     status: {
       type: DataTypes.ENUM(['PAID', 'UNPAID', 'REJECTED', 'ACCEPTED']),

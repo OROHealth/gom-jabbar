@@ -58,9 +58,43 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: { args: true, msg: 'City field must be provided' }
       }
     },
-    favorite_dish: {
+    favorite_food: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'dishes', // refers to table name
+        key: 'id' // 'id' refers to column name in current table
+      },
+      validate: {
+        isInt: { args: true, msg: 'the favorite drink must be numeric' }
+      }
+    },
+    favorite_drink: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'dishes', // 'fathers' refers to table name
+        key: 'id' // 'id' refers to column name in fathers table
+      },
+      validate: {
+        isInt: { args: true, msg: 'the favorite drink must be numeric' }
+      }
+    },
+    bill_split: {
+      type: DataTypes.ENUM(['PER GROUP', 'PER PERSON', 'WITH RATIOS']),
+      allowNull: true,
+      defaultValue: 'PER GROUP',
+      validate: {
+        isIn: { args: [['PER GROUP', 'PER PERSON', 'WITH RATIOS']], msg: 'the split of the bill must be one of the specified value' }
+      }
+    },
+    type: {
+      type: DataTypes.ENUM(['OUT OF TOWN', 'IN TOWN', 'PART OF THE ROSE FAMILY']),
+      allowNull: false,
+      dafaultValue: 'OUT OF TIME',
+      validate: {
+        isIn: { args: [['OUT OF TOWN', 'IN TOWN', 'PART OF THE ROSE FAMILY']], msg: 'the type of customer must be one of the specified value' }
+      }
     }
   }, {
     hooks: {

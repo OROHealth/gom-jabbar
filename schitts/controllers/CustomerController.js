@@ -28,7 +28,7 @@ const index = async (req, res) => {
   }
 
   const offset = db.limit * (isNumber(req.query.page) ? req.query.page : 0)
-  await Customer.findAll({ include: [{ model: Dish, require: false, as: 'Dishes' }, { model: Order, require: false, as: 'Orders' }, { model: Booking, require: false, as: 'Bookings' }], attributes: ['first_name', 'last_name', 'email', 'reference', 'phone_number', 'address', 'city', 'favorite_dish'], limit: db.limit, offset: offset }).then(
+  await Customer.findAll({ include: [{ model: Dish, require: false, as: 'Dishes' }, { model: Order, require: false, as: 'Orders' }, { model: Booking, require: false, as: 'Bookings' }], attributes: ['reference', 'first_name', 'last_name', 'email', 'phone_number', 'address', 'city', 'favorite_food', 'favorite_drink', 'bill_split', 'type'], limit: db.limit, offset: offset }).then(
     (customers) => {
       responseObject.data = customers
       log.info(`Fetching customers. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
@@ -68,7 +68,10 @@ const store = async (req, res) => {
         phone_number: req.body.phone_number,
         address: req.body.address,
         city: req.body.city,
-        favorite_dish: req.body.favorite_dish
+        favorite_food: req.body.favorite_food,
+        favorite_drink: req.body.favorite_drink,
+        type: req.body.type,
+        bill_split: req.body.bill_split
       }
 
       // check if favorite_dish already exists
@@ -83,7 +86,7 @@ const store = async (req, res) => {
         throw new Error(error)
       })
 
-      await Customer.create(info, { fields: ['first_name', 'last_name', 'email', 'phone_number', 'address', 'city', 'favorite_dish'], transaction }).then(newCustomer => {
+      await Customer.create(info, { fields: ['first_name', 'last_name', 'email', 'phone_number', 'address', 'city', 'favorite_food', 'favorite_drink', 'bill_split', 'type'], transaction }).then(newCustomer => {
         responseObject.data = newCustomer.dataValues
         consoleLog(responseObject.data)
         log.info(`New customer created. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
@@ -158,22 +161,37 @@ const update = async (req, res) => {
   }
 
   try {
-    // check if favorite_dish already exists
-    await Dish.findOne({ where: { reference: req.body.favorite_dish || 0 } }).then(
-      (found) => {
-        if (found === null) {
-          throw new Error('dish not found')
+    // check if favorite_food already exists
+    if (req.body.favorite_food) {
+      await Dish.findOne({ where: { reference: req.body.favorite_food, type: 'FOOD' } }).then(
+        (found) => {
+          if (found === null) {
+            throw new Error('favorite_food not found')
+          }
+          req.body.favorite_food = found.id
         }
-        req.body.favorite_dish = found.id
-      }
-    ).catch(error => {
-      throw new Error(error)
-    })
+      ).catch(error => {
+        throw new Error(error)
+      })
+    }
+
+    if (req.body.favorite_drink) {
+      await Dish.findOne({ where: { reference: req.body.favorite_drink, type: 'DRINK' } }).then(
+        (found) => {
+          if (found === null) {
+            throw new Error('favorite_drink not found')
+          }
+          req.body.favorite_drink = found.id
+        }
+      ).catch(error => {
+        throw new Error(error)
+      })
+    }
 
     await db.sequelize.transaction(
       async (transaction) => {
         const reference = req.params.reference
-        await Customer.update(req.body, { where: { reference: reference }, fields: ['first_name', 'last_name', 'phone_number', 'address', 'city', 'favorite_dish'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
+        await Customer.update(req.body, { where: { reference: reference }, fields: ['first_name', 'last_name', 'phone_number', 'address', 'city', 'favorite_food', 'favorite_drink', 'bill_split', 'type'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
           .then(
             (updated) => {
               consoleLog(updated)

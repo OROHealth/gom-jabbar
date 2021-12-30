@@ -5,3 +5,12 @@
 [2021-12-29T13:36:03.170] [ERROR] app - DATABASE BACKUP COMPLETED. File Located at: C:\laragon\www\gom-jabbar\schitts\recovery\29_12_2021_backup.sql backup@WriteStream.<anonymous>:33
 [2021-12-29T13:37:02.485] [ERROR] app - DATABASE BACKUP COMPLETED. File Located at: C:\laragon\www\gom-jabbar\schitts\recovery\29_12_2021_backup.sql backup@WriteStream.<anonymous>:33
 [2021-12-29T13:38:03.079] [ERROR] app - DATABASE BACKUP COMPLETED. File Located at: C:\laragon\www\gom-jabbar\schitts\recovery\29_12_2021_backup.sql backup@WriteStream.<anonymous>:33
+[2021-12-30T13:15:58.834] [ERROR] app - SequelizeDatabaseError: Unknown column 'Customer.favorite_dish' in 'field list'. CustomerController@:40
+[2021-12-30T13:19:56.073] [INFO] app - Fetching customers. CustomerController@:35
+[2021-12-30T13:23:43.121] [INFO] app - Fetching customers. CustomerController@:34
+[2021-12-30T13:26:30.399] [ERROR] app - Error: Error: favorite_food not found. CustomerController@update:214
+[2021-12-30T13:26:49.660] [INFO] app - Fetching dishes. DishController@:30
+[2021-12-30T13:27:56.404] [INFO] app - Fetching dishes. DishController@:30
+[2021-12-30T13:29:11.071] [INFO] app - Fetching dishes. DishController@:30
+[2021-12-30T13:29:32.743] [ERROR] app - Error: Error: favorite_drink not found. CustomerController@update:214
+[2021-12-30T13:29:45.216] [INFO] app - Product updated, reference: fbdfa7b9-6ee4-4b43-8fbd-1bc8580288f6. CustomerController@:198

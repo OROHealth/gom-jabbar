@@ -217,6 +217,25 @@ const order = async (req, res) => {
   }
 }
 
+
+/**
+ * @route POST /api/v1/manager/{is_server}/overcooked
+ * @description Store new dishes ordered
+ * @summary summary
+ * @param {requestBodyType} request.body - requestBodyDescription
+ * @return {responseType} status - responseDescription - responseContentType
+ */
+const serverOverCookedDishes = async (req, res) => {
+  /* var responseObject = {
+    status: true,
+    data: null,
+    error: {},
+    msg: ''
+  } */
+  chercher dans dishes_orders where over_cooked_level == 8 and orderId = 'id de serveur dont le nom est parametré', 
+  faire le [decompte des lignes résultantes et établir le montant en argent] 
+}
+
 module.exports = {
   store,
   update,

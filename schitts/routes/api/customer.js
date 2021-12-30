@@ -16,7 +16,10 @@ const prefix = 'customer'
  *        - phone_number
  *        - address
  *        - city
- *        - favorite_dish
+ *        - favorite_food
+ *        - favorite_drink
+ *        - bill_split
+ *        - type
  *      properties:
  *        id:
  *          type: integer
@@ -42,9 +45,18 @@ const prefix = 'customer'
  *        city:
  *          type: string
  *          description: The customer's city
- *        favorite_dish:
+ *        favorite_food:
  *          type: string
- *          description: The customer's favorite dish id
+ *          description: The customer's favorite food id
+ *        favorite_drink:
+ *          type: string
+ *          description: The customer's favorite drink id
+ *        bill_split:
+ *          type: string
+ *          description: The customer's bill split method
+ *        type:
+ *          type: string
+ *          description: The customer's type
  *      example:
  *        first_name: David
  *        last_name: DuChovni
@@ -52,7 +64,10 @@ const prefix = 'customer'
  *        phone_number: +235 965854625
  *        address: 15 rue du fevre
  *        city: paris
- *        favorite_dish: 7dc36efb-0533-4d9f-b4fb-62f757c08b3a
+ *        favorite_food: 7dc36efb-0533-4d9f-b4fb-62f757c08b3a
+ *        favorite_drink: 7dc36efb-0533-4d9f-b4fb-62f757c08b3a
+ *        bill_split: 'PER GROUP'
+ *        type: 'IN TOWN'
  */
 
 /**

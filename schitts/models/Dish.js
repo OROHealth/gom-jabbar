@@ -55,6 +55,16 @@ module.exports = (sequelize, DataTypes) => {
         isInt: { args: true, msg: 'The time of conservation must be numeric' }
       }
     },
+    type: {
+      type: DataTypes.ENUM(['FOOD', 'DRINK']),
+      allowNull: false,
+      defaultValue: 'FOOD'
+    },
+    status: {
+      type: DataTypes.ENUM(['PAID', 'UNPAID', 'REJECTED', 'ACCEPTED']),
+      allowNull: true,
+      defaultValue: 'ACCEPTED'
+    },
     active: {
       type: DataTypes.INTEGER,
       allowNull: false,

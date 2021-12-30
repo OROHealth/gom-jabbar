@@ -24,7 +24,7 @@ const index = async (req, res) => {
     msg: ''
   }
   const offset = db.limit * (isNumber(req.query.page) ? req.query.page : 0)
-  await Dish.findAll({ include: { all: true, nested: true }, attributes: ['reference', 'name', 'description', 'price', 'last_preparation_date', 'conservation_time', 'active'], limit: db.limit, offset: offset }).then(
+  await Dish.findAll({ include: { all: true, nested: true }, attributes: ['reference', 'name', 'description', 'price', 'last_preparation_date', 'conservation_time', 'type', 'active'], limit: db.limit, offset: offset }).then(
     (dishes) => {
       responseObject.data = dishes
       log.info(`Fetching dishes. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
@@ -66,7 +66,7 @@ const store = async (req, res) => {
         active: req.body.active
       }
 
-      await Dish.create(info, { fields: ['name', 'reference', 'description', 'price', 'last_preparation_date', 'conservation_time', 'active'], transaction }).then(newly => {
+      await Dish.create(info, { fields: ['name', 'reference', 'description', 'price', 'last_preparation_date', 'conservation_time', 'type', 'active'], transaction }).then(newly => {
         responseObject.data = newly.dataValues
         consoleLog(responseObject.data)
         log.info(`New dish created. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
@@ -144,7 +144,7 @@ const update = async (req, res) => {
     await db.sequelize.transaction(
       async (transaction) => {
         const reference = req.params.reference
-        await Dish.update(req.body, { where: { reference: reference }, fields: ['name', 'description', 'price', 'over_cooked_level', 'last_preparation_date', 'conservation_time', 'active'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
+        await Dish.update(req.body, { where: { reference: reference }, fields: ['name', 'description', 'price', 'over_cooked_level', 'last_preparation_date', 'conservation_time', 'type', 'active'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
           .then(
             (updated) => {
               consoleLog(updated)
