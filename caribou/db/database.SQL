@@ -20,7 +20,7 @@ CREATE TABLE "message" (
     "id" serial NOT NULL,
     "inbox_id" integer NOT NULL,
     "sender_id" integer NOT NULL,
-    "reciever_id" integer NOT NULL,
+    "receiver_id" integer NOT NULL,
     "message" VARCHAR(255) NOT NULL,
     "created_timestamp" timestamp not NULL DEFAULT current_timestamp,
     "file" VARCHAR(255),
@@ -28,7 +28,7 @@ CREATE TABLE "message" (
     CONSTRAINT "message_pk" PRIMARY KEY ("id"),
     CONSTRAINT "message_fk0" FOREIGN KEY ("inbox_id") REFERENCES "inbox"("id"),
     CONSTRAINT "message_fk1" FOREIGN KEY ("sender_id") REFERENCES "caribou"("id"),
-    CONSTRAINT "message_fk2" FOREIGN KEY ("reciever_id") REFERENCES "caribou"("id")
+    CONSTRAINT "message_fk2" FOREIGN KEY ("receiver_id") REFERENCES "caribou"("id")
 ) WITH (OIDS = FALSE);
 CREATE TABLE "human" (
     "id" serial NOT NULL,

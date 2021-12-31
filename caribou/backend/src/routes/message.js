@@ -32,8 +32,9 @@ router.route('/').get(async (req,res)=>{
     try{
 
         const message = muugrm(JSON.stringify(req.body.message));
-        const query=`INSERT INTO message (inbox_id, sender_id, reciever_id, message) VALUES ($1, $2, $3, $4);`;
-        const values=[req.body.inbox_id, req.body.sender_id,req.body.reciever_id,message];
+        console.log(req.body.receiver_id);
+        const query=`INSERT INTO message (inbox_id, sender_id, receiver_id, message) VALUES ($1, $2, $3, $4);`;
+        const values=[req.body.inbox_id, req.body.sender_id,req.body.receiver_id,message];
         await pool.query(query, values);
         res.json(`Successfully created message:${message}`);
 
