@@ -20,6 +20,7 @@ const Auth = ({ setAuth }) => {
     e.stopPropagation();
     if (!signup) {
       //SIGNIN
+      //TODO handle and display signin errors
       console.log(`Signing in with email ${email}`);
       fetch("http://localhost:5050/api/caribou/login", {
           method: "POST",
@@ -50,6 +51,7 @@ const Auth = ({ setAuth }) => {
           });
     } else {
       //SIGNUP
+      //TODO handle and display signup errors
       console.log(`Signing up with email ${email}`);
       fetch("http://localhost:5050/api/caribou/signup", {
           method: "POST",
