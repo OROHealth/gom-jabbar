@@ -19,11 +19,8 @@ export default function Map({ center, zoom }){
   const [prompt, setPrompt] = useState({ show: false, lat: "0", lng: "0" });
   const [promptHover, setHover] = useState(false);
   const [mapInstance, setMapInstance] = useState(undefined);
+  // eslint-disable-next-line
   const [mapsInstance, setMapsInstance] = useState(undefined);
-
-  const [reRender, setReRender] = useState(false);  
- 
-
 
   const [heatMapData, setHeatMapData] = useState ( {
     positions: [{lat: 4983649415362, lng: -73.59245921925941},
@@ -50,7 +47,6 @@ export default function Map({ center, zoom }){
             points.push(
             { lat: data.rows[i].lat, lng: data.rows[i].lng});
           }
-          console.log(`points: ${points}`);
           setHeatMapData({
             positions: points,
             options: {

@@ -1,16 +1,13 @@
-import { convertLength } from "@mui/material/styles/cssUtils";
-
 import React, { useState, useContext } from "react";
 import { LoggedIn } from "./LoginContext";
 import "./Auth.css";
 
 const Auth = ({ setAuth }) => {
   const { setUser } = useContext(LoggedIn);
-  const isAuth = setUser && setUser.loggedIn;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signup, setSignup] = useState(false);
-  const[error, setError] = useState(null);
+  const[error, setError] = useState(null);//TODO ERROR handling
   const[name,setName]= useState(null);
 
   const handleFormSubmission = (e) => {

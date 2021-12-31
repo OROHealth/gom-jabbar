@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Map from './components/Map/Map'
 import Auth from './components/Auth/Auth'
 import Chat from "./components/Chat/Chat";
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {motion} from "framer-motion";
 import chat from "./img/chat.svg";
 import map from "./img/map.svg";
@@ -25,10 +25,6 @@ function App() {
     }
   }
 
-  const toggleAuthFunc = () =>{
-    console.log('toggling auth')
-    setAuth(!authOpen);
-  }
   const renderIcon = () =>{
     if(toggleChat){
       return <img className="toggleIcon" src={map} alt="chat button"/>;

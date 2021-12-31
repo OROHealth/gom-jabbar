@@ -26,6 +26,7 @@ This command will take quite  a bit of time to get start and build every contain
 
 ### accessing the website
 The website can then be accessed at [localhost:3000](http://localhost:3000/)
+
 :warning: the frontend takes quite a bit of time to load due to volumes not being super efficient on windows. If you don't  get any errors it's more than likely that you just need to wait 2min for it to start
 ### database tools
 This build also comes with [adminer](http://localhost:8080/) which allows quick accessing and editing of the database. You can login using "postgres" as the username and password, server: "db", database:"CaribDB". Don't forget to select the system as PostgreSQL.

@@ -1,9 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import "./Navbar.css";
 import { motion } from "framer-motion";
 import "../../styles.css";
 import caribou from "../../img/caribou.svg";
-import Auth from "../Auth/Auth";
 import { LoggedIn } from "../Auth/LoginContext";
 const useAuth = () => {
   const { user } = useContext(LoggedIn);
@@ -66,7 +65,6 @@ const Button = ({setAuth}) => {
 };
 
 const NavBar = ({ setAuth }) => {
-  const isAuth = useAuth();
   return (
     <div className="navbar">
       <img src={caribou} className="mainIcon" alt="Caribou icon" />
