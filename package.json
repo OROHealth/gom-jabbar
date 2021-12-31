@@ -18,6 +18,7 @@
     "express": "^4.17.2",
     "get-current-line": "^6.6.0",
     "log4js": "^6.3.0",
+    "moment": "^2.29.1",
     "mysql2": "^2.3.3",
     "node-cron": "^3.0.0",
     "nodemon": "^2.0.15",

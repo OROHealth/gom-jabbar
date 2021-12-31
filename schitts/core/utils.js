@@ -33,3 +33,26 @@ Array.prototype.makeUnique = function ($property) {
   return resArr
 }
 
+Array.prototype.pluck = function($property, $key = undefined) {
+  // check if items is iterable
+  if (!isIterable(this)) return []
+  // check if each item has its property
+  var isPropertyExisted = this.reduce((_res, el) => Object(el)[$property] !== undefined, Object.create(null))
+  if (!isPropertyExisted) return []
+
+  if ($key) {
+    isPropertyExisted = this.reduce((_res, el) => Object(el)[$key] !== undefined, Object.create(null))
+    if (!isPropertyExisted) return []
+  }
+
+  return this.map(function(item, index) {
+    data = {}
+    if ($key)
+      return data[$key] = item[$property]
+    else
+      return item[$property]
+  })
+}
+
+
+

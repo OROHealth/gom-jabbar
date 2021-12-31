@@ -16,7 +16,6 @@ const logErrorMiddleware = require('./schitts/middlewares/logErrorMiddleware')
 const cron = require('node-cron')
 const shell = require('shelljs')
 const { isTrue } = require('./schitts/helpers/helpers')
-
 // import utils
 const whiteList = [`${process.env.APP_URL}:${port}`, `http://127.0.0.1:${port}`, 'http://www.yoursite.com']
 const swaggerOptions = {

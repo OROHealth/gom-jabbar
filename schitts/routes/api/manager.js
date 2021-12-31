@@ -66,6 +66,33 @@ const prefix = 'manager'
 
 /**
  * @swagger
+ * components:
+ *  schemas:
+ *    Diagnose:
+ *      type: object
+ *      required:
+ *        - over_cooked_level
+ *        - server_name
+ *        - month
+ *      properties:
+ *        server_name:
+ *          type: string
+ *          description: the waiter or waitress's name
+ *        month:
+ *          type: integer
+ *          description: the number of months earlier from the current date
+ *        over_cooked_level:
+ *          type: string
+ *          description: ordered dishes quantity
+ *          enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+ *      example:
+ *        server_name: magally the waitress
+ *        month: 5
+ *        over_cooked_level: 5
+ */
+
+/**
+ * @swagger
  * tags:
  *  name: Manager
  *  description: The restaurant managing APi
@@ -161,5 +188,33 @@ router.patch(`/${prefix}/booking/:reference`, ManagerController.update)
  *        description: Server Error
  */
 router.post(`/${prefix}/:reference/order`, ManagerController.order)
+
+/**
+ * @swagger
+ * /api/v1/manager/diagnose:
+ *  post:
+ *    summary: server diagnostic
+ *    tags: [Manager]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Diagnose'
+ *            require:
+ *              -  server_name
+ *              -  over_cooked_level
+ *              -  month
+ *    responses:
+ *      200:
+ *        description: ordered dishes
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/OrderedDishes'
+ *      500:
+ *        description: Server Error
+ */
+router.post(`/${prefix}/diagnose`, ManagerController.serverOverCookedDishes)
 
 module.exports = router

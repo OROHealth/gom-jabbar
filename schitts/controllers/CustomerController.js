@@ -30,7 +30,7 @@ const index = async (req, res) => {
   const offset = db.limit * (isNumber(req.query.page) ? req.query.page : 0)
   await Customer.findAll({ include: [{ model: Dish, require: false, as: 'Dishes' }, { model: Order, require: false, as: 'Orders' }, { model: Booking, require: false, as: 'Bookings' }], attributes: ['reference', 'first_name', 'last_name', 'email', 'phone_number', 'address', 'city', 'favorite_food', 'favorite_drink', 'bill_split', 'type'], limit: db.limit, offset: offset }).then(
     (customers) => {
-      responseObject.data = customers
+      responseObject.data = customers.pluck('dataValues')
       log.info(`Fetching customers. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
       res.status(200).json(responseObject)
     }

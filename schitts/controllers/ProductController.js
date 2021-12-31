@@ -29,7 +29,7 @@ const index = async (req, res) => {
   const offset = db.limit * (isNumber(req.query.page) ? req.query.page : 0)
   await Product.findAll({ attributes: ['id', 'reference', 'title', 'price', 'description', 'published'], include: { model: db.Review, as: 'reviews', foreignKey: 'product_id' }, limit: db.limit, offset: offset }).then(
     (products) => {
-      responseObject.data = products.groupByField('price')
+      responseObject.data = products.pluck('dataValues').groupByField('price')
       log.info(`Fetching products. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
       res.status(200).json(responseObject)
     }

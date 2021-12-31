@@ -14,3 +14,37 @@
 [2021-12-30T13:29:11.071] [INFO] app - Fetching dishes. DishController@:30
 [2021-12-30T13:29:32.743] [ERROR] app - Error: Error: favorite_drink not found. CustomerController@update:214
 [2021-12-30T13:29:45.216] [INFO] app - Product updated, reference: fbdfa7b9-6ee4-4b43-8fbd-1bc8580288f6. CustomerController@:198
+[2021-12-31T17:46:35.059] [ERROR] app - TypeError: momentToday.subtract is not a function. logErrorMiddleware@logErrors:8
+[2021-12-31T17:46:36.966] [ERROR] app - TypeError: momentToday.subtract is not a function. logErrorMiddleware@logErrors:8
+[2021-12-31T17:47:22.011] [ERROR] app - TypeError: momentToday.subtract is not a function. logErrorMiddleware@logErrors:8
+[2021-12-31T17:47:23.215] [ERROR] app - TypeError: momentToday.subtract is not a function. logErrorMiddleware@logErrors:8
+[2021-12-31T17:47:57.872] [ERROR] app - TypeError: momentToday.subtract is not a function. logErrorMiddleware@logErrors:8
+[2021-12-31T17:47:58.353] [ERROR] app - TypeError: momentToday.subtract is not a function. logErrorMiddleware@logErrors:8
+[2021-12-31T17:53:46.986] [ERROR] app - TypeError: moment(...).format(...).subtract is not a function. logErrorMiddleware@logErrors:8
+[2021-12-31T17:53:49.458] [ERROR] app - TypeError: moment(...).format(...).subtract is not a function. logErrorMiddleware@logErrors:8
+[2021-12-31T18:14:00.615] [ERROR] app - TypeError: Cannot read property 'pluck' of undefined. ManagerController@serverOverCookedDishes:285
+[2021-12-31T18:19:04.738] [ERROR] app - TypeError: Cannot read property 'pluck' of undefined. ManagerController@serverOverCookedDishes:288
+[2021-12-31T18:21:02.934] [INFO] app -  [object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order]
+[2021-12-31T18:21:02.946] [ERROR] app - TypeError: Cannot read property 'pluck' of undefined. ManagerController@serverOverCookedDishes:290
+[2021-12-31T18:23:29.955] [INFO] app - [object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order]
+[2021-12-31T18:23:29.969] [ERROR] app - TypeError: Cannot read property 'pluck' of undefined. ManagerController@serverOverCookedDishes:290
+[2021-12-31T18:27:19.036] [INFO] app - [object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order],[object SequelizeInstance:Order]
+[2021-12-31T18:27:19.050] [ERROR] app - TypeError: Cannot read property 'pluck' of undefined. ManagerController@serverOverCookedDishes:291
+[2021-12-31T18:28:46.604] [ERROR] app - Error: No matched orders were found.. ManagerController@serverOverCookedDishes:291
+[2021-12-31T18:29:36.975] [INFO] app - Fetching dishes. DishController@:30
+[2021-12-31T18:30:20.529] [INFO] app - Fetching dishes. DishController@:30
+[2021-12-31T18:32:41.648] [ERROR] app - Error: No matched orders were found.. ManagerController@serverOverCookedDishes:292
+[2021-12-31T18:38:03.707] [ERROR] app - Error: No matched orders were found.. ManagerController@serverOverCookedDishes:292
+[2021-12-31T18:54:06.550] [ERROR] app - Error: No matched orders were found.. ManagerController@serverOverCookedDishes:292
+[2021-12-31T18:56:12.597] [ERROR] app - Error: No matched orders were found.. ManagerController@serverOverCookedDishes:292
+[2021-12-31T18:57:11.658] [INFO] app - [object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]
+[2021-12-31T18:57:11.687] [ERROR] app - TypeError: Cannot read property 'pluck' of undefined. ManagerController@serverOverCookedDishes:292
+[2021-12-31T18:58:54.648] [INFO] app - [object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]
+[2021-12-31T18:58:54.679] [INFO] app - Dishes ordered found, count: 0. ManagerController@:270
+[2021-12-31T18:58:54.680] [ERROR] app - Error: No ordered dishes were found.. ManagerController@serverOverCookedDishes:292
+[2021-12-31T18:59:59.184] [INFO] app - 1,2,3,4,5,6,7,8,9,10
+[2021-12-31T18:59:59.216] [INFO] app - Dishes ordered found, count: 0. ManagerController@:270
+[2021-12-31T18:59:59.217] [ERROR] app - Error: No ordered dishes were found.. ManagerController@serverOverCookedDishes:292
+[2021-12-31T19:02:35.110] [INFO] app - Fetching customers. CustomerController@:34
+[2021-12-31T19:03:05.292] [INFO] app - Fetching customers. CustomerController@:34
+[2021-12-31T19:20:03.267] [INFO] app - Dishes ordered found, count: 0. ManagerController@:270
