@@ -28,6 +28,7 @@ services:
       context: ./frontend
       dockerfile: ./Dockerfile
     volumes:
+      - /frontdir/node_modules
       - ./frontend:/frontdir
     environment:
       - CHOKIDAR_USEPOLLING=true
