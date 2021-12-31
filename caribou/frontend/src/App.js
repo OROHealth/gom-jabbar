@@ -1,13 +1,14 @@
 import "./styles.css";
-import Login from "./components/Auth/Login";
+import Login from "./components/Auth/LoginContext";
 import Navbar from "./components/Navbar/Navbar";
 import Map from './components/Map/Map'
 import Auth from './components/Auth/Auth'
 import Chat from "./components/Chat/Chat";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {motion} from "framer-motion";
 import chat from "./img/chat.svg";
 import map from "./img/map.svg";
+
 
 
 function App() {
@@ -40,7 +41,7 @@ function App() {
   return (
     <Login>
     <div className="App">
-      <Navbar setAuth={setAuth}/>
+      <Navbar className="nav" setAuth={setAuth} />
       {renderMapOrChat()}
       <motion.div className="toggleButton" onClick={()=>setToggleChat(!toggleChat)}>
         {renderIcon()}

@@ -1,14 +1,12 @@
 import { convertLength } from "@mui/material/styles/cssUtils";
 
 import React, { useState, useContext } from "react";
-import { LoggedIn } from "./Login";
+import { LoggedIn } from "./LoginContext";
 import "./Auth.css";
 
 const Auth = ({ setAuth }) => {
   const { setUser } = useContext(LoggedIn);
   const isAuth = setUser && setUser.loggedIn;
-
-  console.log(isAuth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signup, setSignup] = useState(false);
@@ -76,7 +74,8 @@ const Auth = ({ setAuth }) => {
             if (data.status) {
               setError(data.status);
             } else if (data.loggedIn) {
-              console.log("Successful login and Sign up");
+              
+              console.log(`Successful login and Sign up ${setUser}`);
               setAuth(false);
             }
           });

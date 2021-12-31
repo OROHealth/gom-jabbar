@@ -2,6 +2,7 @@ const express = require("express");
 const pool = require("../db/db");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const { resetWatchers } = require("nodemon/lib/monitor/watch");
 
 //sign-up
 router.post("/signup", async (req, res) => {
@@ -12,6 +13,11 @@ router.post("/signup", async (req, res) => {
     );
     
     if (caribouExisting.rowCount === 0) {
+      //check that the email has the correct extension
+      if(req.body.email.split('@')[0].slice(-5)!="carib"){
+        res.json({ loggedIn: false, status: "email has to be part of the super secredt caribou organisation" });
+        return;
+      }
       // register new user
       //hash and salt
       const hashedPass = await bcrypt.hash(req.body.password, 10);
@@ -92,6 +98,11 @@ router.post("/createCaribou", async (req, res) => {
     res.status(500).json("Could not insert new caribou into database");
   }
 });
+
+router.put("/signOut", async(req,res) => {
+  req.session.destroy();
+  res.json({status:"successful"});
+})
 
 //allows the user to signal that it is ready to antler-exchange
 router.put("/signalAntlerExchange", (req, res) => {

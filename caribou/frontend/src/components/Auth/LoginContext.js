@@ -1,10 +1,11 @@
-import React, { createContext, useState, useEffect} from "react";
-
+import React, { createContext, useState, useEffect } from "react";
 
 export const LoggedIn = createContext();
 
-const LoginContext = ({children}) => {
-  const [user, setUser] = useState({ loggedIn: false });
+
+
+const LoginContext = ({ children }) => {
+  const [user, setUser] = useState({ loggedIn: null });
   useEffect(() => {
     fetch("http://localhost:5050/api/caribou/login", {
       credentials: "include",
@@ -25,12 +26,15 @@ const LoginContext = ({children}) => {
           setUser({ loggedIn: false });
           return;
         }
+        console.log(data);
         setUser({ ...data });
       });
   }, []);
-  return <LoggedIn.Provider value={{ user, setUser }}>
+  return (
+    <LoggedIn.Provider value={{ user, setUser }}>
       {children}
-  </LoggedIn.Provider>;
+    </LoggedIn.Provider>
+  );
 };
 
 export default LoginContext;

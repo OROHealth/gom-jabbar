@@ -1,11 +1,26 @@
-import React from "react";
+import React, {useState} from "react";
 import Slider from "@mui/material/Slider";
 import "./Prompt.css";
 import {motion} from "framer-motion";
 
 const Prompt = ({ lat, lng,enter, leave, submit }) => {
+
+  const[trashingLevel,setTrashingLevel] = useState(0);
+  const[excitementLevel,setExcitementLevel] = useState(0);
+
+
   const handleClick = e =>{
     e.stopPropagation();
+
+    fetch("http://localhost:5050/api/human/signal", {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({lat,lng,trashingLevel,excitementLevel}),
+        })
+
     submit();
     
   }
@@ -25,16 +40,18 @@ const Prompt = ({ lat, lng,enter, leave, submit }) => {
       Trashing Levels:
       <Slider
         size="small"
-        defaultValue={70}
+        defaultValue={0}
         aria-label="Small"
         valueLabelDisplay="auto"
+        onChange={(e,val) =>setTrashingLevel(val)}
       />
       Level of excitement
       <Slider
         size="small"
-        defaultValue={70}
+        defaultValue={0}
         aria-label="Small"
         valueLabelDisplay="auto"
+        onChange={(e,val)=>setExcitementLevel(val)}
       />
       {<motion.button
         whileHover={{

@@ -1,28 +1,24 @@
+
 .navbar{
     display: flex;
-    flex-grow: 1;
-    max-width: fit-content;
-    flex-direction: column;
+    flex-grow: 1;   
     align-items: center;
-    justify-content: space-between;
     background-color: var(--background);
     color: var(--text);
     padding: 10px;
     overflow: hidden;
+    height: 100%;
+    width: fit-content;
+    flex-direction: column;
+    justify-content: space-between;
 }
+
 @media (max-width: 800px) {
     .navbar {
-        display: flex;
-        flex-grow: 1;
-        width: 100%;
+        width:100%;
         height: fit-content;
-        max-height: 20%;
         flex-direction: row;
-        justify-content: space-evenly;
-        align-items: center;
-        background-color: var(--background);
-        color: var(--text);
-        overflow: hidden;
+        justify-content: space-between;
     }
   }
 .mainIcon{

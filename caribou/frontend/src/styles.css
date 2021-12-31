@@ -9,16 +9,12 @@
     overflow: hidden;
 
 }
+
 /* Responsive layout - makes a one column layout instead of a two-column layout */
-@media (max-width: 800px),(orientation:portrait) {
+@media (max-width: 800px) {
     .App {
-        margin: 0px;
-        padding: 0px;
-        height: 100%;
-        width: 100%;
-        display: flex;
+        
         flex-direction: column;
-        justify-content: space-between;
         overflow: hidden;
 
     }

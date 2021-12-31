@@ -1,23 +1,36 @@
 const express = require("express");
+const res = require("express/lib/response");
 const pool = require("../db/db");
 const router = express.Router();
 
 //basic signaling api takes in longitude and latitude as well as trashing level on a scale from 0-10
-router.post("/signal", (req, res) => {
-  let lat = req.query.lat;
-  let lng = req.query.long;
-  let trashingLevel = req.query.trashingLevel;
-  let excitementLevel = req.query.excitementLevel;
-  res.json({
-    response: `you sucessfully reported a human at lat: ${lat} long:${lng} `,
-    trashingLevelRes: "You reported a trashing level of:" + trashingLevel,
-    excitementLevelRes: `You reported an excitement leve of:${excitementLevel}`
-  });
+router.put("/signal", async (req, res) => {
+  try {
+  let lat = req.body.lat;
+  let lng = req.body.lng;
+  let trashingLevel = req.body.trashingLevel;
+  let excitementLevel = req.body.excitementLevel;
+
+  const query = `INSERT INTO "human" ("lat","lng","trashing_level","excitment_level") VALUES($1,$2,$3,$4) RETURNING *;`
+  const values = [lat,lng,trashingLevel,excitementLevel];
+  console.log(query,values);
+  const test = await pool.query(query,values);
+  console.log(test);
+
+} catch (err) {
+  console.log(err);
+  res.json("Couldn't signal human");
+}
 });
 
-router.get("/getAllHumans",(req,res)=>{
-  const query = `SELECT * FROM human`;
-  res.json(query);
+router.get("/getAllHumans", async (req, res) => {
+  try {
+    const query = `SELECT * FROM "human"`;
+    const response = await pool.query(query);
+    res.json(response);
+  } catch (err) {
+    res.json("Couldn't get humans");
+  }
 });
 
 //request presence of human in radius around a specific latitude and longitude
