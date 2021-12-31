@@ -67,7 +67,8 @@ export default function Map({ center, zoom }){
 
   const apiLoaded = (map, maps) => {
 
-    map.setOptions({ disableDefaultUI: true });
+    map.setOptions({ disableDefaultUI: true,
+      clickableIcons: false });
     setMapInstance(map);
     setMapsInstance(maps);
 
@@ -87,13 +88,15 @@ export default function Map({ center, zoom }){
 
   const disableMap = () =>{
     setHover(true);
-    mapInstance.setOptions({ gestureHandling: "none", disableDefaultUI: true });
+    mapInstance.setOptions({ gestureHandling: "none", disableDefaultUI: true,
+    clickableIcons: false });
     console.log("toggle hovering");
   }
 
   const enableMap = () =>{
     setHover(false);
-    mapInstance.setOptions({ gestureHandling: "greedy", disableDefaultUI: true});
+    mapInstance.setOptions({ gestureHandling: "greedy", disableDefaultUI: true,
+    clickableIcons: false});
     console.log("toggle hovering");
   }
   const closePrompt = () =>{

@@ -8,7 +8,7 @@ router.route('/').get(async (req,res)=>{
 }).post(async (req,res)=>{
     try{
         const query = `INSERT INTO inbox (user1_id,user2_id) VALUES ($1, $2);`
-        const values = [req.query.user1_id, req.query.user2_id];
+        const values = [req.body.user1_id, req.body.user2_id];
         await pool.query(query,values);
         res.json("Successfully created the inbox");
     }

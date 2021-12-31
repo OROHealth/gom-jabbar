@@ -17,6 +17,7 @@
     "express-session": "^1.17.2",
     "nodemon": "^2.0.15",
     "package-lock.json": "^1.0.0",
-    "pg": "^8.7.1"
+    "pg": "^8.7.1",
+    "socket.io": "^4.4.0"
   }
 }
