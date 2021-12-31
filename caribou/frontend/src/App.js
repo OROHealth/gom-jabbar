@@ -1,4 +1,5 @@
 import "./styles.css";
+import Login from "./components/Auth/Login";
 import Navbar from "./components/Navbar/Navbar";
 import Map from './components/Map/Map'
 import Auth from './components/Auth/Auth'
@@ -37,6 +38,7 @@ function App() {
   }
 
   return (
+    <Login>
     <div className="App">
       <Navbar setAuth={setAuth}/>
       {renderMapOrChat()}
@@ -45,6 +47,7 @@ function App() {
       </motion.div>
       {authOpen && <Auth setAuth={setAuth}/>}
     </div>
+    </Login>
   );
 }
 

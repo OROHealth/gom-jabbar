@@ -1,10 +1,39 @@
 const express = require('express');
 const cors = require('cors');
+const session = require("express-session");
+const { Server } = require("socket.io");
 const app  = express();
 const pool = require("./db/db");
+const server = require("http").createServer(app);
+require("dotenv").config();
 
-app.use(cors());
+app.use(
+    cors({
+      origin: "http://localhost:3000",
+      credentials: true,
+    })
+  );
 app.use(express.json());
+app.use(session({
+    secret: process.env.COOKIE_SECRET,
+    credentials: true,
+    name: "sid",
+    resave:false,
+    saveUninitialized:false,
+    cookie:{
+        secure: false,
+        httpOnly: true,
+        sameSite: "lax",
+    }
+}))
+
+const frontend = new Server(server, {
+    cors: {
+      origin: "http://localhost:3000",
+      credentials: "true",
+    },
+});
+
 
 const port = 5050;
 app.listen(port, (console.log(`Listening on port ${port}`)));

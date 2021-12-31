@@ -1,3 +1,4 @@
 caribou/backend/node_modules/
 caribou/pgdata/
 caribou/frontend/.env
+caribou/backend/.env
