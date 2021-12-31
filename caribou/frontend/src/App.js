@@ -1,6 +1,7 @@
 import "./styles.css";
 import Navbar from "./components/Navbar/Navbar";
 import Map from './components/Map/Map'
+import Auth from './components/Auth/Auth'
 import Chat from "./components/Chat/Chat";
 import React, { useState } from "react";
 import {motion} from "framer-motion";
@@ -10,8 +11,10 @@ import map from "./img/map.svg";
 
 function App() {
   const[toggleChat,setToggleChat]= useState(false);
+  const[authOpen,setAuth] = useState(false);
 
   const renderMapOrChat = () =>{
+    //TODO restore map to same zoom and position after opening the chats
     if(toggleChat){
       return <Chat/>;
     }
@@ -20,6 +23,10 @@ function App() {
     }
   }
 
+  const toggleAuthFunc = () =>{
+    console.log('toggling auth')
+    setAuth(!authOpen);
+  }
   const renderIcon = () =>{
     if(toggleChat){
       return <img className="toggleIcon" src={map} alt="chat button"/>;
@@ -28,13 +35,15 @@ function App() {
       return <img className="toggleIcon" src={chat} alt="map button"/>;
     }
   }
+
   return (
     <div className="App">
-      <Navbar />
+      <Navbar setAuth={setAuth}/>
       {renderMapOrChat()}
       <motion.div className="toggleButton" onClick={()=>setToggleChat(!toggleChat)}>
         {renderIcon()}
       </motion.div>
+      {authOpen && <Auth setAuth={setAuth}/>}
     </div>
   );
 }

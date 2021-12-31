@@ -3,10 +3,8 @@ import "../Map/Map.css";
 import IHCHicon from "../../img/IHCH.png";
 import Prompt from "../Prompt/Prompt";
 import React, { useState } from "react";
-import { unstable_createChainedFunction } from "@mui/utils";
 
-
-const Map = ({ center, zoom, test2 }) => {
+const Map = ({ center, zoom }) => {
 
   const [prompt, setPrompt] = useState({ show: false, lat: "0", lng: "0" });
   const [promptHover, setHover] = useState(false);
