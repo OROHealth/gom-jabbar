@@ -48,3 +48,20 @@
 [2021-12-31T19:02:35.110] [INFO] app - Fetching customers. CustomerController@:34
 [2021-12-31T19:03:05.292] [INFO] app - Fetching customers. CustomerController@:34
 [2021-12-31T19:20:03.267] [INFO] app - Dishes ordered found, count: 0. ManagerController@:270
+[2022-01-01T12:39:50.623] [ERROR] app - TypeError: Cannot read property 'replace' of undefined. CustomerController@:39
+[2022-01-01T12:43:25.165] [ERROR] app - TypeError: Cannot read property 'replace' of undefined. CustomerController@:39
+[2022-01-01T12:45:36.766] [ERROR] app - TypeError: Cannot read property 'replace' of undefined. CustomerController@:39
+[2022-01-01T12:45:46.017] [ERROR] app - TypeError: Cannot read property 'replace' of undefined. CustomerController@:39
+[2022-01-01T12:46:24.142] [ERROR] app - TypeError: Cannot read property 'replace' of undefined. DishController@:35
+[2022-01-01T12:46:51.318] [ERROR] app - TypeError: Cannot read property 'replace' of undefined. OrderController@:36
+[2022-01-01T12:50:41.393] [ERROR] app - TypeError: Cannot read property 'replace' of undefined. CustomerController@:39
+[2022-01-01T13:00:36.760] [INFO] app - Fetching customers, count:10 CustomerController@:34
+[2022-01-01T14:39:20.692] [ERROR] app - TypeError: Cannot read property 'replace' of undefined. CustomerController@:39
+[2022-01-01T16:04:13.568] [ERROR] app - Error: Error: customer not found. CustomerController@findByName:280
+[2022-01-01T16:07:26.824] [ERROR] app - Error: Error: customer not found. CustomerController@findByName:280
+[2022-01-01T16:08:40.927] [ERROR] app - Error: Error: customer not found. CustomerController@findByName:280
+[2022-01-01T16:15:56.322] [ERROR] app - Error: Error: customer not found. CustomerController@findByName:280
+[2022-01-01T16:16:19.439] [INFO] app - Fetching customers, count:10 CustomerController@:35
+[2022-01-01T16:16:45.945] [ERROR] app - Error: Error: customer not found. CustomerController@findByName:280
+[2022-01-01T16:17:04.204] [ERROR] app - Error: Error: customer not found. CustomerController@findByName:280
+[2022-01-01T16:17:41.101] [ERROR] app - Error: Error: customer not found. CustomerController@findByName:280

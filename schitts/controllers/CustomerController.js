@@ -2,6 +2,7 @@
 const db = require('../models/_index')
 var consoleLog = require('../helpers/helpers').consoleLog // output into console regarding .env Log flag
 var isNumber = require('../helpers/helpers').isNumber
+const { Op } = require('sequelize')
 const log4js = require('../config/log4js')
 var log = log4js.getLogger('app') // enable logging
 const pkg = require('get-current-line').default // get current script filename and line
@@ -31,7 +32,7 @@ const index = async (req, res) => {
   await Customer.findAll({ include: [{ model: Dish, require: false, as: 'Dishes' }, { model: Order, require: false, as: 'Orders' }, { model: Booking, require: false, as: 'Bookings' }], attributes: ['reference', 'first_name', 'last_name', 'email', 'phone_number', 'address', 'city', 'favorite_food', 'favorite_drink', 'bill_split', 'type'], limit: db.limit, offset: offset }).then(
     (customers) => {
       responseObject.data = customers.pluck('dataValues')
-      log.info(`Fetching customers. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+      log.info(`Fetching customers, count:${customers.length} ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
       res.status(200).json(responseObject)
     }
   ).catch(err => {
@@ -248,10 +249,46 @@ const destroy = async (req, res) => {
   })
 }
 
+/**
+ *  @description Fetch specific customer by name and type
+ *  @route POST /api/v1/customer/findByName
+ *  @param {string} fullname - the customer's fullname
+ *  @param {string} type - the customer's type
+ */
+const findByName = async (req, res) => {
+  var responseObject = {
+    status: true,
+    data: null,
+    error: {},
+    msg: ''
+  }
+
+  try {
+    const { fullname, type } = req.body
+    await Customer.findOne({ attributes: ['first_name', 'last_name'], where: { type: type, [Op.or]: [{ first_name: { [Op.like]: `%${fullname}%` } }, { last_name: { [Op.like]: `%${fullname}%` } }] } }).then(
+      (updated) => {
+        if (updated === null) {
+          throw new Error('customer not found')
+        }
+        responseObject.data = `${updated.dataValues.first_name} ${updated.dataValues.last_name}`
+        return res.status(200).json(responseObject)
+      }
+    ).catch(error => {
+      throw new Error(error)
+    })
+  } catch (error) {
+    log.error(`${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+    responseObject.status = false
+    responseObject.error = error.message
+    return res.status(400).json(responseObject)
+  }
+}
+
 module.exports = {
   index,
   store,
   edit,
   update,
-  destroy
+  destroy,
+  findByName
 }

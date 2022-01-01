@@ -53,6 +53,3 @@ Array.prototype.pluck = function($property, $key = undefined) {
       return item[$property]
   })
 }
-
-
-

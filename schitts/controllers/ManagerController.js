@@ -1,7 +1,6 @@
 // autoload index.js
 const db = require('../models/_index')
 var consoleLog = require('../helpers/helpers').consoleLog // output into console regarding .env Log flag
-var isNumber = require('../helpers/helpers').isNumber
 const log4js = require('../config/log4js')
 var log = log4js.getLogger('app') // enable logging
 const pkg = require('get-current-line').default // get current script filename and line

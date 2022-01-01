@@ -72,6 +72,27 @@ const prefix = 'customer'
 
 /**
  * @swagger
+ * components:
+ *  schemas:
+ *    SearchCustomer:
+ *      type: object
+ *      required:
+ *        - fullname
+ *        - type
+ *      properties:
+ *        fullname:
+ *          type: string
+ *          description: The customer's fullname
+ *        type:
+ *          type: string
+ *          description: The customer's type
+ *      example:
+ *        fullname: David
+ *        type: 'IN TOWN'
+ */
+
+/**
+ * @swagger
  * tags:
  *  name: Customer
  *  description: The customers managing APi
@@ -181,6 +202,30 @@ router.get(`/${prefix}/:reference`, CustomerController.edit)
   *        description: The customer was not found
   */
 router.patch(`/${prefix}/:reference`, CustomerController.update)
+
+/**
+ * @swagger
+ * /api/v1/customer/findByName:
+ *  post:
+ *    summary: find a customer by name and type
+ *    tags: [Customer]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/SearchCustomer'
+ *    responses:
+ *      200:
+ *        description: the new customer
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/SearchCustomer'
+ *      500:
+ *        description: Server Error
+ */
+router.post(`/${prefix}/findByName`, CustomerController.findByName)
 
 /**
   * @swagger
