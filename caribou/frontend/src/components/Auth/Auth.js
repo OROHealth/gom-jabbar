@@ -75,7 +75,7 @@ const Auth = ({ setAuth }) => {
             setError(data.status);
           } else if (data.loggedIn) {
 
-            console.log(`Successful login and Sign up ${setUser}`);
+            console.log(`Successful login and Sign up`);
             setAuth(false);
           }
         });

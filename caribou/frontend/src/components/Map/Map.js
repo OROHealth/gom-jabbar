@@ -41,8 +41,6 @@ export default function Map({ center, zoom }){
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("made it here");
-          console.log(data);
           for (var i = 0; i < data.rows.length; i++) {
             points.push(
             { lat: data.rows[i].lat, lng: data.rows[i].lng});
@@ -70,7 +68,6 @@ export default function Map({ center, zoom }){
 
     map.addListener("click", (mapsMouseEvent) => {
       if(isAuth){
-      console.log(promptHover);
       if(!promptHover){
       setPrompt({
         show: true,
@@ -86,14 +83,12 @@ export default function Map({ center, zoom }){
     setHover(true);
     mapInstance.setOptions({ gestureHandling: "none", disableDefaultUI: true,
     clickableIcons: false });
-    console.log("toggle hovering");
   }
 
   const enableMap = () =>{
     setHover(false);
     mapInstance.setOptions({ gestureHandling: "greedy", disableDefaultUI: true,
     clickableIcons: false});
-    console.log("toggle hovering");
   }
   const closePrompt = () =>{
   
