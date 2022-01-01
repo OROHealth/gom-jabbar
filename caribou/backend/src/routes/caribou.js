@@ -15,7 +15,7 @@ router.post("/signup", async (req, res) => {
     if (caribouExisting.rowCount === 0) {
       //check that the email has the correct extension
       if(req.body.email.split('@')[0].slice(-5)!="carib"){
-        res.json({ loggedIn: false, status: "email has to be part of the super secredt caribou organisation" });
+        res.json({ loggedIn: false, status: "email needs to be Cariboued" });
         return;
       }
       // register new user
