@@ -47,7 +47,7 @@ As mentioned earlier the website itself is not complete. Here is the list of fea
 	* Google map  implementation
 	* Heatmap showing human activity, fetches human locations from database (~~needs a page refresh to load changed data~~ fixed!)
   ![Alt text](/img/Heatmap.png?raw=true "heatmap")
-	* Sign in/up (needs a refresh to update, context not properly done will most likely fix this shortly)
+	* Sign in/up (~~needs a refresh to update, context not properly done will most likely fix this shortly~~ fixed!)
 	* Toggle between map and chat
 	*  Chat skeleton (ran out of time :expressionless:)
 	*  Markers for important locations
