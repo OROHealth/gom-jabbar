@@ -75,7 +75,7 @@ export default function Map({ center, zoom }){
     map.addListener("click", (mapsMouseEvent) => {
       console.log(user);
       console.log(user.loggedIn);
-      if(isAuth){
+      
       if(!promptHover){
       setPrompt({
         show: true,
@@ -84,7 +84,7 @@ export default function Map({ center, zoom }){
       });
       console.log(JSON.stringify(mapsMouseEvent.latLng.toJSON()));
       }
-    }
+    
     });
   };
 
@@ -109,6 +109,7 @@ export default function Map({ center, zoom }){
 
   const renderPromt = () =>{
     //add if auth once it works properly
+    if(isAuth){
     if(prompt.show){
       return(<Prompt
         lat={prompt.lat}
@@ -118,6 +119,7 @@ export default function Map({ center, zoom }){
         submit={closePrompt}
       />)
     }
+  }
 
   }
 
