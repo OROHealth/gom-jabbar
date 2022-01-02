@@ -9,25 +9,10 @@ const useAuth = () => {
   return user && user.loggedIn;
 };
 
-const logOut = (setUser) => {
-  fetch("http://localhost:5050/api/caribou/signOut", {
-        method: "PUT",
-        credentials: "include",
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if(data.status==="successful"){
-            console.log("logout successful");
-            setUser({loggedIn:false});
-          }
-          else{
-            console.log("couldn't logout")
-          }
-        });
 
-}
 
-const Button = ({setAuth}) => {
+const Button = ({setAuthPopup}) => {
+  const { logOut } = useContext(LoggedIn);
   const isAuth = useAuth();
   if (!isAuth) {
     return (
@@ -40,7 +25,7 @@ const Button = ({setAuth}) => {
         }}
         whileTap={{ scale: 0.9, color: "#4787c7", border: "1px solid #4787c7" }}
         onClick={() => {
-          setAuth(true);
+          setAuthPopup(true);
         }}
       >
         Sign in
@@ -64,11 +49,11 @@ const Button = ({setAuth}) => {
   }
 };
 
-const NavBar = ({ setAuth }) => {
+const NavBar = ({ setAuthPopup }) => {
   return (
     <div className="navbar">
       <img src={caribou} className="mainIcon" alt="Caribou icon" />
-      {Button({setAuth})}
+      {Button({setAuthPopup})}
     </div>
   );
 };

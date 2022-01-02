@@ -15,7 +15,10 @@ const useAuth = () => {
 
 
 export default function Map({ center, zoom }){
-  const isAuth = useAuth();
+  console.log("map rerender");
+  const {user} = useContext(LoggedIn);
+  const isAuth = user&&user.loggedIn;
+  
   const [prompt, setPrompt] = useState({ show: false, lat: "0", lng: "0" });
   const [promptHover, setHover] = useState(false);
   const [mapInstance, setMapInstance] = useState(undefined);
@@ -31,10 +34,12 @@ export default function Map({ center, zoom }){
     } });
 
 
-  var points = [];
+  
 
   useEffect(() => {
     try {
+      console.log("use effect");
+      var points = [];
       fetch("http://localhost:5050/api/human/getAllHumans", {
         method: "GET",
         credentials: "include",
@@ -42,6 +47,7 @@ export default function Map({ center, zoom }){
         .then((response) => response.json())
         .then((data) => {
           for (var i = 0; i < data.rows.length; i++) {
+            
             points.push(
             { lat: data.rows[i].lat, lng: data.rows[i].lng});
           }
@@ -56,7 +62,7 @@ export default function Map({ center, zoom }){
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  },[prompt]);
 
 
   const apiLoaded = (map, maps) => {
@@ -67,6 +73,8 @@ export default function Map({ center, zoom }){
     setMapsInstance(maps);
 
     map.addListener("click", (mapsMouseEvent) => {
+      console.log(user);
+      console.log(user.loggedIn);
       if(isAuth){
       if(!promptHover){
       setPrompt({
@@ -74,7 +82,8 @@ export default function Map({ center, zoom }){
         lat: mapsMouseEvent.latLng.lat(),
         lng: mapsMouseEvent.latLng.lng(),
       });
-      console.log(JSON.stringify(mapsMouseEvent.latLng.toJSON()));}
+      console.log(JSON.stringify(mapsMouseEvent.latLng.toJSON()));
+      }
     }
     });
   };
@@ -121,7 +130,6 @@ export default function Map({ center, zoom }){
         defaultZoom={zoom}
         yesIWantToUseGoogleMapApiInternals
         onGoogleApiLoaded={({ map, maps }) => apiLoaded(map, maps)}     
-        heatmapLibrary={true}              
         heatmap={heatMapData}
       >
         <img
@@ -135,8 +143,7 @@ export default function Map({ center, zoom }){
         />
        {renderPromt()}
       </GoogleMapReact>
-    </div>
-  );
+    </div>);
 };
 
 Map.defaultProps = {

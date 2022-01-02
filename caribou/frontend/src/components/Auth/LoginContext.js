@@ -3,9 +3,9 @@ import React, { createContext, useState, useEffect } from "react";
 export const LoggedIn = createContext();
 
 
-
 const LoginContext = ({ children }) => {
   const [user, setUser] = useState({ loggedIn: null });
+  
   useEffect(() => {
     fetch("http://localhost:5050/api/caribou/login", {
       credentials: "include",
@@ -26,12 +26,29 @@ const LoginContext = ({ children }) => {
           setUser({ loggedIn: false });
           return;
         }
-        console.log(data);
         setUser({ ...data });
       });
   }, []);
+
+  const logOut=()=>{
+    fetch("http://localhost:5050/api/caribou/signOut", {
+        method: "PUT",
+        credentials: "include",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if(data.status==="successful"){
+            console.log("logout successful");
+            setUser({ loggedIn: false });
+          }
+          else{
+            console.log("couldn't logout")
+          }
+        });
+  }
+
   return (
-    <LoggedIn.Provider value={{ user, setUser }}>
+    <LoggedIn.Provider value={{ user, setUser, logOut }}>
       {children}
     </LoggedIn.Provider>
   );

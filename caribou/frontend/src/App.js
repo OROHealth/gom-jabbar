@@ -1,5 +1,5 @@
 import "./styles.css";
-import Login from "./components/Auth/LoginContext";
+import Login, { LoggedIn } from "./components/Auth/LoginContext";
 import Navbar from "./components/Navbar/Navbar";
 import Map from './components/Map/Map'
 import Auth from './components/Auth/Auth'
@@ -13,7 +13,8 @@ import map from "./img/map.svg";
 
 function App() {
   const[toggleChat,setToggleChat]= useState(false);
-  const[authOpen,setAuth] = useState(false);
+  const[authPopUp,setAuthPopup] = useState(false);
+  const [isSignedIn,setSignIn] = useState(false);
 
   const renderMapOrChat = () =>{
     //TODO restore map to same zoom and position after opening the chats
@@ -35,14 +36,15 @@ function App() {
   }
 
   return (
-    <Login>
+    <Login  test={isSignedIn,setSignIn}>
+    
     <div className="App">
-      <Navbar className="nav" setAuth={setAuth} />
+      <Navbar className="nav" setAuthPopup={setAuthPopup} />
       {renderMapOrChat()}
       <motion.div className="toggleButton" onClick={()=>setToggleChat(!toggleChat)}>
         {renderIcon()}
       </motion.div>
-      {authOpen && <Auth setAuth={setAuth}/>}
+      {authPopUp && <Auth setAuthPopup={setAuthPopup}/>}
     </div>
     </Login>
   );
