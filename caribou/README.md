@@ -45,9 +45,9 @@ As mentioned earlier the website itself is not complete. Here is the list of fea
 * Frontend:
 	* Mobile friendly interface (still needs a little fix for a hover function that doesn't like touch inputs but other than that it's  pretty good) everything fits on the viewport and no scrolling is required. Comfortable to use on a wide range of resolutions
 	* Google map  implementation
-	* Heatmap showing human activity, fetches human locations from database (needs a page refresh to load changed data)
+	* Heatmap showing human activity, fetches human locations from database (~~needs a page refresh to load changed data~~ fixed!)
   ![Alt text](/img/Heatmap.png?raw=true "heatmap")
-	* Sign in/up (needs a refresh as well to update)
+	* Sign in/up (needs a refresh to update, context not properly done will most likely fix this shortly)
 	* Toggle between map and chat
 	*  Chat skeleton (ran out of time :expressionless:)
 	*  Markers for important locations
