@@ -105,8 +105,11 @@ router.put("/signOut", async(req,res) => {
 })
 
 //allows the user to signal that it is ready to antler-exchange
-router.put("/signalAntlerExchange", (req, res) => {
-  //TODO
+router.put("/signalAntlerExchange", async (req, res) => {
+  const query = `UPDATE "caribou" SET antler_exchange_status=$1 WHERE "email"=$2`;
+  const values = [req.body.antlerEschangeStatus,req.body.email];
+  await pool.query(query,values);
+
 });
 
 module.exports = router;

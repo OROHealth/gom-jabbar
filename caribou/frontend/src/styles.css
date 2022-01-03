@@ -22,17 +22,17 @@
 
 .toggleButton{
     position: fixed;
-    width: 2em;
+    width: 3em;
     right: 0;
     bottom: 0;
     margin: 1em;
-    align-items: center;
     padding: 5px;
-    border-radius: 5px;
-    color: aqua;
+    align-items: center;
 }
 .toggleIcon{
-    color: blueviolet;
+    background-color: var(--background);
+    padding: 4px;
+    border-radius: 15px;
 }
 
 /* Better scroll bar from github user: derblub*/
