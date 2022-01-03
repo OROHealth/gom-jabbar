@@ -56,7 +56,7 @@ export default function Map({ center, zoom }) {
             positions: points,
             options: {
               radius: 20,
-              opacity: 1,
+              opacity: 0.6,
             }
           });
         });
