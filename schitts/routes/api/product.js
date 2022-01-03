@@ -63,9 +63,7 @@ let prefix = 'product'
  *        content:
  *          application/json:
  *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/Product'
+ *              $ref: '#/components/schemas/EndPointResponse'
  */
 router.get(`/${prefix}`, ProductController.index)
 
@@ -87,7 +85,7 @@ router.get(`/${prefix}`, ProductController.index)
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/Product'
+ *              $ref: '#/components/schemas/EndPointResponse'
  *      500:
  *        description: Server Error
  */
@@ -112,7 +110,7 @@ router.post(`/${prefix}`, ProductController.store)
  *        contens:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/Product'
+ *              $ref: '#/components/schemas/EndPointResponse'
  *      404:
  *        description: The product was not found
  */
@@ -143,7 +141,7 @@ router.get(`/${prefix}/:product_id`, ProductController.edit)
  *        contens:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/Product'
+ *              $ref: '#/components/schemas/EndPointResponse'
  *      404:
  *        description: The product was not found
  */
@@ -168,7 +166,7 @@ router.patch(`/${prefix}/:product_id`, ProductController.update)
  *        contens:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/Product'
+ *              $ref: '#/components/schemas/EndPointResponse'
  *      404:
  *        description: The product was not found
  */

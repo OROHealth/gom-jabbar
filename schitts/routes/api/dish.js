@@ -77,9 +77,7 @@ const prefix = 'dish'
  *        content:
  *          application/json:
  *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/Dish'
+ *              $ref: '#/components/schemas/EndPointResponse'
  */
 router.get(`/${prefix}`, DishController.index)
 
@@ -101,7 +99,7 @@ router.get(`/${prefix}`, DishController.index)
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/Dish'
+ *              $ref: '#/components/schemas/EndPointResponse'
  *      500:
  *        description: Server Error
  */
@@ -126,7 +124,7 @@ router.post(`/${prefix}`, DishController.store)
   *        contens:
   *          application/json:
   *            schema:
-  *              $ref: '#/components/schemas/Dish'
+  *              $ref: '#/components/schemas/EndPointResponse'
   *      404:
   *        description: The dish was not found
   */
@@ -157,7 +155,7 @@ router.get(`/${prefix}/:reference`, DishController.edit)
   *        contens:
   *          application/json:
   *            schema:
-  *              $ref: '#/components/schemas/Dish'
+  *              $ref: '#/components/schemas/EndPointResponse'
   *      404:
   *        description: The dish was not found
   */
@@ -182,7 +180,7 @@ router.patch(`/${prefix}/:reference`, DishController.update)
   *        contens:
   *          application/json:
   *            schema:
-  *              $ref: '#/components/schemas/Dish'
+  *              $ref: '#/components/schemas/EndPointResponse'
   *      404:
   *        description: The dish was not found
   */

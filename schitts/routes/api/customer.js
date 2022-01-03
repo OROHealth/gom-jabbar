@@ -117,9 +117,7 @@ const prefix = 'customer'
  *        content:
  *          application/json:
  *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/Customer'
+ *              $ref: '#/components/schemas/EndPointResponse'
  */
 router.get(`/${prefix}`, CustomerController.index)
 
@@ -141,7 +139,7 @@ router.get(`/${prefix}`, CustomerController.index)
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/Customer'
+ *              $ref: '#/components/schemas/EndPointResponse'
  *      500:
  *        description: Server Error
  */
@@ -166,7 +164,7 @@ router.post(`/${prefix}`, CustomerController.store)
   *        contens:
   *          application/json:
   *            schema:
-  *              $ref: '#/components/schemas/Customer'
+  *              $ref: '#/components/schemas/EndPointResponse'
   *      404:
   *        description: The customer was not found
   */
@@ -197,7 +195,7 @@ router.get(`/${prefix}/:reference`, CustomerController.edit)
   *        contens:
   *          application/json:
   *            schema:
-  *              $ref: '#/components/schemas/Customer'
+  *              $ref: '#/components/schemas/EndPointResponse'
   *      404:
   *        description: The customer was not found
   */
@@ -221,7 +219,7 @@ router.patch(`/${prefix}/:reference`, CustomerController.update)
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/SearchCustomer'
+ *              $ref: '#/components/schemas/EndPointResponse'
  *      500:
  *        description: Server Error
  */
@@ -243,10 +241,10 @@ router.post(`/${prefix}/findByName`, CustomerController.findByName)
   *    responses:
   *      200:
   *        description: the customer description by id
-  *        contens:
+  *        content:
   *          application/json:
   *            schema:
-  *              $ref: '#/components/schemas/Customer'
+  *              $ref: '#/components/schemas/EndPointResponse'
   *      404:
   *        description: The customer was not found
   */

@@ -81,9 +81,7 @@ const prefix = 'order'
  *        content:
  *          application/json:
  *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/Order'
+ *              $ref: '#/components/schemas/EndPointResponse'
  */
 router.get(`/${prefix}`, OrderController.index)
 
@@ -105,7 +103,7 @@ router.get(`/${prefix}`, OrderController.index)
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/Order'
+ *              $ref: '#/components/schemas/EndPointResponse'
  *      500:
  *        description: Server Error
  */
@@ -130,7 +128,7 @@ router.post(`/${prefix}`, OrderController.store)
   *        contens:
   *          application/json:
   *            schema:
-  *              $ref: '#/components/schemas/Order'
+  *              $ref: '#/components/schemas/EndPointResponse'
   *      404:
   *        description: The order was not found
   */
@@ -161,7 +159,7 @@ router.get(`/${prefix}/:reference`, OrderController.edit)
   *        contens:
   *          application/json:
   *            schema:
-  *              $ref: '#/components/schemas/Order'
+  *              $ref: '#/components/schemas/EndPointResponse'
   *      404:
   *        description: The order was not found
   */
@@ -186,7 +184,7 @@ router.patch(`/${prefix}/:reference`, OrderController.update)
   *        contens:
   *          application/json:
   *            schema:
-  *              $ref: '#/components/schemas/Order'
+  *              $ref: '#/components/schemas/EndPointResponse'
   *      404:
   *        description: The order was not found
   */

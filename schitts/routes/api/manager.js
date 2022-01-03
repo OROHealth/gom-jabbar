@@ -7,6 +7,37 @@ const prefix = 'manager'
  * @swagger
  * components:
  *  schemas:
+ *    EndPointResponse:
+ *      type: object
+ *      required:
+ *        - status
+ *        - data
+ *        - error
+ *        - msg
+ *      properties:
+ *        status:
+ *          type: integer
+ *          description: The endpoint response's status
+ *        data:
+ *          type: object
+ *          description: the endpoint response's result
+ *        error:
+ *          type: object
+ *          description: The endpoint response's error
+ *        msg:
+ *          type: string
+ *          description: The endpoint response's message
+ *      example:
+ *        status: 400
+ *        data: {}
+ *        error: {}
+ *        msg: the endpoint response's message
+ */
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
  *    Booking:
  *      type: object
  *      required:
@@ -116,7 +147,7 @@ const prefix = 'manager'
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/Booking'
+ *              $ref: '#/components/schemas/EndPointResponse'
  *      500:
  *        description: Server Error
  */
@@ -147,7 +178,7 @@ router.post(`/${prefix}/booking`, ManagerController.store)
   *        contens:
   *          application/json:
   *            schema:
-  *              $ref: '#/components/schemas/Booking'
+  *              $ref: '#/components/schemas/EndPointResponse'
   *      404:
   *        description: The manager was not found
   */
@@ -183,7 +214,7 @@ router.patch(`/${prefix}/booking/:reference`, ManagerController.update)
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/OrderedDishes'
+ *              $ref: '#/components/schemas/EndPointResponse'
  *      500:
  *        description: Server Error
  */
@@ -211,7 +242,7 @@ router.post(`/${prefix}/:reference/order`, ManagerController.order)
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/OrderedDishes'
+ *              $ref: '#/components/schemas/EndPointResponse'
  *      500:
  *        description: Server Error
  */
