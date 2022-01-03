@@ -5,47 +5,52 @@ import Map from './components/Map/Map'
 import Auth from './components/Auth/Auth'
 import Chat from "./components/Chat/Chat";
 import React, { useState } from "react";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 import chat from "./img/chat.svg";
 import map from "./img/map.svg";
 
 
 
 function App() {
-  const[toggleChat,setToggleChat]= useState(false);
-  const[authPopUp,setAuthPopup] = useState(false);
-  const [isSignedIn,setSignIn] = useState(false);
+  const [toggleChat, setToggleChat] = useState(false);
+  const [authPopUp, setAuthPopup] = useState(false);
+  const [isSignedIn, setSignIn] = useState(false);
 
-  const renderMapOrChat = () =>{
+  const renderMapOrChat = () => {
     //TODO restore map to same zoom and position after opening the chats
-    if(toggleChat){
-      return <Chat/>;
+    if (toggleChat) {
+      return <Chat />;
     }
-    else{
-      return <Map/>;
+    else {
+      return <Map />;
     }
   }
 
-  const renderIcon = () =>{
-    if(toggleChat){
-      return <img className="toggleIcon" src={map} alt="chat button"/>;
+  const renderIcon = () => {
+    if (toggleChat) {
+      return <motion.img className="toggleIcon" src={map} alt="chat button" whileHover={{
+        scale: 1.1,
+      }}
+        whileTap={{ scale: 0.9 }} />;
     }
-    else{
-      return <img className="toggleIcon" src={chat} alt="map button"/>;
+    else {
+      return <motion.img className="toggleIcon" src={chat} alt="map button" whileHover={{
+        scale: 1.1,
+      }}
+        whileTap={{ scale: 0.9 }} />;
     }
   }
 
   return (
-    <Login  test={isSignedIn,setSignIn}>
-    
-    <div className="App">
-      <Navbar className="nav" setAuthPopup={setAuthPopup} />
-      {renderMapOrChat()}
-      <motion.div className="toggleButton" onClick={()=>setToggleChat(!toggleChat)}>
-        {renderIcon()}
-      </motion.div>
-      {authPopUp && <Auth setAuthPopup={setAuthPopup}/>}
-    </div>
+    <Login>
+      <div className="App">
+        <Navbar className="nav" setAuthPopup={setAuthPopup} />
+        {renderMapOrChat()}
+        <motion.div className="toggleButton" onClick={() => setToggleChat(!toggleChat)}>
+          {renderIcon()}
+        </motion.div>
+        {authPopUp && <Auth setAuthPopup={setAuthPopup} />}
+      </div>
     </Login>
   );
 }

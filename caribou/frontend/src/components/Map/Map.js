@@ -39,7 +39,6 @@ export default function Map({ center, zoom }) {
 
   useEffect(() => {
     try {
-      console.log("use effect");
       var points = [];
       fetch("http://localhost:5050/api/human/getAllHumans", {
         method: "GET",
