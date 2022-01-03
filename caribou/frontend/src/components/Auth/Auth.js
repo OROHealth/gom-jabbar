@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { LoggedIn } from "./LoginContext";
+import {motion} from "framer-motion";
 import "./Auth.css";
 
 const Auth = ({ setAuthPopup }) => {
@@ -117,12 +118,27 @@ const Auth = ({ setAuthPopup }) => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <div>
-            <button className="submit" type="submit">Submit</button>
+            <motion.button className="submit" type="submit" whileHover={{
+          scale: 1.1,
+          color: "#4787c7",
+          border: "1px solid #4787c7",
+        }}
+        whileTap={{ scale: 0.9, color: "#4787c7", border: "1px solid #4787c7" }}>Submit</motion.button>
             {!signup && (
-              <button className="submit" onClick={() => setSignup(true)}>Sign Up?</button>
+              <motion.button className="submit" onClick={() => setSignup(true)}whileHover={{
+                scale: 1.1,
+                color: "#4787c7",
+                border: "1px solid #4787c7",
+              }}
+              whileTap={{ scale: 0.9, color: "#4787c7", border: "1px solid #4787c7" }}>Sign Up?</motion.button>
             )}
             {signup && (
-              <button className="submit" onClick={() => setSignup(false)}>Sign In?</button>
+              <motion.button className="submit" onClick={() => setSignup(false)}whileHover={{
+                scale: 1.1,
+                color: "#4787c7",
+                border: "1px solid #4787c7",
+              }}
+              whileTap={{ scale: 0.9, color: "#4787c7", border: "1px solid #4787c7" }}>Sign In?</motion.button>
             )}
           </div>
         </form>
