@@ -9,7 +9,7 @@
     
 }
 
-button{
+.submit{
     color: var(--text);
     padding: 10px 30px;
     font-size: 1em;

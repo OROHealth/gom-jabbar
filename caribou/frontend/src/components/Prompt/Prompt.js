@@ -19,9 +19,7 @@ const Prompt = ({ lat, lng,enter, leave, submit }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({lat,lng,trashingLevel,excitementLevel}),
-        })
-
-    submit();
+        }).then(submit());
     
   }
   return (
@@ -54,6 +52,7 @@ const Prompt = ({ lat, lng,enter, leave, submit }) => {
         onChange={(e,val)=>setExcitementLevel(val)}
       />
       {<motion.button
+      className="submit"
         whileHover={{
           scale: 1.1,
           color: "#4787c7",

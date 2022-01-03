@@ -13,8 +13,11 @@ router.put("/signal", async (req, res) => {
 
   const query = `INSERT INTO "human" ("lat","lng","trashing_level","excitment_level") VALUES($1,$2,$3,$4) RETURNING *;`
   const values = [lat,lng,trashingLevel,excitementLevel];
-  await pool.query(query,values);
+  await pool.query(query,values,(err)=>{
+    res.json("query error");
+  console.log(err)});
 } catch (err) {
+  console.log("Error");
   res.json("Couldn't signal human");
 }
 });

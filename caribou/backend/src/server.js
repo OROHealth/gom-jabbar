@@ -10,8 +10,7 @@ require("dotenv").config();
 app.use(
     cors({
       origin: "http://localhost:3000",
-      credentials: true,
-    })
+ credentials:true    })
   );
 app.use(express.json());
 app.use(session({
@@ -49,6 +48,9 @@ app.use("/api/caribou", caribouRouter);
 app.use("/api/human",humanRouter);
 app.use("/api/message",messageRouter);
 app.use("/api/inbox",inboxRouter);
+app.get("/api/ping",(req,res)=>{
+res.json("beep boop");
+});
 
 
 //on uncaught exception, log error and exit process. 

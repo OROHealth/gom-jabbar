@@ -4,7 +4,7 @@ const messageInput = () => {
     return (
         <div className="input">
           <input type="text" placeholder="Type a message..." />
-          <button type="submit"><i class="fas fa-paper-plane"></i></button>
+          <button type="submit">📨</button>
       </div>
     )
 }

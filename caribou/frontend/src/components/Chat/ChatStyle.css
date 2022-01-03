@@ -6,13 +6,30 @@
     height: 100%;
     position: relative;
 }
+
 .antler-exchange{
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
    
 }
 .inbox{
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
    
+}
+@media (max-width: 800px) {
+    .chat{
+        flex-direction: column;
+    }
+    .antler-exchange{
+        flex-direction: row;
+
+    }
+    .inbox{
+        flex-direction: row;
+    }
 }
 .message-received{
     
@@ -43,11 +60,12 @@
 }
 .input {
     position: absolute;
+    margin: auto;
     width: 100%;
-    height: 55px;
+    height: 70px;
+    text-align: center;
     bottom: 0;
-    background: lightgray;
-    border-radius: 0 0 10px 10px;
+    background: #011f3b;
 }
 
 .feed{
@@ -59,4 +77,5 @@
     overflow: scroll;
    
 }
+
 

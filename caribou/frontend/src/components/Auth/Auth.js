@@ -117,12 +117,12 @@ const Auth = ({ setAuthPopup }) => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <div>
-            <button type="submit">Submit</button>
+            <button className="submit" type="submit">Submit</button>
             {!signup && (
-              <button onClick={() => setSignup(true)}>Sign Up?</button>
+              <button className="submit" onClick={() => setSignup(true)}>Sign Up?</button>
             )}
             {signup && (
-              <button onClick={() => setSignup(false)}>Sign In?</button>
+              <button className="submit" onClick={() => setSignup(false)}>Sign In?</button>
             )}
           </div>
         </form>
