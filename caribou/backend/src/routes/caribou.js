@@ -106,10 +106,41 @@ router.put("/signOut", async(req,res) => {
 
 //allows the user to signal that it is ready to antler-exchange
 router.put("/signalAntlerExchange", async (req, res) => {
-  const query = `UPDATE "caribou" SET antler_exchange_status=$1 WHERE "email"=$2`;
-  const values = [req.body.antlerEschangeStatus,req.body.email];
-  await pool.query(query,values);
+  try{
+  const query = `UPDATE "caribou" SET "antler_exchange_status"=$1 WHERE "email"=$2`;
+  console.log(req.body);
+  if(req.session.user!=undefined && req.session.user.email!=undefined){
+  const values = [req.body.antlerExchangeStatus,req.session.user.email];
+  
+  console.log("changing antler exchange status")
+  test = await pool.query(query,values, (err)=>{
+    res.json("query error");
+  console.log(err)});}
+  else{
+    console.log("not signed in");
+  }
+  }
+  catch (err) {
+    console.log(err);
+    res.status(500).json("Could not change antler exchange status");
+  }
 
 });
+
+router.get("/getAntlerExchanges", async (req, res) => {
+try{
+
+  const query = `SELECT * FROM "caribou" WHERE "antler_exchange_status" = 'true' LIMIT 50;`;
+  console.log("getting all caribous ready to accept antler exchange");
+  const caribous = await pool.query(query);
+  if(caribous!==undefined)
+  res.json(caribous.rows);
+}
+catch(err){
+  console.log(err);
+  res.status(500).json("unable to return caribous that are ready to antler exchange");
+}
+
+})
 
 module.exports = router;

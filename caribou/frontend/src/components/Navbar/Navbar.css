@@ -15,8 +15,10 @@
 
 @media (max-width: 800px) {
     .navbar {
-        width:100%;
+        flex-grow: 0;
         height: fit-content;
+        min-height: 70px;
+        width:100%;
         flex-direction: row;
         justify-content: space-between;
     }

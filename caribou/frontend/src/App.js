@@ -44,7 +44,7 @@ function App() {
   return (
     <Login>
       <div className="App">
-        <Navbar className="nav" setAuthPopup={setAuthPopup} />
+        <Navbar setAuthPopup={setAuthPopup} />
         {renderMapOrChat()}
         <motion.div className="toggleButton" onClick={() => setToggleChat(!toggleChat)}>
           {renderIcon()}

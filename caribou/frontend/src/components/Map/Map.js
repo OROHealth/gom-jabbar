@@ -15,7 +15,6 @@ const useAuth = () => {
 
 
 export default function Map({ center, zoom }) {
-  console.log("map rerender");
   const { user } = useContext(LoggedIn);
   const isAuth = user && user.loggedIn;
 
@@ -133,7 +132,6 @@ export default function Map({ center, zoom }) {
   }
   const renderError = () => {
     if (!isAuth && showAuthError) {
-      console.log("sheesh")
       const timer = setTimeout(() => {
         setShowAuthError(false);
       }, 2000);
