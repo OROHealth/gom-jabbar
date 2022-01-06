@@ -1,13 +1,16 @@
-import React from 'react';
+import React from "react";
 import "./ChatStyle.css";
-import send from "./../../img/send.svg"
-const messageInput = () => {
-    return (
-        <div className="input">
-          <input className="textBox" type="text" placeholder="Type a message..." />
-          <img src={send} className="sendIcon" alt="Caribou icon" />
-        </div>
-    )
-}
+import send from "./../../img/send.svg";
 
-export default messageInput
+//input form to type messages
+//Work in progress
+const messageInput = () => {
+  return (
+    <div className="input">
+      <input className="textBox" type="text" placeholder="Type a message..." />
+      <img src={send} className="sendIcon" alt="Caribou icon" />
+    </div>
+  );
+};
+
+export default messageInput;

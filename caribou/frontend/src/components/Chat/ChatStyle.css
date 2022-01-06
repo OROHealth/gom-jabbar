@@ -1,137 +1,130 @@
-.chat{
-    display: flex;
-    background-color: var(--background);
-    flex-direction: row;
-    justify-content: space-between;
-    width:100%;
-    overflow: hidden;
+.chat {
+  display: flex;
+  background-color: var(--background);
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  overflow: hidden;
 }
 
-.antler-exchange{
-    flex-grow: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: left;
-    border-left: solid ;
-    border-right: solid;
-    border-color: var(--accent);
-    border-width: 5px;
-    color:var(--text)
+.antler-exchange {
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: left;
+  border-left: solid;
+  border-right: solid;
+  border-color: var(--accent);
+  border-width: 5px;
+  color: var(--text);
 }
-.feed{
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    
+.feed {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.messages{
-    display: flex;
-    flex-shrink: 1;
-    flex-direction: column;
-    overflow-y: scroll;
+.messages {
+  display: flex;
+  flex-shrink: 1;
+  flex-direction: column;
+  overflow-y: scroll;
 }
 
 @media (max-width: 800px) {
-    .chat{
-        flex-direction: column;
-    }
-    .antler-exchange{
-        flex-direction: row;
-    }
-
-
+  .chat {
+    flex-direction: column;
+  }
+  .antler-exchange {
+    flex-direction: row;
+  }
 }
-.message-received{
-    overflow-wrap: break-word;
-    background-color: #474747;
-    color: var(--text);
-    text-align: center;
-    align-self: flex-end;
-    padding: 5px;
-    margin: 5px;
-    border-radius: 10px;
-    
-
+.message-received {
+  overflow-wrap: break-word;
+  background-color: #474747;
+  color: var(--text);
+  text-align: center;
+  align-self: flex-end;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 10px;
 }
-.message-sent{
-
-    overflow-wrap: break-word;
-    background-color: var(--accent);
-    color: var(--text);
-    text-align: center;
-    align-self: flex-start;
-    padding: 5px;
-    margin: 5px;
-    border-radius: 10px;
+.message-sent {
+  overflow-wrap: break-word;
+  background-color: var(--accent);
+  color: var(--text);
+  text-align: center;
+  align-self: flex-start;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 10px;
 }
 .input {
-    display: flex;
-    flex-direction: row;
-    height: 3em;
-    text-align: center;
-    border-radius: 10px;
-    padding: 10px;
-    justify-content: center;
-    margin-left: 5px;
-    margin-right: 5em;
-    margin-top: 20px;
-    background: var(--accent);
+  display: flex;
+  flex-direction: row;
+  height: 3em;
+  text-align: center;
+  border-radius: 10px;
+  padding: 10px;
+  justify-content: center;
+  margin-left: 5px;
+  margin-right: 5em;
+  margin-top: 20px;
+  background: var(--accent);
 }
-.textBox{
-    flex-grow: 1;
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+.textBox {
+  flex-grow: 1;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
-.sendIcon{
-    flex-grow: 0;
-    padding: 5px; 
-    width: 2em;  
-    background-color: none;
+.sendIcon {
+  flex-grow: 0;
+  padding: 5px;
+  width: 2em;
+  background-color: none;
 }
 
-.status{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    height: fit-content;
+.status {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: fit-content;
 }
 
 .switch {
-    width: 2em;
-    height: 1em;
-    background-color: #474747;
-    display: flex;
-    justify-content: flex-start;
-    border-radius: 50px;
-    padding: 3px;
-    margin:10px;
-    cursor: pointer;
-  }
-  
-  .switch[data-isOn="true"] {
-    justify-content: flex-end;
-    background-color: var(--accent);
-  }
-  
-  .handle {
-    width: 1em;
-    height: 1em;
-    background-color: white;
-    border-radius: 40px;
-  }
+  width: 2em;
+  height: 1em;
+  background-color: #474747;
+  display: flex;
+  justify-content: flex-start;
+  border-radius: 50px;
+  padding: 3px;
+  margin: 10px;
+  cursor: pointer;
+}
 
+.switch[data-isOn="true"] {
+  justify-content: flex-end;
+  background-color: var(--accent);
+}
 
-  ul li {
-    list-style: none;
-    display: inline;
-    margin: 0;
-    padding: 0;
-  }
+.handle {
+  width: 1em;
+  height: 1em;
+  background-color: white;
+  border-radius: 40px;
+}
+
+ul li {
+  list-style: none;
+  display: inline;
+  margin: 0;
+  padding: 0;
+}

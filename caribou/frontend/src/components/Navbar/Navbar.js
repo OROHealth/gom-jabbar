@@ -4,14 +4,15 @@ import { motion } from "framer-motion";
 import "../../styles.css";
 import caribou from "../../img/caribou.svg";
 import { LoggedIn } from "../Auth/LoginContext";
+
+//login status
 const useAuth = () => {
   const { user } = useContext(LoggedIn);
   return user && user.loggedIn;
 };
 
-
-
-const Button = ({setAuthPopup}) => {
+//Sign in/Sign out button
+const Button = ({ setAuthPopup }) => {
   const { logOut } = useContext(LoggedIn);
   const isAuth = useAuth();
   if (!isAuth) {
@@ -41,7 +42,7 @@ const Button = ({setAuthPopup}) => {
           border: "1px solid #4787c7",
         }}
         whileTap={{ scale: 0.9, color: "#4787c7", border: "1px solid #4787c7" }}
-        onClick={()=>logOut()}
+        onClick={() => logOut()}
       >
         Sign Out
       </motion.button>
@@ -53,7 +54,7 @@ const NavBar = ({ setAuthPopup }) => {
   return (
     <div className="navbar">
       <img src={caribou} className="mainIcon" alt="Caribou icon" />
-      {Button({setAuthPopup})}
+      {Button({ setAuthPopup })}
     </div>
   );
 };

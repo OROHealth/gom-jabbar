@@ -1,42 +1,41 @@
-
-.navbar{
-    display: flex;
-    flex-grow: 1;   
-    align-items: center;
-    background-color: var(--background);
-    color: var(--text);
-    padding: 10px;
-    overflow: hidden;
-    height: 100%;
-    width: fit-content;
-    flex-direction: column;
-    justify-content: space-between;
+.navbar {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  background-color: var(--background);
+  color: var(--text);
+  padding: 10px;
+  overflow: hidden;
+  height: 100%;
+  width: fit-content;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 @media (max-width: 800px) {
-    .navbar {
-        flex-grow: 0;
-        height: fit-content;
-        min-height: 70px;
-        width:100%;
-        flex-direction: row;
-        justify-content: space-between;
-    }
+  .navbar {
+    flex-grow: 0;
+    height: fit-content;
+    min-height: 70px;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
   }
-.mainIcon{
-    margin-top: 5px;
-    width: 70px;
+}
+.mainIcon {
+  margin-top: 5px;
+  width: 70px;
 }
 
-.menuButton{
-    color: var(--text);
-    padding: 10px 30px;
-    font-size: 1em;
-    background: transparent;
-    border-radius: 15px;
-    border: 1px solid var(--text);
-    margin: 20px;
-    cursor: pointer;
-    opacity: 1;
-    white-space: nowrap;
-  }
+.menuButton {
+  color: var(--text);
+  padding: 10px 30px;
+  font-size: 1em;
+  background: transparent;
+  border-radius: 15px;
+  border: 1px solid var(--text);
+  margin: 20px;
+  cursor: pointer;
+  opacity: 1;
+  white-space: nowrap;
+}
