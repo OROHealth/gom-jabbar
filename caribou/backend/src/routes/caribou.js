@@ -112,15 +112,12 @@ router.put("/signOut", async (req, res) => {
 //allows the user to signal that it is ready to antler-exchange
 router.put("/signalAntlerExchange", async (req, res) => {
   try {
-    const query = `UPDATE "caribou" SET "antler_exchange_status"=$1 WHERE "email"=$2`;
-
     //user session needed to set antler-exchange status
     if (req.session.user != undefined && req.session.user.email != undefined) {
-      const values = [req.body.antlerExchangeStatus, req.session.user.email];
-      console.log("changing antler exchange status");
-      await pool.query(query, values, (err) => {
+      const query = `UPDATE "caribou" SET "antler_exchange_status"='${req.body.antlerExchangeStatus}' WHERE "email"='${req.session.user.email}'`;
+      console.log(query);
+      await pool.query(query, (err) => {
         res.json("query error");
-        console.log(err);
       });
     } else {
       console.log("not signed in");

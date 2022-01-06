@@ -39,31 +39,49 @@ CREATE TABLE "human" (
     CONSTRAINT "human_pk" PRIMARY KEY ("id")
 ) WITH (OIDS = FALSE);
 
-INSERT INTO caribou ("email", "password", "name")
+INSERT INTO caribou ("email", "password", "name","antler_exchange_status")
 VALUES (
         'georgecari@gmail.com',
         'verysecurepassword',
-        'George'
+        'George',
+        'true'
     ),
     (
         'caribou-orgcarib@ihch.com',
         'verysecurepassword',
-        'Oliver'
+        'Oliver',
+        'true'
     ),
     (
         'humanavoider1234-carib@yahoo.com',
         'verysecurepassword',
-        'Benjamin'
+        'Benjamin',
+        'true'
     ),
     (
         'humanhunter-carib@cahaap.ca',
         'verysecurepassword',
-        'Hunter'
+        'Hunter',
+        'true'
     ),
+    (
+        'chatter1carib@cahaap.ca',
+        'verysecurepassword',
+        'Chatter 1',
+        'true'
+    ),
+    (
+        'chatter2-carib@cahaap.ca',
+        'verysecurepassword',
+        'Chatter 2',
+        'true'
+    ),
+    
     (
         'tester@gmail.com',
         'verysecurepassword',
-        'Tester'
+        'Tester',
+        'true'
     );
 INSERT INTO human (
         "trashing_level",

@@ -1,64 +1,67 @@
-.App{
-    margin: 0px;
-    padding: 0px;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    overflow: hidden;
-
+.App {
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  overflow: hidden;
 }
 
 /* Responsive layout - makes a one column layout instead of a two-column layout */
 @media (max-width: 800px) {
-    .App {
-        
-        flex-direction: column;
-        overflow: hidden;
-
-    }
+  .App {
+    flex-direction: column;
+    overflow: hidden;
   }
-
-.toggleButton{
-    position: fixed;
-    width: 3em;
-    right: 0;
-    bottom: 0;
-    margin: 1em;
-    padding: 5px;
-    align-items: center;
 }
-.toggleIcon{
-    background-color: var(--background);
-    padding: 4px;
-    border-radius: 15px;
+
+.toggleButton {
+  position: fixed;
+  width: 3em;
+  right: 0;
+  bottom: 0;
+  margin: 1em;
+  padding: 5px;
+  align-items: center;
+}
+.toggleIcon {
+  background-color: var(--background);
+  padding: 4px;
+  border-radius: 15px;
 }
 
 /* Better scroll bar from github user: derblub*/
 ::-webkit-scrollbar {
-    width: 8px; 
-    background-color: rgba(0,0,0,0);
-    border-radius: 100px;
-    -webkit-border-radius: 100px;
-  }
-  ::-webkit-scrollbar:hover {
-    background-color: rgba(0, 0, 0, 0.09);
-  }
-  
-  ::-webkit-scrollbar-thumb:vertical {
-    background: rgba(0,0,0,0.5);
-    border-radius: 100px;
-    -webkit-border-radius: 100px;
-  }
-  ::-webkit-scrollbar-thumb:vertical:active {
-    background: rgba(0,0,0,0.61);
-    border-radius: 100px;
-    -webkit-border-radius: 100px;
-  }
-  
+  width: 8px;
+  height: 8px;
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 100px;
+  -webkit-border-radius: 100px;
+}
+::-webkit-scrollbar:hover {
+  background-color: rgba(0, 0, 0, 0.09);
+}
 
+::-webkit-scrollbar-thumb:vertical {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 100px;
+  -webkit-border-radius: 100px;
+}
+::-webkit-scrollbar-thumb:vertical:active {
+  background: rgba(0, 0, 0, 0.61);
+  border-radius: 100px;
+  -webkit-border-radius: 100px;
+}
 
-
-
-
+::-webkit-scrollbar-thumb:horizontal {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 100px;
+  -webkit-border-radius: 100px;
+}
+::-webkit-scrollbar-thumb:horizontal:active {
+  background: rgba(0, 0, 0, 0.61);
+  border-radius: 100px;
+  -webkit-border-radius: 100px;
+}

@@ -8,9 +8,14 @@ const AntlerExchange = () => {
   //states
   const [antlerExchangeStatus, setIsOn] = useState(false);
   const [caribous, setCaribous] = useState([]);
+  const [inboxId, setInboxId] = useState();
 
   const toggleSwitch = () => {
     setIsOn(!antlerExchangeStatus);
+  };
+
+  const getInbox = (email) => {
+    console.log(`getting the inbox for email: ${email}`);
   };
   //gets and displays all caribous that are ready to antler exchange
   useEffect(() => {
@@ -26,14 +31,21 @@ const AntlerExchange = () => {
         for (var i = 0; i < data.length; i++) {
           temp.push(
             <li key={i}>
-              {<Caribou name={data[i].name} key={i} keyVal={i} />}
+              {
+                <Caribou
+                  name={data[i].name}
+                  email={data[i].email}
+                  key={i}
+                  keyVal={i}
+                  getInbox={getInbox}
+                />
+              }
             </li>
           );
         }
-        console.log("before shit hits the fan");
         setCaribous(temp);
       });
-  }, [antlerExchangeStatus]);
+  }, []);
   //sets the antler exchange status to what was selected by the user
   useEffect(() => {
     try {
@@ -63,8 +75,9 @@ const AntlerExchange = () => {
           </div>
           Antler exchange status
         </div>
+
+        <ul className="list">{caribous}</ul>
       </div>
-      <ul className="list">{caribous}</ul>
     </>
   );
 };
