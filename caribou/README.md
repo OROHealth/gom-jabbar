@@ -40,19 +40,19 @@ As mentioned earlier the website itself is not complete. Here is the list of fea
 	 * Highly secured grmmuu encryption algorithm for messages.
 * Database:
 	* PostgreSQL database with the following schema: 
-	![Alt text](/img/Shema.png?raw=true "Schema")
+	![Alt text](img/Shema.png?raw=true "Schema")
 	*  support for a chat, postgreSQL is not the best db to do that but time didn't  allow for a better solution
 * Frontend:
 	* Mobile friendly interface (still needs a little fix for a hover function that doesn't like touch inputs but other than that it's  pretty good) everything fits on the viewport and no scrolling is required. Comfortable to use on a wide range of resolutions
 	* Google map  implementation
 	* Heatmap showing human activity, fetches human locations from database (~~needs a page refresh to load changed data~~ fixed!)
-  ![Alt text](/img/Heatmap.png?raw=true "heatmap")
+  ![Alt text](img/Heatmap.png?raw=true "heatmap")
 	* Sign in/up (~~needs a refresh to update, context not properly done will most likely fix this shortly~~ fixed!)
 	* Toggle between map and chat
 	*  Chat skeleton (ran out of time :expressionless:)
 	*  Markers for important locations
 	*  Form with slider to signal human presence and rate their trashing levels
-  ![Alt text](/img/SignalHuman.png?raw=true "signal human prompt")
+  ![Alt text](img/SignalHuman.png?raw=true "signal human prompt")
 
 
 Here are a couple screen shots of what the app looks like on different aspect ratios:
@@ -61,14 +61,14 @@ Here are a couple screen shots of what the app looks like on different aspect ra
 
 
 In short, I don't like submitting incomplete work but really really want to have at least a couple days of winter break :wink:
-I think that with just a bit more time I could have implemented the chat feature(using the db and sockets) and cleaned up the login code on the frontend side of things(so that no refresh is required and so that components update properly).
+I think that with just a bit more time I could have implemented the chat feature(using the db and sockets) ~~and cleaned up the login code on the frontend side of things(so that no refresh is required and so that components update properly).~~ done!
 
 The things that I would have worked on once the app was functional to make the experience more polished would have been:
 * Animations with framer motion
 * Creating an actual theme
 * Theme toggle (light/dark)
 * Other menu pages
-* Map loading optimization (when there are tons of markers only fetch and render the ones in the viewport)
+* Map loading optimization (when there are tons of markers only fetch and render the ones in the viewport) as well as implementing geohashing
 * Database indexing
 
 If I had to redo it I would probably have avoided the map library that I used, it caused me way more trouble than what I would have gone through by using the google api directly/ using something else completely.
