@@ -11,13 +11,14 @@ router.post("/signup", async (req, res) => {
     const caribouExisting = await pool.query(
       `SELECT "email" FROM "caribou" WHERE "email"='${req.body.email}'`
     );
-    
+
     if (caribouExisting.rowCount === 0) {
       //check that the email has the correct extension
-      if(req.body.email.split('@')[0].slice(-5)!="carib"){
+      if (req.body.email.split("@")[0].slice(-5) != "carib") {
         res.json({ loggedIn: false, status: "email needs to be Cariboued" });
         return;
       }
+
       // register new user
       //hash and salt
       const hashedPass = await bcrypt.hash(req.body.password, 10);
@@ -37,15 +38,16 @@ router.post("/signup", async (req, res) => {
       res.json({ loggedIn: false, status: "email already in use" });
     }
   } catch (err) {
-      console.log(err);
+    console.log(err);
     res.status(500).json("Error while trying to signup");
   }
 });
 
-//login with email and passwork
+//login with email and password
 router
   .route("/login")
   .get(async (req, res) => {
+    //check if logged in
     if (req.session.user && req.session.user.email) {
       res.json({ loggedIn: true, email: req.session.user.email });
     } else {
@@ -53,6 +55,8 @@ router
     }
   })
   .post(async (req, res) => {
+    //Login using password and email
+
     //TODO validate input
     try {
       const caribou = await pool.query(
@@ -64,7 +68,9 @@ router
           req.body.password,
           caribou.rows[0].password
         );
+
         if (correctPassword) {
+          //create session
           req.session.user = {
             email: req.body.email,
             id: caribou.rows[0].id,
@@ -82,7 +88,7 @@ router
         res.json({ loggedIn: false, status: "Wrong username or password!" });
       }
     } catch (err) {
-        console.log(err);
+      console.log(err);
       res.status(500).json("Error while trying to login");
     }
   });
@@ -99,48 +105,46 @@ router.post("/createCaribou", async (req, res) => {
   }
 });
 
-router.put("/signOut", async(req,res) => {
+router.put("/signOut", async (req, res) => {
   req.session.destroy();
-  res.json({status:"successful"});
-})
+  res.json({ status: "successful" });
+});
 
 //allows the user to signal that it is ready to antler-exchange
 router.put("/signalAntlerExchange", async (req, res) => {
-  try{
-  const query = `UPDATE "caribou" SET "antler_exchange_status"=$1 WHERE "email"=$2`;
-  console.log(req.body);
-  if(req.session.user!=undefined && req.session.user.email!=undefined){
-  const values = [req.body.antlerExchangeStatus,req.session.user.email];
-  
-  console.log("changing antler exchange status")
-  test = await pool.query(query,values, (err)=>{
-    res.json("query error");
-  console.log(err)});}
-  else{
-    console.log("not signed in");
-  }
-  }
-  catch (err) {
+  try {
+    const query = `UPDATE "caribou" SET "antler_exchange_status"=$1 WHERE "email"=$2`;
+
+    //user session needed to set antler-exchange status
+    if (req.session.user != undefined && req.session.user.email != undefined) {
+      const values = [req.body.antlerExchangeStatus, req.session.user.email];
+      console.log("changing antler exchange status");
+      await pool.query(query, values, (err) => {
+        res.json("query error");
+        console.log(err);
+      });
+    } else {
+      console.log("not signed in");
+    }
+  } catch (err) {
     console.log(err);
     res.status(500).json("Could not change antler exchange status");
   }
-
 });
 
+//fetch all users that are ready to accept antler exchange
 router.get("/getAntlerExchanges", async (req, res) => {
-try{
-
-  const query = `SELECT * FROM "caribou" WHERE "antler_exchange_status" = 'true' LIMIT 50;`;
-  console.log("getting all caribous ready to accept antler exchange");
-  const caribous = await pool.query(query);
-  if(caribous!==undefined)
-  res.json(caribous.rows);
-}
-catch(err){
-  console.log(err);
-  res.status(500).json("unable to return caribous that are ready to antler exchange");
-}
-
-})
+  try {
+    const query = `SELECT * FROM "caribou" WHERE "antler_exchange_status" = 'true' LIMIT 50;`;
+    console.log("getting all caribous ready to accept antler exchange");
+    const caribous = await pool.query(query);
+    if (caribous !== undefined) res.json(caribous.rows);
+  } catch (err) {
+    console.log(err);
+    res
+      .status(500)
+      .json("unable to return caribous that are ready to antler exchange");
+  }
+});
 
 module.exports = router;
