@@ -23,7 +23,6 @@ router.post("/signup", async (req, res) => {
       //hash and salt
       const hashedPass = await bcrypt.hash(req.body.password, 10);
       //insert into db
-      console.log(hashedPass);
       const query = `INSERT INTO caribou (email, password, name) VALUES ($1, $2, $3) RETURNING *;`;
       const values = [req.body.email, hashedPass, req.body.name];
       const newUserQuery = await pool.query(query, values);
