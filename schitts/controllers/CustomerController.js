@@ -265,12 +265,20 @@ const findByName = async (req, res) => {
 
   try {
     const { fullname, type } = req.body
-    await Customer.findOne({ attributes: ['first_name', 'last_name'], where: { type: type, [Op.or]: [{ first_name: { [Op.like]: `%${fullname}%` } }, { last_name: { [Op.like]: `%${fullname}%` } }] } }).then(
-      (updated) => {
-        if (updated === null) {
-          throw new Error('customer not found')
+    const request = 'SELECT first_name, last_name FROM customers WHERE type = :type and CONCAT(first_name, last_name) like :fullname or CONCAT(last_name, first_name) like :fullname'
+    await db.sequelize.query(request, {
+      replacements: { type: type, fullname: `%${fullname}%` },
+      model: Customer,
+      mapToModel: true,
+      type: db.sequelize.QueryTypes.SELECT
+    }).then(
+      (customers) => {
+        if (customers.length === 0) {
+          responseObject.msg = 'customers not found'
+        } else {
+          responseObject.data = [...customers]
+          responseObject.msg = customers.length > 1 ? `${customers.length} customers were found.` : `${customers.length} customer was found.`
         }
-        responseObject.data = `${updated.dataValues.first_name} ${updated.dataValues.last_name}`
         return res.status(200).json(responseObject)
       }
     ).catch(error => {
