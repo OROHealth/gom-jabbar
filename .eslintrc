@@ -1,0 +1,47 @@
+{
+    "env": {
+        "node": true,
+        "es6": true,
+        "jasmine": true,
+        "jest": true,
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true
+        },
+        "sourceType": "module"
+    },
+    "rules": {
+        "space-before-function-paren": ["error", "never"],
+        "comma-spacing": [2, {"before": false, "after": true}], // 2 means error
+        "key-spacing": ["error", { "beforeColon": false, "afterColon": true }],
+        "no-console": "off",
+        "no-constant-condition": "off",
+        "no-extra-boolean-cast": "off",
+        "indent": [
+            "error",
+            4
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "brace-style": [
+            "error",
+            "stroustrup"
+        ],
+        "object-curly-spacing": [
+            "error",
+            "always"
+        ],
+        "space-in-parens": [
+            "error",
+            "never"
+        ]
+    }
+}

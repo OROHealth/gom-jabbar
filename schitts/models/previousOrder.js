@@ -1,10 +1,9 @@
-const moment = require('moment');
-const { findMenuItem } = require('../utils/utils');
+const {MENU_ITEMS_PRICES } = require('../constants')
 
-module.exports = class Order {
-  constructor(tone, customersOrders) {
-    // Similar to order model, except for dateCreated uses moment.utc() 
-    // to automatically insert time of order
+module.exports = class PreviousOrder {
+  constructor(tone, customersOrders, dateCreated) {
+    // Similar to order model, except for dateCreated to simulate insertion
+    // of 10,000 customers in the past
     /*
       customersOrder = {
         customerId1 : {
@@ -22,9 +21,10 @@ module.exports = class Order {
       }
     */
     this.customersOrders = customersOrders;
-    this.dateCreated = moment.utc();
+    this.dateCreated = dateCreated;
     this.tone = tone;
     this.getCustomerCount(customersOrders);
+
     this.getBillSplitPerCustomer(customersOrders);
     this.getBillSplitRatio(this.getBillSplitPerCustomer(customersOrders));
     // TODO create billSplitPerGroup function
