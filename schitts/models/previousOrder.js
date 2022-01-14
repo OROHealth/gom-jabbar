@@ -4,6 +4,7 @@ module.exports = class PreviousOrder {
     constructor(tone, customersOrders, dateCreated) {
     // Similar to order model, except for dateCreated to simulate insertion
     // of 10,000 customers in the past
+    // TODO Change customersOrder to the attribute pattern
     /*
       customersOrder = {
         customerId1 : {

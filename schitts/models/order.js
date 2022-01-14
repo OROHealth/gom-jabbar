@@ -5,6 +5,7 @@ module.exports = class Order {
     constructor(tone, customersOrders) {
     // Similar to order model, except for dateCreated uses moment.utc() 
     // to automatically insert time of order
+    // TODO Change customersOrder to the attribute pattern
     /*
       customersOrder = {
         customerId1 : {

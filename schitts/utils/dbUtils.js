@@ -9,9 +9,8 @@ const { CUSTOMER_TYPES, DRINKS, FOOD, MENU_ITEMS, ORDER_TONES } = require('../co
 const PreviousOrder = require('../models/previousOrder');
 
 // TODO close connection clients after all DB related functions
+// TODO return results of all functions
 // TODO fix try catch blocks for all functions
-
-findDBTable('orders');
 
 async function getDatabase() {
     const client = new MongoClient(uri);
@@ -26,17 +25,14 @@ async function getDatabase() {
     }
 }
 
-// TODO fix for queries 
-async function findSpecificInfo(tableName) {
+async function findOutOfTownCustomer() {
     const res = await getDatabase();
     const db = res[0];
     const client = res[1];
-    const table = await db.collection(tableName);
-    const searchCursor = await table.find();
-    const result = await searchCursor.toArray();
-    console.table(result);
+    const table = await db.collection('customers');
+    const searchCursor = await table.findOne({ 'type': 'out of town' });
     client.close();
-    return result;
+    return searchCursor;
 }
 
 async function findDBTable(tableName) {
@@ -46,7 +42,6 @@ async function findDBTable(tableName) {
     const table = await db.collection(tableName);
     const searchCursor = await table.find();
     const result = await searchCursor.toArray();
-    console.table(result);
     client.close();
     return result;
 }
