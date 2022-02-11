@@ -1,7 +1,6 @@
-const ManagerController = require('../../controllers/ManagerController')
+const ManagerController = require('../../controllers/api/ManagerController')
 // const asyncTryCatchMiddleware = require('./root').asyncTryCatchMiddleware
 const router = require('express').Router()
-const prefix = 'manager'
 
 /**
  * @swagger
@@ -134,10 +133,27 @@ const prefix = 'manager'
  * /api/v1/manager/booking:
  *  post:
  *    summary: book a customer
+ *    security:
+ *      - bearerAuth: []
  *    tags: [Manager]
  *    requestBody:
  *      required: true
  *      content:
+ *        application/x-www-form-urlencoded:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              reservation_date:
+ *                type: date
+ *              party_size:
+ *                type: integer
+ *              customer_id:
+ *                type: string
+ *            examples:
+ *              value:
+ *                reservation_date: 1982-05-06
+ *                party_size: 5
+ *                customer_id: 7dc36efb-0533-4d9f-b4fb-62f757c08b3a
  *        application/json:
  *          schema:
  *            $ref: '#/components/schemas/Booking'
@@ -151,13 +167,15 @@ const prefix = 'manager'
  *      500:
  *        description: Server Error
  */
-router.post(`/${prefix}/booking`, ManagerController.store)
+router.post('/booking', ManagerController.store)
 
 /**
   * @swagger
   * /api/v1/manager/booking/{reference}:
   *  patch:
   *    summary: update a booking by reference
+  *    security:
+  *      - bearerAuth: []
   *    tags: [Manager]
   *    parameters:
   *      - in: path
@@ -169,6 +187,9 @@ router.post(`/${prefix}/booking`, ManagerController.store)
   *    requestBody:
   *      required: true
   *      content:
+  *        application/x-www-form-urlencoded:
+  *          schema:
+  *            $ref: '#/components/schemas/Booking'
   *        application/json:
   *          schema:
   *            $ref: '#/components/schemas/Booking'
@@ -182,13 +203,15 @@ router.post(`/${prefix}/booking`, ManagerController.store)
   *      404:
   *        description: The manager was not found
   */
-router.patch(`/${prefix}/booking/:reference`, ManagerController.update)
+router.patch('/booking/:reference', ManagerController.update)
 
 /**
  * @swagger
  * /api/v1/manager/{reference}/order:
  *  post:
  *    summary: order a dish
+ *    security:
+ *      - bearerAuth: []
  *    tags: [Manager]
  *    parameters:
  *      - in: path
@@ -200,6 +223,11 @@ router.patch(`/${prefix}/booking/:reference`, ManagerController.update)
  *    requestBody:
  *      required: true
  *      content:
+ *        application/x-www-form-urlencoded:
+ *          schema:
+ *            type: array
+ *            items:
+ *              $ref: '#/components/schemas/OrderedDishes'
  *        application/json:
  *          schema:
  *            type: array
@@ -218,13 +246,15 @@ router.patch(`/${prefix}/booking/:reference`, ManagerController.update)
  *      500:
  *        description: Server Error
  */
-router.post(`/${prefix}/:reference/order`, ManagerController.order)
+router.post('/:reference/order', ManagerController.order)
 
 /**
  * @swagger
  * /api/v1/manager/diagnose:
  *  post:
  *    summary: server diagnostic
+ *    security:
+ *      - bearerAuth: []
  *    tags: [Manager]
  *    requestBody:
  *      required: true
@@ -246,6 +276,6 @@ router.post(`/${prefix}/:reference/order`, ManagerController.order)
  *      500:
  *        description: Server Error
  */
-router.post(`/${prefix}/diagnose`, ManagerController.serverOverCookedDishes)
+router.post('/diagnose', ManagerController.serverOverCookedDishes)
 
 module.exports = router

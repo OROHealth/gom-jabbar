@@ -1,13 +1,14 @@
 // autoload index.js
-const db = require('../models/_index')
-var consoleLog = require('../helpers/helpers').consoleLog // output into console regarding .env Log flag
-const log4js = require('../config/log4js')
-var log = log4js.getLogger('app') // enable logging
+const db = require('../../models/_index')
+var consoleLog = require('../../helpers/helpers').consoleLog // output into console regarding .env Log flag
+const log4js = require('../../config/log4js')
+const log = log4js.getLogger('app') // enable logging
 const pkg = require('get-current-line').default // get current script filename and line
-var path = require('path')
+const path = require('path')
 var validationError = {}
 const { Op } = require('sequelize')
 var moment = require('moment')
+const Validator = require('Validator')
 // create main Model
 const Customer = db.Customer
 const DishOrder = db.DishOrder
@@ -25,34 +26,62 @@ const Server = db.Server
  * @return {responseType} status - responseDescription - responseContentType
  */
 const store = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},
     msg: ''
   }
 
+  const postData = {
+    reservation_date: req.body.reservation_date,
+    party_size: req.body.party_size,
+    CustomerId: req.body.customer_id
+  }
+
+  // Apply validation here
+  const rules = {
+    reservation_date: 'required|date',
+    reference: 'required',
+    party_size: 'required|integer',
+    CustomerId: 'required'
+  }
+
+  const messages = {
+    // custom message for based rules
+    required: 'You forgot the :attr field',
+    email: ':attr is not valid',
+    type: ':attr doesn\'t match any of allowed one',
+    // custom message for specific rule of attribute
+    'receiver.email': 'The receiver email address is not valid'
+  }
+
+  const v = Validator.make(postData, rules, messages)
+
+  if (v.fails()) {
+    const errors = v.getErrors()
+    responseObject.status = false
+    // display first validation error
+    responseObject.msg = (errors[Object.keys(errors)[0]])[0]
+
+    return res.status(200).json(responseObject)
+  }
+
   try {
     await db.sequelize.transaction(async (transaction) => {
-      const info = {
-        reservation_date: req.body.reservation_date,
-        party_size: req.body.party_size,
-        CustomerId: req.body.customer_id
-      }
-
       // check if favorite_dish already exists
-      await Customer.findOne({ where: { reference: info.CustomerId } }).then(
+      await Customer.findOne({ where: { reference: postData.CustomerId } }).then(
         (found) => {
           if (found === null) {
             throw new Error('customer not found')
           }
-          info.CustomerId = found.id
+          postData.CustomerId = found.id
         }
       ).catch(error => {
         throw new Error(error)
       })
 
-      await Booking.create(info, { fields: ['reservation_date', 'reference', 'party_size', 'CustomerId'], transaction }).then(newBooking => {
+      await Booking.create(postData, { fields: ['reservation_date', 'reference', 'party_size', 'CustomerId'], transaction }).then(newBooking => {
         responseObject.data = newBooking.dataValues
         consoleLog(responseObject.data)
         log.info(`New booking created. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
@@ -65,7 +94,7 @@ const store = async (req, res) => {
     if (error.name !== 'SequelizeValidationError') {
       validationError = error.message
     } else {
-      error.errors.map(er => {
+      error.errors.forEach(er => {
         validationError[er.path] = er.message
       })
     }
@@ -86,21 +115,54 @@ const store = async (req, res) => {
  * @param {string} phone_number - the customer's phone number
  */
 const update = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},
     msg: ''
   }
 
+  const postData = {
+    reservation_date: req.body.reservation_date,
+    party_size: req.body.party_size,
+    CustomerId: req.body.customer_id
+  }
+
+  // Apply validation here
+  const rules = {
+    reservation_date: 'required|date',
+    party_size: 'required|integer',
+    CustomerId: 'required'
+  }
+
+  const messages = {
+    // custom message for based rules
+    required: 'You forgot the :attr field',
+    email: ':attr is not valid',
+    type: ':attr doesn\'t match any of allowed one',
+    // custom message for specific rule of attribute
+    'receiver.email': 'The receiver email address is not valid'
+  }
+
+  const v = Validator.make(postData, rules, messages)
+
+  if (v.fails()) {
+    const errors = v.getErrors()
+    responseObject.status = false
+    // display first validation error
+    responseObject.msg = (errors[Object.keys(errors)[0]])[0]
+
+    return res.status(200).json(responseObject)
+  }
+
   try {
     // check if favorite_dish already exists
-    await Customer.findOne({ where: { reference: req.body.customer_id || 0 } }).then(
+    await Customer.findOne({ where: { reference: postData.CustomerId || 0 } }).then(
       (found) => {
         if (found === null) {
           throw new Error('customer not found')
         }
-        req.body.customer_id = found.id
+        postData.CustomerId = found.id
       }
     ).catch(error => {
       throw new Error(error)
@@ -109,7 +171,7 @@ const update = async (req, res) => {
     await db.sequelize.transaction(
       async (transaction) => {
         const reference = req.params.reference
-        await Booking.update(req.body, { where: { reference: reference }, fields: ['reservation_date', 'CustomerId', 'party_size'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
+        await Booking.update(postData, { where: { reference: reference }, fields: ['reservation_date', 'CustomerId', 'party_size'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
           .then(
             (updated) => {
               consoleLog(updated)
@@ -125,7 +187,7 @@ const update = async (req, res) => {
     if (err.name !== 'SequelizeValidationError') {
       validationError = err.message
     } else {
-      err.errors.map(er => {
+      err.errors.forEach(er => {
         validationError[er.path] = er.message
       })
     }
@@ -146,11 +208,39 @@ const update = async (req, res) => {
  * @return {responseType} status - responseDescription - responseContentType
  */
 const order = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},
     msg: ''
+  }
+
+  const postData = {}
+  postData.items = [...req.body]
+  // Apply validation here
+  const rules = {
+    items: 'required|array'
+  }
+
+  const messages = {
+    // custom message for based rules
+    required: 'You forgot the :attr field',
+    array: ':attr must be an array',
+    email: ':attr is not valid',
+    type: ':attr doesn\'t match any of allowed one',
+    // custom message for specific rule of attribute
+    'receiver.email': 'The receiver email address is not valid'
+  }
+
+  const v = Validator.make(postData, rules, messages)
+
+  if (v.fails()) {
+    const errors = v.getErrors()
+    responseObject.status = false
+    // display first validation error
+    responseObject.msg = (errors[Object.keys(errors)[0]])[0]
+
+    return res.status(200).json(responseObject)
   }
 
   try {
@@ -159,7 +249,7 @@ const order = async (req, res) => {
       const customerDishes = []
       // make $items unique regarding DishId property
       const $items = ([...req.body]).makeUnique('DishId')
-      $items.map(
+      $items.forEach(
         function (item, key) {
           elts.push({ ...item }.DishId)
         }
@@ -176,7 +266,7 @@ const order = async (req, res) => {
           throw new Error(error)
         })
       elts = []
-      $items.map(
+      $items.forEach(
         function (item, key) {
           const obj = { ...item } // { DishRef, quantity}
           const dish = dishIds.find(x => x.reference === obj.DishId)
@@ -184,7 +274,7 @@ const order = async (req, res) => {
           obj.DishId = dish.id
           obj.price = dish.price
           obj.OrderId = order.id
-          obj.over_cooked_level = req.body.over_cooked_level
+          obj.overCookedLevel = req.body.overCookedLevel
           elts.push(obj)
           const customerDishObj = { CustomerId: order.CustomerId, DishId: dish.id }
           customerDishes.push(customerDishObj)
@@ -192,7 +282,7 @@ const order = async (req, res) => {
       )
 
       // check if favorite_dish already exists
-      await DishOrder.bulkCreate(elts, { fields: ['OrderId', 'DishId', 'quantity', 'price', 'over_cooked_level'], transaction }).then(
+      await DishOrder.bulkCreate(elts, { fields: ['OrderId', 'DishId', 'quantity', 'price', 'overCookedLevel'], transaction }).then(
         (inserted) => {
           log.info(`DishOrder inserted, count: ${inserted.length}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
         }
@@ -212,7 +302,7 @@ const order = async (req, res) => {
     if (error.name !== 'SequelizeValidationError') {
       validationError = error.message
     } else {
-      error.errors.map(er => {
+      error.errors.forEach(er => {
         validationError[er.path] = er.message
       })
     }
@@ -228,26 +318,55 @@ const order = async (req, res) => {
  * @route POST /api/v1/manager/diagnose
  * @description Store new dishes ordered
  * @summary summary
- * @param {requestBodyType} request.body.server_name - the name of the server who handled order
- * @param {requestBodyType} request.body.over_cooked_level - the name of the server who handled order
+ * @param {requestBodyType} request.body.serverName - the name of the server who handled order
+ * @param {requestBodyType} request.body.overCookedLevel - the name of the server who handled order
  * @param {requestBodyType} request.body.month - the count previous months
  * @return {responseType} status - responseDescription - responseContentType
  */
 const serverOverCookedDishes = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},
     msg: ''
   }
-  const { server_name, over_cooked_level, month } = req.body
+  const { serverName, overCookedLevel, month } = req.body
+  const postData = { serverName, overCookedLevel, month }
+
+  // Apply validation here
+  const rules = {
+    serverName: 'required',
+    overCookedLevel: 'required|integer|min:1|max:10',
+    month: 'required|integer|min:1|max:12'
+  }
+
+  const messages = {
+    // custom message for based rules
+    required: 'You forgot the :attr field',
+    array: ':attr must be an array',
+    email: ':attr is not valid',
+    type: ':attr doesn\'t match any of allowed one',
+    // custom message for specific rule of attribute
+    'receiver.email': 'The receiver email address is not valid'
+  }
+
+  const v = Validator.make(postData, rules, messages)
+
+  if (v.fails()) {
+    const errors = v.getErrors()
+    responseObject.status = false
+    // display first validation error
+    responseObject.msg = (errors[Object.keys(errors)[0]])[0]
+
+    return res.status(200).json(responseObject)
+  }
 
   try {
     // find server_id regarding his name
-    const server = await Server.findOne({ where: { [Op.or]: [{ first_name: { [Op.like]: server_name } }, { last_name: { [Op.like]: server_name } }] } })
+    const server = await Server.findOne({ where: { [Op.or]: [{ first_name: { [Op.like]: serverName } }, { last_name: { [Op.like]: serverName } }] } })
       .then()
       .catch(error => {
-        log.info(`Server not found. ServerName:${server_name}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+        log.info(`Server not found. ServerName:${serverName}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
         throw new Error(error)
       })
     if (server === null) throw new Error('Server not found')
@@ -265,10 +384,10 @@ const serverOverCookedDishes = async (req, res) => {
     const currentMoment = moment(today.toDateString()).format('YYYY/MM/DD')
     const pastMoment = moment(today.setMonth(today.getMonth() - month)).format('YYYY/MM/DD')
 
-    // find over_cooked_level corresponding to waitress or waiter
+    // find overCookedLevel corresponding to waitress or waiter
     const managedOrdersId = orders.pluck('id')
     var dishesOrdered
-    await DishOrder.findAll({ field: ['id', 'quantity', 'price', 'over_cooked_level'], where: { OrderId: managedOrdersId, over_cooked_level: over_cooked_level, created_at: { [Op.between]: [pastMoment, currentMoment] } } }).then(
+    await DishOrder.findAll({ field: ['id', 'quantity', 'price', 'overCookedLevel'], where: { OrderId: managedOrdersId, overCookedLevel: overCookedLevel, created_at: { [Op.between]: [pastMoment, currentMoment] } } }).then(
       (dishes) => {
         dishesOrdered = dishes.pluck('dataValues')
         log.info(`Dishes ordered found, count: ${dishes.length}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
@@ -289,7 +408,7 @@ const serverOverCookedDishes = async (req, res) => {
     if (error.name !== 'SequelizeValidationError') {
       validationError = error.message
     } else {
-      error.errors.map(er => {
+      error.errors.forEach(er => {
         validationError[er.path] = er.message
       })
     }

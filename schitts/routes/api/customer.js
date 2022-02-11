@@ -1,7 +1,18 @@
-const CustomerController = require('../../controllers/CustomerController')
+const CustomerController = require('../../controllers/api/CustomerController')
 // const asyncTryCatchMiddleware = require('./root').asyncTryCatchMiddleware
 const router = require('express').Router()
-const prefix = 'customer'
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ *
+ * security:
+ *   - bearerAuth: []
+ */
 
 /**
  * @swagger
@@ -103,6 +114,8 @@ const prefix = 'customer'
  * /api/v1/customer?page=:
  *  get:
  *    summary: returns the list of all customers
+ *    security:
+ *      - bearerAuth: []
  *    tags: [Customer]
  *    parameters:
  *      - in: query
@@ -119,20 +132,61 @@ const prefix = 'customer'
  *            schema:
  *              $ref: '#/components/schemas/EndPointResponse'
  */
-router.get(`/${prefix}`, CustomerController.index)
+router.get('/', CustomerController.index)
 
 /**
  * @swagger
  * /api/v1/customer:
  *  post:
  *    summary: store a new customer
+ *    security:
+ *      - bearerAuth: []
  *    tags: [Customer]
  *    requestBody:
  *      required: true
  *      content:
- *        application/json:
+ *        application/x-www-form-urlencoded:
  *          schema:
  *            $ref: '#/components/schemas/Customer'
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              first_name:
+ *                type: string
+ *              last_name:
+ *                type: string
+ *              email:
+ *                type: string
+ *              phone_number:
+ *                type: string
+ *              address:
+ *                type: string
+ *              city:
+ *                type: string
+ *              favorite_food:
+ *                type: string
+ *              favorite_drink:
+ *                type: string
+ *              bill_split:
+ *                type: string
+ *              type:
+ *                type: string
+ *            required:
+ *              - email
+ *              - password
+ *          examples:
+ *              value:
+ *                first_name: David
+ *                last_name: DuChovni
+ *                email: david_duchovni@example.com
+ *                phone_number: +235 965854625
+ *                address: 15 rue du fevre
+ *                city: paris
+ *                favorite_food: 7dc36efb-0533-4d9f-b4fb-62f757c08b3a
+ *                favorite_drink: 7dc36efb-0533-4d9f-b4fb-62f757c08b3a
+ *                bill_split: 'PER GROUP'
+ *                type: 'IN TOWN'
  *    responses:
  *      200:
  *        description: the new customer
@@ -143,13 +197,15 @@ router.get(`/${prefix}`, CustomerController.index)
  *      500:
  *        description: Server Error
  */
-router.post(`/${prefix}`, CustomerController.store)
+router.post('/', CustomerController.store)
 
 /**
   * @swagger
   * /api/v1/customer/{reference}:
   *  get:
   *    summary: get the customer by id
+  *    security:
+  *      - bearerAuth: []
   *    tags: [Customer]
   *    parameters:
   *      - in: path
@@ -168,13 +224,15 @@ router.post(`/${prefix}`, CustomerController.store)
   *      404:
   *        description: The customer was not found
   */
-router.get(`/${prefix}/:reference`, CustomerController.edit)
+router.get('/:reference', CustomerController.edit)
 
 /**
   * @swagger
   * /api/v1/customer/{reference}:
   *  patch:
   *    summary: update the customer by reference
+  *    security:
+  *      - bearerAuth: []
   *    tags: [Customer]
   *    parameters:
   *      - in: path
@@ -186,6 +244,9 @@ router.get(`/${prefix}/:reference`, CustomerController.edit)
   *    requestBody:
   *      required: true
   *      content:
+  *        application/x-www-form-urlencoded:
+  *          schema:
+  *            $ref: '#/components/schemas/Customer'
   *        application/json:
   *          schema:
   *            $ref: '#/components/schemas/Customer'
@@ -199,17 +260,22 @@ router.get(`/${prefix}/:reference`, CustomerController.edit)
   *      404:
   *        description: The customer was not found
   */
-router.patch(`/${prefix}/:reference`, CustomerController.update)
+router.patch('/:reference', CustomerController.update)
 
 /**
  * @swagger
  * /api/v1/customer/findByName:
  *  post:
  *    summary: find a customer by name and type
+ *    security:
+ *      - bearerAuth: []
  *    tags: [Customer]
  *    requestBody:
  *      required: true
  *      content:
+ *        application/x-www-form-urlencoded:
+ *          schema:
+ *            $ref: '#/components/schemas/SearchCustomer'
  *        application/json:
  *          schema:
  *            $ref: '#/components/schemas/SearchCustomer'
@@ -223,13 +289,15 @@ router.patch(`/${prefix}/:reference`, CustomerController.update)
  *      500:
  *        description: Server Error
  */
-router.post(`/${prefix}/findByName`, CustomerController.findByName)
+router.post('/findByName', CustomerController.findByName)
 
 /**
   * @swagger
   * /api/v1/customer/{reference}:
   *  delete:
   *    summary: delete the customer by reference
+  *    security:
+  *      - bearerAuth: []
   *    tags: [Customer]
   *    parameters:
   *      - in: path
@@ -248,6 +316,6 @@ router.post(`/${prefix}/findByName`, CustomerController.findByName)
   *      404:
   *        description: The customer was not found
   */
-router.delete(`/${prefix}/:reference`, CustomerController.destroy)
+router.delete('/:reference', CustomerController.destroy)
 
 module.exports = router

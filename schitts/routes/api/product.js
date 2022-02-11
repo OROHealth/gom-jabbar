@@ -1,7 +1,6 @@
-const ProductController = require('../../controllers/ProductController')
+const ProductController = require('../../controllers/api/ProductController')
 // const asyncTryCatchMiddleware = require('./root').asyncTryCatchMiddleware
 const router = require('express').Router()
-let prefix = 'product'
 
 /**
  * @swagger
@@ -49,6 +48,8 @@ let prefix = 'product'
  * /api/v1/product?page=:
  *  get:
  *    summary: returns the list of all products
+ *    security:
+ *      - bearerAuth: []
  *    tags: [Product]
  *    parameters:
  *      - in: query
@@ -65,13 +66,15 @@ let prefix = 'product'
  *            schema:
  *              $ref: '#/components/schemas/EndPointResponse'
  */
-router.get(`/${prefix}`, ProductController.index)
+router.get('/', ProductController.index)
 
 /**
  * @swagger
  * /api/v1/product:
  *  post:
  *    summary: store a new product
+ *    security:
+ *      - bearerAuth: []
  *    tags: [Product]
  *    requestBody:
  *      required: true
@@ -89,13 +92,15 @@ router.get(`/${prefix}`, ProductController.index)
  *      500:
  *        description: Server Error
  */
-router.post(`/${prefix}`, ProductController.store)
+router.post('/', ProductController.store)
 
 /**
  * @swagger
  * /api/v1/product/{id}:
  *  get:
  *    summary: get the product by id
+ *    security:
+ *      - bearerAuth: []
  *    tags: [Product]
  *    parameters:
  *      - in: path
@@ -114,13 +119,15 @@ router.post(`/${prefix}`, ProductController.store)
  *      404:
  *        description: The product was not found
  */
-router.get(`/${prefix}/:product_id`, ProductController.edit)
+router.get('/:product_id', ProductController.edit)
 
 /**
  * @swagger
  * /api/v1/product/{id}:
  *  patch:
  *    summary: update the product by id
+ *    security:
+ *      - bearerAuth: []
  *    tags: [Product]
  *    parameters:
  *      - in: path
@@ -145,13 +152,15 @@ router.get(`/${prefix}/:product_id`, ProductController.edit)
  *      404:
  *        description: The product was not found
  */
-router.patch(`/${prefix}/:product_id`, ProductController.update)
+router.patch('/:product_id', ProductController.update)
 
 /**
  * @swagger
  * /api/v1/product/{id}:
  *  delete:
  *    summary: delete the product by id
+ *    security:
+ *      - bearerAuth: []
  *    tags: [Product]
  *    parameters:
  *      - in: path
@@ -170,13 +179,13 @@ router.patch(`/${prefix}/:product_id`, ProductController.update)
  *      404:
  *        description: The product was not found
  */
-router.delete(`/${prefix}/:product_id`, ProductController.destroy)
+router.delete('/:product_id', ProductController.destroy)
 
-/* router.route(`/${prefix}`)
+/* router.route('/')
   .get(ProductController.index)
   .post(ProductController.store)
 
-router.route(`/${prefix}/:product_id`)
+router.route('/:product_id')
   .get(ProductController.edit)
   .patch(ProductController.update)
   .delete(ProductController.destroy) */
@@ -189,6 +198,5 @@ router.param('product_id', (req, res, next, id) => {
   // we can pass any result by doing
   // req.item = value
 })
-// another model binding
-prefix = 'another model'
+
 module.exports = router

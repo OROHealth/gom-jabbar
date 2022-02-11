@@ -4,7 +4,8 @@
   "description": "Node Rest Api With Sequelize",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server",
+    "start": "node server",
+    "dev": "nodemon server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -13,19 +14,26 @@
   "author": "Nkodo Mbe Jean Yves",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
+    "express-handlebars": "^6.0.2",
     "get-current-line": "^6.6.0",
+    "hbs": "^4.2.0",
+    "jsonwebtoken": "^8.5.1",
     "log4js": "^6.3.0",
     "moment": "^2.29.1",
     "mysql2": "^2.3.3",
     "node-cron": "^3.0.0",
+    "node-fetch": "^2.6.0",
     "sequelize": "^6.12.0-alpha.1",
     "shelljs": "^0.8.4",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.3.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "Validator": "^1.1.4"
   },
   "devDependencies": {
     "@types/node": "^16.11.11",

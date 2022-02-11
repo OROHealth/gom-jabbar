@@ -4,7 +4,7 @@ const path = require('path')
 const fs = require('fs')
 const { isTrue } = require('../helpers/helpers')
 const log4js = require('../config/log4js')
-var log = log4js.getLogger('app') // enable logging
+const log = log4js.getLogger('app') // enable logging
 const pkg = require('get-current-line').default // get current script filename and line
 const dbSeed = require('../seed/dbSeeder')
 const sequelize = new Sequelize(
@@ -36,9 +36,8 @@ db.limit = 10 // pagination
 
 // instead of above [table structure codes] we do : under models folder we get all files and initialize model corresponding to each file
 fs.readdirSync(path.join(__dirname)).forEach(file => {
-  var model = null
   if (file !== '_index.js' && file !== '_connections.js') {
-    model = require(path.join(__dirname, file))(sequelize, DataTypes)
+    const model = require(path.join(__dirname, file))(sequelize, DataTypes)
     db[model.name] = model
   }
 })
@@ -58,5 +57,12 @@ if (isTrue(process.env.APP_SYNC)) {
       throw (err)
     })
 }
-
+// const RawQuery = require('../helpers/rawQueries')
+// db.RawQuery = new RawQuery(db)
+/* db.RAWSELECT = async (sql) => {
+  return await db.sequelize.query(sql, {
+    replacements: this.params,
+    type: db.sequelize.QueryTypes.SELECT
+  })
+} */
 module.exports = db

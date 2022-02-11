@@ -1,12 +1,13 @@
 // autoload index.js
-const db = require('../models/_index')
-const { consoleLog } = require('../helpers/helpers') // output into console regarding .env Log flag
-var isNumber = require('../helpers/helpers').isNumber
-const log4js = require('../config/log4js')
+const db = require('../../models/_index')
+const { consoleLog } = require('../../helpers/helpers') // output into console regarding .env Log flag
+var isNumber = require('../../helpers/helpers').isNumber
+const log4js = require('../../config/log4js')
 var log = log4js.getLogger('app') // enable logging
 const pkg = require('get-current-line').default // get current script filename and line
 var path = require('path')
 var validationError = {}
+const Validator = require('Validator')
 // create main Model
 const Dish = db.Dish
 // Methods
@@ -17,7 +18,7 @@ const Dish = db.Dish
  * @return {array} status - responseDescription - responseContentType
  */
 const index = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},
@@ -47,7 +48,7 @@ const index = async (req, res) => {
  * @return {responseType} status - responseDescription - responseContentType
  */
 const store = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},
@@ -56,17 +57,45 @@ const store = async (req, res) => {
 
   try {
     await db.sequelize.transaction(async (transaction) => {
-      const info = {
+      const postData = {
         name: req.body.name,
         description: req.body.description,
         price: req.body.price,
-        over_cooked_level: req.body.over_cooked_level,
         conservation_time: req.body.conservation_time,
         last_preparation_date: req.body.last_preparation_date,
         active: req.body.active
       }
 
-      await Dish.create(info, { fields: ['name', 'reference', 'description', 'price', 'last_preparation_date', 'conservation_time', 'type', 'active'], transaction }).then(newly => {
+      // Apply validation here
+      const rules = {
+        name: 'required',
+        description: 'required',
+        price: 'required|numeric',
+        conservation_time: 'required|integer',
+        last_preparation_date: 'required|date',
+        active: 'required|digit|min:0|max:1'
+      }
+
+      const messages = {
+        // custom message for based rules
+        required: 'You forgot the :attr field',
+        email: ':attr is not valid',
+        // custom message for specific rule of attribute
+        'receiver.email': 'The receiver email address is not valid'
+      }
+
+      const v = Validator.make(postData, rules, messages)
+
+      if (v.fails()) {
+        const errors = v.getErrors()
+        responseObject.status = false
+        // display first validation error
+        responseObject.msg = (errors[Object.keys(errors)[0]])[0]
+
+        return res.status(200).json(responseObject)
+      }
+
+      await Dish.create(postData, { fields: ['name', 'reference', 'description', 'price', 'last_preparation_date', 'conservation_time', 'type', 'active'], transaction }).then(newly => {
         responseObject.data = newly.dataValues
         consoleLog(responseObject.data)
         log.info(`New dish created. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
@@ -80,7 +109,7 @@ const store = async (req, res) => {
     if (error.name !== 'SequelizeValidationError') {
       validationError = error.message
     } else {
-      error.errors.map(er => {
+      error.errors.forEach(er => {
         validationError[er.path] = er.message
       })
     }
@@ -98,7 +127,7 @@ const store = async (req, res) => {
  *  @route GET /api/v1/dish/:customer_id
  */
 const edit = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},
@@ -133,18 +162,49 @@ const edit = async (req, res) => {
  * @param {string} reference - the dish's reference
  */
 const update = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},
     msg: ''
+  }
+  const postData = req.body
+  // Apply validation here
+  const rules = {
+    name: 'required',
+    description: 'required',
+    price: 'required|numeric',
+    conservation_time: 'required|integer',
+    last_preparation_date: 'required|date',
+    active: 'required|digit|min:0|max:1',
+    type: 'required|in:FOOD,DRINK'
+  }
+
+  const messages = {
+    // custom message for based rules
+    required: 'You forgot the :attr field',
+    email: ':attr is not valid',
+    'type.in': 'The :attr  must be one of the following types: :values',
+    // custom message for specific rule of attribute
+    'receiver.email': 'The receiver email address is not valid'
+  }
+
+  const v = Validator.make(postData, rules, messages)
+
+  if (v.fails()) {
+    const errors = v.getErrors()
+    responseObject.status = false
+    // display first validation error
+    responseObject.msg = (errors[Object.keys(errors)[0]])[0]
+
+    return res.status(200).json(responseObject)
   }
 
   try {
     await db.sequelize.transaction(
       async (transaction) => {
         const reference = req.params.reference
-        await Dish.update(req.body, { where: { reference: reference }, fields: ['name', 'description', 'price', 'over_cooked_level', 'last_preparation_date', 'conservation_time', 'type', 'active'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
+        await Dish.update(postData, { where: { reference: reference }, fields: ['name', 'description', 'price', 'last_preparation_date', 'conservation_time', 'type', 'active'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
           .then(
             (updated) => {
               consoleLog(updated)
@@ -160,7 +220,7 @@ const update = async (req, res) => {
     if (err.name !== 'SequelizeValidationError') {
       validationError = err.message
     } else {
-      err.errors.map(er => {
+      err.errors.forEach(er => {
         validationError[er.path] = er.message
       })
     }
@@ -178,7 +238,7 @@ const update = async (req, res) => {
  *  @route delete /api/v1/dish/:reference
  */
 const destroy = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},

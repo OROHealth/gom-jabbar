@@ -45,4 +45,7 @@ const isIterable = function (obj) {
   return typeof obj[Symbol.iterator] === 'function' && Array.isArray(obj)
 }
 
-module.exports = { consoleLog, isTrue, generateUuidV4, isUUID, randomBytes64, isNumber, isIterable }
+// check if an object has no menber, example {}
+const isEmptyObject = (obj) => Object.entries(obj).length === 0
+
+module.exports = { consoleLog, isTrue, generateUuidV4, isUUID, randomBytes64, isNumber, isIterable, isEmptyObject }

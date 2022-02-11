@@ -1,7 +1,6 @@
-const OrderController = require('../../controllers/OrderController')
+const OrderController = require('../../controllers/api/OrderController')
 // const asyncTryCatchMiddleware = require('./root').asyncTryCatchMiddleware
 const router = require('express').Router()
-const prefix = 'order'
 
 /**
  * @swagger
@@ -67,6 +66,8 @@ const prefix = 'order'
  * /api/v1/order?page=:
  *  get:
  *    summary: returns the list of all orders
+ *    security:
+ *      - bearerAuth: []
  *    tags: [Order]
  *    parameters:
  *      - in: query
@@ -83,13 +84,15 @@ const prefix = 'order'
  *            schema:
  *              $ref: '#/components/schemas/EndPointResponse'
  */
-router.get(`/${prefix}`, OrderController.index)
+router.get('/', OrderController.index)
 
 /**
  * @swagger
  * /api/v1/order:
  *  post:
  *    summary: store a new order
+ *    security:
+ *      - bearerAuth: []
  *    tags: [Order]
  *    requestBody:
  *      required: true
@@ -107,13 +110,15 @@ router.get(`/${prefix}`, OrderController.index)
  *      500:
  *        description: Server Error
  */
-router.post(`/${prefix}`, OrderController.store)
+router.post('/', OrderController.store)
 
 /**
   * @swagger
   * /api/v1/order/{reference}:
   *  get:
   *    summary: get the order by reference
+  *    security:
+  *      - bearerAuth: []
   *    tags: [Order]
   *    parameters:
   *      - in: path
@@ -132,13 +137,15 @@ router.post(`/${prefix}`, OrderController.store)
   *      404:
   *        description: The order was not found
   */
-router.get(`/${prefix}/:reference`, OrderController.edit)
+router.get('/:reference', OrderController.edit)
 
 /**
   * @swagger
   * /api/v1/order/{reference}:
   *  patch:
   *    summary: update the order by reference
+  *    security:
+  *      - bearerAuth: []
   *    tags: [Order]
   *    parameters:
   *      - in: path
@@ -163,13 +170,15 @@ router.get(`/${prefix}/:reference`, OrderController.edit)
   *      404:
   *        description: The order was not found
   */
-router.patch(`/${prefix}/:reference`, OrderController.update)
+router.patch('/:reference', OrderController.update)
 
 /**
   * @swagger
   * /api/v1/order/{reference}:
   *  delete:
   *    summary: delete the order by reference
+  *    security:
+  *      - bearerAuth: []
   *    tags: [Order]
   *    parameters:
   *      - in: path
@@ -188,6 +197,6 @@ router.patch(`/${prefix}/:reference`, OrderController.update)
   *      404:
   *        description: The order was not found
   */
-router.delete(`/${prefix}/:reference`, OrderController.destroy)
+router.delete('/:reference', OrderController.destroy)
 
 module.exports = router

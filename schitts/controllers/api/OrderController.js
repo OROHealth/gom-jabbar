@@ -1,12 +1,13 @@
 // autoload index.js
-const db = require('../models/_index')
-const { consoleLog, isIterable } = require('../helpers/helpers') // output into console regarding .env Log flag
-var isNumber = require('../helpers/helpers').isNumber
-const log4js = require('../config/log4js')
-var log = log4js.getLogger('app') // enable logging
+const db = require('../../models/_index')
+const { consoleLog, isIterable } = require('../../helpers/helpers') // output into console regarding .env Log flag
+const isNumber = require('../../helpers/helpers').isNumber
+const log4js = require('../../config/log4js')
+const log = log4js.getLogger('app') // enable logging
 const pkg = require('get-current-line').default // get current script filename and line
-var path = require('path')
+const path = require('path')
 var validationError = {}
+const Validator = require('Validator')
 // create main Model
 const Order = db.Order
 const Customer = db.Customer
@@ -18,7 +19,7 @@ const Customer = db.Customer
  * @return {array} status - responseDescription - responseContentType
  */
 const index = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},
@@ -48,38 +49,69 @@ const index = async (req, res) => {
  * @return {responseType} status - responseDescription - responseContentType
  */
 const store = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},
     msg: ''
   }
 
+  const postData = {
+    order_date: req.body.order_date,
+    CustomerId: req.body.CustomerId,
+    tone: req.body.tone,
+    customers: JSON.stringify(req.body.customers),
+    feedback: req.body.feedback,
+    status: req.body.status,
+    party_size: isIterable(req.body.customers) ? req.body.customers.length : 0
+  }
+
+  // Apply validation here
+  const rules = {
+    order_date: 'required|date',
+    CustomerId: 'required',
+    tone: 'required|in:angry,happy,overhelmed,pregnant,moody,bored,excited',
+    customers: 'required|array',
+    feedback: 'required',
+    status: 'required|digits_between:0,1',
+    party_size: 'required|numeric'
+  }
+
+  const messages = {
+    // custom message for based rules
+    required: 'You forgot the :attr field',
+    email: ':attr is not valid',
+    'tone.in': 'The :attr must be one of the following types: :values',
+    // custom message for specific rule of attribute
+    'receiver.email': 'The receiver email address is not valid'
+  }
+
+  const v = Validator.make(postData, rules, messages)
+
+  if (v.fails()) {
+    const errors = v.getErrors()
+    responseObject.status = false
+    // display first validation error
+    responseObject.msg = (errors[Object.keys(errors)[0]])[0]
+
+    return res.status(200).json(responseObject)
+  }
+
   try {
     await db.sequelize.transaction(async (transaction) => {
-      const info = {
-        order_date: req.body.order_date,
-        CustomerId: req.body.CustomerId,
-        tone: req.body.tone,
-        customers: JSON.stringify(req.body.customers),
-        feedback: req.body.feedback,
-        status: req.body.status,
-        party_size: isIterable(req.body.customers) ? req.body.customers.length : 0
-      }
-
       // check if favorite_dish already exists
-      await Customer.findOne({ where: { reference: info.CustomerId } }).then(
+      await Customer.findOne({ where: { reference: postData.CustomerId } }).then(
         (found) => {
           if (found === null) {
             throw new Error('customer not found')
           }
-          info.CustomerId = found.id
+          postData.CustomerId = found.id
         }
       ).catch(error => {
         throw new Error(error)
       })
 
-      await Order.create(info, { fields: ['order_date', 'reference', 'tone', 'CustomerId', 'customers', 'party_size'], transaction }).then(newly => {
+      await Order.create(postData, { fields: ['order_date', 'reference', 'tone', 'CustomerId', 'customers', 'party_size'], transaction }).then(newly => {
         responseObject.data = newly.dataValues
         consoleLog(responseObject.data)
         log.info(`New order created. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
@@ -93,7 +125,7 @@ const store = async (req, res) => {
     if (error.name !== 'SequelizeValidationError') {
       validationError = error.message
     } else {
-      error.errors.map(er => {
+      error.errors.forEach(er => {
         validationError[er.path] = er.message
       })
     }
@@ -111,7 +143,7 @@ const store = async (req, res) => {
  *  @route GET /api/v1/order/:customer_id
  */
 const edit = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},
@@ -146,11 +178,51 @@ const edit = async (req, res) => {
  * @param {string} reference - the order's reference
  */
 const update = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},
     msg: ''
+  }
+
+  const postData = {
+    order_date: req.body.order_date,
+    CustomerId: req.body.CustomerId,
+    tone: req.body.tone,
+    customers: JSON.stringify(req.body.customers),
+    feedback: req.body.feedback,
+    status: req.body.status,
+    party_size: isIterable(req.body.customers) ? req.body.customers.length : 0
+  }
+
+  // Apply validation here
+  const rules = {
+    order_date: 'required|date',
+    CustomerId: 'required',
+    tone: 'required|in:angry,happy,overhelmed,pregnant,moody,bored,excited',
+    customers: 'required|array',
+    feedback: 'required',
+    status: 'required|digits_between:0,1'
+  }
+
+  const messages = {
+    // custom message for based rules
+    required: 'You forgot the :attr field',
+    email: ':attr is not valid',
+    'tone.in': 'The :attr  must be one of the following types: :values',
+    // custom message for specific rule of attribute
+    'receiver.email': 'The receiver email address is not valid'
+  }
+
+  const v = Validator.make(postData, rules, messages)
+
+  if (v.fails()) {
+    const errors = v.getErrors()
+    responseObject.status = false
+    // display first validation error
+    responseObject.msg = (errors[Object.keys(errors)[0]])[0]
+
+    return res.status(200).json(responseObject)
   }
 
   try {
@@ -161,7 +233,7 @@ const update = async (req, res) => {
           if (found === null) {
             throw new Error('customer not found')
           }
-          req.body.CustomerId = found.id
+          postData.CustomerId = found.id
         }
       ).catch(error => {
         throw new Error(error)
@@ -171,7 +243,7 @@ const update = async (req, res) => {
     await db.sequelize.transaction(
       async (transaction) => {
         const reference = req.params.reference
-        await Order.update(req.body, { where: { reference: reference }, fields: ['order_date', 'tone', 'CustomerId', 'feedback', 'status', 'customers'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
+        await Order.update(postData, { where: { reference: reference }, fields: ['order_date', 'tone', 'CustomerId', 'feedback', 'status', 'customers'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
           .then(
             (updated) => {
               consoleLog(updated)
@@ -187,7 +259,7 @@ const update = async (req, res) => {
     if (err.name !== 'SequelizeValidationError') {
       validationError = err.message
     } else {
-      err.errors.map(er => {
+      err.errors.forEach(er => {
         validationError[er.path] = er.message
       })
     }
@@ -205,7 +277,7 @@ const update = async (req, res) => {
  *  @route delete /api/v1/order/:reference
  */
 const destroy = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},

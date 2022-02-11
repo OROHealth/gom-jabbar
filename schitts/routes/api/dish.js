@@ -1,7 +1,6 @@
-const DishController = require('../../controllers/DishController')
+const DishController = require('../../controllers/api/DishController')
 // const asyncTryCatchMiddleware = require('./root').asyncTryCatchMiddleware
 const router = require('express').Router()
-const prefix = 'dish'
 
 /**
  * @swagger
@@ -63,6 +62,8 @@ const prefix = 'dish'
  * /api/v1/dish?page=:
  *  get:
  *    summary: returns the dishes's list
+ *    security:
+ *      - bearerAuth: []
  *    tags: [Dish]
  *    parameters:
  *      - in: query
@@ -79,17 +80,22 @@ const prefix = 'dish'
  *            schema:
  *              $ref: '#/components/schemas/EndPointResponse'
  */
-router.get(`/${prefix}`, DishController.index)
+router.get('/', DishController.index)
 
 /**
  * @swagger
  * /api/v1/dish:
  *  post:
  *    summary: store a new dish
+ *    security:
+ *      - bearerAuth: []
  *    tags: [Dish]
  *    requestBody:
  *      required: true
  *      content:
+ *        application/x-www-form-urlencoded:
+ *          schema:
+ *            $ref: '#/components/schemas/Dish'
  *        application/json:
  *          schema:
  *            $ref: '#/components/schemas/Dish'
@@ -103,13 +109,15 @@ router.get(`/${prefix}`, DishController.index)
  *      500:
  *        description: Server Error
  */
-router.post(`/${prefix}`, DishController.store)
+router.post('/', DishController.store)
 
 /**
   * @swagger
   * /api/v1/dish/{reference}:
   *  get:
   *    summary: get the dish by reference
+  *    security:
+  *      - bearerAuth: []
   *    tags: [Dish]
   *    parameters:
   *      - in: path
@@ -128,13 +136,15 @@ router.post(`/${prefix}`, DishController.store)
   *      404:
   *        description: The dish was not found
   */
-router.get(`/${prefix}/:reference`, DishController.edit)
+router.get('/:reference', DishController.edit)
 
 /**
   * @swagger
   * /api/v1/dish/{reference}:
   *  patch:
   *    summary: update the dish by reference
+  *    security:
+  *      - bearerAuth: []
   *    tags: [Dish]
   *    parameters:
   *      - in: path
@@ -146,6 +156,9 @@ router.get(`/${prefix}/:reference`, DishController.edit)
   *    requestBody:
   *      required: true
   *      content:
+  *        application/x-www-form-urlencoded:
+  *          schema:
+  *            $ref: '#/components/schemas/Dish'
   *        application/json:
   *          schema:
   *            $ref: '#/components/schemas/Dish'
@@ -159,13 +172,15 @@ router.get(`/${prefix}/:reference`, DishController.edit)
   *      404:
   *        description: The dish was not found
   */
-router.patch(`/${prefix}/:reference`, DishController.update)
+router.patch('/:reference', DishController.update)
 
 /**
   * @swagger
   * /api/v1/dish/{reference}:
   *  delete:
   *    summary: delete the dish by reference
+  *    security:
+  *      - bearerAuth: []
   *    tags: [Dish]
   *    parameters:
   *      - in: path
@@ -184,6 +199,6 @@ router.patch(`/${prefix}/:reference`, DishController.update)
   *      404:
   *        description: The dish was not found
   */
-router.delete(`/${prefix}/:reference`, DishController.destroy)
+router.delete('/:reference', DishController.destroy)
 
 module.exports = router

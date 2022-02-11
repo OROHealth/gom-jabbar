@@ -1,7 +1,7 @@
 module.exports = {
   development: {
     HOST: process.env.DB_HOST || '127.0.0.1',
-    USER: process.env.DB_USERNAME || 'root',
+    USER: process.env.DB_USERNAME || 'ezdoc_mc_a',
     PASSWORD: process.env.DB_PASSWORD || 'root',
     DATABASE: process.env.DB_DATABASE || 'schitts_db',
     PORT: process.env.DB_PORT || '3306',

@@ -1,13 +1,14 @@
 // autoload index.js
-const db = require('../models/_index')
-var consoleLog = require('../helpers/helpers').consoleLog // output into console regarding .env Log flag
-var isNumber = require('../helpers/helpers').isNumber
+const db = require('../../models/_index')
+var consoleLog = require('../../helpers/helpers').consoleLog // output into console regarding .env Log flag
+var isNumber = require('../../helpers/helpers').isNumber
 const { Op } = require('sequelize')
-const log4js = require('../config/log4js')
+const log4js = require('../../config/log4js')
 var log = log4js.getLogger('app') // enable logging
 const pkg = require('get-current-line').default // get current script filename and line
 var path = require('path')
 var validationError = {}
+const Validator = require('Validator')
 // create main Model
 const Customer = db.Customer
 const Dish = db.Dish
@@ -21,7 +22,7 @@ const Booking = db.Booking
  * @return {array} status - responseDescription - responseContentType
  */
 const index = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},
@@ -52,7 +53,7 @@ const index = async (req, res) => {
  * @return {responseType} status - responseDescription - responseContentType
  */
 const store = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},
@@ -64,7 +65,6 @@ const store = async (req, res) => {
       const info = {
         first_name: req.body.first_name,
         last_name: req.body.last_name,
-        reference: req.body.reference,
         email: req.body.email,
         phone_number: req.body.phone_number,
         address: req.body.address,
@@ -73,6 +73,41 @@ const store = async (req, res) => {
         favorite_drink: req.body.favorite_drink,
         type: req.body.type,
         bill_split: req.body.bill_split
+      }
+
+      // Apply Validation here
+      const rules = {
+        email: 'required|email', // can be a piped string or an array of strings
+        first_name: 'required',
+        last_name: 'required',
+        phone_number: 'required',
+        address: 'required',
+        city: 'required',
+        favorite_food: 'required',
+        favorite_drink: 'required',
+        type: 'required|in:OUT OF TOWN,IN TOWN,PART OF THE ROSE FAMILY',
+        bill_split: 'required|in:PER GROUP,PER PERSON,WITH RATIOS'
+      }
+
+      const messages = {
+        // custom message for based rules
+        required: 'You forgot the :attr field',
+        email: ':attr is not valid',
+        in: ':attr doesn\'t match any of allowed one',
+        'type.in': 'The :attr  must be one of the following types: :values',
+        'bill_split.in': 'The :attr  must be one of the following types: :values'
+      }
+
+      const v = Validator.make(info, rules, messages)
+
+      if (v.fails()) {
+        const errors = v.getErrors()
+        console.log(errors)
+        responseObject.status = false
+        // display first validation error
+        responseObject.msg = (errors[Object.keys(errors)[0]])[0]
+
+        return res.status(200).json(responseObject)
       }
 
       // check if favorite_dish already exists
@@ -100,7 +135,7 @@ const store = async (req, res) => {
     if (error.name !== 'SequelizeValidationError') {
       validationError = error.message
     } else {
-      error.errors.map(er => {
+      error.errors.forEach(er => {
         validationError[er.path] = er.message
       })
     }
@@ -118,7 +153,7 @@ const store = async (req, res) => {
  *  @route GET /api/v1/customer/:customer_id
  */
 const edit = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},
@@ -154,11 +189,45 @@ const edit = async (req, res) => {
  * @param {string} phone_number - the customer's phone number
  */
 const update = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},
     msg: ''
+  }
+
+  // Apply validation here
+  // Apply Validation here
+  const rules = {
+    first_name: 'required',
+    last_name: 'required',
+    phone_number: 'required',
+    address: 'required',
+    city: 'required',
+    favorite_food: 'required',
+    favorite_drink: 'required',
+    type: 'required|in:OUT OF TOWN,IN TOWN,PART OF THE ROSE FAMILY',
+    bill_split: 'required|in:PER GROUP,PER PERSON,WITH RATIOS'
+  }
+
+  const messages = {
+    // custom message for based rules
+    required: 'You forgot the :attr field',
+    email: ':attr is not valid',
+    'type.in': 'The :attr  must be one of the following types: :values',
+    'bill_split.in': 'The :attr  must be one of the following types: :values'
+  }
+
+  const v = Validator.make(req.body, rules, messages)
+
+  if (v.fails()) {
+    const errors = v.getErrors()
+    console.log(errors)
+    responseObject.status = false
+    // display first validation error
+    responseObject.msg = (errors[Object.keys(errors)[0]])[0]
+
+    return res.status(200).json(responseObject)
   }
 
   try {
@@ -208,7 +277,7 @@ const update = async (req, res) => {
     if (err.name !== 'SequelizeValidationError') {
       validationError = err.message
     } else {
-      err.errors.map(er => {
+      err.errors.forEach(er => {
         validationError[er.path] = er.message
       })
     }
@@ -226,7 +295,7 @@ const update = async (req, res) => {
  *  @route delete /api/v1/product/:product_id
  */
 const destroy = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},
@@ -256,7 +325,7 @@ const destroy = async (req, res) => {
  *  @param {string} type - the customer's type
  */
 const findByName = async (req, res) => {
-  var responseObject = {
+  const responseObject = {
     status: true,
     data: null,
     error: {},
@@ -264,14 +333,12 @@ const findByName = async (req, res) => {
   }
 
   try {
+    const RawQuery = require('../../helpers/rawQuery')
     const { fullname, type } = req.body
     const request = 'SELECT first_name, last_name FROM customers WHERE type = :type and CONCAT(first_name, last_name) like :fullname or CONCAT(last_name, first_name) like :fullname'
-    await db.sequelize.query(request, {
-      replacements: { type: type, fullname: `%${fullname}%` },
-      model: Customer,
-      mapToModel: true,
-      type: db.sequelize.QueryTypes.SELECT
-    }).then(
+
+    const raw = new RawQuery(request)
+    raw.addParameters({ type: type, fullname: `%${fullname}%` }).runSelectStatement().then(
       (customers) => {
         if (customers.length === 0) {
           responseObject.msg = 'customers not found'

@@ -1,21 +1,29 @@
 // load .env variables
 require('dotenv').config({ path: '.env' })
-require('./schitts/core/utils')
+require('./src/core/utils')
 const express = require('express')
 const cors = require('cors')
 const app = express()
 const port = process.env.PORT || 8080
-const root = require('./schitts/routes/root')
+const root = require('./src/routes/root')
+const web = require('./src/routes/web')
 const path = require('path')
 const pkg = require('get-current-line').default // get current script filename and line
-const log4js = require('./schitts/config/log4js')
-var log = log4js.getLogger('app') // enable logging
+const log4js = require('./src/config/log4js')
+const log = log4js.getLogger('app') // enable logging
 const swaggerUI = require('swagger-ui-express')
 const swaggerJsDoc = require('swagger-jsdoc')
-const logErrorMiddleware = require('./schitts/middlewares/logErrorMiddleware')
+const logErrorMiddleware = require('./src/middlewares/logErrorMiddleware')
 const cron = require('node-cron')
 const shell = require('shelljs')
-const { isTrue } = require('./schitts/helpers/helpers')
+const { isTrue } = require('./src/helpers/helpers')
+const os = require('os')
+// const { default: cluster } = require('cluster')
+const cluster = require('cluster')
+const numCpu = os.cpus().length
+// handlebars
+const hbs = require('express-handlebars')
+const cookieParser = require('cookie-parser')
 // import utils
 const whiteList = [`${process.env.APP_URL}:${port}`, `http://127.0.0.1:${port}`, 'http://www.yoursite.com']
 const swaggerOptions = {
@@ -37,13 +45,13 @@ const swaggerOptions = {
     ]
   },
   // api definition
-  apis: ['./schitts/routes/api/*.js']
+  apis: ['./src/routes/api/*.js']
 }
 
 const specs = swaggerJsDoc(swaggerOptions)
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs))
 
-var corsOptions = {
+const corsOptions = {
   origin: (_origin, callback) => { // _origin is the allowed client address
     if (whiteList.indexOf(_origin) !== -1 || !_origin) {
       callback(null, true)
@@ -59,8 +67,8 @@ if (isTrue(process.env.APP_BACKUP)) {
   cron.schedule('* */24 * * *', function () {
     console.log('---------------------')
     console.log('Running Database Backup Cron Job every day at midnight')
-    const command = 'node schitts/recovery/backup.js'
-    // const command = 'node schitts/recovery/restore.js'
+    const command = 'node src/recovery/backup.js'
+    // const command = 'node src/recovery/restore.js'
     if (shell.exec(command).code !== 0) {
       shell.exit(1)
     } else {
@@ -73,12 +81,26 @@ if (isTrue(process.env.APP_BACKUP)) {
 app.use(cors(corsOptions))
 
 // built-in middleware to handle urlencoded data (x-www-form-urlencoded)
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: false }))
 // built-in middleware to handle json data (x-www-form-urlencoded)
 app.use(express.json())
+// Middleware for cookie
+app.use(cookieParser())
+// Set views directory and views engine as Handlebars using,
+app.set('views', path.join(__dirname, './src/views'))
+app.use('/asset', express.static(path.join(__dirname, './public'))) // access file using relative path href="/asset/your-doc-under-public-folder"
+
+app.engine('handlebars', hbs.engine({
+  extname: 'hbs',
+  defaultLayout: 'main',
+  layoutsDir: path.join(__dirname, './src/views/layouts/'),
+  partialsDir: path.join(__dirname, './src/views/partials/')
+}))
+app.set('view engine', 'hbs')
 
 // Routing Handler
 app.use('/api', root)
+app.use('/web', web)
 /* Middleware */
 
 process.on('uncaughtException', (err) => {
@@ -119,6 +141,26 @@ app.use((error, req, res, next) => {
   })
 })
 
-app.listen(port, () => {
-  console.log('server running at port ' + port)
-})
+// scale App
+if (isTrue(process.env.APP_SCALE)) {
+  if (cluster.isPrimary) {
+    // fork worker
+    console.log(`Primary ${process.pid} is running`)
+    for (let index = 0; index < numCpu; index++) {
+      cluster.fork()
+    }
+
+    cluster.on('exit', (worker, code, signal) => {
+      console.log(`worker ${worker.process.pid} died`)
+      cluster.fork()
+    })
+  } else {
+    app.listen(port, () => {
+      console.log(`Worker ${process.pid}. Server @ http://localhost:${port}`)
+    })
+  }
+} else {
+  app.listen(port, () => {
+    console.log(`Worker ${process.pid}. Server @ http://localhost:${port}`)
+  })
+}

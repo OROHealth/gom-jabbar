@@ -3,7 +3,7 @@
       "out": { "type": "stdout" },
       "app": {
         "type": "file",
-        "filename": "schitts/log/app.log",
+        "filename": "src/log/app.log",
         "maxLogSize": 10485760,
         "numBackups": 3
       }
