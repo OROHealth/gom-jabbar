@@ -10,3 +10,7 @@ a nodeJS api template using sequelize, mysql or MongoDB
 
 # start server "npm start"
 # Entry Point "server.js
+
+# create a user
+# generate your token
+# check any endPoints
