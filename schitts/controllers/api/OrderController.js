@@ -73,7 +73,7 @@ const store = async (req, res) => {
     tone: 'required|in:angry,happy,overhelmed,pregnant,moody,bored,excited',
     customers: 'required|array',
     feedback: 'required',
-    status: 'required|digits_between:0,1',
+    status: 'required|in:PAID,UNPAID,REJECTED,ACCEPTED',
     party_size: 'required|numeric'
   }
 
@@ -202,7 +202,7 @@ const update = async (req, res) => {
     tone: 'required|in:angry,happy,overhelmed,pregnant,moody,bored,excited',
     customers: 'required|array',
     feedback: 'required',
-    status: 'required|digits_between:0,1'
+    status: 'required|in:PAID,UNPAID,REJECTED,ACCEPTED'
   }
 
   const messages = {

@@ -1,22 +1,22 @@
 // load .env variables
 require('dotenv').config({ path: '.env' })
-require('./src/core/utils')
+require('./schitts/core/utils')
 const express = require('express')
 const cors = require('cors')
 const app = express()
 const port = process.env.PORT || 8080
-const root = require('./src/routes/root')
-const web = require('./src/routes/web')
+const root = require('./schitts/routes/root')
+const web = require('./schitts/routes/web')
 const path = require('path')
 const pkg = require('get-current-line').default // get current script filename and line
-const log4js = require('./src/config/log4js')
+const log4js = require('./schitts/config/log4js')
 const log = log4js.getLogger('app') // enable logging
 const swaggerUI = require('swagger-ui-express')
 const swaggerJsDoc = require('swagger-jsdoc')
-const logErrorMiddleware = require('./src/middlewares/logErrorMiddleware')
+const logErrorMiddleware = require('./schitts/middlewares/logErrorMiddleware')
 const cron = require('node-cron')
 const shell = require('shelljs')
-const { isTrue } = require('./src/helpers/helpers')
+const { isTrue } = require('./schitts/helpers/helpers')
 const os = require('os')
 // const { default: cluster } = require('cluster')
 const cluster = require('cluster')
@@ -45,7 +45,7 @@ const swaggerOptions = {
     ]
   },
   // api definition
-  apis: ['./src/routes/api/*.js']
+  apis: ['./schitts/routes/api/*.js']
 }
 
 const specs = swaggerJsDoc(swaggerOptions)
@@ -67,8 +67,8 @@ if (isTrue(process.env.APP_BACKUP)) {
   cron.schedule('* */24 * * *', function () {
     console.log('---------------------')
     console.log('Running Database Backup Cron Job every day at midnight')
-    const command = 'node src/recovery/backup.js'
-    // const command = 'node src/recovery/restore.js'
+    const command = 'node schitts/recovery/backup.js'
+    // const command = 'node schitts/recovery/restore.js'
     if (shell.exec(command).code !== 0) {
       shell.exit(1)
     } else {
@@ -87,14 +87,14 @@ app.use(express.json())
 // Middleware for cookie
 app.use(cookieParser())
 // Set views directory and views engine as Handlebars using,
-app.set('views', path.join(__dirname, './src/views'))
+app.set('views', path.join(__dirname, './schitts/views'))
 app.use('/asset', express.static(path.join(__dirname, './public'))) // access file using relative path href="/asset/your-doc-under-public-folder"
 
 app.engine('handlebars', hbs.engine({
   extname: 'hbs',
   defaultLayout: 'main',
-  layoutsDir: path.join(__dirname, './src/views/layouts/'),
-  partialsDir: path.join(__dirname, './src/views/partials/')
+  layoutsDir: path.join(__dirname, './schitts/views/layouts/'),
+  partialsDir: path.join(__dirname, './schitts/views/partials/')
 }))
 app.set('view engine', 'hbs')
 
