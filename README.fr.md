@@ -2,7 +2,7 @@
 
 Le lieu de démonstration des prouesses techniques de nos candidats.
 
-> If you need the english version, [you can find it here](README,md)
+> If you need the english version, [you can find it here](README.md)
 
 
 

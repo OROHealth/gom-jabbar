@@ -1,5 +1,5 @@
 # Amaze Us
-> Si vous avez besoin de la version française, [elle est ici!](README.fr,md)
+> Si vous avez besoin de la version française, [elle est ici!](README.fr.md)
 
 Hello candidate!
 
