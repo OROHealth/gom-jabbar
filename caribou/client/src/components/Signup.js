@@ -16,7 +16,6 @@ const Signup=({Login,error})=>{
             setSignup(false);
         }
     }
-
     const handleLogIn=(e)=>{
         e.preventDefault();
         fetch(`/users/${ID.email}/${ID.password}`)
@@ -70,7 +69,7 @@ const Signup=({Login,error})=>{
                 {(errorFlag.flag==true)&&<ErrorBox> {errorFlag.message}</ErrorBox>}
                 <StyledButton >Log In</StyledButton>
             </SignUpForm>
-            <button onClick={toggleSignUp}>Sign Up</button></SignUpDiv>
+            <button onClick={toggleSignUp}>Register</button></SignUpDiv>
             :<SignUpDiv><SignUpForm onSubmit={handleSignUp}>
                 <label>Email</label>
                 <input value={formData.email} onChange={e=>setFormData({...formData,email:e.target.value})} type='email'></input>
@@ -81,7 +80,7 @@ const Signup=({Login,error})=>{
                 {(errorFlag.flag==true)&&<ErrorBox> {errorFlag.message}</ErrorBox>}
                 <StyledButton>SignUp</StyledButton>
             </SignUpForm>
-            <button onClick={toggleSignUp}>Log In</button></SignUpDiv>}
+            <button onClick={toggleSignUp}>Back to Log In</button></SignUpDiv>}
         </div>
     )
 }
@@ -96,6 +95,13 @@ const SignUpDiv=styled.div`
 display: flex;
 flex-direction: column;
 margin:80px;
+margin-left: 250px;
+margin-right: 250px;
+padding-bottom:200px;
+padding-top: 100px;
+padding-left: 20px;
+padding-right: 20px;
+border:1px solid black;
 
 `
 const ErrorBox =styled.div`
@@ -107,4 +113,5 @@ margin-top: 30px;
 `
 const StyledButton=styled.button`
 margin-top:30px;
+
 `
