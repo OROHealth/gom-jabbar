@@ -1,0 +1,12 @@
+{
+  "name": "caribou-project",
+  "version": "1.0.0",
+  "description": "cd into caribou-project and run in the terminal:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
