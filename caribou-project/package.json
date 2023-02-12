@@ -2,11 +2,17 @@
   "name": "caribou-project",
   "version": "1.0.0",
   "description": "cd into caribou-project and run in the terminal:",
-  "main": "index.js",
+  "main": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "install-server": "npm install --prefix server",
+    "install-client": "npm install --prefix client",
+    "install:both": "npm run install-server && npm run install-client",
+    "server": "npm run watch --prefix server",
+    "client": "npm start --prefix client",
+    "start:both": "npm run server & npm run client",
+    "test": "npm run test --prefix server && npm run test --prefix client"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "Giovanni Reid",
+  "license": "MIT"
 }

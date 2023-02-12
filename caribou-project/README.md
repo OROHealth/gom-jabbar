@@ -1,8 +1,9 @@
 # Getting Started the App
-cd into caribou-project and run in the terminal:
+- Cd into caribou-project and run in the terminal:
 
-npm install
-npm run:both
+cd caribou-project
+npm run install:both
+npm run start:both
 
 These two commands will install the packages for both the client and the server and also run both applications in the terminal.
 
