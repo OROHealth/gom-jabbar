@@ -18,7 +18,7 @@ const SignInForm = () => {
   // State
   const [inputFields, setInputFields] = useState(defaultSignInFields);
 
-  //  Loading State
+  //  Loading SVG State
   const [loading, setLoading] = useState(false);
 
   const { email, password } = inputFields;
@@ -42,7 +42,7 @@ const SignInForm = () => {
       resetFormFields();
 
       setLoading(false);
-      navigate('/');
+      navigate('/dashboard');
       //
     } catch (error) {
       //
@@ -73,35 +73,31 @@ const SignInForm = () => {
 
   return (
     <>
-      {loading ? (
-        <ReactSpinner />
-      ) : (
-        <div className="sign-up-container">
-          <h2>Already have an account?</h2>
-          <span>Sign in with your email and password</span>
-          <form onSubmit={handleLoginWithEmailAndPasswordOnSubmit}>
-            <FormInput
-              label="Email"
-              type="email"
-              required
-              onChange={handleSignInInputChange}
-              name="email"
-              value={email}
-            />
-            <FormInput
-              label="Password"
-              type="password"
-              required
-              onChange={handleSignInInputChange}
-              name="password"
-              value={password}
-            />
-            <div className="loading-button">
-              <Button type="submit">{loading ? <ReactSpinner /> : `Sign In`}</Button>
-            </div>
-          </form>
-        </div>
-      )}
+      <div className="sign-up-container">
+        <h2>Already have an account?</h2>
+        <span>Sign in with your email and password</span>
+        <form onSubmit={handleLoginWithEmailAndPasswordOnSubmit}>
+          <FormInput
+            label="Email"
+            type="email"
+            required
+            onChange={handleSignInInputChange}
+            name="email"
+            value={email}
+          />
+          <FormInput
+            label="Password"
+            type="password"
+            required
+            onChange={handleSignInInputChange}
+            name="password"
+            value={password}
+          />
+          <div className="loading-button">
+            <Button type="submit">{loading ? <ReactSpinner /> : `Sign In`}</Button>
+          </div>
+        </form>
+      </div>
     </>
   );
 };

@@ -11,15 +11,20 @@
     flex-direction: column;
     padding: 20px;
     width: 100vw;
+    height: 900px;
     gap: 60px;
     margin: 0 auto;
     align-items: center;
     justify-content: center;
+    margin-bottom: 70px;
   }
 }
 @media screen and (min-width: 60em) {
   .authentication-container {
     display: flex;
     flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+
   }
 }

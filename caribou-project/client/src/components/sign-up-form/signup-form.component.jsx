@@ -20,11 +20,12 @@ const defaultFormFields = {
 const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password, confirmPassword } = formFields;
+  //  Loading SVG State
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const resetFormFields = () => {
-    // this just sets the form to it's initial state from the original object.
+    // Sets the form to it's initial state in the original object.
     setFormFields(defaultFormFields);
   };
 
@@ -48,14 +49,13 @@ const SignUpForm = () => {
       return;
     }
 
-    // [] Create the new user. Using try catch block
-    // We will try to create the authenticated user with email and password. that we destructured off of our form fields.
+    // Create the authenticated user with email and password. that we destructured off of our form fields.
     // this automatically logs in the user once signed up by default
     try {
       resetFormFields();
-      //
+
       setLoading(false);
-      navigate('/');
+      navigate('/dashboard');
       //
     } catch (error) {
       const errorCode = error.code;

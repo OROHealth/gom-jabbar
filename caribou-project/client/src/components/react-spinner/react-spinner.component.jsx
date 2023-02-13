@@ -8,8 +8,8 @@ const ReactSpinner = () => {
   return (
     <BackDrop>
       <ThreeCircles
-        height="50"
-        width="50"
+        height="20"
+        width="20"
         color="#ff895d"
         ariaLabel="three-circles-rotating"
         radius="1"
