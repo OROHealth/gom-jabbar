@@ -7,6 +7,7 @@ const aliasMap = {
   '@redux': 'src/redux-toolkit',
   '@routes': 'src/routes',
   '@services': 'src/services',
+  '@hooks': 'src/hooks',
   '@root': 'src',
 };
 

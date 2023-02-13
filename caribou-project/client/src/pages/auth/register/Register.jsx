@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { FaArrowRight } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 
 import { authService } from '@services/api/auth/auth.service';
-import { Utils } from '@services/utils/utils.service';
+import { UtilsService } from '@services/utils/utils.service';
 
 // components
-import Input from '@components/Input/Input';
-import Button from '@components/Button';
+import Input from '@components/input/Input';
+import Button from '@components/button/Button';
 
 // stylesheet
 import './Register.scss';
@@ -38,19 +37,19 @@ const Register = () => {
 
     try {
       // generate the user profile photo.
-      const avatarColor = Utils.avatarColor();
-      const avatarImage = Utils.generateAvatar(username.charAt(0).toUpperCase(), avatarColor());
+      const avatarColor = UtilsService.avatarColor();
+      const avatarImage = UtilsService.generateAvatar(username.charAt(0).toUpperCase(), avatarColor());
       // Post request to signup endpoint
       const result = await authService.signUp({
         username,
         email,
         password,
         avatarColor,
-        avatarImage
+        avatarImage,
       });
       setLoggedIn(true); // set logged in to true in local storage
       setStoredUsername(username); // save the username to local storage
-      Utils.dispatchUser(result, pageReload, dispatch, setUser); // to dispatch a user
+      UtilsService.dispatchUser(result, pageReload, dispatch, setUser); // to dispatch a user
       setHasError(false);
       setAlertType('alert-success'); // dynamically set css alert color
     } catch (error) {

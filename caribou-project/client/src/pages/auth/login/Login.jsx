@@ -4,14 +4,14 @@ import { FaArrowRight } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 
 // components
-import Input from '@components/Input/Input';
-import Button from '@components/Button';
+import Input from '@components/input/Input';
+import Button from '@components/button/Button';
 
 // stylesheet
 import './Login.scss';
 import { authService } from '@services/api/auth/auth.service';
 import useLocalStorage from '@hooks/useLocalStorage';
-import { Utils } from '@services/utils/utils.service';
+import { UtilsService } from '@services/utils/utils.service';
 import useSessionStorage from '@hooks/useSessionStorage';
 
 const Login = () => {
@@ -37,12 +37,12 @@ const Login = () => {
       // Post request to signup endpoint
       const result = await authService.signIn({
         username,
-        password
+        password,
       });
 
       setLoggedIn(keepLoggedIn); // set logged in to true in local storage
       setStoredUsername(username); // save the username to local storage
-      Utils.dispatchUser(result, pageReload, dispatch, setUser); // to dispatch a user
+      UtilsService.dispatchUser(result, pageReload, dispatch, setUser); // to dispatch a user
       setHasError(false);
       setAlertType('alert-success'); // dynamically set css alert color
     } catch (error) {
