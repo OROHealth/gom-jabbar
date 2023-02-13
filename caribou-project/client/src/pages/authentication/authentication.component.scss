@@ -1,0 +1,25 @@
+.authentication-container {
+  display: flex;
+  width: 900px;
+  justify-content:space-between;
+  margin: 30px auto;
+}
+
+@media screen and (min-width: 20em) {
+  .authentication-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 100vw;
+    gap: 60px;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+  }
+}
+@media screen and (min-width: 60em) {
+  .authentication-container {
+    display: flex;
+    flex-direction: row;
+  }
+}

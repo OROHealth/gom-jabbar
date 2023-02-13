@@ -9,10 +9,18 @@
   background-color: transparent;
   color: hsl(330, 100%, 44%);
   margin-left: 10px;
+  height: 40px;
+  width: 100%;
   cursor: pointer
   ;
 
   &:hover {
     background-color: hsla(330, 100%, 44%, 0.152);
+  }
+}
+
+@media screen and (min-width: 20em) {
+  .button {
+    margin-left: 0;
   }
 }

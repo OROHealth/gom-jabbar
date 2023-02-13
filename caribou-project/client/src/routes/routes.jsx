@@ -1,5 +1,6 @@
 // import { lazy, Suspense }
-import { Register } from '@pages/auth';
+// import { Register } from '@pages/auth';
+import Authentication from '@pages/authentication/authentication.component';
 // import Streams from '@pages/social/streams/Streams';
 import { useRoutes } from 'react-router-dom';
 
@@ -8,12 +9,8 @@ export const AppRouter = () => {
     // first route
     {
       path: '/',
-      element: <Register />,
+      element: <Authentication />,
     },
-    // {
-    //   path: '/app/streams',
-    //   element: <Streams />,
-    // },
   ]);
 
   return elements;
