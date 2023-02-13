@@ -4,7 +4,7 @@ import Tab1 from "./Tab1";
 import Tab2 from "./Tab2";
 import Tab3 from "./Tab3";
 
-const CommandBox =({getCoordinate,coordinates})=>{
+const CommandBox =({coordinates,addHumans,addAntlers,addRadar,closeHumans})=>{
     const [taboption,setTabOption]=useState(1);
 
     const handleClick=(idx)=>{
@@ -20,9 +20,9 @@ const CommandBox =({getCoordinate,coordinates})=>{
                     <StyledButton onClick={e=>handleClick(3)}>Caribou Request</StyledButton>
                 </Tabs>
                 <div>
-                    {(taboption==1)&&<Tab1 coordinates={coordinates}/>}
-                    {(taboption==2)&&<Tab2/>}
-                    {(taboption==3)&&<Tab3/>}
+                    {(taboption==1)&&<Tab1 coordinates={coordinates} addHumans={addHumans}/>}
+                    {(taboption==2)&&<Tab2 coordinates={coordinates} addRadar={addRadar} closeHumans={closeHumans}/>}
+                    {(taboption==3)&&<Tab3 coordinates={coordinates} addAntlers={addAntlers}/>}
                 </div>
             </Container>
         </div>
@@ -40,7 +40,6 @@ const Container=styled.div`
 background-color:grey;
 height:500px;
 width:400px;
-margin-top: 10px;
 margin-right: 50px;
 `
 const Tabs=styled.div`
