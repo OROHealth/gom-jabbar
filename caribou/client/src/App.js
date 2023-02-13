@@ -1,4 +1,4 @@
-import {useJsApiLoader, GoogleMap, MarkerF} from '@react-google-maps/api';
+import {useJsApiLoader, GoogleMap, MarkerF, InfoWindowF} from '@react-google-maps/api';
 import Loading from './components/Loading';
 import Signup from './components/Signup';
 import { useState, useEffect } from "react";
@@ -8,6 +8,7 @@ import background from './images/background.gif';
 import human from './images/human.png';
 import caribou from './images/caribou.png';
 import radarImg from "./images/radarImg.gif";
+import LiveChat from './components/LiveChat';
 
 
 const App=()=> {
@@ -20,7 +21,8 @@ const App=()=> {
   const [radar,setRadar]=useState();
   const center={lat:45.5019, lng: -73.5674};
   const [map,setMap]=useState(null);
-  const [bounds,setBounds]=useState(null);
+  const [selectedMarker,setSelectedMarker]=useState();
+  const [open,setOpen]=useState(false);
 
   useEffect(()=>{
     fetch(`/humans`)
@@ -34,7 +36,7 @@ const App=()=> {
             window.alert(error);
         })
   },[])
-console.log(humans);
+
   useEffect(()=>{
     fetch(`/caribous`)
         .then((res) => res.json())
@@ -105,6 +107,9 @@ console.log(humans);
     setRadar(input);
     findRadardata();
   }
+  const closeWindow=()=>{
+    setSelectedMarker(null);
+  }
 
   const findRadardata=()=>{
     if(humans.length!=0){
@@ -133,11 +138,15 @@ console.log(humans);
               <MarkerF position={x.coordinates} icon={human}/>
             ))}
             {antlers&&antlers.map((antler)=>(
-              <MarkerF position={antler.coordinates} icon={caribou}/>
+              <MarkerF position={antler.coordinates} icon={caribou} onClick={()=>setSelectedMarker(antler)}/>
             ))}
             {radar&&
               <MarkerF position={radar.coordinates} icon={radarImg} />
             }
+            {selectedMarker&&
+            <InfoWindowF position={selectedMarker.coordinates} >
+              <div><button onClick={()=>setOpen(true)}>Antler-Exchange</button><CloseButton onClick={closeWindow}>x</CloseButton></div>
+            </InfoWindowF>}
           </GoogleMap>
 
           <CommandBox 
@@ -147,7 +156,11 @@ console.log(humans);
           addRadar={addRadar}
           />
         </Container>
-        <button onClick={Logout}>Log out</button>
+        <Footer>
+          <button onClick={Logout}>Log out</button>
+          <LiveChat setOpen={setOpen} open={open}/>
+        </Footer>
+
       </ScreenDiv>
       :<Signup Login={Login} error={error}/>}
     </div>
@@ -161,6 +174,18 @@ padding: 40px;
 const Container=styled.div`
 display: flex;
 flex: row;
+justify-content: space-between;
+`
+const CloseButton=styled.button`
+position: absolute;
+top: -3px;
+border: none;
+background-color: white;
+z-index: 100;
+`
+const Footer=styled.div`
+display:flex;
+flex-direction: row;
 justify-content: space-between;
 `
 
