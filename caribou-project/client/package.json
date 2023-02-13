@@ -25,10 +25,11 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --coverage --forceExit --detectOpenHandles --watchAll=false",
-    "lint:check": "eslint 'src/**/*.js'",
-    "lint:fix": "eslint 'src/**/*.js' --fix",
-    "prettier:check": "prettier --check 'src/**/*.{js,jsx,json}'",
-    "prettier:fix": "prettier --write 'src/**/*.{js,jsx,json}'"
+    "lint:check": "npx eslint 'src/**/*.js'",
+    "lint:fix": "npm run eslint 'src/**/*.js' --fix",
+    "prettier:check": "npm run prettier --check 'src/**/*.{js,jsx,json}'",
+    "prettier:fix": "npm run prettier --write 'src/**/*.{js,jsx,json}'",
+    "format": "npm run prettier:fix && npm run lint:fix"
   },
   "eslintConfig": {
     "extends": [
@@ -61,6 +62,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "prettier": "^2.8.4",
+    "prettier-eslint": "^15.0.1",
     "react-app-alias": "^2.2.2"
   }
 }

@@ -7,11 +7,11 @@ const aliasMap = {
   '@redux': 'src/redux-toolkit',
   '@routes': 'src/routes',
   '@services': 'src/services',
-  '@root': 'src'
+  '@root': 'src',
 };
 
 const options = {
-  alias: aliasMap
+  alias: aliasMap,
 };
 
 module.exports = aliasWebpack(options);
