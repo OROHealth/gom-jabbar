@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '@components/home-navigation/HomeNavigation.styles.scss';
 
 // Components
+import Button from '@components/button/Button';
 
 const HomeNavigation = () => {
   const navigate = useNavigate();
@@ -12,7 +13,9 @@ const HomeNavigation = () => {
   return (
     <>
       <nav className="home-navbar-container">
-        <button onClick={handleNavigateToDashboard}>Dashboard</button>
+        <div className="home-navbar">
+          <Button onClick={handleNavigateToDashboard}>Dashboard</Button>
+        </div>
       </nav>
     </>
   );
