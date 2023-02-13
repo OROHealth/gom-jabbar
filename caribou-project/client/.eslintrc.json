@@ -4,12 +4,12 @@
     "es2021": true,
     "jest/globals": true
   },
-  "extends": ["plugin:react/recommended", "standard", "plugin:react-hooks/recommended", "plugin:prettier/recommended"],
+  "extends": ["plugin:react/recommended", "standard", "plugin:react-hooks/recommended", "plugin:prettier/recommended", "prettier"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
     },
-    "ecmaVersion": "latest",
+    "ecmaVersion": 2020,
     "sourceType": "module"
   },
   "plugins": ["react", "jest", "prettier"],
@@ -27,14 +27,33 @@
     }
   },
   "rules": {
-    "prettier/prettier": [ 1, { "trailingComma": "es5",  "singleQuote": true,
-    "semi": true, "usePrettierrc": true}],
+    "quotes": 0,
+    "jsx-quotes": [0, "prefer-single"],
     "space-before-function-paren": [0, { "anonymous": "always", "named": "always" }],
     "camelcase": 0,
     "no-return-assign": 0,
     "react/react-in-jsx-scope": 0,
     "react/display-name": 0,
-    "quotes": [0, "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
-    "jsx-quotes": [2, "prefer-single"]
+    "indent": 0,
+    "linebreak-style": 0,
+    "react/prop-types": 0,
+    "react/state-in-constructor": 0,
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx"]
+      }
+    ],
+    "prettier/prettier": [
+      1,
+      {
+        "trailingComma": "es5",
+        "singleQuote": true,
+        "printWidth": 120,
+        "tabWidth": 2,
+        "semi": true,
+        "endOfLine": "auto"
+      }
+    ]
   }
 }
