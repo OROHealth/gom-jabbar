@@ -19,7 +19,17 @@ To help them, we, the Assembly of Inter-Human-Caribou Harmony  (IHCH), have deci
 service of a modern experience while using their CaribouPhones (an Android variant, obviously)
 
 
+## Task
+### Implementing the API PART
+Function to allow the user to:
+> Create a pin on the map in a specific location to signal the presence of a human that includes trashing level and level of excitement.
+> Signal when a human has exited the zone
 
+
+### Implementing the Single Page Application PART
+> Displays a map of the users current vicinity
+> Display the zone where humans are currently actively trashing the world
+> Notify/Signals you when a human has quit the zone
 
 ## Requirements
 - an API that allows :
@@ -27,8 +37,10 @@ service of a modern experience while using their CaribouPhones (an Android varia
   - to request if the presence of a human was signaled in a specific location
   - to signal a Caribou is ready to antler-exchange
   - is highly secured
+
 - a Single Page Application that
   - displays a map of the current vincinity and display the zone where human are currently actively trashing the world
+
   - signals when a human has quit the zone
   - allows them to signal the presence of human and rate its trashing level
   - presents a live-chat to allow Antler-exchange using the highly secure Caribou algorithm: every vowel is replaced by
