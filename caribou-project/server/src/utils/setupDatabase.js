@@ -1,24 +1,25 @@
 const mongoose = require('mongoose');
 const { MONGODB_URL } = require('./config');
+const log = require('./logger');
 
 const setupDatabase = async () => {
   await mongoose.set('strictQuery', false);
   await mongoose
     .connect(MONGODB_URL)
     .then(() => {
-      console.log('Connected to the MongoDB Database');
+      log('info', 'Successfully Connected to the MongoDB Database');
     })
     .catch(error => {
-      console.error('Error connecting to MongoDB:', error.message);
+      log('error', 'Error connecting to MongoDB:', error.message);
     });
 };
 
 // Checking The Mongoose Connection
 mongoose.connection.once('open', () => {
-  console.log('MongoDB Connection is Ready!');
+  log('info', 'MongoDB Connection is Ready!');
 });
 mongoose.connection.on('error', err => {
-  console.log(`Error Connecting to MongoDB`, err, err.message);
+  log('error', `Error Connecting to MongoDB`, err, err.message);
 });
 
 module.exports = setupDatabase;
