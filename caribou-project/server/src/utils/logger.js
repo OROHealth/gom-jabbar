@@ -1,7 +1,7 @@
 const bunyan = require('bunyan');
 
-const logger = (context, text) => {
-  const log = bunyan.createLogger({ name: text });
+const logger = (context, text, location) => {
+  const log = bunyan.createLogger({ name: location });
 
   if (context === 'info') {
     log.info(text);

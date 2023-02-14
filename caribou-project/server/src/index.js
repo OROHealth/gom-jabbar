@@ -7,51 +7,51 @@ const log = require('./utils/logger');
 
 // Starting server ~ Connect to mongo then start server
 async function startServer() {
-  log('info', 'Connecting to: MongoDB');
+  log('info', 'Connecting to: MongoDB', 'index');
   setupDatabase();
 
   server.listen(SERVER_PORT, () => {
-    log('info', `Server running on port ${SERVER_PORT} in '${NODE_ENV}' mode`);
+    log('info', `Server running on port ${SERVER_PORT} in '${NODE_ENV}' mode`, 'index');
   });
 }
 
 const shutDownProperly = exitCode => {
   Promise.resolve()
     .then(() => {
-      log('error', 'Shutdown complete');
+      log('error', 'Shutdown complete', 'index');
       process.exit(exitCode);
     })
     .catch(error => {
-      log('error', `Error during shutdown: ${error}`);
+      log('error', `Error during shutdown: ${error}`, 'index');
       process.exit(1);
     });
 };
 
 const handleExit = () => {
   process.on('unCaughtException', error => {
-    log('error', `There was an uncaught error: ${error}`);
+    log('error', `There was an uncaught error: ${error}`, 'index');
     shutDownProperly(1);
   });
 
   process.on('unHandleRejection', reason => {
-    log('error', `Unhandled rejection at promise: ${reason}`);
+    log('error', `Unhandled rejection at promise: ${reason}`, 'index');
     shutDownProperly(2);
   });
 
-  process.on('SIGTERM', () => {
-    log('error', 'Caught SIGTERM');
-    shutDownProperly(2);
+  process.on('SIGTERM', async () => {
+    log('error', 'Caught SIGTERM', 'index');
+    await shutDownProperly(2);
   });
 
   process.on('SIGINT', () => {
-    log('error', 'Caught SIGINT');
+    log('error', 'Caught SIGINT', 'index');
     shutDownProperly(2);
   });
 
   process.on('exit', () => {
-    log('error', 'Exiting');
+    log('error', 'Exiting', 'index');
   });
 };
 
-startServer();
 handleExit();
+startServer();
