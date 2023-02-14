@@ -8,7 +8,9 @@ const cookieSession = require('cookie-session');
 const HTTP_STATUS = require('http-status-codes');
 const apiStats = require('swagger-stats');
 require('express-async-errors');
+const log = require('./utils/logger');
 const { COOKIE_KEY_ONE, COOKIE_KEY_TWO, CLIENT_URL, NODE_ENV } = require('./utils/config');
+const userRouter = require('./routes/userRouter');
 
 // Security Middle-wares
 app.use(hpp());
@@ -37,7 +39,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Routes Middle-wares
-// applicationRoutes(app);
+app.use('/api/v1/user', userRouter);
 
 // Api Monitoring
 app.use(
@@ -47,17 +49,22 @@ app.use(
 );
 
 // Global Error Handler
-app.all('*', (req , res) => {
-  res.status(HTTP_STATUS.NOT_FOUND).json({ message: `${req.originalUrl} not found` });
+app.all('*', (req, res) => {
+  // catches all unFound urls
+  res.status(HTTP_STATUS.StatusCodes.NOT_FOUND).json({ message: `${req.originalUrl} not found` });
+});
+app.get('/*', (req, res) => {
+  // catches all unFound urls
+  res.status(HTTP_STATUS.StatusCodes.NOT_FOUND).json({ message: `${req.originalUrl} not found` });
 });
 
-  app.use((error: IErrorResponse, _req: Request, res: Response, next: NextFunction) => {
-    log.error(error);
-    if (error instanceof CustomError) {
-      return res.status(error.statusCode).json(error.serializeErrors());
-    }
-    next();
-  });
-}
+app.use((error, _req, res, next) => {
+  log('error', error, 'app.js');
+  if (error) {
+    console.log('There is a error:', error);
+    return res.status(HTTP_STATUS.StatusCodes.NOT_FOUND).json({ message: 'Page not found' });
+  }
+  next();
+});
 
 module.exports = app;

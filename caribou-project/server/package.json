@@ -9,8 +9,8 @@
     "lint:fix": "eslint 'src/**/*.js' --fix",
     "prettier:check": "prettier --check 'src/**/*.{js,json}'",
     "prettier:fix": "prettier --write 'src/**/*.{js,json}'",
-    "start": "NODE_ENV=production node src/index.js",
-    "start:dev": "NODE_ENV=development nodemon src/index.js",
+    "start": "NODE_ENV=production node src/index.js | ./node_modules/.bin/bunyan",
+    "start:dev": "NODE_ENV=development nodemon src/index.js | ./node_modules/.bin/bunyan",
     "cluster": "pm2 start index.js -i max"
   },
   "keywords": [],

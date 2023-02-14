@@ -10,6 +10,8 @@ async function startServer() {
   log('info', 'Connecting to: MongoDB', 'index');
   setupDatabase();
 
+  log('info', `Worker with process id of ${process.pid} has started...`, 'index');
+  log('info', `Server has started with process ${process.pid}`, 'index');
   server.listen(SERVER_PORT, () => {
     log('info', `Server running on port ${SERVER_PORT} in '${NODE_ENV}' mode`, 'index');
   });
