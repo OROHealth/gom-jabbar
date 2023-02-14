@@ -9,6 +9,7 @@ const options = {
 require("dotenv").config();
 const { MONGO_URI } = process.env;
 
+//checks if user exists in database
 const getUser=async(req,res)=>{
     const {email,password} =req.params;
     const query={email:email,password:password};
@@ -24,8 +25,8 @@ try {
         data: data,
         });
     }else{
-        res.status(200).json({
-            status: 200,
+        res.status(203).json({
+            status: 203,
             message:"Invalid User",
             data: data,
         });
@@ -39,6 +40,7 @@ try {
     client.close();
 }
 
+//adds new user to database
 const addUser = async (req, res) => {
     const client = new MongoClient(MONGO_URI, options);
     try {
@@ -50,15 +52,15 @@ const addUser = async (req, res) => {
 
         if(isEmailValid==false){
             client.close();
-            return res.status(200).json({
+            return res.status(203).json({
                 status: 200,
                 message: "Email Invalid"
             });
         }
         else if(newItem.pass!==newItem.confirmPass){
             client.close();
-            return res.status(200).json({
-                status: 200,
+            return res.status(203).json({
+                status: 203,
                 message: "Please check your password"
             });
         }

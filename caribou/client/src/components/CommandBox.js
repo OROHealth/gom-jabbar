@@ -7,6 +7,7 @@ import Tab3 from "./Tab3";
 const CommandBox =({coordinates,addHumans,addAntlers,addRadar,zonedHumans,setzonedHumans})=>{
     const [taboption,setTabOption]=useState(1);
 
+    //function toggles between the tabs
     const handleClick=(idx)=>{
         setTabOption(idx);
     }
@@ -20,7 +21,7 @@ const CommandBox =({coordinates,addHumans,addAntlers,addRadar,zonedHumans,setzon
                 </Tabs>
                 <div>
                     {(taboption==1)&&<Tab1 coordinates={coordinates} addHumans={addHumans}/>}
-                    {(taboption==2)&&<Tab2 coordinates={coordinates} addRadar={addRadar} zonedHumans={zonedHumans} setzonedHumans={setzonedHumans}/>}
+                    {(taboption==2)&&<Tab2 coordinates={coordinates} addRadar={addRadar} zonedHumans={zonedHumans}/>}
                     {(taboption==3)&&<Tab3 coordinates={coordinates} addAntlers={addAntlers}/>}
                 </div>
             </Container>
@@ -29,12 +30,6 @@ const CommandBox =({coordinates,addHumans,addAntlers,addRadar,zonedHumans,setzon
 }
 export default CommandBox;
 
-// const LiveFeed=styled.div`
-// height:200px;
-// width:400px;
-// background-color: lightgray;
-// margin-right:50px;
-// `
 const Container=styled.div`
 background-color:lightgrey;
 height:700px;
@@ -46,9 +41,6 @@ const Tabs=styled.div`
 display:flex;
 flex-direction:row;
 justify-content: space-evenly;
-
-`
-const StyledDiv=styled.div`
 
 `
 const StyledButton=styled.button`

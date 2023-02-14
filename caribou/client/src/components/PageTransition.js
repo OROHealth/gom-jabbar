@@ -1,5 +1,6 @@
 import {motion} from 'framer-motion';
 
+//page transition
 const animations={
     initial:{opacity:0,y:100},
     animate:{opacity:1, y:0},

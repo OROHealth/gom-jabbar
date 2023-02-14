@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 import Eye from '../images/Eye.png';
 import PageTransition from "./PageTransition";
 
-
 const Signup=({Login,error, isAuthenticated})=>{
     const [ID,setID]=useState({email:"", password:""});
     const [formData,setFormData]=useState({email:'',pass:"",confirmPass:""})
     const [signup,setSignup]=useState(false);
     const [errorFlag,setErrorFlag]=useState({flag:false,message:''});
     const navigate=useNavigate();
+
+    //toggle signup form vs login form
     const toggleSignUp=()=>{
         if(signup==false){
             setSignup(true);
@@ -19,6 +20,8 @@ const Signup=({Login,error, isAuthenticated})=>{
             setSignup(false);
         }
     }
+
+    // function that checks with the login credential is correct and logs user in
     const handleLogIn=(e)=>{
         e.preventDefault();
         fetch(`/users/${ID.email}/${ID.password}`)
@@ -37,6 +40,8 @@ const Signup=({Login,error, isAuthenticated})=>{
         })
 
     }
+
+    //function that handles registering new account
     const handleSignUp=(e)=>{
         e.preventDefault();
         fetch("/user",{

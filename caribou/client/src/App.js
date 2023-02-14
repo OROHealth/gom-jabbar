@@ -4,16 +4,18 @@ import SignUp from './components/Signup'
 import { useState } from "react";
 import ProtectedRoutes from "./ProtectedRoutes";
 
-
 const App=()=> {
   const [error,setError]=useState("");
   const [user,setUser]=useState({email:'as'});
   const [isAuthenticated,setIsAuthenticated]=useState(false);
+
+//authenticate log in 
   const Login =(details)=>{
     setUser({email:details.email});
     setIsAuthenticated(true);
   }
 
+  //logout user
   const Logout =()=>{
     setUser({email:''});
     setIsAuthenticated(false);

@@ -12,7 +12,6 @@ const Loading=()=>{
 }
 export default Loading;
 
-//--styling
 const StyledDiv=styled.div`
 display: flex;
 flex-direction: column;

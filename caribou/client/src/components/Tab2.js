@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import {BiCurrentLocation} from "react-icons/bi";
 import { useState } from "react";
-const Tab2 =({coordinates,addRadar,zonedHumans,setzonedHumans})=>{
+const Tab2 =({coordinates,addRadar,zonedHumans})=>{
     const [data, setData]=useState({radius:''});
-    // console.log(zonedHumans);
+
     return(
         <SmallContainer>
             <label>Radius</label><input type="number" onChange={(e)=>setData({...data,['radius']:e.target.value})} ></input>
@@ -14,7 +14,6 @@ const Tab2 =({coordinates,addRadar,zonedHumans,setzonedHumans})=>{
                 <DetailsDiv>
                     <h4>Humans Detected in Zone</h4>
                     {zonedHumans&&zonedHumans.map((human)=>{
-                        // console.log(zonedHumans);
                             return<p>Human detected at {human.coordinates.lat} latitude and {human.coordinates.lng} longitude</p>
                     })}
                 </DetailsDiv>
