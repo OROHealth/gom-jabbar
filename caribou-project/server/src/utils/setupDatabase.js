@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-const { MONGODB_URL } = require('@utils/config');
-// require('colors')
+const { MONGODB_URL } = require('./config');
 
 const setupDatabase = async () => {
   await mongoose.set('strictQuery', false);
