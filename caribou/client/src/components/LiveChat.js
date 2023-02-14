@@ -53,10 +53,11 @@ export default LiveChat;
 
 const Container=styled.div`
 background-color: white;
-position: relative;
+position: absolute;
+top:460px;
+left:1180px;
 height:330px;
 width:250px;
-top:-280px;
 display: flex;
 flex-direction: column;
 `

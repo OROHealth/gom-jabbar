@@ -15,11 +15,11 @@ const Tab1 =({coordinates,addAntlers})=>{
 
 export default Tab1;
 const SmallContainer=styled.div`
-
 display:flex;
 flex-direction: column;
 align-items: center;
-padding-top:0px;
+justify-content: center;
+height:300px;
 `
 const StyledInput=styled.input`
 width:250px;
