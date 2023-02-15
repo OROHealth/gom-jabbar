@@ -20,7 +20,8 @@ const Chat=()=>{
     return (
         <div>
             <div  style={{ visibility: showChat ? "visible" : "hidden" }}>
-                <h3>Join a Chat</h3>
+                <SubTitle>Join a Chat</SubTitle>
+                <p>*Click the caribou to get Room Id*</p>
                 <input 
                     type="text" 
                     placeholder="CodeName"
@@ -45,4 +46,8 @@ const Chat=()=>{
         </div>
     )
 }
+const SubTitle=styled.p`
+font-size: 20px;
+text-decoration: underline;
+`
 export default Chat;

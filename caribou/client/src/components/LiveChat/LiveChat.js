@@ -98,6 +98,8 @@ flex-direction: column;
 border: 1px solid black;
 height: 400px;
 width: 300px;
+top:-30px;
+position:relative;
 `
 const StyledInput=styled.input`
 width: 265px;
@@ -105,7 +107,7 @@ height: 40px;
 border: none;
 `
 const StyledButton=styled.button`
-background-color: transparent;
+background-color: white;
 border: none;
 `
 const MessageBubble=styled.div`

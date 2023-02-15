@@ -19,6 +19,7 @@ const Signup=({Login,error, isAuthenticated})=>{
         else{
             setSignup(false);
         }
+        setErrorFlag({flag:false,message:''});
     }
 
     // function that checks with the login credential is correct and logs user in
@@ -77,24 +78,26 @@ const Signup=({Login,error, isAuthenticated})=>{
                 <Header> <StyledImage src={Eye}></StyledImage><h1>Cari-Eye</h1></Header>
                 <SignUpForm onSubmit={handleLogIn}>
                 <StyledLabel>Email</StyledLabel>
-                <input value={ID.email} onChange={e=>setID({...ID,email:e.target.value})} type='email'></input>
+                <StyledInput value={ID.email} onChange={e=>setID({...ID,email:e.target.value})} type='email'></StyledInput>
                 <StyledLabel>Password</StyledLabel>
-                <input value={ID.password} onChange={e=>setID({...ID,password:e.target.value})} type='password'></input>
+                <StyledInput value={ID.password} onChange={e=>setID({...ID,password:e.target.value})} type='password'></StyledInput>
                 {(errorFlag.flag==true)&&<ErrorBox> {errorFlag.message}</ErrorBox>}
-                <StyledButton >Log In</StyledButton>
+                <ButtonDiv><StyledButton >Log In</StyledButton></ButtonDiv>
             </SignUpForm>
-            <StyledButton onClick={toggleSignUp}>Register</StyledButton></SignUpDiv>
-            :<SignUpDiv><SignUpForm onSubmit={handleSignUp}>
+            <ButtonDiv><StyledButton onClick={toggleSignUp}>Register</StyledButton></ButtonDiv></SignUpDiv>
+            :<SignUpDiv>
+                <Header> <StyledImage src={Eye}></StyledImage><h1>Cari-Eye</h1></Header>
+                <SignUpForm onSubmit={handleSignUp}>
                 <label>Email</label>
-                <input value={formData.email} onChange={e=>setFormData({...formData,email:e.target.value})} type='email'></input>
+                <StyledInput value={formData.email} onChange={e=>setFormData({...formData,email:e.target.value})} type='email'></StyledInput>
                 <label>Password</label>
-                <input value={formData.password} onChange={e=>setFormData({...formData,pass:e.target.value})} type='password'></input>
+                <StyledInput value={formData.password} onChange={e=>setFormData({...formData,pass:e.target.value})} type='password'></StyledInput>
                 <label>Confirm Password</label>
-                <input value={formData.password} onChange={e=>setFormData({...formData,confirmPass:e.target.value})} type='password'></input>
+                <StyledInput value={formData.password} onChange={e=>setFormData({...formData,confirmPass:e.target.value})} type='password'></StyledInput>
                 {(errorFlag.flag==true)&&<ErrorBox> {errorFlag.message}</ErrorBox>}
-                <StyledButton>Sign up</StyledButton>
+                <ButtonDiv><StyledButton>Sign up</StyledButton></ButtonDiv>
             </SignUpForm>
-            <button onClick={toggleSignUp}>Back to Log In</button></SignUpDiv>}
+            <ButtonDiv><StyledButton onClick={toggleSignUp}>Back to Log In</StyledButton></ButtonDiv></SignUpDiv>}
         </Container>
         </PageTransition>
     )
@@ -105,15 +108,17 @@ const Container=styled.div`
 const SignUpForm=styled.form`
 display: flex;
 flex-direction: column;
-padding-bottom: 10px
+justify-content:center;
+align-items: center;
+
 `
 const SignUpDiv=styled.div`
 display: flex;
 flex-direction: column;
-margin:80px;
+margin:40px;
 margin-left: 250px;
 margin-right: 250px;
-padding-bottom:200px;
+padding-bottom:100px;
 padding-top: 100px;
 padding-left: 20px;
 padding-right: 20px;
@@ -122,15 +127,23 @@ min-width: 100px;
 background-color: lightgrey;
 `
 const ErrorBox =styled.div`
-border:red solid 1px;
+font-size:20px;
 display: flex;
 flex-direction: row;
 justify-content: center;
 margin-top: 30px;
+color:red;
 `
 const StyledButton=styled.button`
-
-font-family: "gill sans";
+font-size: 20px;
+padding:10px;
+border-radius: 50px;
+border: none;
+&:active{
+    background-color: grey;
+}
+width:200px;
+margin-top: 10px;
 `
 const StyledLabel=styled.label`
 font-family:"gill sans";
@@ -144,3 +157,13 @@ display: flex;
 flex-direction: column;
 align-items: center;
 `
+const ButtonDiv=styled.div`
+display:flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+`
+const StyledInput=styled.input`
+width:400px;
+`
+

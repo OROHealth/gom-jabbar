@@ -76,17 +76,26 @@ const Map=({Logout})=>{
     })
 
     //function to find humans within the given zone
+    function toRad(x) {
+      return x * Math.PI / 180;
+    }
+
+
     const findRadardata=()=>{
       setzonedHumans([])
       let newZonedHumans = [];
         if(humans.length!=0){
           humans.map((human,index)=>{
-            const latitude_dist = human.coordinates.lat - radar.coordinates.lat;
-            const longitude_dist = human.coordinates.lng - radar.coordinates.lng;
-            const dist = Math.pow(Math.pow(longitude_dist, 2) + Math.pow(latitude_dist, 2), 0.5);
-            
-            if((radar.radius*0.001)>dist){
+            const dLat = toRad(human.coordinates.lat - radar.coordinates.lat);
+            const dLon = toRad(human.coordinates.lng - radar.coordinates.lng);
+            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(human.coordinates.lat)) * Math.cos(toRad(radar.coordinates.lat)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            var d = 6371 * c;
+            if((radar.radius)>d){
               newZonedHumans.push(human);
+              console.log(zonedHumans);
             }
           })
         }
@@ -226,6 +235,7 @@ const Map=({Logout})=>{
   display: flex;
   flex: row;
   justify-content: space-between;
+  
   `
   const CloseButton=styled.button`
   position: absolute;

@@ -36,20 +36,24 @@ height:700px;
 width:450px;
 margin-right: 10px;
 
+
 `
 const Tabs=styled.div`
 display:flex;
 flex-direction:row;
 justify-content: space-evenly;
+border-bottom: 2px solid black;
+background-color: black;
 
 `
 const StyledButton=styled.button`
 font-size: 15px;
 border: 0px ;
-background-color: lightgrey;
+background-color: transparent;
 &:hover{
     text-decoration:underline;
 }
 padding-top:20px;
 padding-bottom:20px;
+color: white;
 `
