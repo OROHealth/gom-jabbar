@@ -123,7 +123,7 @@ padding-top: 100px;
 padding-left: 20px;
 padding-right: 20px;
 border:2px solid black;
-min-width: 100px;
+min-width: 380px;
 background-color: lightgrey;
 `
 const ErrorBox =styled.div`

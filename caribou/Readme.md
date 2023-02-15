@@ -13,6 +13,7 @@ Navigate to the client directory:
 ```
 cd caribou/client
 ```
+Create .env file in the server folder with the given API keys from the email.
 
 Install the dependencies and start the client:
 
@@ -26,6 +27,7 @@ In a new terminal, navigate to the server directory:
 ```
 cd caribou/server
 ```
+Create .env file in the server folder with the given API keys from the email.
 
 Install the dependencies and start the server:
 

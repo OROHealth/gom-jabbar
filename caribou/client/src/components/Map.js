@@ -234,7 +234,7 @@ const Map=({Logout})=>{
   const Container=styled.div`
   display: flex;
   flex: row;
-  justify-content: space-between;
+  justify-content: space-around;
   
   `
   const CloseButton=styled.button`
