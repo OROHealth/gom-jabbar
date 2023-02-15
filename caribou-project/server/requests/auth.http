@@ -2,18 +2,20 @@
 @urlPath = api/v1/user
 
 ###
+### @Desc Register a User
 POST {{baseUrl}}/{{urlPath}}/register
 Content-Type: application/json
 Accept: application/json
 withCredentials: true
 
 {
-  "email": "secrestss-carib@hotmail.com",
-  "password": "123ss4567",
+  "email": "secrestssss-carib@hotmail.com",
+  "password": "123s4567",
   "avatarImage": "<add-a-base64-encoded-string>"
 }
 
 ###
+### @Desc Login a User
 POST {{baseUrl}}/{{urlPath}}/signin
 Content-Type: application/json
 Accept: application/json

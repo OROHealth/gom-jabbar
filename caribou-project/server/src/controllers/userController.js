@@ -79,7 +79,8 @@ async function registerUser(req, res) {
           });
 
         const accessToken = await signAccessToken(newUser.uuId);
-        res.status(201).send(accessToken).end();
+        // response with an object, to get it in json format
+        res.status(201).send({ accessToken }).end();
       }
     });
   }
