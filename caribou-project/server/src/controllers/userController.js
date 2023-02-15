@@ -2,16 +2,15 @@ const UserModel = require('../models/userModel');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const log = require('../utils/logger');
-const { lowerCase, signAccessToken } = require('../helpers/helpers');
-// const path = require('path');
-// const { nextTick } = require('process')
+const { lowerCase, signAccessToken, signRefreshToken, verifyRefreshToken } = require('../helpers/helpers');
+const createError = require('http-errors');
 
 // @Desc     Display all Users
 // @Method   GET
 // @Route    /api/v1/users
-async function getAllUsers(_req, res) {
-  res.json(await UserModel.find({}));
-}
+// async function getAllUsers(_req, res) {
+//   res.json(await UserModel.find({}));
+// }
 
 // @Desc    Register a user with email and password
 // @Method  POST
@@ -22,7 +21,7 @@ async function registerUser(req, res) {
   let errors = [];
   let success = [];
 
-  // Check required fields
+  // Check Required fields
   if (!email || !password) {
     errors.push({ errorMsg: 'Please fill in all fields Caribou' });
   }
@@ -40,14 +39,14 @@ async function registerUser(req, res) {
 
   if (errors.length > 0) {
     // If there is an issue then I want to rerender the registration form with the error message
-    res.json(errors);
+    res.status(400).json(errors);
   } else {
     // [] Check if user already exists in the database
     await UserModel.findOne({ email: email }).then(async user => {
       if (user) {
         // If User Already Exists. Then we displayed in the frontend a message
         errors.push({ errorMsg: "I'm sorry this Caribou already exists!" });
-        res.json(errors);
+        res.status(400).json(errors);
       } else {
         // [] Encrypt password - Hash the password before saving it to the database
         // Generate a salt in order to create a hash
@@ -72,28 +71,29 @@ async function registerUser(req, res) {
           .save()
           .then(userSaved => {
             // log('info', req.body, 'userController');
-            success.push({ successMsg: 'Account created successfully' });
+            success.push({ successMsg: 'Welcome fellow Caribou. Registration was successful' });
           })
           .catch(err => {
             log('error', `Error Saving newUser: ${err}`, 'userController');
           });
 
         const accessToken = await signAccessToken(newUser.uuId);
+        const refreshToken = await signRefreshToken(newUser.uuId);
         // response with an object, to get it in json format
-        res.status(201).send({ accessToken }).end();
+        res.status(200).json({ accessToken, refreshToken, success });
       }
     });
   }
 }
 
-// @Desc    login a user with email and password
+// @Desc    Login a user with email and password
 // @Method  POST
 // @Route   /api/v1/user/login
 // TODO Email and Password Login Start
 async function loginUser(req, res) {
   console.log('Request data:', req.body);
-
   const { email, password } = req.body;
+
   const errors = [];
   const success = [];
 
@@ -102,7 +102,7 @@ async function loginUser(req, res) {
     errors.push({ errorMsg: 'Please fill in all fields' });
   }
 
-  // Check Regular expression for email
+  // Check Regular Expression for email
   const regex = /^[\w-\.]+-carib@([\w-]+\.)+[\w-]{2,4}$/g;
   const found = email.match(regex);
   if (!found) {
@@ -111,26 +111,51 @@ async function loginUser(req, res) {
 
   // Logic to respond with the error messages
   if (errors.length > 0) {
-    console.log('Errors:', errors);
-
-    res.json({ errorMsg: errors }).end();
+    // console.log('Errors:', errors);
+    return res.status(400).json({ errorMsg: errors }).end();
   } else {
+    // Finding the user in the Database
     await UserModel.findOne({ email: email }).then(async user => {
+      // checks if there is a user
       if (!user) {
         errors.push({ errorMsg: 'This Caribou does not exist. Are you a Human?' });
-        res.json(errors).end();
+        return res.status(400).json(errors);
       } else {
-        success.push({ successMsg: 'Caribou logged in successfully.' });
-        // we want to authenticate the user in our database
-        console.log('The User that want to Login', user);
-        // errors.push({ msg: 'Authentication Error, Please try again'})
+        // If user is found - compare the password with the user in the Database // console.log('isValidPassword', isValidPassword); // returns true if valid
+        const isValidPassword = await bcrypt.compare(password, user.password);
+
+        if (!isValidPassword) {
+          errors.push({ errorMsg: 'Your Caribou username or password is not valid.' });
+          res.status(400).json(errors);
+        }
+
+        // Generate a new accessToken
+        const accessToken = await signAccessToken(user.uuId);
+        const refreshToken = await signRefreshToken(user.uuId);
+
+        success.push({ successMsg: 'Welcome Caribou. Logging in was successful.' });
+        res.status(201).json({ accessToken, refreshToken, success });
       }
     });
   }
 }
 
+const refreshUserToken = async (req, res, next) => {
+  try {
+    const { refreshToken } = req.body;
+    if (!refreshToken) throw createError.BadRequest();
+    const userId = await verifyRefreshToken(refreshToken);
+
+    const newAccessToken = await signAccessToken(userId);
+    const newRefreshToken = await signRefreshToken(userId);
+    res.status(200).json({ accessToken: newAccessToken, refreshToken: newRefreshToken });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
-  getAllUsers,
   registerUser,
   loginUser,
+  refreshUserToken,
 };

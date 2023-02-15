@@ -1,10 +1,10 @@
 const userRouter = require('express').Router();
-const { registerUser, getAllUsers, loginUser } = require('../controllers/userController');
+const { registerUser, loginUser, refreshUserToken } = require('../controllers/userController');
 
 // @Desc    Get all Users
 // @Method  GET
 // @Route   /api/v1/user/
-userRouter.get('/', getAllUsers);
+// userRouter.get('/', getAllUsers);
 
 // @Desc    Register/create a user with email and password
 // @Method  POST
@@ -21,20 +21,9 @@ userRouter.post('/login', loginUser);
 // @Route   /api/v1/user/logout
 // userRoutes.get('/logout', logoutUser);
 
-// @Desc    get the current User that's logged in
+// @Desc    refresh the user Token
 // @Method  GET
-// @Route   /api/v1/user/current
-// usersRouter.get('/current', currentUser);
+// @Route   /api/v1/user/refresh-token
+userRouter.post('/refresh-token', refreshUserToken);
 
 module.exports = userRouter;
-
-// (req, res) => {
-//   console.log('The Req User that just logged in', req.user);
-//   if (!req.user) {
-//     return;
-//   }
-//   const date = new Date();
-//   console.log(`User ID:${req.user.id} logged in at ${date}`);
-//   // Respond to the front end with the user that logged in
-//   res.json(req.user);
-// }

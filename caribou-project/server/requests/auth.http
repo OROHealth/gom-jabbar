@@ -16,14 +16,14 @@ withCredentials: true
 
 ###
 ### @Desc Login a User
-POST {{baseUrl}}/{{urlPath}}/signin
+POST {{baseUrl}}/{{urlPath}}/login
 Content-Type: application/json
 Accept: application/json
 withCredentials: true
 
 {
-  "email": "",
-  "password": ""
+  "email": "giovanni-carib@hotmail.com",
+  "password": "1234567"
 }
 
 ###
@@ -33,7 +33,12 @@ Accept: application/json
 withCredentials: true
 
 ###
-GET {{baseUrl}}/{{urlPath}}/currentuser
+### @Desc generate a new access token
+POST {{baseUrl}}/{{urlPath}}/refresh-token
 Content-Type: application/json
 Accept: application/json
 withCredentials: true
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzY0OTU3NDAsImV4cCI6MTcwODA1MzM0MCwiYXVkIjoiNjNlZDMxMGIzYTY2MDQ5NTdiOGE1M2NmIiwiaXNzIjoiaHR0cHM6bG9jYWxob3N0OjMwMDAifQ.1DuXOTHdXRBG2LVzw2V3Y77lu72x_HtV5PVX1n5LQ1A"
+}

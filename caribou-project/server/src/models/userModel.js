@@ -11,8 +11,8 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       min: [6, 'Must be at least 6, got {VALUE}'],
-      required: false,
-      select: false, // whenever we output this user, we don't have to show the password
+      required: true,
+      select: true, // whenever we output this user, we don't have to show the password
     },
     avatarImage: {
       type: String,
