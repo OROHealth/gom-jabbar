@@ -2,7 +2,7 @@ const UserModel = require('../models/userModel');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const log = require('../utils/logger');
-const { lowerCase } = require('../helpers/helpers');
+const { lowerCase, signAccessToken } = require('../helpers/helpers');
 // const path = require('path');
 // const { nextTick } = require('process')
 
@@ -13,11 +13,11 @@ async function getAllUsers(_req, res) {
   res.json(await UserModel.find({}));
 }
 
-// @Desc    register a user with email and password
+// @Desc    Register a user with email and password
 // @Method  POST
 // @Route   /api/v1/users
 async function registerUser(req, res) {
-  const { email, password } = req.body;
+  const { email, password, avatarImage } = req.body;
 
   let errors = [];
   let success = [];
@@ -54,38 +54,82 @@ async function registerUser(req, res) {
         // returns the encrypted password, of the newUser that just registered.
         const salt = await bcrypt.genSalt(12);
         const hashedPassword = await bcrypt.hash(password, salt);
-        const uuid = new mongoose.Types.ObjectId();
+        const uuId = new mongoose.Types.ObjectId();
 
         // Created a new instance of the user, but haven't saved it yet
         const newUser = new UserModel({
           email: lowerCase(email),
           password: hashedPassword,
-          uuid,
+          avatarImage,
+          uuId,
         });
-        console.log(newUser.email);
 
         // set the new user's password to the encrypted password version
         newUser.password = hashedPassword;
 
-        // save the newUser to the database
+        // save the newUser to the Database
         await newUser
           .save()
           .then(userSaved => {
-            log('info', req.body, 'userController');
-            // log('info', userSaved, 'userController');
+            // log('info', req.body, 'userController');
             success.push({ successMsg: 'Account created successfully' });
-            res.status(201).json({ message: 'creates' }).end();
           })
           .catch(err => {
             log('error', `Error Saving newUser: ${err}`, 'userController');
           });
+
+        const accessToken = await signAccessToken(newUser.uuId);
+        res.status(201).send(accessToken).end();
       }
     });
   }
 }
-// ?? Email and Password Login End
+
+// @Desc    login a user with email and password
+// @Method  POST
+// @Route   /api/v1/user/login
+// TODO Email and Password Login Start
+async function loginUser(req, res) {
+  console.log('Request data:', req.body);
+
+  const { email, password } = req.body;
+  const errors = [];
+  const success = [];
+
+  // Check required fields
+  if (!email || !password) {
+    errors.push({ errorMsg: 'Please fill in all fields' });
+  }
+
+  // Check Regular expression for email
+  const regex = /^[\w-\.]+-carib@([\w-]+\.)+[\w-]{2,4}$/g;
+  const found = email.match(regex);
+  if (!found) {
+    errors.push({ errorMsg: 'Humans are not allowed!' });
+  }
+
+  // Logic to respond with the error messages
+  if (errors.length > 0) {
+    console.log('Errors:', errors);
+
+    res.json({ errorMsg: errors }).end();
+  } else {
+    await UserModel.findOne({ email: email }).then(async user => {
+      if (!user) {
+        errors.push({ errorMsg: 'This Caribou does not exist. Are you a Human?' });
+        res.json(errors).end();
+      } else {
+        success.push({ successMsg: 'Caribou logged in successfully.' });
+        // we want to authenticate the user in our database
+        console.log('The User that want to Login', user);
+        // errors.push({ msg: 'Authentication Error, Please try again'})
+      }
+    });
+  }
+}
 
 module.exports = {
   getAllUsers,
   registerUser,
+  loginUser,
 };

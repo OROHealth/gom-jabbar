@@ -1,0 +1,37 @@
+@baseUrl = http://localhost:5001
+@urlPath = api/v1/user
+
+###
+POST {{baseUrl}}/{{urlPath}}/register
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "email": "secrestss-carib@hotmail.com",
+  "password": "123ss4567",
+  "avatarImage": "<add-a-base64-encoded-string>"
+}
+
+###
+POST {{baseUrl}}/{{urlPath}}/signin
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "email": "",
+  "password": ""
+}
+
+###
+GET {{baseUrl}}/{{urlPath}}/logout
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+###
+GET {{baseUrl}}/{{urlPath}}/currentuser
+Content-Type: application/json
+Accept: application/json
+withCredentials: true

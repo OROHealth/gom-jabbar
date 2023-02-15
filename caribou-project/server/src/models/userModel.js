@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema(
       required: false,
       select: false, // whenever we output this user, we don't have to show the password
     },
-    userImage: {
+    avatarImage: {
       type: String,
       required: true,
       select: true, // whenever we output this user, we don't have to show the password

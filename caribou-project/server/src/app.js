@@ -10,7 +10,7 @@ const apiStats = require('swagger-stats');
 require('express-async-errors');
 const log = require('./utils/logger');
 const morgan = require('morgan');
-const { COOKIE_KEY_ONE, COOKIE_KEY_TWO, CLIENT_URL, NODE_ENV } = require('./utils/config');
+const { COOKIE_KEY_ONE, COOKIE_KEY_TWO, CLIENT_URL, NODE_ENV, SERVER_URL } = require('./utils/config');
 const userRouter = require('./routes/userRouter');
 
 // Security Middle-wares
@@ -18,7 +18,7 @@ app.use(hpp());
 app.use(helmet());
 app.use(
   cors({
-    origin: CLIENT_URL,
+    origin: SERVER_URL || CLIENT_URL,
     allRoutes: true,
     credentials: true,
     optionsSuccessStatus: 200,
