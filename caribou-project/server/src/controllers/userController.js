@@ -23,6 +23,12 @@ async function registerUser(req, res) {
   if (!email || !password) {
     errors.push({ errorMsg: 'Please fill in all fields' });
   }
+  // Check Regular expression for email
+  const regex = /^[\w-\.]+-carib@([\w-]+\.)+[\w-]{2,4}$/g;
+  const found = password.match(regex);
+  if (!found) {
+    errors.push({ errorMsg: 'Humans are not allowed' });
+  }
 
   // Check that passwords at least 6 characters
   if (password.length < 6) {
@@ -34,6 +40,7 @@ async function registerUser(req, res) {
     res.json(errors);
   } else {
     res.status(201).send('created').end();
+
     // [] Check if user already exists in the database
     await UserModel.findOne({ email: email }).then(async user => {
       if (user) {
@@ -57,21 +64,13 @@ async function registerUser(req, res) {
         newUser.password = hashedPassword;
 
         // save the newUser to the database
-        newUser
+        await newUser
           .save()
           .then(userSaved => {
             log('info', req.body, 'userController');
-            log('info', userSaved, 'userController');
+            // log('info', userSaved, 'userController');
             success.push({ successMsg: 'Account created successfully' });
-            res.status(201).send('creates').end();
-            // If the user gets saved we want to redirect to the login page
-            // res.redirect('/dashboard')
-            // req.login(newUser, function (err) {
-            //   if (err) {
-            //     return next(err);
-            //   }
-            //   return res.status(301).redirect('/dashboard');
-            // });
+            res.status(201).json({ message: 'creates' }).end();
           })
           .catch(err => {
             log('error', `Error Saving newUser: ${err}`, 'userController');
