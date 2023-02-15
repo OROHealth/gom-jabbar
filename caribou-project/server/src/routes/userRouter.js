@@ -9,7 +9,7 @@ userRouter.get('/', getAllUsers);
 // @Desc    Register/create a user with email and password
 // @Method  POST
 // @Route   /api/v1/user/register
-// userRouter.post('/register', registerUser);
+userRouter.post('/register', registerUser);
 
 // @Desc    Login a user with email and password
 // @Method  POST

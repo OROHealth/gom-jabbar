@@ -9,6 +9,7 @@ const HTTP_STATUS = require('http-status-codes');
 const apiStats = require('swagger-stats');
 require('express-async-errors');
 const log = require('./utils/logger');
+const morgan = require('morgan');
 const { COOKIE_KEY_ONE, COOKIE_KEY_TWO, CLIENT_URL, NODE_ENV } = require('./utils/config');
 const userRouter = require('./routes/userRouter');
 
@@ -37,6 +38,7 @@ app.use(
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use(morgan('combined'));
 
 // Routes Middle-wares
 app.use('/api/v1/user', userRouter);
