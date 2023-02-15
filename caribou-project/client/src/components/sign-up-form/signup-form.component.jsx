@@ -1,6 +1,7 @@
 import { useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import { authService } from '@services/api/auth/auth.service';
+import { avatarColor, generateAvatar } from '@services/helpers/helpers';
 
 // import { LoadingContext } from '../../contexts/loading.context';
 
@@ -61,9 +62,12 @@ const SignUpForm = () => {
       // Create avatarColor
       // create avatar Image
       console.log('registering', email, password);
+      const color = avatarColor();
+      const avatarImage = generateAvatar(email.charAt(0).toUpperCase(), color);
       const result = await authService.signUp({
         email,
         password,
+        avatarImage,
       });
       console.log(result);
 

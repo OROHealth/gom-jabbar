@@ -1,4 +1,5 @@
 import { avatarColors } from '@services/utils/static.data';
+import { floor, random } from 'lodash';
 
 export const avatarColor = () => {
   return avatarColors[floor(random(0.9) * avatarColors.length)];
