@@ -16,13 +16,17 @@ const userRouter = require('./routes/userRouter');
 // Security Middle-wares
 app.use(hpp());
 app.use(helmet());
-app.use(cors('*'));
-// {
-//   origin: CLIENT_URL,
-//   credentials: true,
-//   optionsSuccessStatus: 200,
-//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-// }
+app.use(
+  cors({
+    origin: CLIENT_URL,
+    allRoutes: true,
+    credentials: true,
+    optionsSuccessStatus: 200,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    headers: 'content-type',
+  })
+);
+
 app.use(
   cookieSession({
     name: 'session',

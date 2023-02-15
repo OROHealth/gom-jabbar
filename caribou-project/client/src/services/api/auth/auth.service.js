@@ -3,12 +3,12 @@ import axios from '@services/utils/axios';
 class AuthService {
   // define all the functions you need
   async signUp(body) {
-    const response = axios.post('/signup', body);
+    const response = axios.post('user/register', body);
     return response;
   }
 
   async signIn(body) {
-    const response = axios.post('/signin', body);
+    const response = axios.post('user/login', body);
     return response;
   }
 
