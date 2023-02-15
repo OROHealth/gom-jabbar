@@ -14,6 +14,16 @@ const userSchema = new mongoose.Schema(
       required: false,
       select: false, // whenever we output this user, we don't have to show the password
     },
+    userImage: {
+      type: String,
+      required: true,
+      select: true, // whenever we output this user, we don't have to show the password
+    },
+    uuId: {
+      type: String,
+      required: true,
+      select: true, // whenever we output this user, we don't have to show the password
+    },
   },
   {
     timestamps: true,

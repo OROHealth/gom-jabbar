@@ -1,6 +1,8 @@
 const UserModel = require('../models/userModel');
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const log = require('../utils/logger');
+const { lowerCase } = require('../helpers/helpers');
 // const path = require('path');
 // const { nextTick } = require('process')
 
@@ -16,18 +18,19 @@ async function getAllUsers(_req, res) {
 // @Route   /api/v1/users
 async function registerUser(req, res) {
   const { email, password } = req.body;
+
   let errors = [];
   let success = [];
 
   // Check required fields
   if (!email || !password) {
-    errors.push({ errorMsg: 'Please fill in all fields' });
+    errors.push({ errorMsg: 'Please fill in all fields Caribou' });
   }
   // Check Regular expression for email
   const regex = /^[\w-\.]+-carib@([\w-]+\.)+[\w-]{2,4}$/g;
-  const found = password.match(regex);
+  const found = email.match(regex);
   if (!found) {
-    errors.push({ errorMsg: 'Humans are not allowed' });
+    errors.push({ errorMsg: 'Humans are not allowed!' });
   }
 
   // Check that passwords at least 6 characters
@@ -39,13 +42,11 @@ async function registerUser(req, res) {
     // If there is an issue then I want to rerender the registration form with the error message
     res.json(errors);
   } else {
-    res.status(201).send('created').end();
-
     // [] Check if user already exists in the database
     await UserModel.findOne({ email: email }).then(async user => {
       if (user) {
-        // If User Exists. then we push a new error object to be displayed in the frontend
-        errors.push({ errorMsg: "I'm sorry this user already exist!" });
+        // If User Already Exists. Then we displayed in the frontend a message
+        errors.push({ errorMsg: "I'm sorry this Caribou already exists!" });
         res.json(errors);
       } else {
         // [] Encrypt password - Hash the password before saving it to the database
@@ -53,12 +54,15 @@ async function registerUser(req, res) {
         // returns the encrypted password, of the newUser that just registered.
         const salt = await bcrypt.genSalt(12);
         const hashedPassword = await bcrypt.hash(password, salt);
+        const uuid = new mongoose.Types.ObjectId();
 
         // Created a new instance of the user, but haven't saved it yet
         const newUser = new UserModel({
-          email,
+          email: lowerCase(email),
           password: hashedPassword,
+          uuid,
         });
+        console.log(newUser.email);
 
         // set the new user's password to the encrypted password version
         newUser.password = hashedPassword;

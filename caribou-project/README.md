@@ -47,3 +47,8 @@ Function to allow the user to:
     'muu' and every consonant is replaced by 'grm'
   - is secured to only allow signing up with addresses that are Cariboued (they contain 'carib' at the end of the
     username, like bruno-carib@orohealth.me is my Caribou address, yes, I am a secret Caribou agent)
+
+
+## What I would have implemented
+> Sign up would have included the first name and last name
+>
