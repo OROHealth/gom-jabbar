@@ -1,3 +1,4 @@
+import { removeUser } from '@redux/reducers/user/user.reducer';
 import { avatarColors } from '@services/utils/static.data';
 import { floor, random } from 'lodash';
 
@@ -23,4 +24,10 @@ export const generateAvatar = (text, backgroundColor, foregroundColor = 'white')
   context.fillText(text, canvas.width / 2, canvas.height / 2);
 
   return canvas.toDataURL('image/png');
+};
+
+export const clearStore = ({ dispatch, deleteStorageUser, setLoggedIn }) => {
+  dispatch(removeUser());
+  deleteStorageUser();
+  setLoggedIn(false);
 };

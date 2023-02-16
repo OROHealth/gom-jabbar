@@ -11,3 +11,22 @@
 .loading-button{
   width: 100%;
 }
+
+.alerts {
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.25rem;
+  margin-bottom: .5rem;
+  margin-top: 1rem;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+.alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}

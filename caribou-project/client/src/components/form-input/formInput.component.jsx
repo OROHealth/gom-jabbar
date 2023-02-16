@@ -2,11 +2,10 @@ import React from 'react';
 
 // stylesheet
 import './formInput.styles.scss';
-import {} from './formInput.styles.jsx';
 
 const formInput = ({ label, ...rest }) => {
   return (
-    <div className="group">
+    <div className={`group ${rest.type === 'email' && 'form-home-email'}`}>
       {/*
     Render some string where the value is dependent on the rest of the props value.
     [] If the value of length is present. meaning that. If the user has typed something into this input. That means I want the label to shrink. otherwise don't do anything return an empty string.

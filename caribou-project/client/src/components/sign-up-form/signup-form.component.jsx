@@ -1,17 +1,20 @@
 import { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { authService } from '@services/api/auth/auth.service';
 import { avatarColor, generateAvatar } from '@services/helpers/helpers';
+import { useDispatch } from 'react-redux';
 
 // import { LoadingContext } from '../../contexts/loading.context';
 
 // styleSheet
-import '@components/sign-up-form/signup-form.component';
+import '@components/sign-up-form/signup-form.styles.scss';
 
 // Components
 import FormInput from '@components/form-input/formInput.component';
 import Button from '@components/button/Button';
 import ReactSpinner from '@components/react-spinner/react-spinner.component';
+import useLocalStorage from '@hooks/useLocalStorage';
+import { addUser } from '@redux/reducers/user/user.reducer';
 
 const defaultFormFields = {
   email: '',
@@ -26,8 +29,13 @@ const SignUpForm = () => {
   const [loading, setLoading] = useState(false);
   const [alertType, setAlertType] = useState('');
   const [errorMessages, setErrorMessages] = useState([]);
+  const [successMessages, setSuccessMessages] = useState([]);
   const [hasError, setHasError] = useState(false);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [setStorageAccessToken] = useLocalStorage('access-token', 'set');
+  const [setStorageRefreshToken] = useLocalStorage('refresh-token', 'set');
+  const [setStorageLoggedIn] = useLocalStorage('loggedIn', 'set');
+  const dispatch = useDispatch();
 
   const resetFormFields = () => {
     // Sets the form to it's initial state in the original object.
@@ -39,20 +47,23 @@ const SignUpForm = () => {
     const formInput = { ...formFields, [name]: value };
 
     setFormFields(formInput);
-    console.log(formInput);
+    // console.log(formInput);
   };
 
   //
   //
   const handleFormSubmit = async (event) => {
-    event.preventDefault();
     setLoading(true);
+    event.preventDefault();
     const error = [];
 
     // [] confirm that the password matches
     if (password !== confirmPassword) {
       error.push('Passwords do not match. Wrong password.');
-      setErrorMessages(error);
+      setHasError(true);
+      setAlertType('alert-error');
+      setErrorMessages([error]);
+      setLoading(false);
       return;
     }
 
@@ -61,7 +72,7 @@ const SignUpForm = () => {
     try {
       // Create avatarColor
       // create avatar Image
-      console.log('registering', email, password);
+      // console.log('Registering', email, password);
       const color = avatarColor();
       const avatarImage = generateAvatar(email.charAt(0).toUpperCase(), color);
       const result = await authService.signUp({
@@ -69,13 +80,44 @@ const SignUpForm = () => {
         password,
         avatarImage,
       });
-      console.log(result);
 
-      setLoading(false);
+      console.log('Result that the server sent back:', result);
+      const errorMsg = result.data[0]?.errorMsg;
+      if (errorMsg) {
+        setAlertType('alert-error');
+        setLoading(false);
+        setHasError(true);
+        return setErrorMessages([errorMsg]);
+      }
+
+      // set logged in to true in local storage
+      setStorageLoggedIn(true);
+      // save/dispatch the user to Redis
+      const accessToken = result.data.accessToken;
+      const refreshToken = result.data.refreshToken;
+      dispatch(
+        addUser({
+          refreshToken,
+          accessToken,
+          avatarImage,
+        })
+      );
+      // save the token and refresh token to local storage
+      setStorageAccessToken(accessToken);
+      setStorageRefreshToken(refreshToken);
+
       setAlertType('alert-success');
+      setHasError(true);
+      setErrorMessages([]);
+      // set success Messages
+      const successMsg = result.data?.success[0]?.successMsg;
+      setSuccessMessages([successMsg]);
+      // clear fields
       resetFormFields();
-      // navigate('/dashboard');
-      //
+      setLoading(false);
+      if (!hasError) {
+        navigate('/dashboard');
+      }
     } catch (error) {
       setLoading(false);
       setHasError(true);
@@ -83,12 +125,7 @@ const SignUpForm = () => {
       const errorCode = error.code;
       const errorMessage = error.message;
 
-      if (errorCode === 'auth/email-already-in-use') {
-        // setErrorMessage(error?.response?.data?.message);
-        alert('Cannot create user, email already in use');
-      }
-      // console.log('Error creating the user', errorCode, errorMessage)
-      console.log('Error creating the user.', 'Error Code:', errorCode, 'Error Message:', errorMessage);
+      console.log('Error Registering the user.', 'Error Code:', errorCode, 'Error Message:', errorMessage);
     }
   };
 
@@ -97,9 +134,10 @@ const SignUpForm = () => {
       <div className="sign-up-container">
         <h2>Don&apos;t have an account?</h2>
         <span>Sign up with your email and password</span>
-        {hasError && errorMessages && (
+        {hasError && errorMessages && successMessages && (
           <div className={`alerts ${alertType}`} role="alert">
             {errorMessages}
+            {successMessages}
           </div>
         )}
         <form onSubmit={handleFormSubmit}>

@@ -51,4 +51,4 @@ Function to allow the user to:
 
 ## What I would have implemented
 > Sign up would have included the first name and last name
->
+> I would add tooltip to show when a user create a pin on the map
