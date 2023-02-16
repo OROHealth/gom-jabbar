@@ -1,5 +1,5 @@
 .button {
-  padding: 6px 8px;
+  // padding: 6px 8px;
   border: 2px solid rgb(222, 0, 111);
   border-radius: 5px;
   font-size: 1.05rem;
@@ -9,7 +9,6 @@
   min-width: 100px;
   background-color: transparent;
   color: hsl(330, 100%, 44%);
-  margin-left: 10px;
   height: 40px;
   cursor: pointer
   ;
@@ -19,7 +18,7 @@
   }
 }
 
-@media screen and (min-width: 20em) {
+@media screen and (min-width: 8em) {
   .button {
     margin-left: 0;
   }

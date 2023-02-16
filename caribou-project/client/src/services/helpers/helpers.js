@@ -1,9 +1,9 @@
 import { removeUser } from '@redux/reducers/user/user.reducer';
-import { avatarColors } from '@services/utils/static.data';
+import { colors } from '@services/utils/static.data';
 import { floor, random } from 'lodash';
 
 export const avatarColor = () => {
-  return avatarColors[floor(random(0.9) * avatarColors.length)];
+  return colors[floor(random(0.9) * colors.length)];
 };
 
 export const generateAvatar = (text, backgroundColor, foregroundColor = 'white') => {
