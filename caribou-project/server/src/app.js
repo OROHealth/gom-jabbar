@@ -49,6 +49,11 @@ app.use(morgan('combined'));
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/app', verifyAccessToken, userRouter);
 
+// Health check route - endpoint that returns a 200 status code if your application is running
+app.get('/_health', (req, res) => {
+  res.status(200).send('ok');
+});
+
 // Api Monitoring
 app.use(
   apiStats.getMiddleware({

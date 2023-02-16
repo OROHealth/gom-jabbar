@@ -22,6 +22,19 @@ mongoose.connection.on('error', err => {
   log('error', `Error Connecting to MongoDB: ${err}, ${err.message}`, 'setupDatabase');
 });
 
+process.on('SIGINT', () => {
+  mongoose.disconnect(() => {
+    console.log('Mongoose default connection disconnected through app termination');
+    process.exit(0);
+  });
+});
+process.on('SIGTERM', () => {
+  mongoose.disconnect(() => {
+    console.log('Mongoose default connection disconnected through app termination');
+    process.exit(0);
+  });
+});
+
 // mongoose.connection.on('disconnected', setupDatabase);
 
 module.exports = setupDatabase;

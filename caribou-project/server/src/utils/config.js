@@ -1,7 +1,8 @@
 require('dotenv').config();
 
 const MONGODB_URL = process.env.MONGODB_URL;
-const SERVER_PORT = process.env.PORT || process.env.SERVER_PORT;
+const SERVER_PORT = process.env.SERVER_PORT;
+const SERVER_PORT_TWO = process.env.SERVER_PORT_TWO;
 const NODE_ENV = process.env.NODE_ENV;
 const COOKIE_KEY_ONE = process.env.COOKIE_KEY_ONE;
 const COOKIE_KEY_TWO = process.env.COOKIE_KEY_TWO;
@@ -13,6 +14,7 @@ const JWT_REFRESH_TOKEN = process.env.JWT_REFRESH_TOKEN;
 module.exports = {
   MONGODB_URL,
   SERVER_PORT,
+  SERVER_PORT_TWO,
   NODE_ENV,
   COOKIE_KEY_ONE,
   COOKIE_KEY_TWO,
