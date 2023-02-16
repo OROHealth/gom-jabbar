@@ -1,4 +1,4 @@
-import axios from '@utils/axios';
+import axios from '@services/utils/axios';
 
 class UserService {
   async getUserSuggestions() {

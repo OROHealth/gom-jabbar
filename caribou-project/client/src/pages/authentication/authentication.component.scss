@@ -1,30 +1,45 @@
 .authentication-container {
-  display: flex;
   width: 900px;
+  align-items: center;
   justify-content:space-between;
-  margin: 30px auto;
 }
 
-@media screen and (min-width: 10em) {
+@media screen and (min-width: 8em) {
   .authentication-container {
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    justify-content: flex-start;
+    padding: 0 20px;
     width: 100vw;
     height: 900px;
-    gap: 60px;
     margin: 0 auto;
     align-items: center;
-    justify-content: center;
+    margin-top: 0;
     margin-bottom: 70px;
+    // border: 1px solid red;
   }
+
+  .auth-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 40px;
+  }
+
 }
 @media screen and (min-width: 40em) {
   .authentication-container {
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    padding-top: 98px;
+  }
 
+  .auth-wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 90px;
   }
 }

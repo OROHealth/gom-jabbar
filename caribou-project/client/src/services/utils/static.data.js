@@ -16,7 +16,7 @@ export const bgColors = [
 ];
 
 // avatar art color
-export const avatarColors = [
+export const colors = [
   '#f44336',
   '#e91e63',
   '#2196f3',

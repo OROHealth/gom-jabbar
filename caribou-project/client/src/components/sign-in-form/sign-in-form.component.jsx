@@ -113,7 +113,9 @@ const SignInForm = () => {
     <>
       <div className="sign-up-container">
         <h2>Already have an account?</h2>
-        <span>Sign in with your email and password</span>
+        <span>
+          <strong style={{ color: '#de006f' }}>Sign in</strong> with your email and password
+        </span>
         {hasMsg ||
           (errorMessages.length > 0 && successMessages && (
             <div className={`alerts ${alertType}`} role="alert">

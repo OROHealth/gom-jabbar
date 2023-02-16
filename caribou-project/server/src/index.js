@@ -27,6 +27,10 @@ async function startServer() {
       log('error', `PORT Already in use ${SERVER_PORT}`, 'index');
       shutDownProperly(1);
     }
+    if (error.code === 'EPIPE') {
+      log('error', `Emitted 'error' event on Socket instance at ${SERVER_PORT}`, 'index');
+      shutDownProperly(1);
+    }
     log('info', `HERE IS THE ERROR: Code: ${error.code} Error: ${error} PID: ${process.pid}`, 'index');
   });
 }

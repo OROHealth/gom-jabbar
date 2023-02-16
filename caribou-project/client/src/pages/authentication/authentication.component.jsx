@@ -1,5 +1,3 @@
-import React from 'react';
-
 // stylesheet
 import './authentication.component.scss';
 
@@ -13,8 +11,10 @@ const Authentication = () => {
     <>
       <HomeNavigation />
       <div className="authentication-container">
-        <SignInForm />
-        <SignUpForm />
+        <div className="auth-wrapper">
+          <SignInForm />
+          <SignUpForm />
+        </div>
       </div>
     </>
   );
