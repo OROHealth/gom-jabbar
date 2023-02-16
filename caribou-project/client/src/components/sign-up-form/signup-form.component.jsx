@@ -4,8 +4,6 @@ import { authService } from '@services/api/auth/auth.service';
 import { avatarColor, generateAvatar } from '@services/helpers/helpers';
 import { useDispatch } from 'react-redux';
 
-// import { LoadingContext } from '../../contexts/loading.context';
-
 // styleSheet
 import '@components/sign-up-form/signup-form.styles.scss';
 
@@ -15,6 +13,7 @@ import Button from '@components/button/Button';
 import ReactSpinner from '@components/react-spinner/react-spinner.component';
 import useLocalStorage from '@hooks/useLocalStorage';
 import { addUser } from '@redux/reducers/user/user.reducer';
+import useSessionStorage from '@hooks/useSessionStorage';
 
 const defaultFormFields = {
   email: '',
@@ -35,6 +34,7 @@ const SignUpForm = () => {
   const [setStorageAccessToken] = useLocalStorage('access-token', 'set');
   const [setStorageRefreshToken] = useLocalStorage('refresh-token', 'set');
   const [setStorageLoggedIn] = useLocalStorage('loggedIn', 'set');
+  const [setAvatar] = useSessionStorage('avatarImage', 'set');
   const dispatch = useDispatch();
 
   const resetFormFields = () => {
@@ -79,10 +79,11 @@ const SignUpForm = () => {
         email,
         password,
         avatarImage,
+        loggedIn: true,
       });
 
-      console.log('Result that the server sent back:', result);
-      const errorMsg = result.data[0]?.errorMsg;
+      // console.log('Result that the server sent back:', result);
+      const errorMsg = result?.data[0]?.errorMsg;
       if (errorMsg) {
         setAlertType('alert-error');
         setLoading(false);
@@ -92,6 +93,8 @@ const SignUpForm = () => {
 
       // set logged in to true in local storage
       setStorageLoggedIn(true);
+      // set avatarImage in to true in session storage
+      setAvatar(avatarImage);
       // save/dispatch the user to Redis
       const accessToken = result.data.accessToken;
       const refreshToken = result.data.refreshToken;
@@ -110,13 +113,13 @@ const SignUpForm = () => {
       setHasError(true);
       setErrorMessages([]);
       // set success Messages
-      const successMsg = result.data?.success[0]?.successMsg;
+      const successMsg = result?.data?.success[0]?.successMsg;
       setSuccessMessages([successMsg]);
       // clear fields
       resetFormFields();
       setLoading(false);
       if (!hasError) {
-        navigate('/dashboard');
+        navigate('/app/dashboard');
       }
     } catch (error) {
       setLoading(false);
@@ -136,12 +139,14 @@ const SignUpForm = () => {
         <span>
           <strong style={{ color: '#de006f' }}>Sign up</strong> with your email and password
         </span>
-        {hasError && errorMessages && successMessages && (
-          <div className={`alerts ${alertType}`} role="alert">
-            {errorMessages}
-            {successMessages}
-          </div>
-        )}
+        <div>
+          {hasError && errorMessages && successMessages && (
+            <div className={`alerts ${alertType}`} role="alert">
+              {errorMessages}
+              {successMessages}
+            </div>
+          )}
+        </div>
         <form onSubmit={handleFormSubmit}>
           {/* // required makes sure the input is not empty */}
           <FormInput label="Email" type="email" required onChange={handleFormInputChange} name="email" value={email} />

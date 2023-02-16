@@ -8,7 +8,7 @@ import Button from '@components/button/Button';
 const HomeNavigation = () => {
   const navigate = useNavigate();
   const handleNavigateToDashboard = () => {
-    navigate('/dashboard');
+    navigate('/app/dashboard');
   };
   return (
     <>

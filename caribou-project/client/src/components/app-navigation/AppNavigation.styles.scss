@@ -1,4 +1,4 @@
-.app-navbar-container{
+.app-navbar-container {
   z-index: 1;
   position: sticky;
   top: 0;
@@ -13,7 +13,7 @@
   padding: 0 20px;
   background-color: white;
 
-  .nav-items{
+  .nav-items {
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -23,6 +23,10 @@
     height: 80%;
     cursor: pointer;
     // border: 2px solid red;
+
+    .app-nav-title{
+      margin-right: 10px;
+    }
 
     .app-navbar {
       display: flex;
@@ -41,5 +45,34 @@
         height: 100%;
       }
     }
+
+    .app-dash-dropdown{
+      position: absolute;
+      top: 80px;
+      height: 150px;
+      width: 200px;
+      padding: 35px 20px;
+      border: 2px solid  #de006f;
+      background-color: rgb(255, 255, 255);
+      cursor: initial;
+
+
+      .dropdown-bg-btn {
+        background-color: #de006f;
+        color: white;
+      }
+
+      .dropdown-bg-btn:hover {
+        background-color: hsla(330, 100%, 44%, 0.152);
+        color: #ea0075;
+      }
+    }
+
+    .app-flex{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
+
 }

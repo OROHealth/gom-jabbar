@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { addUser } from '@redux/reducers/user/user.reducer';
 
 //  StyleSheet
-import './sign-in-form.styles.scss';
+import '@components/sign-in-form/sign-in-form.styles.scss';
 
 // Components
 import FormInput from '@components/form-input/formInput.component';
@@ -51,14 +51,14 @@ const SignInForm = () => {
     event.preventDefault();
 
     try {
-      resetFormFields();
+      // resetFormFields();
       // console.log('Logging In', email, password);
       const result = await authService.signIn({
         email,
         password,
       });
 
-      const errorMsg = result.data[0]?.errorMsg;
+      const errorMsg = result?.data[0]?.errorMsg;
       if (errorMsg) {
         setAlertType('alert-error');
         setLoading(false);
@@ -78,8 +78,10 @@ const SignInForm = () => {
           refreshToken,
           accessToken,
           avatarImage,
+          loggedIn: true,
         })
       );
+      resetFormFields();
       // save the token and refresh token to local storage
       setStorageAccessToken(accessToken);
       setStorageRefreshToken(refreshToken);
@@ -88,11 +90,12 @@ const SignInForm = () => {
       setHasMsg(true);
       setErrorMessages([]);
       // set success Messages
+
       const successMsg = result.data?.success[0]?.successMsg;
       setSuccessMessages([successMsg]);
       resetFormFields();
       setLoading(false);
-      navigate('/dashboard');
+      navigate('/app/dashboard');
 
       //
     } catch (error) {
@@ -109,6 +112,7 @@ const SignInForm = () => {
     }
   };
 
+  // console.log(alertType);
   return (
     <>
       <div className="sign-up-container">
@@ -116,13 +120,14 @@ const SignInForm = () => {
         <span>
           <strong style={{ color: '#de006f' }}>Sign in</strong> with your email and password
         </span>
-        {hasMsg ||
-          (errorMessages.length > 0 && successMessages && (
+        <div>
+          {hasMsg && errorMessages && successMessages && (
             <div className={`alerts ${alertType}`} role="alert">
               {errorMessages}
               {successMessages}
             </div>
-          ))}
+          )}
+        </div>
         <form onSubmit={handleLoginWithEmailAndPasswordOnSubmit}>
           <FormInput
             label="Email"
