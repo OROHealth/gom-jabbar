@@ -13,6 +13,7 @@ const morgan = require('morgan');
 const { COOKIE_KEY_ONE, COOKIE_KEY_TWO, CLIENT_URL, NODE_ENV, SERVER_URL } = require('./utils/config');
 const userRouter = require('./routes/userRouter');
 const { verifyAccessToken } = require('./helpers/helpers');
+const client = require('./helpers/initRedis');
 
 // Security Middle-wares
 app.use(hpp());
@@ -54,6 +55,17 @@ app.use(
     uriPath: '/api-monitoring',
   })
 );
+
+// Redis
+async () => {
+  await client.connect();
+
+  await client.SET('foo', 'bar');
+
+  const value = await client.get('foo');
+
+  console.log(value);
+};
 
 // Global Error Handler
 app.all('*', (req, res) => {

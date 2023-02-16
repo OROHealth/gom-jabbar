@@ -1,5 +1,5 @@
 const userRouter = require('express').Router();
-const { registerUser, loginUser, refreshUserToken } = require('../controllers/userController');
+const { registerUser, loginUser, logoutUser, refreshUserToken } = require('../controllers/userController');
 
 // @Desc    Get all Users
 // @Method  GET
@@ -14,12 +14,11 @@ userRouter.post('/register', registerUser);
 // @Desc    Login a user with email and password
 // @Method  POST
 // @Route   /api/v1/user/login
-// @Explanation comparing the hashed password with the current password
 userRouter.post('/login', loginUser);
 
 // @Desc    Log User out of the application
 // @Route   /api/v1/user/logout
-// userRoutes.get('/logout', logoutUser);
+userRouter.delete('/logout', logoutUser);
 
 // @Desc    refresh the user Token
 // @Method  GET

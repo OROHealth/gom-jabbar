@@ -9,6 +9,21 @@ const log = require('./utils/logger');
 async function startServer() {
   log('info', 'Connecting to: MongoDB', 'index');
   setupDatabase();
+  server.on('listening', event => {
+    log('info', 'ok, server is running', 'index');
+  });
+  // Handling address already in use Error
+  server.on('error', error => {
+    if (error.code === 'EADDRINUSE') {
+      // console.log(typeOf SERVER_PORT)
+      SERVER_PORT += 1;
+      console.log('Address in use, retrying on port ' + SERVER_PORT);
+      setTimeout(function () {
+        HTTPserver.listen(SERVER_PORT);
+      }, 250);
+    }
+    log('info', `HERE IS THE ERROR: Code: ${error.code} Error: ${error}`, 'index');
+  });
 
   log('info', `Worker with process id of ${process.pid} has started...`, 'index');
   log('info', `Server has started with process ${process.pid}`, 'index');
@@ -42,7 +57,7 @@ const handleExit = () => {
 
   process.on('SIGTERM', async () => {
     log('error', 'Caught SIGTERM', 'index');
-    await shutDownProperly(2);
+    shutDownProperly(2);
   });
 
   process.on('SIGINT', () => {

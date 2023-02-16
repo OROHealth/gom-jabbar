@@ -140,6 +140,16 @@ async function loginUser(req, res) {
   }
 }
 
+const logoutUser = async (req, res, next) => {
+  try {
+    const { refreshToken, user } = req.body;
+    if (!refreshToken) throw createError.BadRequest();
+    const userId = await verifyRefreshToken(refreshToken);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const refreshUserToken = async (req, res, next) => {
   try {
     const { refreshToken } = req.body;
@@ -157,5 +167,6 @@ const refreshUserToken = async (req, res, next) => {
 module.exports = {
   registerUser,
   loginUser,
+  logoutUser,
   refreshUserToken,
 };

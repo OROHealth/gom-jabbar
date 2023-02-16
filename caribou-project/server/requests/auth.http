@@ -27,10 +27,15 @@ withCredentials: true
 }
 
 ###
-GET {{baseUrl}}/{{urlPath}}/logout
+DELETE {{baseUrl}}/{{urlPath}}/logout
 Content-Type: application/json
 Accept: application/json
 withCredentials: true
+
+{
+  "refreshToken":
+}
+
 
 ###
 ### @Desc generate a new access token

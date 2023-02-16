@@ -22,4 +22,6 @@ mongoose.connection.on('error', err => {
   log('error', `Error Connecting to MongoDB: ${err}, ${err.message}`, 'setupDatabase');
 });
 
+// mongoose.connection.on('disconnected', setupDatabase);
+
 module.exports = setupDatabase;
