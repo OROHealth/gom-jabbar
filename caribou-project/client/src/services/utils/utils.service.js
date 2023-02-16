@@ -1,5 +1,4 @@
 import { colors } from '@services/utils/static.data';
-
 import { floor, random } from 'lodash';
 
 export class UtilsService {
@@ -34,8 +33,4 @@ export class UtilsService {
     // this is all I need to generate a canvas
     return canvas.toDataURL('image/png');
   }
-
-  // static dispatch(result, pageReload, dispatch, setUser) {
-  //   dispatch(changeLoginOrRegister({ loginTab: false }));
-  // }
 }
