@@ -4,7 +4,7 @@
   "ext": "ts,js,json",
   "ignore": ["node_modules", "coverage", "dist"],
   "exec": "node src/index.js",
-  "delay": "1500ms",
+  "delay": "5000ms",
   "restartable": "rs",
   "signal": "SIGHUP",
   "events": {

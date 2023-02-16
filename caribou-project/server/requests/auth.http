@@ -1,0 +1,49 @@
+@baseUrl = http://localhost:5001
+@urlPath = api/v1/user
+
+###
+### @Desc Register a User
+POST {{baseUrl}}/{{urlPath}}/register
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "email": "secrestssss-carib@hotmail.com",
+  "password": "123s4567",
+  "avatarImage": "<add-a-base64-encoded-string>"
+}
+
+###
+### @Desc Login a User
+POST {{baseUrl}}/{{urlPath}}/login
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "email": "giovanni-carib@hotmail.com",
+  "password": "1234567"
+}
+
+###
+DELETE {{baseUrl}}/{{urlPath}}/logout
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "refreshToken":
+}
+
+
+###
+### @Desc generate a new access token
+POST {{baseUrl}}/{{urlPath}}/refresh-token
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzY0OTU3NDAsImV4cCI6MTcwODA1MzM0MCwiYXVkIjoiNjNlZDMxMGIzYTY2MDQ5NTdiOGE1M2NmIiwiaXNzIjoiaHR0cHM6bG9jYWxob3N0OjMwMDAifQ.1DuXOTHdXRBG2LVzw2V3Y77lu72x_HtV5PVX1n5LQ1A"
+}
