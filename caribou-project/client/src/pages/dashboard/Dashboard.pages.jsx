@@ -1,7 +1,13 @@
 import React from 'react';
+import AppNavigation from '@components/app-navigation/AppNavigation.component';
 
 const Dashboard = () => {
-  return <div>Welcome to the dashboard</div>;
+  return (
+    <>
+      <AppNavigation />
+      <div>Welcome to the dashboard</div>
+    </>
+  );
 };
 
 export default Dashboard;
