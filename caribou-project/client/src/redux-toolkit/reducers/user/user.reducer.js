@@ -1,11 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  username: '',
+  accessToken: '',
+  refreshToken: '',
+  avatarImage: '',
   email: '',
-  password: '',
-  avatarColor: '',
-  profileImage: '',
 };
 
 const userReducerSlice = createSlice({
@@ -13,19 +12,17 @@ const userReducerSlice = createSlice({
   initialState,
   reducers: {
     addUser: (state, action) => {
-      const { username, email, password, avatarColor, profileImage } = action.payload;
-      state.username = username;
+      const { accessToken, refreshToken, avatarImage, email } = action.payload;
+      state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
+      state.avatarImage = avatarImage;
       state.email = email;
-      state.password = password;
-      state.avatarColor = avatarColor;
-      state.profileImage = profileImage;
     },
     removeUser: (state, _action) => {
-      state.username = '';
+      state.accessToken = '';
+      state.refreshToken = '';
+      state.avatarImage = '';
       state.email = '';
-      state.password = '';
-      state.avatarColor = '';
-      state.profileImage = '';
     },
   },
 });
