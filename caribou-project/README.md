@@ -7,6 +7,28 @@ npm run start:both
 
 These two commands will install the packages for both the client and the server and also run both applications in the terminal.
 
+# Environment Variables Needed
+## Server
+### Environment
+NODE_ENV=
+### Port Backend
+SERVER_PORT=
+### Client Url
+CLIENT_URL=
+SERVER_URL=
+### Database or DATABASE_URL=
+MONGODB_URL=
+### Token
+JWT_ACCESS_TOKEN=
+JWT_REFRESH_TOKEN=
+### Session Keys
+COOKIE_KEY_ONE=
+COOKIE_KEY_TWO=
+
+
+## Client
+REACT_APP_MAPBOX_API_KEY=
+
 
 ## Overview
 Since the dawn of time, Caribou have been pretending to be stupid mammals but secretly observing the evolution of those
