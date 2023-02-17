@@ -56,7 +56,7 @@ const AppNavigation = () => {
             <FaAngleDown />
             {dropdownOpen && (
               <div className="app-dash-dropdown">
-                <span>We&apos;re sorry to see you go:</span>
+                <span>We&apos;re sorry to see you go Caribou : &#40;</span>
 
                 <button className="button dropdown-bg-btn" onClick={handleLogOutUser}>
                   Logout
