@@ -44,8 +44,10 @@ const MapFormSpotHuman = () => {
     <>
       <form onSubmit={handleFormSubmit}>
         <h2> Did you spot a human?</h2>
+        <label htmlFor="human-presence">Signal the presence of humans.</label>
         <FormInput
-          label="Signal the presence of a human"
+          id="human-presence"
+          label="Add location"
           type="text"
           required
           onChange={handleFormInputChange}
@@ -62,7 +64,17 @@ const MapFormSpotHuman = () => {
           step="1"
           onChange={handleRangeChange}
           value={trashingRange}
+          list="markers"
         />
+        <datalist id="markers">
+          <option value="0"></option>
+          <option value="5"></option>
+          <option value="10"></option>
+          <option value="15"></option>
+          <option value="20"></option>
+          <option value="25"></option>
+        </datalist>
+
         <div>{trashingRange}</div>
         <div className="loading-button">
           <Button type="submit">{loading ? <ReactSpinner /> : `Adding to the map`}</Button>
