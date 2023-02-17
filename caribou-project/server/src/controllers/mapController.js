@@ -4,10 +4,8 @@ const log = require('../utils/logger');
 const createError = require('http-errors');
 const { lowerCase } = require('../helpers/helpers');
 const UserModel = require('../models/userModel');
-const jwt = require('jsonwebtoken');
 // const { registerUser } = require('./userController');
 // const { usersData, mapsData } = require('./mapData');
-// const toId = mongoose.Types.ObjectId;
 // const { lowerCase, signAccessToken, signRefreshToken, verifyRefreshToken } = require('../helpers/helpers');
 
 // @Desc     Display all Users
@@ -62,34 +60,7 @@ async function postAMapLocation(req, res) {
   });
 }
 
-// @Desc    creating users and Maps with email and password
-// @Method  GET
-// @Route   /api/v1/map/query?=seedMap
-// async function seedMap(_req, res) {
-//   const newMap = await MapModel.create(mapsData);
-//   const newUser = await UserModel.create(usersData);
-//   console.log(newUser);
-//   console.log('newUser: ', newUser);
-//   console.log('newMap: ', newMap);
-
-//   res.json({ newUser, newMap });
-// }
-
-// // @Desc    Assigning users to maps
-// // @Method  GET
-// // @Route   /api/v1/map/assign/:map/:user
-// const assigningMapToUser = async (req, res) => {
-//   request.params.user = toId(req.params.user);
-//   // request.params.map = toId(req.params.map);
-//   const map = await MapModel.findById(req.params.map);
-//   map.user = req.params.user;
-//   map.save();
-//   res.json({ map });
-// };
-
 module.exports = {
   getAllMapLocations,
   postAMapLocation,
-  // seedMap,
-  // assigningMapToUser,
 };
