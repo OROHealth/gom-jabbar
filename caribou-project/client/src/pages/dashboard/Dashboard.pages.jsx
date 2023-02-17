@@ -1,8 +1,12 @@
-// import React, { useEffect } from 'react';
+import React from 'react';
+
+// Stylesheet
+import '@pages/dashboard/Dashboard.styles.scss';
 
 // Components
 import AppNavigation from '@components/app-navigation/AppNavigation.component';
 import Map from '@components/map/Map.component';
+import MapForm from '@components/map-form/MapForm.component';
 // import useLocalStorage from '@hooks/useLocalStorage';
 // import { useNavigate } from 'react-router-dom';
 // import { useSelector } from 'react-redux';
@@ -24,8 +28,10 @@ const Dashboard = () => {
       {/* <div style={{ textAlign: 'center', fontSize: 36, fontWeight: 900, color: '#de006f' }}>
         Welcome To Our Secret Dashboard
       </div> */}
-      <div>
-        {/* input field */}
+      <div className="app-map-section">
+        <div className="app-dashboard-texts-field">
+          <MapForm />
+        </div>
         <div className="app-map">
           <Map />
         </div>
