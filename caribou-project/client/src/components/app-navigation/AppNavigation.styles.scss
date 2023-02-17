@@ -34,6 +34,13 @@
 
     }
 
+    .app-flex{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+    }
+
     .image-wrapper {
       display: flex;
       height: 50px;
@@ -56,6 +63,11 @@
       background-color: rgb(255, 255, 255);
       cursor: initial;
 
+      span {
+        display: flex;
+        margin-bottom: 10px;
+      }
+
 
       .dropdown-bg-btn {
         background-color: #de006f;
@@ -68,11 +80,7 @@
       }
     }
 
-    .app-flex{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+
   }
 
 }
