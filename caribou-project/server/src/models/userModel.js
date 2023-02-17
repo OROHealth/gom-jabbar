@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+// const mapSchema = require('./mapModel');
 const userSchema = new mongoose.Schema(
   {
     email: {
@@ -12,17 +12,33 @@ const userSchema = new mongoose.Schema(
       type: String,
       min: [6, 'Must be at least 6, got {VALUE}'],
       required: true,
-      select: true, // whenever we output this user, we don't have to show the password
+      select: true,
     },
     avatarImage: {
       type: String,
       required: true,
-      select: true, // whenever we output this user, we don't have to show the password
+      select: true,
     },
     uuId: {
       type: String,
       required: true,
-      select: true, // whenever we output this user, we don't have to show the password
+      select: true,
+    },
+    mapMarkers: {
+      type: [
+        {
+          lat: String,
+          lng: String,
+        },
+      ],
+      default: [
+        {
+          lat: '',
+          lng: '',
+        },
+      ],
+      locations: [{ type: mongoose.Types.ObjectId, ref: 'Map' }],
+      select: true,
     },
   },
   {
