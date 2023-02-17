@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 // Services
-import { authService } from '@services/api/auth/auth.service';
 import { mapService } from '@services/api/map/map.service';
 
 // components
@@ -46,12 +45,7 @@ const MapFormSpotHuman = () => {
         range,
       });
 
-      const result2 = await authService.signIn({
-        email: 'giovanni',
-        password: '123456',
-      });
-
-      console.log('Result:', result, result2, 'MapFormSpotHuman');
+      console.log('Result:', result, 'MapFormSpotHuman');
     } catch (error) {
       console.log('Error Posting:', error, 'MapFormSpot');
     }
