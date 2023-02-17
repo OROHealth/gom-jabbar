@@ -1,0 +1,72 @@
+.app-map-section{
+  // border: 1px solid red;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .app-dash-pages--map-title{
+    text-align: center;
+    font-size: 36px;
+    font-weight: 900;
+    color: #de006f;
+  }
+
+  .app-dash-map-wrapper{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-items: flex-start;
+    gap: 30px;
+    width: 70%;
+
+
+    .app-dashboard-texts-field {
+      border: 1px solid red;
+      flex: 1 0 200px;
+      width: 100%;
+      text-align: center;
+      padding: 15px;
+      border: 1px solid #dbdbdb;
+      border-radius: 25px;
+    }
+
+    .app-map{
+      position: sticky;
+      top: 5rem;
+      flex: 1;
+    }
+  }
+
+}
+
+@media screen and (min-width: 8em ) {
+
+  .app-dash-map-wrapper{
+    margin-top: 30px;
+    flex-direction: column;
+  }
+
+}
+@media screen and (min-width: 56em ) {
+  .app-dashboard-texts-field {
+    border: 1px solid red;
+    flex: 1 0 200px;
+    width: 100%;
+    text-align: center;
+    padding: 15px;
+    border: 1px solid #dbdbdb;
+    border-radius: 25px;
+  }
+  .app-dash-map-wrapper{
+    margin-top: 0;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  // .app-dash-all-fields{
+
+  // }
+}
