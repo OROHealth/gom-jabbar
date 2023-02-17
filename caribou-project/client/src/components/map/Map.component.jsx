@@ -34,7 +34,7 @@ const Map = (props) => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { searchQuery } = formFields;
   // const [loading, setLoading] = useState(false);
-  const [markersShown, setMarkersShown] = useState(shownMarkersInitial);
+  const [markersShown, _setMarkersShown] = useState(shownMarkersInitial);
   const position = [45.49898, -73.647124];
   const markerPosition = [45.524403, -73.7436546];
   const circlePosition = [45.524403, -73.7436546];
