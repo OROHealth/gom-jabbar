@@ -1,5 +1,8 @@
 // import React, { useEffect } from 'react';
+
+// Components
 import AppNavigation from '@components/app-navigation/AppNavigation.component';
+import Map from '@components/map/Map.component';
 // import useLocalStorage from '@hooks/useLocalStorage';
 // import { useNavigate } from 'react-router-dom';
 // import { useSelector } from 'react-redux';
@@ -18,7 +21,10 @@ const Dashboard = () => {
   return (
     <>
       <AppNavigation />
-      <div>Welcome to the dashboard</div>
+      <div style={{ textAlign: 'center', fontSize: 36, fontWeight: 900, color: '#de006f' }}>
+        Welcome To Our Secret Dashboard
+      </div>
+      <Map />
     </>
   );
 };
