@@ -10,7 +10,7 @@ Accept: application/json
 withCredentials: true
 
 {
-  "locaetion": "secrests-carib@hotmail.com",
+  "location": "secrests-carib@hotmail.com",
   "range": 1234567
 }
 

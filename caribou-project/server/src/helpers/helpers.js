@@ -47,13 +47,11 @@ const signAccessToken = userData => {
 
 const verifyAccessToken = (req, _res, next) => {
   // check if authorization is present
-  console.log(req.headers['authorization']);
   if (!req.headers['authorization']) return next(createError.Unauthorized());
 
   const authHeader = req.headers['authorization'];
   const bearerToken = authHeader.split(' ');
   const token = bearerToken[2]; // the actual token
-  console.log('token:', token);
 
   // Now verify the token
   JWT.verify(token, JWT_ACCESS_TOKEN_SECRET, (err, payload) => {
@@ -66,6 +64,7 @@ const verifyAccessToken = (req, _res, next) => {
       }
     }
     req.payload = payload;
+    // console.log('payload:', payload);
     next();
   });
 };

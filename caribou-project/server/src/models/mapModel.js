@@ -8,7 +8,7 @@ const mapSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
-    range: {
+    trashingLevel: {
       type: Number,
       required: false,
       unique: false,
@@ -32,7 +32,8 @@ const mapSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
-    user: { type: mongoose.Types.ObjectId, ref: 'User' },
+    expiresAt: { type: Date, expires: '1h', default: Date.now },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   },
   {
     timestamps: true,
@@ -47,4 +48,4 @@ mapSchema.set('toJSON', {
   },
 });
 
-module.exports = mongoose.model('Map', mapSchema);
+module.exports = mongoose.model('map', mapSchema);

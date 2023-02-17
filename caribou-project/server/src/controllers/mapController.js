@@ -1,12 +1,14 @@
 const MapModel = require('../models/mapModel');
-// const UserModel = require('../models/userModel');
 const mongoose = require('mongoose');
+const log = require('../utils/logger');
+const createError = require('http-errors');
+const { lowerCase } = require('../helpers/helpers');
+const UserModel = require('../models/userModel');
+const jwt = require('jsonwebtoken');
 // const { registerUser } = require('./userController');
 // const { usersData, mapsData } = require('./mapData');
 // const toId = mongoose.Types.ObjectId;
-const log = require('../utils/logger');
 // const { lowerCase, signAccessToken, signRefreshToken, verifyRefreshToken } = require('../helpers/helpers');
-const createError = require('http-errors');
 
 // @Desc     Display all Users
 // @Method   GET
@@ -20,9 +22,44 @@ async function getAllMapLocations(_req, res) {
 // @Method   GET
 // @Route    /api/v1/map/post=location
 async function postAMapLocation(req, res) {
-  // populate, instead of showing the id, it will show the user name
-  log('info', req.data, 'mapController');
-  res.status(200).json({ message: 'welcome' });
+  const { signalLocation, range } = req.body;
+  // console.log(req.body);
+  let errors = [];
+  let success = [];
+
+  if (errors.length > 0) {
+    return res.json(errors);
+  }
+  log('info', req.payload.aud, 'mapController');
+  const user = await UserModel.findOneAndUpdate({ uuid: req.payload.aud });
+
+  await MapModel.findOne({ location: signalLocation }).then(async location => {
+    // console.log(location, 'mapController');
+    if (location) {
+      // If User Already Exists. Then we displayed in the frontend a message
+      errors.push({ errorMsg: 'This location already exists!' });
+      return res.json(errors);
+    } else {
+      const newLocation = new MapModel({
+        location: lowerCase(signalLocation),
+        trashingLevel: Number(range),
+      });
+
+      await newLocation
+        .save()
+        .then(locationSaved => {
+          log('info', `locationSaved: ${locationSaved}`, 'userController');
+          success.push({ successMsg: 'Location added.' });
+          user.location.push(locationSaved);
+          user.save();
+        })
+        .catch(err => {
+          log('error', `Error Saving newUser: ${err}`, 'userController');
+        });
+
+      res.status(201).json({ signalLocation, range, success });
+    }
+  });
 }
 
 // @Desc    creating users and Maps with email and password

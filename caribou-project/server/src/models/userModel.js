@@ -37,9 +37,9 @@ const userSchema = new mongoose.Schema(
           lng: '',
         },
       ],
-      locations: [{ type: mongoose.Types.ObjectId, ref: 'Map' }],
       select: true,
     },
+    location: [{ type: mongoose.Schema.Types.ObjectId, ref: 'map' }],
   },
   {
     timestamps: true,
@@ -54,4 +54,4 @@ userSchema.set('toJSON', {
   },
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('user', userSchema);
