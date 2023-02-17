@@ -21,10 +21,15 @@ const Dashboard = () => {
   return (
     <>
       <AppNavigation />
-      <div style={{ textAlign: 'center', fontSize: 36, fontWeight: 900, color: '#de006f' }}>
+      {/* <div style={{ textAlign: 'center', fontSize: 36, fontWeight: 900, color: '#de006f' }}>
         Welcome To Our Secret Dashboard
+      </div> */}
+      <div>
+        {/* input field */}
+        <div className="app-map">
+          <Map />
+        </div>
       </div>
-      <Map />
     </>
   );
 };
