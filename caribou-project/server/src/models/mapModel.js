@@ -14,6 +14,12 @@ const mapSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
+    label: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
     user: { type: mongoose.Types.ObjectId, ref: 'User' },
   },
   {

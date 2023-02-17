@@ -28,7 +28,7 @@ COOKIE_KEY_TWO=
 
 ## Client
 REACT_APP_MAPBOX_API_KEY=
-
+REACT_APP_GOOGLE_API_KEY=
 
 ## Overview
 Since the dawn of time, Caribou have been pretending to be stupid mammals but secretly observing the evolution of those

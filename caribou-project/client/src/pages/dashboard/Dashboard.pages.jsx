@@ -12,7 +12,6 @@ const Dashboard = () => {
   return (
     <>
       <AppNavigation />
-
       <div className="app-map-section">
         <h1 className="app-dash-pages--map-title">Caribous Are The Best!</h1>
 

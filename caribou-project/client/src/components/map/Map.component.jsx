@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Circle, CircleMarker, Tooltip } from 'react-leaflet';
-import { mapBoxApiKey } from '@services/utils/config';
+import { mapBoxApiKey, googleApiKey } from '@services/utils/config';
 
 // StyleSheets
 import '@components/map/Map.styles.scss';
@@ -12,12 +12,15 @@ import FormInput from '@components/form-input/formInput.component';
 // import ReactSpinner from '@components/react-spinner/react-spinner.component';
 
 // Map Geolocation Search Feature & Controller
-import { OpenStreetMapProvider, GeoSearchControl } from 'leaflet-geosearch';
-export const provider = new OpenStreetMapProvider();
+import { GoogleProvider, GeoSearchControl } from 'leaflet-geosearch';
+export const provider = new GoogleProvider({
+  apiKey: googleApiKey,
+});
 const searchControl = new GeoSearchControl({
-  provider: new OpenStreetMapProvider(),
+  provider,
   style: 'bar',
 });
+// console.log('searchControl', (searchControl.searchElement.input.value = searchQuery), 'Map component');
 
 const defaultFormFields = {
   searchQuery: '',
@@ -46,6 +49,9 @@ const Map = (props) => {
       click() {
         map.locate();
       },
+      // keyup(e) {
+      //   console.log(e.originalEvent.target.value);
+      // },
 
       locationfound(e) {
         setPosition(e.latlng);
@@ -76,8 +82,9 @@ const Map = (props) => {
   const handleSearchSubmit = async (event) => {
     // setLoading(true);
     event.preventDefault();
-    const results = await provider.search({ query: searchQuery });
-    console.log('result:', results[0]);
+    // const results = await provider.search({ query: searchQuery });
+
+    // console.log('result:', results[0]);
     // setLoading(false);
   };
 
@@ -88,10 +95,8 @@ const Map = (props) => {
   return (
     <div>
       <form onSubmit={handleSearchSubmit}>
-        {/* <input type="text" onChange /> */}
         <FormInput
-          id="human-searchQuery"
-          label="Add location"
+          label="searchQuery"
           type="text"
           required
           onChange={handleFormInputChange}
@@ -99,6 +104,7 @@ const Map = (props) => {
           value={searchQuery}
         />
       </form>
+
       <MapContainer className="map-container" position={position} center={position} zoom={11} scrollWheelZoom={false}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" accessToken={`${mapBoxApiKey}`} />
         <Circle center={circlePosition} pathOptions={fillBlueOptions} radius={1000} />
@@ -107,7 +113,7 @@ const Map = (props) => {
         </CircleMarker>
         <Marker position={markerPosition}>
           <Tooltip direction="top" offset={[-10, -10]} opacity={1}>
-            You are here
+            Hello
           </Tooltip>
           <Popup>
             A pretty CSS3 popup. <br /> Easily customizable.
