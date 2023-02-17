@@ -23,7 +23,7 @@ const defaultFormFields = {
 const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password, confirmPassword } = formFields;
-  //  Loading SVG State
+  //  State
   const [loading, setLoading] = useState(false);
   const [alertType, setAlertType] = useState('');
   const [errorMessages, setErrorMessages] = useState([]);

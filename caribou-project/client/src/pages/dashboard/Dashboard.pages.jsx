@@ -6,7 +6,7 @@ import '@pages/dashboard/Dashboard.styles.scss';
 // Components
 import AppNavigation from '@components/app-navigation/AppNavigation.component';
 import Map from '@components/map/Map.component';
-import MapForm from '@components/map-form/MapForm.component';
+import MapFormSpotHuman from '@components/map-form-spot-human/MapFormSpotHuman.component';
 // import useLocalStorage from '@hooks/useLocalStorage';
 // import { useNavigate } from 'react-router-dom';
 // import { useSelector } from 'react-redux';
@@ -25,15 +25,16 @@ const Dashboard = () => {
   return (
     <>
       <AppNavigation />
-      {/* <div style={{ textAlign: 'center', fontSize: 36, fontWeight: 900, color: '#de006f' }}>
-        Welcome To Our Secret Dashboard
-      </div> */}
+
       <div className="app-map-section">
-        <div className="app-dashboard-texts-field">
-          <MapForm />
-        </div>
-        <div className="app-map">
-          <Map />
+        <div className="app-dash-map-wrapper">
+          <div className="app-dashboard-texts-field">
+            <h1 className="app-dash-pages--map-title">Caribous Are The Best!</h1>
+            <MapFormSpotHuman />
+          </div>
+          <div className="app-map">
+            <Map />
+          </div>
         </div>
       </div>
     </>

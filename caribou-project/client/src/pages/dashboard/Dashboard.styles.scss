@@ -3,6 +3,30 @@
   height: 700px;
   border: 1px solid red;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+
+  .app-dash-map-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    width: 70%;
+
+    .app-dashboard-texts-field {
+      flex: 1;
+
+      .app-dash-pages--map-title{
+        text-align: center;
+        font-size: 36px;
+        font-weight: 900;
+        color: #de006f;
+      }
+    }
+
+    .app-map{
+      flex: 1;
+    }
+  }
+
 }

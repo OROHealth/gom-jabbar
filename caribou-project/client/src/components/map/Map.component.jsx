@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import '@components/map/Map.styles.scss';
 import { mapBoxApiKey } from '@services/utils/config';
 
-const Map = () => {
+const Map = (props) => {
   const position = [45.49898, -73.647124];
   const markerPosition = [45.524403, -73.7436546];
 
