@@ -5,13 +5,6 @@ const log = require('../utils/logger');
 const { lowerCase, signAccessToken, signRefreshToken, verifyRefreshToken } = require('../helpers/helpers');
 const createError = require('http-errors');
 
-// @Desc     Display all Users
-// @Method   GET
-// @Route    /api/v1/users
-// async function getAllUsers(_req, res) {
-//   res.json(await UserModel.find({}));
-// }
-
 // @Desc    Register a user with email and password
 // @Method  POST
 // @Route   /api/v1/users
@@ -25,6 +18,7 @@ async function registerUser(req, res) {
   if (!email || !password) {
     errors.push({ errorMsg: 'Please fill in all fields Caribou' });
   }
+
   // Check Regular expression for email
   const regex = /^[\w-\.]+-carib@([\w-]+\.)+[\w-]{2,4}$/g;
   const found = email.match(regex);
@@ -46,7 +40,7 @@ async function registerUser(req, res) {
       if (user) {
         // If User Already Exists. Then we displayed in the frontend a message
         errors.push({ errorMsg: "I'm sorry this Caribou already exists!" });
-        res.json(errors);
+        return res.json(errors);
       } else {
         // [] Encrypt password - Hash the password before saving it to the database
         // Generate a salt in order to create a hash
@@ -80,7 +74,7 @@ async function registerUser(req, res) {
         const accessToken = await signAccessToken(newUser.uuId);
         const refreshToken = await signRefreshToken(newUser.uuId);
         // response with an object, to get it in json format
-        res.status(200).json({ accessToken, refreshToken, avatarImage, email, success });
+        res.status(201).json({ accessToken, refreshToken, avatarImage, email, success });
       }
     });
   }

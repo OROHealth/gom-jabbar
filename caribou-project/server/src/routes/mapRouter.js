@@ -1,28 +1,25 @@
 const mapRouter = require('express').Router();
-const { registerUser, loginUser, logoutUser, refreshUserToken } = require('../controllers/userController');
+const { getAllMapLocations, postAMapLocation } = require('../controllers/mapController');
+// BAse Route - /api/v1/map
 
-// @Desc    Get all Users
+// @Desc    Get all Maps
 // @Method  GET
-// @Route   /api/v1/user/
-// userRouter.get('/', getAllUsers);
+// @Route   /api/v1/map/query?=locations
+mapRouter.get('/query?=locations', getAllMapLocations);
 
-// @Desc    Register/create a user with email and password
-// @Method  POST
-// @Route   /api/v1/user/register
-mapRouter.post('/register', registerUser);
-
-// @Desc    Login a user with email and password
-// @Method  POST
-// @Route   /api/v1/user/login
-mapRouter.post('/login', loginUser);
-
-// @Desc    Log User out of the application
-// @Route   /api/v1/user/logout
-mapRouter.delete('/logout', logoutUser);
-
-// @Desc    refresh the user Token
+// @Desc    Save Map location
 // @Method  GET
-// @Route   /api/v1/user/refresh-token
-mapRouter.post('/refresh-token', refreshUserToken);
+// @Route   /api/v1/map/post=location
+mapRouter.post('/post=location', postAMapLocation);
+
+// @Desc    Post Map Locations To the database
+// @Method  GET
+// @Route   /api/v1/map/query?=seedMap
+// mapRouter.get('/query?=seedMap', seedMap);
+
+// // @Desc    Post Map Locations To the database
+// // @Method  POST
+// // @Route   /api/v1/map/assign/:map/:user
+// mapRouter.get('/assign/:map/:user', assigningMapToUser);
 
 module.exports = mapRouter;

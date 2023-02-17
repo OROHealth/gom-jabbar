@@ -1,11 +1,6 @@
 const userRouter = require('express').Router();
 const { registerUser, loginUser, logoutUser, refreshUserToken } = require('../controllers/userController');
 
-// @Desc    Get all Users
-// @Method  GET
-// @Route   /api/v1/user/
-// userRouter.get('/', getAllUsers);
-
 // @Desc    Register/create a user with email and password
 // @Method  POST
 // @Route   /api/v1/user/register

@@ -11,9 +11,12 @@ require('express-async-errors');
 const log = require('./utils/logger');
 const morgan = require('morgan');
 const { COOKIE_KEY_ONE, COOKIE_KEY_TWO, CLIENT_URL, NODE_ENV, SERVER_URL } = require('./utils/config');
-const userRouter = require('./routes/userRouter');
 const { verifyAccessToken } = require('./helpers/helpers');
 const client = require('./helpers/initRedis');
+
+// Routers
+const userRouter = require('./routes/userRouter');
+const mapRouter = require('./routes/mapRouter');
 
 // Security Middle-wares
 app.use(hpp());
@@ -25,7 +28,7 @@ app.use(
     credentials: true,
     optionsSuccessStatus: 200,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    headers: 'content-type',
+    headers: 'content-type, Authorization',
   })
 );
 
@@ -47,7 +50,8 @@ app.use(morgan('combined'));
 
 // Routes Middle-wares
 app.use('/api/v1/user', userRouter);
-app.use('/api/v1/app', verifyAccessToken, mapRouter);
+// app.use('/api/v1/map', mapRouter); // test
+app.use('/api/v1/map', verifyAccessToken, mapRouter);
 
 // Health check route - endpoint that returns a 200 status code if your application is running
 app.get('/_health', (req, res) => {

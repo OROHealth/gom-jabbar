@@ -10,6 +10,8 @@ import '@components/sign-in-form/sign-in-form.styles.scss';
 import FormInput from '@components/form-input/formInput.component';
 import Button from '@components/button/Button';
 import ReactSpinner from '@components/react-spinner/react-spinner.component';
+
+// Services
 import { authService } from '@services/api/auth/auth.service';
 
 // local Storage
@@ -53,7 +55,7 @@ const SignInForm = () => {
 
     try {
       // resetFormFields();
-      // console.log('Logging In', email, password);
+      // Post Request to the Server
       const result = await authService.signIn({
         email,
         password,

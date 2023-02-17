@@ -12,12 +12,20 @@ const Dashboard = () => {
   return (
     <>
       <AppNavigation />
-
       <div className="app-map-section">
         <h1 className="app-dash-pages--map-title">Caribous Are The Best!</h1>
 
         <div className="app-dash-map-wrapper">
           <div className="app-dash-all-fields">
+            <div className="app-dashboard-texts-field">
+              <MapFormSpotHuman />
+            </div>
+            <div className="app-dashboard-texts-field">
+              <MapFormSpotHuman />
+            </div>
+            <div className="app-dashboard-texts-field">
+              <MapFormSpotHuman />
+            </div>
             <div className="app-dashboard-texts-field">
               <MapFormSpotHuman />
             </div>

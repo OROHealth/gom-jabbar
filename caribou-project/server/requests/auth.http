@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:5001
+@baseUrl = http://localhost:3001
 @urlPath = api/v1/user
 
 ###
@@ -25,17 +25,6 @@ withCredentials: true
   "email": "giovanni-carib@hotmail.com",
   "password": "1234567"
 }
-
-###
-DELETE {{baseUrl}}/{{urlPath}}/logout
-Content-Type: application/json
-Accept: application/json
-withCredentials: true
-
-{
-  "refreshToken":
-}
-
 
 ###
 ### @Desc generate a new access token
