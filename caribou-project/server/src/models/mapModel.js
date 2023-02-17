@@ -2,21 +2,33 @@ const mongoose = require('mongoose');
 
 const mapSchema = new mongoose.Schema(
   {
+    location: {
+      type: String,
+      required: false,
+      unique: true,
+      trim: true,
+    },
+    range: {
+      type: Number,
+      required: false,
+      unique: false,
+      trim: true,
+    },
     x: {
       type: String,
-      required: true,
-      unique: true,
+      required: false,
+      unique: false,
       trim: true,
     },
     y: {
       type: String,
-      required: true,
+      required: false,
       unique: true,
       trim: true,
     },
     label: {
       type: String,
-      required: true,
+      required: false,
       unique: true,
       trim: true,
     },

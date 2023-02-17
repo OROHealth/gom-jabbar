@@ -16,7 +16,7 @@ const client = require('./helpers/initRedis');
 
 // Routers
 const userRouter = require('./routes/userRouter');
-const mapRouter = require('./routes/userRouter');
+const mapRouter = require('./routes/mapRouter');
 
 // Security Middle-wares
 app.use(hpp());
@@ -50,8 +50,8 @@ app.use(morgan('combined'));
 
 // Routes Middle-wares
 app.use('/api/v1/user', userRouter);
-app.use('/api/v1/map', mapRouter); // test
-// app.use('/api/v1/app', verifyAccessToken, mapRouter);
+// app.use('/api/v1/map', mapRouter); // test
+app.use('/api/v1/map', verifyAccessToken, mapRouter);
 
 // Health check route - endpoint that returns a 200 status code if your application is running
 app.get('/_health', (req, res) => {
