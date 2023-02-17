@@ -1,9 +1,8 @@
 // import { lazy, Suspense }
-// import { Register } from '@pages/auth';
 import Authentication from '@pages/authentication/authentication.component';
-// import Streams from '@pages/social/streams/Streams';
 import { useRoutes } from 'react-router-dom';
 import Dashboard from '@pages/dashboard/Dashboard.pages';
+import ProtectedRoutes from '@pages/protectedRoutes/ProtectedRoutes.pages';
 
 export const AppRouter = () => {
   const elements = useRoutes([
@@ -12,8 +11,14 @@ export const AppRouter = () => {
       element: <Authentication />,
     },
     {
-      path: '/dashboard',
-      element: <Dashboard />,
+      path: '/app/',
+      element: <ProtectedRoutes />,
+      children: [
+        {
+          path: 'dashboard',
+          element: <Dashboard />,
+        },
+      ],
     },
   ]);
 
