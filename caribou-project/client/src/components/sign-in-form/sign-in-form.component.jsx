@@ -31,6 +31,7 @@ const SignInForm = () => {
   const [setStorageAccessToken] = useLocalStorage('access-token', 'set');
   const [setStorageRefreshToken] = useLocalStorage('refresh-token', 'set');
   const [setStorageLoggedIn] = useLocalStorage('loggedIn', 'set');
+  const [setStorageAvatarImage] = useLocalStorage('avatar-image', 'set');
   const dispatch = useDispatch();
 
   const { email, password } = inputFields;
@@ -85,6 +86,7 @@ const SignInForm = () => {
       // save the token and refresh token to local storage
       setStorageAccessToken(accessToken);
       setStorageRefreshToken(refreshToken);
+      setStorageAvatarImage(avatarImage);
 
       setAlertType('alert-success');
       setHasMsg(true);

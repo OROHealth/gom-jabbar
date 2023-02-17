@@ -13,7 +13,6 @@ import Button from '@components/button/Button';
 import ReactSpinner from '@components/react-spinner/react-spinner.component';
 import useLocalStorage from '@hooks/useLocalStorage';
 import { addUser } from '@redux/reducers/user/user.reducer';
-import useSessionStorage from '@hooks/useSessionStorage';
 
 const defaultFormFields = {
   email: '',
@@ -33,8 +32,8 @@ const SignUpForm = () => {
   const navigate = useNavigate();
   const [setStorageAccessToken] = useLocalStorage('access-token', 'set');
   const [setStorageRefreshToken] = useLocalStorage('refresh-token', 'set');
+  const [setStorageAvatarImage] = useLocalStorage('avatar-image', 'set');
   const [setStorageLoggedIn] = useLocalStorage('loggedIn', 'set');
-  const [setAvatar] = useSessionStorage('avatarImage', 'set');
   const dispatch = useDispatch();
 
   const resetFormFields = () => {
@@ -91,10 +90,6 @@ const SignUpForm = () => {
         return setErrorMessages([errorMsg]);
       }
 
-      // set logged in to true in local storage
-      setStorageLoggedIn(true);
-      // set avatarImage in to true in session storage
-      setAvatar(avatarImage);
       // save/dispatch the user to Redis
       const accessToken = result.data.accessToken;
       const refreshToken = result.data.refreshToken;
@@ -108,6 +103,8 @@ const SignUpForm = () => {
       // save the token and refresh token to local storage
       setStorageAccessToken(accessToken);
       setStorageRefreshToken(refreshToken);
+      setStorageLoggedIn(true); // set logged in to true in local storage
+      setStorageAvatarImage(avatarImage); // set avatarImage in local storage
 
       setAlertType('alert-success');
       setHasError(true);

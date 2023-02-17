@@ -1,8 +1,8 @@
 import axios from '@services/utils/axios';
 
 class UserService {
-  async getUserSuggestions() {
-    const response = axios.get('/user/profile/user');
+  async logoutUser() {
+    const response = axios.get('/logout');
     return response;
   }
 }
