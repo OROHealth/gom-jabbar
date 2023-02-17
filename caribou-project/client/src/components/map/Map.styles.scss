@@ -1,5 +1,8 @@
 .map-container {
-  height: 610px;
-  width: 600px;
+  // min-height: 310px;
+  height: 50vh;
+  max-height: 610px;
+  width: 80vw;
+  max-width: 900px;
   border-radius: 25px;
 }

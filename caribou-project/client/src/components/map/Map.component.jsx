@@ -7,7 +7,7 @@ import '@components/map/Map.styles.scss';
 import '../../../node_modules/leaflet-geosearch/dist/geosearch.css';
 
 // Components
-import FormInput from '@components/form-input/formInput.component';
+// import FormInput from '@components/form-input/formInput.component';
 // import Button from '@components/button/Button';
 // import ReactSpinner from '@components/react-spinner/react-spinner.component';
 
@@ -22,9 +22,6 @@ const searchControl = new GeoSearchControl({
 });
 // console.log('searchControl', (searchControl.searchElement.input.value = searchQuery), 'Map component');
 
-const defaultFormFields = {
-  searchQuery: '',
-};
 const shownMarkersInitial = [
   {
     id: '',
@@ -34,8 +31,6 @@ const shownMarkersInitial = [
 ];
 
 const Map = (props) => {
-  const [formFields, setFormFields] = useState(defaultFormFields);
-  const { searchQuery } = formFields;
   // const [loading, setLoading] = useState(false);
   const [markersShown, setMarkersShown] = useState(shownMarkersInitial);
   const position = [45.49898, -73.647124];
@@ -69,42 +64,12 @@ const Map = (props) => {
   const fillBlueOptions = { fillColor: 'blue' };
   const redOptions = { color: 'red' };
 
-  // Input Change
-  const handleFormInputChange = async (event) => {
-    const { name, value } = event.target;
-    const formInput = { ...formFields, [name]: value };
-
-    setFormFields(formInput);
-    // console.log(formInput);
-  };
-
-  // Search location
-  const handleSearchSubmit = async (event) => {
-    // setLoading(true);
-    event.preventDefault();
-    // const results = await provider.search({ query: searchQuery });
-
-    // console.log('result:', results[0]);
-    // setLoading(false);
-  };
-
   useEffect(() => {
     setMarkersShown([{}]);
   }, [setMarkersShown]);
 
   return (
     <div>
-      <form onSubmit={handleSearchSubmit}>
-        <FormInput
-          label="searchQuery"
-          type="text"
-          required
-          onChange={handleFormInputChange}
-          name="searchQuery"
-          value={searchQuery}
-        />
-      </form>
-
       <MapContainer className="map-container" position={position} center={position} zoom={11} scrollWheelZoom={false}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" accessToken={`${mapBoxApiKey}`} />
         <Circle center={circlePosition} pathOptions={fillBlueOptions} radius={1000} />

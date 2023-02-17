@@ -20,6 +20,15 @@ const Dashboard = () => {
             <div className="app-dashboard-texts-field">
               <MapFormSpotHuman />
             </div>
+            <div className="app-dashboard-texts-field">
+              <MapFormSpotHuman />
+            </div>
+            <div className="app-dashboard-texts-field">
+              <MapFormSpotHuman />
+            </div>
+            <div className="app-dashboard-texts-field">
+              <MapFormSpotHuman />
+            </div>
           </div>
           <div className="app-map">
             <p>Double click the map to get your current location.</p>

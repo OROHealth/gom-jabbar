@@ -18,15 +18,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    align-items: flex-start;
     gap: 30px;
-    width: 70%;
+    // width: 70%;
+
+    .app-dash-all-fields {
+      overflow: scroll;
+      display: flex;
+      gap: 15px;
+    }
 
 
     .app-dashboard-texts-field {
       border: 1px solid red;
-      flex: 1 0 200px;
-      width: 100%;
+      flex: 1 0 220px;
+      // width: 100%;
       text-align: center;
       padding: 15px;
       border: 1px solid #dbdbdb;
@@ -37,6 +42,7 @@
       position: sticky;
       top: 5rem;
       flex: 1;
+      left: 50px;
     }
   }
 
@@ -45,28 +51,61 @@
 @media screen and (min-width: 8em ) {
 
   .app-dash-map-wrapper{
+    align-items: center;
     margin-top: 30px;
     flex-direction: column;
+    width: 80%;
+    margin-bottom: 32px;
   }
 
-}
-@media screen and (min-width: 56em ) {
   .app-dashboard-texts-field {
     border: 1px solid red;
-    flex: 1 0 200px;
     width: 100%;
-    text-align: center;
-    padding: 15px;
-    border: 1px solid #dbdbdb;
-    border-radius: 25px;
-  }
-  .app-dash-map-wrapper{
-    margin-top: 0;
-    flex-direction: row;
-    align-items: flex-start;
   }
 
-  // .app-dash-all-fields{
-
-  // }
+  .app-dash-all-fields {
+    width: 95%;
+  }
 }
+
+@media screen and (min-width: 30em ) {
+  .app-dash-map-wrapper{
+    align-items: center;
+    margin-top: 30px;
+    flex-direction: column;
+    width: 80%;
+    margin-bottom: 100px;
+  }
+
+  .app-dashboard-texts-field {
+    border: 1px solid red;
+    width: 100%;
+  }
+
+  .app-dash-all-fields {
+    width: 95%;
+  }
+
+}
+
+// @media screen and (min-width: 65em ) {
+//   .app-dashboard-texts-field {
+//     border: 1px solid red;
+//     flex: 1 0 200px;
+//     width: 270px;
+//     text-align: center;
+//     padding: 15px;
+//     border: 1px solid #dbdbdb;
+//     border-radius: 25px;
+//   }
+//   .app-dash-map-wrapper{
+//     margin-top: 0;
+//     flex-direction: row;
+//     align-items: flex-start;
+//   }
+
+//   .app-dash-all-fields {
+//     display: flex;
+//   }
+
+// }
