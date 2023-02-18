@@ -1,10 +1,12 @@
 .app-map-section{
   // border: 1px solid red;
   width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 100%;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
   flex-direction: column;
+  border: 2px solid red;
 
   .app-dash-pages--map-title{
     text-align: center;
@@ -20,7 +22,7 @@
     align-items: center;
     gap: 30px;
     margin-top: 30px;
-    width: 70%;
+    // width: 70%;
     flex-direction: column;
 
     .app-dash-all-fields {
@@ -45,87 +47,160 @@
       border: 2px solid #eeeeee;
       box-shadow: 0 0 20px 0 rgb(44 101 144 / 10%);
       border-radius: 25px;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: space-between;
+
     }
 
     .app-map{
-      position: sticky;
-      top: 5rem;
+      display: flex;
+      gap: 20px;
       flex: 1;
-      left: 50px;
+      margin: 0 auto;
+      // position: sticky;
+      // top: 5rem;
+      // left: 50px;
     }
   }
 
 }
 
-@media screen and (min-width: 8em ) {
+@media screen and (min-width: 1em ) {
 
   .app-dash-map-wrapper{
+
     align-items: center;
     // margin-top: 30px;
     flex-direction: column;
     width: 80%;
     margin-bottom: 32px;
+    margin: 0 auto;
 
     .app-dashboard-texts-field {
       border: 1px solid red;
       width: 100%;
       max-width: 300px;
+      margin: 0 auto;
+    }
+    .app-map{
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+    }
+    // .app-dash-all-fields {
+    //   width: 95%;
+    // }
+  }
+
+
+}
+
+
+// @media screen and (min-width: 20em ) {
+//   .app-map{
+//     display: flex;
+//     flex-direction: column;
+//     width: 100%;
+//     height: 100%;
+//   }
+// }
+
+@media screen and (min-width: 30em ) {
+  .app-map-section {
+
+    .app-dash-map-wrapper{
+      align-items: center;
+      // margin-top: 30px;
+      flex-direction: column;
+      width: 80%;
+      margin-bottom: 100px;
+
+      .app-map{
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        border: 2px solid green;
+      }
+    }
+    .app-dashboard-texts-field {
+      margin: 0;
+      border: 1px solid red;
+      width: 100%;
+    }
+
+    .app-dash-all-fields {
+      width: 95%;
+
+
+    }
+  }
+}
+
+@media screen and (min-width: 40em ) {
+  .app-dash-map-wrapper{
+    flex-direction: column;
+
+    .app-map{
+      flex-direction: row;
+      width: 100%;
+      height: 100%;
     }
   }
 
+}
 
-  .app-dash-all-fields {
-    width: 95%;
+@media screen and (min-width: 78em ) {
+  .app-map-section {
+    .app-dash-map-wrapper{
+      flex-direction: column;
+      align-items: flex-start;
+
+    }
   }
 }
 
-@media screen and (min-width: 30em ) {
-  .app-dash-map-wrapper{
-    align-items: center;
-    // margin-top: 30px;
-    flex-direction: column;
-    width: 80%;
-    margin-bottom: 100px;
+// “If [device width] is greater than or equal to 600px, then do {…}”
+@media screen and (min-width: 90em ) {
+  .app-map-section {
 
+    .app-dash-map-wrapper{
+      flex-direction: row;
+      align-items: flex-start;
+      max-width: 1570px;
+      width: 90%;
+      border: 2px solid red;
+      margin: 0 auto;
+      // margin-top: 30px;
+
+      .app-dash-all-fields {
+        display: flex;
+        border: 2px solid pink;
+        width: 33.3%;
+
+
+        .app-dashboard-texts-field {
+          margin: 0;
+        }
+      }
+
+      .app-map {
+
+
+        .app-dashboard-texts-field {
+          border: 1px solid red;
+          // width: 270px;
+          flex: 1 0 300px;
+          text-align: center;
+          padding: 15px;
+          border: 1px solid #dbdbdb;
+          border-radius: 25px;
+        }
+      }
+
+    }
   }
-
-  .app-dashboard-texts-field {
-    border: 1px solid red;
-    width: 100%;
-  }
-
-  .app-dash-all-fields {
-    width: 95%;
-
-
-  }
-
-  .app-map {
-    width: 100%;
-    height: 100%;
-  }
-
-}
-
-@media screen and (min-width: 65em ) {
-  .app-dashboard-texts-field {
-    border: 1px solid red;
-    // width: 270px;
-    flex: 1 0 300px;
-    text-align: center;
-    padding: 15px;
-    border: 1px solid #dbdbdb;
-    border-radius: 25px;
-  }
-  .app-dash-map-wrapper{
-    flex-direction: row;
-    align-items: flex-start;
-    // margin-top: 30px;
-  }
-
-  .app-dash-all-fields {
-    display: flex;
-
-  }
-
 }

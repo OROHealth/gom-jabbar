@@ -109,7 +109,7 @@ const Map = (props) => {
   // </CircleMarker>
 
   return (
-    <div>
+    <div className="map-wrapper">
       <MapContainer
         className="map-container"
         position={[45.49898, -73.647124]}
