@@ -1,7 +1,8 @@
 const http = require('http');
 const app = require('./app'); // express app
 const server = http.createServer(app); // instance of server
-const { SERVER_PORT, NODE_ENV } = require('./utils/config');
+const { Server } = require('socket.io');
+const { SERVER_PORT, NODE_ENV, CLIENT_URL, SERVER_URL } = require('./utils/config');
 const setupDatabase = require('./utils/setupDatabase');
 const log = require('./utils/logger');
 const mongoose = require('mongoose');
@@ -92,6 +93,18 @@ const handleExit = () => {
     log('error', `Everything exited with code: ${code}`, 'index');
   });
 };
+
+// Setup SocketIO
+const io = new Server(server, {
+  cors: {
+    origin: [SERVER_URL, CLIENT_URL],
+    allRoutes: true,
+    credentials: true,
+    optionsSuccessStatus: 200,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    headers: 'content-type, Authorization',
+  },
+});
 
 handleExit();
 startServer();
