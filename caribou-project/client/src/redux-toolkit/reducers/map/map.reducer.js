@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  y: '',
+  x: '',
+  label: '',
   range: 0,
-  location: '',
 };
 
 const mapReducerSlice = createSlice({
@@ -10,18 +12,20 @@ const mapReducerSlice = createSlice({
   initialState,
   reducers: {
     addLocationToMap: (state, action) => {
-      const { range, location } = action.payload;
+      const { y, x, label, range } = action.payload;
+      state.y = y;
+      state.x = x;
+      state.label = label;
       state.range = range;
-      state.location = location;
     },
-    // removeMap: (state, _action) => {
-    //   state.accessToken = '';
-    //   state.refreshToken = '';
-    //   state.avatarImage = '';
-    //   state.loggedIn = false;
-    // },
+    removeMap: (state, _action) => {
+      state.y = '';
+      state.x = '';
+      state.label = '';
+      state.range = 0;
+    },
   },
 });
 
-export const { addLocationToMap } = mapReducerSlice.actions;
+export const { addLocationToMap, removeMap } = mapReducerSlice.actions;
 export default mapReducerSlice.reducer;

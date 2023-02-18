@@ -106,9 +106,9 @@ const SignUpForm = () => {
       setStorageLoggedIn(true); // set logged in to true in local storage
       setStorageAvatarImage(avatarImage); // set avatarImage in local storage
 
-      setAlertType('alert-success');
       setHasError(true);
       setErrorMessages([]);
+      setAlertType('alert-success');
       // set success Messages
       const successMsg = result?.data?.success[0]?.successMsg;
       setSuccessMessages([successMsg]);

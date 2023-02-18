@@ -9,7 +9,7 @@ const ProtectedRoutes = () => {
   const reduxLoggedIn = useSelector((state) => state?.user?.loggedIn);
 
   useEffect(() => {
-    console.log('Protected Route HIT - Dashboard - ProtectedRoutes.pages.jsx');
+    // console.log('Protected Route HIT - Dashboard - ProtectedRoutes.pages.jsx');
 
     !reduxLoggedIn && !loggedIn && navigate('/');
   }, [loggedIn, navigate, reduxLoggedIn]);

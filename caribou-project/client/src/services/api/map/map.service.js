@@ -12,10 +12,19 @@ const LocalToken = () => {
   return config;
 };
 class MapService {
-  // define all the functions you need
-  // /api/v1/map/post=location
+  // @ DESC    Create a Location pin in the database
+  // @ METHOD  POST
+  // @ ROUTE   /api/v1/map/post=location
   async saveLocation(body) {
     const response = axios.post('map/post=location', body, LocalToken());
+    return response;
+  }
+
+  // @ DESC    Create a Location pin in the database
+  // @ METHOD  GET
+  // @METHOD   /api/v1/map + /query=Map-Locations
+  async getAllLocations() {
+    const response = axios.get('map/query=Map-Locations', LocalToken());
     return response;
   }
 }

@@ -15,7 +15,7 @@ async function registerUser(req, res) {
   let success = [];
 
   // Check Required fields
-  if (!email || !password) {
+  if ((!email || !password, !avatarImage)) {
     errors.push({ errorMsg: 'Please fill in all fields Caribou' });
   }
 
