@@ -1,59 +1,85 @@
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Circle, CircleMarker, Tooltip } from 'react-leaflet';
 import { mapBoxApiKey, googleApiKey } from '@services/utils/config';
+import { useDispatch } from 'react-redux';
+import { addLocationToMap } from '@redux/reducers/map/map.reducer';
+
+// Api
+import { mapService } from '@services/api/map/map.service';
 
 // StyleSheets
 import '@components/map/Map.styles.scss';
 import '../../../node_modules/leaflet-geosearch/dist/geosearch.css';
 
-// Components
-// import FormInput from '@components/form-input/formInput.component';
-// import Button from '@components/button/Button';
-// import ReactSpinner from '@components/react-spinner/react-spinner.component';
-
 // Map Geolocation Search Feature & Controller
 import { GoogleProvider, GeoSearchControl } from 'leaflet-geosearch';
-export const provider = new GoogleProvider({
+const provider = new GoogleProvider({
   apiKey: googleApiKey,
 });
+
 const searchControl = new GeoSearchControl({
   provider,
   style: 'bar',
+  resultFormat: ({ result }) => result.label,
+  showMarker: true,
+  keepResult: true,
 });
-// console.log('searchControl', (searchControl.searchElement.input.value = searchQuery), 'Map component');
 
-const shownMarkersInitial = [
+const HumanPresenceInitial = [
   {
-    id: '',
+    label: '',
     x: '',
     y: '',
   },
 ];
 
+// console.log('searchControl', searchControl, 'Map component');
+
 const Map = (props) => {
+  const dispatch = useDispatch();
   // const [loading, setLoading] = useState(false);
-  const [markersShown, setMarkersShown] = useState(shownMarkersInitial);
+  const [newLocationToMap, setNewLocationToMap] = useState(HumanPresenceInitial);
+  const [allMapLocations, setAllMapLocations] = useState([]);
+
+  useEffect(() => {
+    const getLocations = async () => {
+      return await mapService.getAllLocations();
+    };
+    setAllMapLocations(getLocations());
+    console.log(allMapLocations);
+  }, []);
+
   const position = [45.49898, -73.647124];
-  const markerPosition = [45.524403, -73.7436546];
+  const markerPosition = [45.5023524, -73.78907];
   const circlePosition = [45.524403, -73.7436546];
   const circleMarkerPosition = [45.475649, -73.664999];
 
   function LocationMarker() {
     const [position, setPosition] = useState(null);
     const map = useMapEvents({
-      click() {
+      click(e) {
         map.locate();
       },
-      // keyup(e) {
-      //   console.log(e.originalEvent.target.value);
-      // },
-
       locationfound(e) {
+        console.log('Found location Event: I Found You');
         setPosition(e.latlng);
         map.flyTo(e.latlng, map.getZoom());
       },
     });
+
     map.addControl(searchControl);
+    map.on('geosearch/showlocation', (event) => {
+      const { location } = event;
+      console.log('event', location);
+      setNewLocationToMap({ ...newLocationToMap, y: location.y, x: location.x, label: location.label });
+      dispatch(
+        addLocationToMap({
+          y: location.y,
+          x: location.x,
+          label: location.label,
+        })
+      );
+    });
 
     return position === null ? null : (
       <Marker position={position}>
@@ -63,10 +89,6 @@ const Map = (props) => {
   }
   const fillBlueOptions = { fillColor: 'blue' };
   const redOptions = { color: 'red' };
-
-  useEffect(() => {
-    setMarkersShown([{}]);
-  }, [setMarkersShown]);
 
   return (
     <div>
@@ -84,7 +106,7 @@ const Map = (props) => {
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup>
         </Marker>
-        {markersShown &
+        {/* {markersShown &
           markersShown.map((marker) => {
             return (
               <Marker key={marker.id} position={markerPosition}>
@@ -96,7 +118,7 @@ const Map = (props) => {
                 </Popup>
               </Marker>
             );
-          })}
+          })} */}
         <LocationMarker />
       </MapContainer>
     </div>

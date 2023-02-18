@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 // Services
 import { mapService } from '@services/api/map/map.service';
@@ -8,18 +8,29 @@ import { mapService } from '@services/api/map/map.service';
 import FormInput from '@components/form-input/formInput.component';
 import Button from '@components/button/Button';
 import ReactSpinner from '@components/react-spinner/react-spinner.component';
-import { addLocationToMap } from '@redux/reducers/map/map.reducer';
+// import { addLocationToMap } from '@redux/reducers/map/map.reducer';
+// Map
+// import { GoogleProvider, GeoSearchControl } from 'leaflet-geosearch';
+// import { provider, searchControl } from '@components/map/map.component';
 
 const defaultFormFields = {
-  signalLocation: '',
+  labelName: '',
   range: 0,
 };
 
 const MapFormSpotHuman = () => {
-  const [formFields, setFormFields] = useState(defaultFormFields);
-  const { signalLocation, range } = formFields;
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+  const [formFields, setFormFields] = useState(defaultFormFields);
+  let { range, labelName } = formFields;
+  const [alertType, setAlertType] = useState('');
+  const [errorMessages, setErrorMessages] = useState([]);
+  const [successMessages, setSuccessMessages] = useState([]);
+  const [hasMsg, setHasMsg] = useState(false);
+  // const dispatch = useDispatch();
+  const labelNameState = useSelector((state) => state?.map?.label);
+  const xName = useSelector((state) => state?.map?.x);
+  const yName = useSelector((state) => state?.map?.y);
+  if (labelNameState) labelName = labelNameState;
 
   const resetFormFields = () => {
     // Sets the form to it's initial state in the original object.
@@ -32,42 +43,69 @@ const MapFormSpotHuman = () => {
     const formInput = { ...formFields, [name]: value };
 
     setFormFields(formInput);
-    // console.log(formInput);
+    console.log(event.target.value);
   };
 
   const handleFormSubmit = async (event) => {
+    setLoading(true);
     event.preventDefault();
-    const { signalLocation, range } = formFields;
+    if (!labelNameState) {
+      setAlertType('alert-error');
+      setHasMsg(true);
+      setLoading(false);
+      return setErrorMessages(['Please select the location on the map first to accurately save the coordinates.']);
+    }
+    if (labelName !== labelNameState) {
+      setAlertType('alert-error');
+      setHasMsg(true);
+      setLoading(false);
+      return setErrorMessages(['Name of location does not match']);
+    }
+    // const { range, labelName } = formFields;
     console.log('submited', range);
-    try {
-      const result = await mapService.saveLocation({
-        signalLocation,
-        range,
-      });
+    console.log('submited', labelName);
 
+    try {
+      // save location in database
+      const result = await mapService.saveLocation({
+        range,
+        labelName,
+        xName,
+        yName,
+      });
       console.log('Result:', result, 'MapFormSpotHuman');
+      setHasMsg(true);
+      setErrorMessages([]);
+      setAlertType('alert-success');
+      setSuccessMessages(['Location added successfully']);
+      setLoading(false);
+      resetFormFields();
+      // dispatch(addLocationToMap({ range, x: xName, y: yName, label: labelName }));
+      setLoading(false);
     } catch (error) {
       console.log('Error Posting:', error, 'MapFormSpot');
     }
-    setLoading(true);
-    resetFormFields();
-    dispatch(addLocationToMap({ range, location: signalLocation }));
-    setLoading(false);
   };
 
   return (
     <>
       <form onSubmit={handleFormSubmit}>
         <h2 style={{ fontSize: 17, color: '#de106f', fontWeight: 900 }}> Did you spot a human?</h2>
-        <label htmlFor="human-presence">Signal the presence of humans.</label>
+        <label htmlFor="human-presence">Find the area on the map then save it here &#x2714;</label>
+        {hasMsg && errorMessages && successMessages && (
+          <div className={`alerts ${alertType}`} role="alert">
+            {errorMessages}
+            {successMessages}
+          </div>
+        )}
         <FormInput
           id="human-presence"
           label="Give a location.."
           type="text"
           required
           onChange={handleFormInputChange}
-          name="signalLocation"
-          value={signalLocation}
+          name="labelName"
+          value={labelName}
         />
         <label htmlFor="range">Trashing Level </label>
         <input
@@ -91,7 +129,7 @@ const MapFormSpotHuman = () => {
         </datalist>
         <div style={{ fontSize: 20, color: '#de006f' }}>{range}</div>
         <div className="loading-button">
-          <Button type="submit">{loading ? <ReactSpinner /> : `Adding to the map`}</Button>
+          <Button type="submit">{loading ? <ReactSpinner /> : `Save to the map`}</Button>
         </div>
       </form>
     </>

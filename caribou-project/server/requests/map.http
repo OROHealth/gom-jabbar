@@ -17,12 +17,8 @@ withCredentials: true
 
 ###
 ### @Desc Login a User
-# POST {{baseUrl}}/{{urlPath}}/login
-# Content-Type: application/json
-# Accept: application/json
-# withCredentials: true
-
-# {
-#   "email": "giovanni-carib@hotmail.com",
-#   "password": "1234567"
-# }
+GET {{baseUrl}}/{{urlPath}}/query?=locations
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzY2NTg2NTAsImV4cCI6MTY3Njc0NTA1MCwiYXVkIjoiNjNlZTg0NTBkZjY0ZjM5MDllNDY0YzBlIiwiaXNzIjoiaHR0cHM6bG9jYWxob3N0OjMwMDAifQ.rmNhRYmeEAM0gIenDZypMDxFAohdg87HtD7iwGfpz2E
+Content-Type: application/json
+Accept: application/json
+withCredentials: true

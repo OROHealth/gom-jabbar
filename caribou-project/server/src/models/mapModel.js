@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const mapSchema = new mongoose.Schema(
   {
-    location: {
+    labelName: {
       type: String,
       required: false,
       unique: true,
@@ -14,22 +14,16 @@ const mapSchema = new mongoose.Schema(
       unique: false,
       trim: true,
     },
-    x: {
-      type: String,
-      required: false,
-      unique: false,
-      trim: true,
-    },
     y: {
       type: String,
       required: false,
       unique: true,
       trim: true,
     },
-    label: {
+    x: {
       type: String,
       required: false,
-      unique: true,
+      unique: false,
       trim: true,
     },
     expiresAt: { type: Date, expires: '1h', default: Date.now },
