@@ -30,6 +30,12 @@ const MapFormSpotHuman = () => {
   const yName = useSelector((state) => state.map?.y);
   if (labelNameState) labelName = labelNameState;
 
+  const timeLimitMessage = () => {
+    setTimeout(() => {
+      setHasMsg(false);
+    }, 15000);
+  };
+
   const resetFormFields = () => {
     // Sets the form to it's initial state in the original object.
     setFormFields(defaultFormFields);
@@ -47,16 +53,18 @@ const MapFormSpotHuman = () => {
 
   const handleFormSubmit = async (event) => {
     setLoading(true);
-    // event.preventDefault();
+    event.preventDefault();
     if (!labelNameState) {
       setAlertType('alert-error');
       setHasMsg(true);
+      timeLimitMessage();
       setLoading(false);
       return setErrorMessages(['Please select the location on the map first to accurately save the coordinates.']);
     }
     if (labelName !== labelNameState) {
       setAlertType('alert-error');
       setHasMsg(true);
+      timeLimitMessage();
       setLoading(false);
       return setErrorMessages(['Name of location does not match']);
     }
@@ -77,9 +85,10 @@ const MapFormSpotHuman = () => {
         yName,
       });
 
-      // console.log('Result:', result, 'MapFormSpotHuman');
+      console.log('Result:', result, 'MapFormSpotHuman');
       if (result?.data?.errorMsg) {
         setHasMsg(true);
+        timeLimitMessage();
         setAlertType('alert-error');
         setLoading(false);
         return setErrorMessages([result?.data?.errorMsg]);
@@ -89,6 +98,7 @@ const MapFormSpotHuman = () => {
       }
       dispatch(removeMap());
       setHasMsg(true);
+      timeLimitMessage();
       setErrorMessages([]);
       setAlertType('alert-success');
       setSuccessMessages(['Location added successfully']);
@@ -97,14 +107,20 @@ const MapFormSpotHuman = () => {
       // dispatch(addLocationToMap({ trashingLevel, x: xName, y: yName, label: labelName }));
       setLoading(false);
     } catch (error) {
-      console.log('Error Posting:', error, 'MapFormSpot');
+      console.log('Error Posting:', error?.response?.data[0].errorMsg, 'MapFormSpot');
+      setHasMsg(true);
+      timeLimitMessage();
+      setAlertType('alert-error');
+      setLoading(false);
+      setErrorMessages([error?.response?.data[0].errorMsg]);
+      // setSuccessMessages(['Error']);
     }
   };
 
   return (
     <>
       <form onSubmit={handleFormSubmit}>
-        <h2 style={{ fontSize: 17, color: '#de106f', fontWeight: 900 }}> Did you spot a human?</h2>
+        <h2 style={{ fontSize: 20, color: '#de106f', fontWeight: 900 }}> Did you spot a human?</h2>
         <label htmlFor="human-presence">Find the area on the map then save it here &#x2714;</label>
         {hasMsg && errorMessages && successMessages && (
           <div className={`alerts ${alertType}`} role="alert">

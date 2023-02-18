@@ -10,6 +10,7 @@ import '@pages/dashboard/Dashboard.styles.scss';
 import AppNavigation from '@components/app-navigation/AppNavigation.component';
 import Map from '@components/map/Map.component';
 import MapFormSpotHuman from '@components/map-form-spot-human/MapFormSpotHuman.component';
+import AntlerExchange from '@components/antlerExchange/AntlerExchange';
 import Chatroom from '@components/chatroom/Chatroom';
 
 const Dashboard = () => {
@@ -43,9 +44,18 @@ const Dashboard = () => {
             <div className="app-dashboard-texts-field">
               <MapFormSpotHuman />
             </div>
+            <div className="app-dashboard-texts-field">
+              <AntlerExchange />
+            </div>
+            <div className="app-dashboard-texts-field">
+              <MapFormSpotHuman />
+            </div>
+            <div className="app-dashboard-texts-field">
+              <AntlerExchange />
+            </div>
           </div>
           <div className="app-map">
-            <p>Double click the map to get your current location.</p>
+            <p style={{ fontSize: 13 }}>Double click the map to get your current location.</p>
             <Map />
           </div>
         </div>

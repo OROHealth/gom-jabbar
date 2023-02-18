@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
+import useLocalStorage from '@hooks/useLocalStorage';
 
 // stylesheet
 import '@components/app-navigation/AppNavigation.styles.scss';
@@ -9,7 +10,6 @@ import '@components/app-navigation/AppNavigation.styles.scss';
 // import Button from '@components/button/Button';
 import { FaAngleDown } from 'react-icons/fa';
 import { removeUser } from '@redux/reducers/user/user.reducer';
-import useLocalStorage from '@hooks/useLocalStorage';
 
 const AppNavigation = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -49,20 +49,22 @@ const AppNavigation = () => {
               <strong>Welcome Caribou</strong>
             </span>
           </div>
-          <div className="app-flex" onClick={handleLogoDropdown}>
-            <div className="image-wrapper">
-              <img src={avatarImage && avatarImage} alt="Avatar image" />{' '}
-            </div>
-            <FaAngleDown />
-            {dropdownOpen && (
-              <div className="app-dash-dropdown">
-                <span>We&apos;re sorry to see you go Caribou : &#40;</span>
-
-                <button className="button dropdown-bg-btn" onClick={handleLogOutUser}>
-                  Logout
-                </button>
+          <div className="app-flex">
+            <div onClick={handleLogoDropdown} className="app-flex">
+              <div className="image-wrapper">
+                <img src={avatarImage && avatarImage} alt="Avatar image" />{' '}
               </div>
-            )}
+              <FaAngleDown />
+              {dropdownOpen && (
+                <div className="app-dash-dropdown">
+                  <span>We&apos;re sorry to see you go Caribou : &#40;</span>
+
+                  <button className="button dropdown-bg-btn" onClick={handleLogOutUser}>
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </span>
       </nav>

@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
-import io from 'socket.io-client';
-
-const socket = io.connect('http://localhost:3001');
+import socket from '@services/websocket/webSocketIO';
 
 const Chatroom = () => {
   // Emiting and event

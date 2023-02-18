@@ -106,5 +106,25 @@ const io = new Server(server, {
   },
 });
 
+// Listening for events
+io.on('connection', socket => {
+  // This Runs Whenever someone opens the website
+  // socket.id - this is the id of the user, each user has a different id
+  console.log(`User connected, ${socket.id}`);
+
+  // Listen to the send message event
+  socket.on('send_Message', data => {
+    // broadcast message
+    socket.broadcast.emit('received_message', data);
+    console.log(data);
+  });
+
+  // Send a antler exchange broadcast
+  socket.on('antler_exchange', data => {
+    console.log(data);
+    socket.broadcast.emit('antler_exchange_broadcast', data);
+  });
+});
+
 handleExit();
 startServer();

@@ -21,12 +21,18 @@
     gap: 30px;
     margin-top: 30px;
     width: 70%;
+    flex-direction: column;
 
     .app-dash-all-fields {
-      // overflow: scroll;
+      overflow: scroll;
       display: flex;
       gap: 15px;
-      justify-content: center;
+      justify-content: flex-start;
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+      &::-webkit-scrollbar {
+        display: none;
+      }
     }
 
 
@@ -36,7 +42,8 @@
       // width: 100%;
       text-align: center;
       padding: 20px;
-      border: 1px solid #dbdbdb;
+      border: 2px solid #eeeeee;
+      box-shadow: 0 0 20px 0 rgb(44 101 144 / 10%);
       border-radius: 25px;
     }
 
@@ -79,6 +86,7 @@
     flex-direction: column;
     width: 80%;
     margin-bottom: 100px;
+
   }
 
   .app-dashboard-texts-field {
@@ -88,6 +96,8 @@
 
   .app-dash-all-fields {
     width: 95%;
+
+
   }
 
   .app-map {
@@ -115,6 +125,7 @@
 
   .app-dash-all-fields {
     display: flex;
+
   }
 
 }
