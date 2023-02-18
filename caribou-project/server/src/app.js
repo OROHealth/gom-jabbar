@@ -50,7 +50,7 @@ app.use(morgan('combined'));
 
 // Routes Middle-wares
 app.use('/api/v1/user', userRouter);
-// app.use('/api/v1/map', mapRouter); // test
+// app.use('/api/v1/map', mapRouter); // test without token
 app.use('/api/v1/map', verifyAccessToken, mapRouter);
 
 // Health check route - endpoint that returns a 200 status code if your application is running
@@ -81,6 +81,7 @@ app.all('*', (req, res) => {
   // catches all unFound urls
   res.status(HTTP_STATUS.StatusCodes.NOT_FOUND).json({ message: `${req.originalUrl} not found` });
 });
+
 app.get('/*', (req, res) => {
   // catches all unFound urls
   res.status(HTTP_STATUS.StatusCodes.NOT_FOUND).json({ message: `${req.originalUrl} not found` });

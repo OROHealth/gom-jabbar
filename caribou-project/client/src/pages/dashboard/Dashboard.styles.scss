@@ -25,15 +25,16 @@
       overflow: scroll;
       display: flex;
       gap: 15px;
+      justify-content: center;
     }
 
 
     .app-dashboard-texts-field {
       border: 1px solid red;
-      flex: 1 0 220px;
+      flex: 1 0 270px;
       // width: 100%;
       text-align: center;
-      padding: 15px;
+      padding: 20px;
       border: 1px solid #dbdbdb;
       border-radius: 25px;
     }
@@ -61,6 +62,7 @@
   .app-dashboard-texts-field {
     border: 1px solid red;
     width: 100%;
+    max-width: 300px;
   }
 
   .app-dash-all-fields {

@@ -24,21 +24,6 @@ const userSchema = new mongoose.Schema(
       required: true,
       select: true,
     },
-    mapMarkers: {
-      type: [
-        {
-          lat: String,
-          lng: String,
-        },
-      ],
-      default: [
-        {
-          lat: '',
-          lng: '',
-        },
-      ],
-      select: true,
-    },
     location: [{ type: mongoose.Schema.Types.ObjectId, ref: 'map' }],
   },
   {

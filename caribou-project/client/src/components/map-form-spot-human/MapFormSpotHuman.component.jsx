@@ -15,21 +15,22 @@ import ReactSpinner from '@components/react-spinner/react-spinner.component';
 
 const defaultFormFields = {
   labelName: '',
-  range: 0,
+  trashingLevel: 0,
+  excitementLevel: 0,
 };
 
 const MapFormSpotHuman = () => {
   const [loading, setLoading] = useState(false);
   const [formFields, setFormFields] = useState(defaultFormFields);
-  let { range, labelName } = formFields;
+  let { trashingLevel, excitementLevel, labelName } = formFields;
   const [alertType, setAlertType] = useState('');
   const [errorMessages, setErrorMessages] = useState([]);
   const [successMessages, setSuccessMessages] = useState([]);
   const [hasMsg, setHasMsg] = useState(false);
   // const dispatch = useDispatch();
   const labelNameState = useSelector((state) => state?.map?.label);
-  const xName = useSelector((state) => state?.map?.x);
-  const yName = useSelector((state) => state?.map?.y);
+  const xName = useSelector((state) => state.map?.x);
+  const yName = useSelector((state) => state.map?.y);
   if (labelNameState) labelName = labelNameState;
 
   const resetFormFields = () => {
@@ -43,7 +44,7 @@ const MapFormSpotHuman = () => {
     const formInput = { ...formFields, [name]: value };
 
     setFormFields(formInput);
-    console.log(event.target.value);
+    // console.log(event.target.value);
   };
 
   const handleFormSubmit = async (event) => {
@@ -61,18 +62,22 @@ const MapFormSpotHuman = () => {
       setLoading(false);
       return setErrorMessages(['Name of location does not match']);
     }
-    // const { range, labelName } = formFields;
-    console.log('submited', range);
+    // const { trashingLevel, labelName } = formFields;
+    console.log('submited', trashingLevel);
     console.log('submited', labelName);
+    console.log('submited', xName);
+    console.log('submited', yName);
 
     try {
       // save location in database
       const result = await mapService.saveLocation({
-        range,
+        excitementLevel,
+        trashingLevel,
         labelName,
         xName,
         yName,
       });
+
       console.log('Result:', result, 'MapFormSpotHuman');
       setHasMsg(true);
       setErrorMessages([]);
@@ -80,7 +85,7 @@ const MapFormSpotHuman = () => {
       setSuccessMessages(['Location added successfully']);
       setLoading(false);
       resetFormFields();
-      // dispatch(addLocationToMap({ range, x: xName, y: yName, label: labelName }));
+      // dispatch(addLocationToMap({ trashingLevel, x: xName, y: yName, label: labelName }));
       setLoading(false);
     } catch (error) {
       console.log('Error Posting:', error, 'MapFormSpot');
@@ -107,27 +112,48 @@ const MapFormSpotHuman = () => {
           name="labelName"
           value={labelName}
         />
-        <label htmlFor="range">Trashing Level </label>
+        <label htmlFor="trashingLevel">Trashing Level </label>
         <input
-          id="range"
+          id="trashingLevel"
           type="range"
-          name="range"
-          min="0"
-          max="25"
+          name="trashingLevel"
+          min="5"
+          max="30"
           step="1"
           onChange={handleFormInputChange}
-          value={range}
+          value={trashingLevel}
           list="markers"
         />
         <datalist id="markers">
-          <option value="0"></option>
           <option value="5"></option>
           <option value="10"></option>
           <option value="15"></option>
           <option value="20"></option>
           <option value="25"></option>
+          <option value="30"></option>
         </datalist>
-        <div style={{ fontSize: 20, color: '#de006f' }}>{range}</div>
+        <div style={{ fontSize: 20, color: '#de006f' }}>{trashingLevel}</div>
+        <label htmlFor="range">Excitement Level </label>
+        <input
+          id="excitementLevel"
+          type="range"
+          name="excitementLevel"
+          min="5"
+          max="30"
+          step="1"
+          onChange={handleFormInputChange}
+          value={excitementLevel}
+          list="markers"
+        />
+        <datalist id="markers">
+          <option value="5"></option>
+          <option value="10"></option>
+          <option value="15"></option>
+          <option value="20"></option>
+          <option value="25"></option>
+          <option value="30"></option>
+        </datalist>
+        <div style={{ fontSize: 20, color: '#de006f' }}>{excitementLevel}</div>
         <div className="loading-button">
           <Button type="submit">{loading ? <ReactSpinner /> : `Save to the map`}</Button>
         </div>

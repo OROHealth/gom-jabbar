@@ -25,28 +25,37 @@ const searchControl = new GeoSearchControl({
   keepResult: true,
 });
 
-const HumanPresenceInitial = [
+const AllMapLocationInitial = [
   {
-    label: '',
-    x: '',
-    y: '',
+    id: '',
+    labelName: '',
+    trashingLevel: '',
+    excitementLevel: '',
+    expiresAt: '',
+    createdAt: '',
+    updatedAt: '',
   },
 ];
 
 // console.log('searchControl', searchControl, 'Map component');
 
 const Map = (props) => {
-  const dispatch = useDispatch();
   // const [loading, setLoading] = useState(false);
-  const [newLocationToMap, setNewLocationToMap] = useState(HumanPresenceInitial);
-  const [allMapLocations, setAllMapLocations] = useState([]);
+  const dispatch = useDispatch();
+  // const [newLocationToMap, setNewLocationToMap] = useState(HumanPresenceInitial);
+  const [allMapLocations, setAllMapLocations] = useState(AllMapLocationInitial);
 
   useEffect(() => {
     const getLocations = async () => {
-      return await mapService.getAllLocations();
+      const locationMarks = await mapService.getAllLocations().then((res) => {
+        console.log(res?.data?.locations, 'useEffect Map component');
+        if (res.data?.locations) {
+          return res?.data?.locations;
+        }
+      });
+      return locationMarks;
     };
-    setAllMapLocations(getLocations());
-    console.log(allMapLocations);
+    setAllMapLocations([getLocations()]);
   }, []);
 
   const position = [45.49898, -73.647124];
@@ -56,10 +65,12 @@ const Map = (props) => {
 
   function LocationMarker() {
     const [position, setPosition] = useState(null);
+
     const map = useMapEvents({
       click(e) {
         map.locate();
       },
+
       locationfound(e) {
         console.log('Found location Event: I Found You');
         setPosition(e.latlng);
@@ -70,8 +81,8 @@ const Map = (props) => {
     map.addControl(searchControl);
     map.on('geosearch/showlocation', (event) => {
       const { location } = event;
-      console.log('event', location);
-      setNewLocationToMap({ ...newLocationToMap, y: location.y, x: location.x, label: location.label });
+      // setNewLocationToMap({ ...newLocationToMap, y: location.y, x: location.x, label: location.label });
+      // console.log('Map event', location, 'Map.component');
       dispatch(
         addLocationToMap({
           y: location.y,
@@ -89,6 +100,7 @@ const Map = (props) => {
   }
   const fillBlueOptions = { fillColor: 'blue' };
   const redOptions = { color: 'red' };
+  console.log(allMapLocations);
 
   return (
     <div>
@@ -106,19 +118,24 @@ const Map = (props) => {
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup>
         </Marker>
-        {/* {markersShown &
-          markersShown.map((marker) => {
+        {allMapLocations &&
+          allMapLocations.map((marker) => {
             return (
-              <Marker key={marker.id} position={markerPosition}>
-                <Tooltip direction="top" offset={[-10, -10]} opacity={1}>
-                  You are here
-                </Tooltip>
-                <Popup>
-                  A pretty CSS3 popup. <br /> Easily customizable.
-                </Popup>
-              </Marker>
+              <>
+                <div key={marker.id}>
+                  <Marker position={markerPosition}>
+                    <Tooltip direction="top" offset={[-10, -10]} opacity={1}>
+                      You are here
+                    </Tooltip>
+                    <Popup>
+                      A pretty CSS3 popup. <br /> Easily customizable.
+                    </Popup>
+                  </Marker>
+                </div>
+              </>
             );
-          })} */}
+          })}
+
         <LocationMarker />
       </MapContainer>
     </div>

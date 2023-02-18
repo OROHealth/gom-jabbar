@@ -22,9 +22,9 @@ class MapService {
 
   // @ DESC    Create a Location pin in the database
   // @ METHOD  GET
-  // @METHOD /api/v1/map/query?=locations
+  // @METHOD   /api/v1/map + /query=Map-Locations
   async getAllLocations() {
-    const response = axios.get('map/query?=Map-Locations', LocalToken());
+    const response = axios.get('map/query=Map-Locations', LocalToken());
     return response;
   }
 }

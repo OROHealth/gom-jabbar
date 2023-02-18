@@ -1,6 +1,6 @@
 const mapRouter = require('express').Router();
 const { getAllMapLocations, postAMapLocation } = require('../controllers/mapController');
-// BAse Route - /api/v1/map
+// Base Route - /api/v1/map
 
 // @Desc    Save Map location
 // @Method  GET
@@ -9,7 +9,6 @@ mapRouter.post('/post=location', postAMapLocation);
 
 // @Desc    Get all Maps Locations
 // @Method  GET
-// @Route   /api/v1/map/query?=locations
-mapRouter.get('/query?=locations', getAllMapLocations);
-
+// @Route   /api/v1/map + /query=Map-Locations
+mapRouter.get('/query=Map-Locations', getAllMapLocations);
 module.exports = mapRouter;

@@ -4,21 +4,25 @@
 ###
 ### @Desc Adding Location to the map
 POST {{baseUrl}}/{{urlPath}}/post=location
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzY2NTg2NTAsImV4cCI6MTY3Njc0NTA1MCwiYXVkIjoiNjNlZTg0NTBkZjY0ZjM5MDllNDY0YzBlIiwiaXNzIjoiaHR0cHM6bG9jYWxob3N0OjMwMDAifQ.rmNhRYmeEAM0gIenDZypMDxFAohdg87HtD7iwGfpz2E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzY2ODc5NDIsImV4cCI6MTY3Njc3NDM0MiwiYXVkIjoiNjNlZmRhY2UwZTYzZTA5MDFjMjI2OWIwIiwiaXNzIjoiaHR0cHM6bG9jYWxob3N0OjMwMDAifQ.eOiFIHbQh6Kw60B6kbZ5DuO2w6LrMoOU5bmryhyJkyU
 Content-Type: application/json
 Accept: application/json
 withCredentials: true
 
 {
-  "location": "secrests-carib@hotmail.com",
-  "range": 1234567
+  "labelName": "Mexico",
+  "trashingLevel": 10,
+  "excitementLevel": 17,
+  "x": 2.3522219,
+  "y": 48.856614
 }
 
 
-###
+
 ### @Desc Login a User
-GET {{baseUrl}}/{{urlPath}}/query?=locations
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzY2NTg2NTAsImV4cCI6MTY3Njc0NTA1MCwiYXVkIjoiNjNlZTg0NTBkZjY0ZjM5MDllNDY0YzBlIiwiaXNzIjoiaHR0cHM6bG9jYWxob3N0OjMwMDAifQ.rmNhRYmeEAM0gIenDZypMDxFAohdg87HtD7iwGfpz2E
+### @METHOD /api/v1/map + /query=Map-Locations
+GET {{baseUrl}}/{{urlPath}}/query=Map-Locations
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzY2ODc5NDIsImV4cCI6MTY3Njc3NDM0MiwiYXVkIjoiNjNlZmRhY2UwZTYzZTA5MDFjMjI2OWIwIiwiaXNzIjoiaHR0cHM6bG9jYWxob3N0OjMwMDAifQ.eOiFIHbQh6Kw60B6kbZ5DuO2w6LrMoOU5bmryhyJkyU
 Content-Type: application/json
 Accept: application/json
 withCredentials: true

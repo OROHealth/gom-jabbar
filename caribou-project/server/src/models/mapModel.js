@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+let expirationTime = '1h';
+
 const mapSchema = new mongoose.Schema(
   {
     labelName: {
@@ -14,19 +16,25 @@ const mapSchema = new mongoose.Schema(
       unique: false,
       trim: true,
     },
-    y: {
-      type: String,
-      required: false,
-      unique: true,
-      trim: true,
-    },
-    x: {
-      type: String,
+    excitementLevel: {
+      type: Number,
       required: false,
       unique: false,
       trim: true,
     },
-    expiresAt: { type: Date, expires: '1h', default: Date.now },
+    y: {
+      type: Number,
+      required: true,
+      unique: true,
+      trim: true,
+    },
+    x: {
+      type: Number,
+      required: true,
+      unique: false,
+      trim: true,
+    },
+    expiresAt: { type: Date, expires: `${expirationTime}`, default: Date.now },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   },
   {
@@ -40,6 +48,16 @@ mapSchema.set('toJSON', {
     delete returnedObject._id;
     delete returnedObject.__v;
   },
+});
+
+mapSchema.pre('save', next => {
+  try {
+    expirationTime = '24h';
+    next();
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
 });
 
 module.exports = mongoose.model('map', mapSchema);
