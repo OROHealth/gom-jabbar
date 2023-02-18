@@ -13,10 +13,9 @@ const UserModel = require('../models/userModel');
 // @Route    /api/v1/map + /query=Map-Locations
 async function getAllMapLocations(_req, res) {
   // populate, instead of showing the id, it will show the user name
-  console.log('Arrive!!!');
-  console.log('Currently Getting all Map Locations');
+  log('info', 'App Currently Getting all the Map Marker Locations in the Database', 'mapController');
   const locations = await MapModel.find({}).populate({ path: 'user', model: 'User' });
-  console.log('Locations Found', locations);
+  log('info', 'Locations Found, Sent them to the Frontend :)', 'mapController');
   res.json({ locations });
   return;
 }

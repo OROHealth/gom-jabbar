@@ -89,7 +89,10 @@ const Map = (props) => {
 
     return position === null ? null : (
       <CircleMarker center={position} pathOptions={{ color: 'blue' }} radius={50}>
-        <Popup>You are around here</Popup>
+        <Popup>You are around here.</Popup>
+        <Tooltip direction="top" offset={[-10, -10]} opacity={1}>
+          <p>You are around here somewhere.</p>
+        </Tooltip>
       </CircleMarker>
     );
   }
@@ -117,7 +120,6 @@ const Map = (props) => {
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" accessToken={`${mapBoxApiKey}`} />
         {allMapLocations &&
           allMapLocations.map((marker, id) => {
-            console.log('Find Items: ', marker);
             // Gets the ISO-8601 date and converts it to local Date and transforms it to a string and save.
             let exDate1 = new Date(marker.expiresAt);
             exDate1 = exDate1.toLocaleString('en-US').toString();
@@ -130,10 +132,9 @@ const Map = (props) => {
                       <div>Trashing Level: {marker.trashingLevel}</div>
                       <div>Excitement Level: {marker.excitementLevel}</div>
                       <div>Expires at: {exDate1}</div>
-                      <p>Humans Are Here! So Stay Away.</p>
                     </div>
                     <Tooltip direction="top" offset={[-10, -10]} opacity={1}>
-                      Hello
+                      <p>Humans Are Here! So Stay Away.</p>
                     </Tooltip>
                   </Popup>
                 </CircleMarker>

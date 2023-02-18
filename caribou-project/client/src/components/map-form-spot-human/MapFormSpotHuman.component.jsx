@@ -61,10 +61,10 @@ const MapFormSpotHuman = () => {
       return setErrorMessages(['Name of location does not match']);
     }
     // const { trashingLevel, labelName } = formFields;
-    console.log('submited', trashingLevel);
-    console.log('submited', labelName);
-    console.log('submited', xName);
-    console.log('submited', yName);
+    // console.log('submited', trashingLevel);
+    // console.log('submited', labelName);
+    // console.log('submited', xName);
+    // console.log('submited', yName);
 
     try {
       // save location in database
@@ -77,7 +77,7 @@ const MapFormSpotHuman = () => {
         yName,
       });
 
-      console.log('Result:', result, 'MapFormSpotHuman');
+      // console.log('Result:', result, 'MapFormSpotHuman');
       if (result?.data?.errorMsg) {
         setHasMsg(true);
         setAlertType('alert-error');

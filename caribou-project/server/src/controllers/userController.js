@@ -85,7 +85,7 @@ async function registerUser(req, res) {
 // @Route   /api/v1/user/login
 // TODO Email and Password Login Start
 async function loginUser(req, res) {
-  console.log('Request Data:', req.body);
+  // console.log('Request Data:', req.body);
   const { email, password } = req.body;
 
   const errors = [];
