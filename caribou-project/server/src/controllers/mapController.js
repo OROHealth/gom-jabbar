@@ -38,7 +38,7 @@ async function postAMapLocation(req, res) {
 
   await MapModel.findOne({ labelName: labelName }).then(async foundLabel => {
     console.log(foundLabel);
-    if (foundLabel === null) {
+    if (foundLabel !== null) {
       // If Location Already Exists. Then we displayed in the frontend a message
       errors.push({ errorMsg: 'These coordinates already exists!' });
       return res.json(errors).end();

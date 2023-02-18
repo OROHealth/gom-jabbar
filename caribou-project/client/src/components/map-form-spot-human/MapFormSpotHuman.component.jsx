@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 // Services
 import { mapService } from '@services/api/map/map.service';
@@ -8,10 +8,7 @@ import { mapService } from '@services/api/map/map.service';
 import FormInput from '@components/form-input/formInput.component';
 import Button from '@components/button/Button';
 import ReactSpinner from '@components/react-spinner/react-spinner.component';
-// import { addLocationToMap } from '@redux/reducers/map/map.reducer';
-// Map
-// import { GoogleProvider, GeoSearchControl } from 'leaflet-geosearch';
-// import { provider, searchControl } from '@components/map/map.component';
+import { removeMap } from '@redux/reducers/map/map.reducer';
 
 const defaultFormFields = {
   labelName: '',
@@ -27,7 +24,7 @@ const MapFormSpotHuman = () => {
   const [errorMessages, setErrorMessages] = useState([]);
   const [successMessages, setSuccessMessages] = useState([]);
   const [hasMsg, setHasMsg] = useState(false);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const labelNameState = useSelector((state) => state?.map?.label);
   const xName = useSelector((state) => state.map?.x);
   const yName = useSelector((state) => state.map?.y);
@@ -40,6 +37,7 @@ const MapFormSpotHuman = () => {
 
   // Input Change
   const handleFormInputChange = async (event) => {
+    setHasMsg(false);
     const { name, value } = event.target;
     const formInput = { ...formFields, [name]: value };
 
@@ -49,7 +47,7 @@ const MapFormSpotHuman = () => {
 
   const handleFormSubmit = async (event) => {
     setLoading(true);
-    event.preventDefault();
+    // event.preventDefault();
     if (!labelNameState) {
       setAlertType('alert-error');
       setHasMsg(true);
@@ -70,6 +68,7 @@ const MapFormSpotHuman = () => {
 
     try {
       // save location in database
+      console.log('Saving location in database', 'MapFormSpotHuman');
       const result = await mapService.saveLocation({
         excitementLevel,
         trashingLevel,
@@ -79,6 +78,16 @@ const MapFormSpotHuman = () => {
       });
 
       console.log('Result:', result, 'MapFormSpotHuman');
+      if (result?.data?.errorMsg) {
+        setHasMsg(true);
+        setAlertType('alert-error');
+        setLoading(false);
+        return setErrorMessages([result?.data?.errorMsg]);
+      }
+      if (hasMsg) {
+        labelName = '';
+      }
+      dispatch(removeMap());
       setHasMsg(true);
       setErrorMessages([]);
       setAlertType('alert-success');

@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 
-let expirationTime = '1h';
-
 const mapSchema = new mongoose.Schema(
   {
     labelName: {
@@ -34,7 +32,7 @@ const mapSchema = new mongoose.Schema(
       unique: false,
       trim: true,
     },
-    expiresAt: { type: Date, expires: `${expirationTime}`, default: Date.now },
+    expiresAt: { type: Date, expires: '24h', default: Date.now },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   },
   {
@@ -50,14 +48,14 @@ mapSchema.set('toJSON', {
   },
 });
 
-mapSchema.pre('save', next => {
-  try {
-    expirationTime = '24h';
-    next();
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-});
+// mapSchema.pre('save', next => {
+//   try {
+//     expirationTime = '24h';
+//   =
+//   } catch (error) {
+//     console.log(error);
+//     next(error);
+//   }
+// });
 
 module.exports = mongoose.model('map', mapSchema);

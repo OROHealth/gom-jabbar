@@ -18,14 +18,14 @@ const mapReducerSlice = createSlice({
       state.label = label;
       state.range = range;
     },
-    // removeMap: (state, _action) => {
-    //   state.accessToken = '';
-    //   state.refreshToken = '';
-    //   state.avatarImage = '';
-    //   state.loggedIn = false;
-    // },
+    removeMap: (state, _action) => {
+      state.y = '';
+      state.x = '';
+      state.label = '';
+      state.range = 0;
+    },
   },
 });
 
-export const { addLocationToMap } = mapReducerSlice.actions;
+export const { addLocationToMap, removeMap } = mapReducerSlice.actions;
 export default mapReducerSlice.reducer;

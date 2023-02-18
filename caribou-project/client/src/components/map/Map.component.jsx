@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Circle, CircleMarker, Tooltip } from 'react-leaflet';
+import { MapContainer, TileLayer, Popup, useMapEvents, CircleMarker, Tooltip } from 'react-leaflet';
 import { mapBoxApiKey, googleApiKey } from '@services/utils/config';
 import { useDispatch } from 'react-redux';
 import { addLocationToMap } from '@redux/reducers/map/map.reducer';
@@ -34,34 +34,29 @@ const AllMapLocationInitial = [
     expiresAt: '',
     createdAt: '',
     updatedAt: '',
+    x: 0,
+    y: 0,
   },
 ];
-
-// console.log('searchControl', searchControl, 'Map component');
 
 const Map = (props) => {
   // const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  // const [newLocationToMap, setNewLocationToMap] = useState(HumanPresenceInitial);
   const [allMapLocations, setAllMapLocations] = useState(AllMapLocationInitial);
 
   useEffect(() => {
-    const getLocations = async () => {
-      const locationMarks = await mapService.getAllLocations().then((res) => {
-        console.log(res?.data?.locations, 'useEffect Map component');
+    const getLocations = () => {
+      const locationSpotted = mapService.getAllLocations().then((res) => {
         if (res.data?.locations) {
-          return res?.data?.locations;
+          setAllMapLocations(res.data.locations);
         }
       });
-      return locationMarks;
+      return locationSpotted;
     };
-    setAllMapLocations([getLocations()]);
-  }, []);
+    return getLocations;
+  }, [setAllMapLocations]);
 
-  const position = [45.49898, -73.647124];
-  const markerPosition = [45.5023524, -73.78907];
-  const circlePosition = [45.524403, -73.7436546];
-  const circleMarkerPosition = [45.475649, -73.664999];
+  // const position = [45.49898, -73.647124];
 
   function LocationMarker() {
     const [position, setPosition] = useState(null);
@@ -72,9 +67,9 @@ const Map = (props) => {
       },
 
       locationfound(e) {
-        console.log('Found location Event: I Found You');
+        // console.log('Found location Event: I Found You');
         setPosition(e.latlng);
-        map.flyTo(e.latlng, map.getZoom());
+        map.flyTo(e.latlng);
       },
     });
 
@@ -93,46 +88,56 @@ const Map = (props) => {
     });
 
     return position === null ? null : (
-      <Marker position={position}>
-        <Popup>You are here</Popup>
-      </Marker>
+      <CircleMarker center={position} pathOptions={{ color: 'blue' }} radius={50}>
+        <Popup>You are around here</Popup>
+      </CircleMarker>
     );
   }
-  const fillBlueOptions = { fillColor: 'blue' };
-  const redOptions = { color: 'red' };
-  console.log(allMapLocations);
+
+  const limeOptions = { color: 'lime' };
+  // const purpleOptions = { color: 'purple' };
+  // const fillBlueOptions = { fillColor: 'blue' };
+  // const blackOptions = { color: 'black' };
+  // const redOptions = { color: 'red' };
+  // typeof Object.entries(marker)
+
+  // <CircleMarker center={circleMarkerPosition} pathOptions={redOptions} radius={30}>
+  // <Popup>Popup in CircleMarker</Popup>
+  // </CircleMarker>
 
   return (
     <div>
-      <MapContainer className="map-container" position={position} center={position} zoom={11} scrollWheelZoom={false}>
+      <MapContainer
+        className="map-container"
+        position={[45.49898, -73.647124]}
+        center={[45.53498, -73.648124]}
+        zoom={11}
+        scrollWheelZoom={false}
+      >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" accessToken={`${mapBoxApiKey}`} />
-        <Circle center={circlePosition} pathOptions={fillBlueOptions} radius={1000} />
-        <CircleMarker center={circleMarkerPosition} pathOptions={redOptions} radius={30}>
-          <Popup>Popup in CircleMarker</Popup>
-        </CircleMarker>
-        <Marker position={markerPosition}>
-          <Tooltip direction="top" offset={[-10, -10]} opacity={1}>
-            Hello
-          </Tooltip>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </Marker>
         {allMapLocations &&
-          allMapLocations.map((marker) => {
+          allMapLocations.map((marker, id) => {
+            console.log('Find Items: ', marker);
+            // Gets the ISO-8601 date and converts it to local Date and transforms it to a string and save.
+            let exDate1 = new Date(marker.expiresAt);
+            exDate1 = exDate1.toLocaleString('en-US').toString();
+
             return (
-              <>
-                <div key={marker.id}>
-                  <Marker position={markerPosition}>
+              <div key={`${marker.id}${marker.x}`}>
+                <CircleMarker center={[marker.y, marker.x]} pathOptions={limeOptions} radius={marker.trashingLevel}>
+                  <Popup>
+                    <div>
+                      <div>Trashing Level: {marker.trashingLevel}</div>
+                      <div>Excitement Level: {marker.excitementLevel}</div>
+                      <div>Expires at: {exDate1}</div>
+                      <p>Humans Are Here! So Stay Away.</p>
+                    </div>
                     <Tooltip direction="top" offset={[-10, -10]} opacity={1}>
-                      You are here
+                      Hello
                     </Tooltip>
-                    <Popup>
-                      A pretty CSS3 popup. <br /> Easily customizable.
-                    </Popup>
-                  </Marker>
-                </div>
-              </>
+                  </Popup>
+                </CircleMarker>
+              </div>
             );
           })}
 
