@@ -58,9 +58,11 @@ const Dashboard = () => {
             <div>
               <Map />
             </div>
-            <div className="app-dashboard-texts-field">
-              <MapFormSpotHuman />
-              <p style={{ fontSize: 13 }}>Double click the map to get your current location.</p>
+            <div className="app-dash-all-fields app-map-custom-wrapper">
+              <div className="app-dashboard-texts-field app-map-custom-fields">
+                <MapFormSpotHuman />
+                <p style={{ fontSize: 13 }}>Double click the map to get your current location.</p>
+              </div>
             </div>
           </div>
         </div>

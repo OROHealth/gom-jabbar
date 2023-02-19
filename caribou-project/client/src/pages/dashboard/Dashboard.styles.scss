@@ -2,11 +2,10 @@
   // border: 1px solid red;
   width: 100vw;
   height: 100%;
-  // display: flex;
-  // justify-content: center;
-  // align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
-  border: 2px solid red;
 
   .app-dash-pages--map-title{
     text-align: center;
@@ -39,7 +38,6 @@
 
 
     .app-dashboard-texts-field {
-      border: 1px solid red;
       flex: 1 0 270px;
       // width: 100%;
       text-align: center;
@@ -123,7 +121,7 @@
         justify-content: center;
         width: 100%;
         height: 100%;
-        border: 2px solid green;
+        // border: 2px solid green;
       }
     }
     .app-dashboard-texts-field {
@@ -141,13 +139,17 @@
 }
 
 @media screen and (min-width: 40em ) {
-  .app-dash-map-wrapper{
-    flex-direction: column;
+  .app-map-section {
+    margin: 0  auto 120px;
 
-    .app-map{
-      flex-direction: row;
-      width: 100%;
-      height: 100%;
+    .app-dash-map-wrapper{
+      flex-direction: column;
+
+      .app-map{
+        flex-direction: row;
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 
@@ -168,36 +170,62 @@
   .app-map-section {
 
     .app-dash-map-wrapper{
+      display: flex;
       flex-direction: row;
-      align-items: flex-start;
-      max-width: 1570px;
-      width: 90%;
-      border: 2px solid red;
-      margin: 0 auto;
-      // margin-top: 30px;
+      align-items: center;
+      max-width: 1700px;
+      width: 96%;
+      // border: 2px solid red;
 
       .app-dash-all-fields {
         display: flex;
-        border: 2px solid pink;
+        // border: 2px solid pink;
         width: 33.3%;
-
+        height: 475px;
+        max-height: 600px;
 
         .app-dashboard-texts-field {
-          margin: 0;
+          form {
+            flex-direction: column;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-grow: 1;
+          }
         }
       }
 
       .app-map {
-
+        .app-dash-all-fields {
+          width: 30%;
+          height: 425px;
+          max-height: 425px;
+        }
 
         .app-dashboard-texts-field {
           border: 1px solid red;
-          // width: 270px;
-          flex: 1 0 300px;
           text-align: center;
           padding: 15px;
           border: 1px solid #dbdbdb;
           border-radius: 25px;
+          // width: 270px;
+          // flex: 1 0 300px;
+          // height: 600px;
+          // max-height: 600px;
+
+          display: flex;
+          border: 2px solid pink;
+          width: 33.3%;
+          height: 475px;
+          max-height: 600px;
+
+          form {
+            flex-direction: column;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-grow: 1;
+          }
         }
       }
 

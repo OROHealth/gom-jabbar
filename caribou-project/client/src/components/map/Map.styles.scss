@@ -5,14 +5,15 @@
   height: 250px;
   max-width: 600px;
   max-height: 600px;
-  border: 2px solid red;
-  // height: 50vh;
-  // max-height: 610px;
-  // width: 80vw;
-  // max-width: 900px;
+  // border: 2px solid red;
 }
 
 @media screen and (min-width: 8em) {
+  .app-map-section {
+    .app-dash-map-wrapper {
+      padding: 5px;
+    }
+  }
   .map-wrapper{
     height: 100%;
     width: 100%;
@@ -25,6 +26,7 @@
   }
 }
 @media screen and (min-width: 30em) {
+
   .map-wrapper{
     height: 100%;
     width: 100%;
@@ -45,6 +47,59 @@
     max-width: 650px;
     height: 600px;
     max-height: 610px;
+  }
+
+}
+@media screen and (min-width: 90em) {
+  .app-map-section {
+    .app-dash-map-wrapper {
+      .app-dash-all-fields {
+        width: 30%;
+        height: 425px;
+        max-height: 425px;
+        // flex-grow: 1;
+        // flex-basis: 33.3%;
+      }
+
+      .app-map {
+        flex-grow: 1;
+        width: 50%;
+        padding: 5px;
+
+        .app-dashboard-texts-field {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: space-between;
+          height: 100%;
+          max-height: 580px;
+          width: 100%;
+          max-width: 300px;
+        }
+
+        .map-container {
+          width: 640px;
+          max-width: 650px;
+          height: 600px;
+          max-height: 610px;
+        }
+
+        .app-dash-all-fields.app-map-custom-wrapper {
+          width: 100%;
+          height: 600px;
+          max-height: 600px;
+          // border: 2px solid green;
+          display: flex;
+          align-items: center;
+
+          .app-map-custom-field {
+            height: 100%;
+            width: 100%;
+          }
+        }
+      }
+    }
+
   }
 
 }

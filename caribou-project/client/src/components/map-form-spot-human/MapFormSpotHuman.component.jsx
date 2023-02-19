@@ -120,65 +120,69 @@ const MapFormSpotHuman = () => {
   return (
     <>
       <form onSubmit={handleFormSubmit}>
-        <h2 style={{ fontSize: 20, color: '#de106f', fontWeight: 900 }}> Did you spot a human?</h2>
-        <label htmlFor="human-presence">Find the area on the map then save it here &#x2714;</label>
-        {hasMsg && errorMessages && successMessages && (
-          <div className={`alerts ${alertType}`} role="alert">
-            {errorMessages}
-            {successMessages}
-          </div>
-        )}
-        <FormInput
-          id="human-presence"
-          label="Give a location.."
-          type="text"
-          required
-          onChange={handleFormInputChange}
-          name="labelName"
-          value={labelName}
-        />
-        <label htmlFor="trashingLevel">Trashing Level </label>
-        <input
-          id="trashingLevel"
-          type="range"
-          name="trashingLevel"
-          min="5"
-          max="30"
-          step="1"
-          onChange={handleFormInputChange}
-          value={trashingLevel}
-          list="markers"
-        />
-        <datalist id="markers">
-          <option value="5"></option>
-          <option value="10"></option>
-          <option value="15"></option>
-          <option value="20"></option>
-          <option value="25"></option>
-          <option value="30"></option>
-        </datalist>
-        <div style={{ fontSize: 20, color: '#de006f' }}>{trashingLevel}</div>
-        <label htmlFor="range">Excitement Level </label>
-        <input
-          id="excitementLevel"
-          type="range"
-          name="excitementLevel"
-          min="5"
-          max="30"
-          step="1"
-          onChange={handleFormInputChange}
-          value={excitementLevel}
-          list="markers"
-        />
-        <datalist id="markers">
-          <option value="5"></option>
-          <option value="10"></option>
-          <option value="15"></option>
-          <option value="20"></option>
-          <option value="25"></option>
-          <option value="30"></option>
-        </datalist>
-        <div style={{ fontSize: 20, color: '#de006f' }}>{excitementLevel}</div>
+        <div>
+          <h2 style={{ fontSize: 20, color: '#de106f', fontWeight: 900 }}> Did you spot a human?</h2>
+          <label htmlFor="human-presence">Find the area on the map then save it here &#x2714;</label>
+          {hasMsg && errorMessages && successMessages && (
+            <div className={`alerts ${alertType}`} role="alert">
+              {errorMessages}
+              {successMessages}
+            </div>
+          )}
+        </div>
+        <div>
+          <FormInput
+            id="human-presence"
+            label="Give a location.."
+            type="text"
+            required
+            onChange={handleFormInputChange}
+            name="labelName"
+            value={labelName}
+          />
+          <label htmlFor="trashingLevel">Trashing Level </label>
+          <input
+            id="trashingLevel"
+            type="range"
+            name="trashingLevel"
+            min="5"
+            max="30"
+            step="1"
+            onChange={handleFormInputChange}
+            value={trashingLevel}
+            list="markers"
+          />
+          <datalist id="markers">
+            <option value="5"></option>
+            <option value="10"></option>
+            <option value="15"></option>
+            <option value="20"></option>
+            <option value="25"></option>
+            <option value="30"></option>
+          </datalist>
+          <div style={{ fontSize: 20, color: '#de006f' }}>{trashingLevel}</div>
+          <label htmlFor="range">Excitement Level </label>
+          <input
+            id="excitementLevel"
+            type="range"
+            name="excitementLevel"
+            min="5"
+            max="30"
+            step="1"
+            onChange={handleFormInputChange}
+            value={excitementLevel}
+            list="markers"
+          />
+          <datalist id="markers">
+            <option value="5"></option>
+            <option value="10"></option>
+            <option value="15"></option>
+            <option value="20"></option>
+            <option value="25"></option>
+            <option value="30"></option>
+          </datalist>
+          <div style={{ fontSize: 20, color: '#de006f' }}>{excitementLevel}</div>
+        </div>
         <div className="loading-button">
           <Button type="submit">{loading ? <ReactSpinner /> : `Save to the map`}</Button>
         </div>
