@@ -11,7 +11,7 @@ import AppNavigation from '@components/app-navigation/AppNavigation.component';
 import Map from '@components/map/Map.component';
 import MapFormSpotHuman from '@components/map-form-spot-human/MapFormSpotHuman.component';
 import AntlerExchange from '@components/antlerExchange/AntlerExchange';
-// import Chatroom from '@components/chatroom/Chatroom';
+import ChatroomSlider from '@components/chatroom-slider/ChatroomSlider';
 
 const Dashboard = () => {
   const getStorageAccessToken = useLocalStorage('access-token', 'get');
@@ -45,19 +45,7 @@ const Dashboard = () => {
               <AntlerExchange />
             </div>
             <div className="app-dashboard-texts-field">
-              <AntlerExchange />
-            </div>
-            <div className="app-dashboard-texts-field">
-              <AntlerExchange />
-            </div>
-            <div className="app-dashboard-texts-field">
-              <AntlerExchange />
-            </div>
-            <div className="app-dashboard-texts-field">
-              <AntlerExchange />
-            </div>
-            <div className="app-dashboard-texts-field">
-              <AntlerExchange />
+              <ChatroomSlider />
             </div>
           </div>
           <div className="app-map">

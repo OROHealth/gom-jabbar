@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Popup, useMapEvents, CircleMarker, Tooltip } from 'react-leaflet';
 import { mapBoxApiKey, googleApiKey } from '@services/utils/config';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addLocationToMap } from '@redux/reducers/map/map.reducer';
 import useLocalStorage from '@hooks/useLocalStorage';
 
@@ -53,25 +53,34 @@ const Map = (props) => {
   const [setStorageRefreshToken] = useLocalStorage('refresh-token', 'set');
   const [setStorageAccessToken] = useLocalStorage('access-token', 'set');
   const [refreshed, setRefreshed] = useState(true);
+  const stateRefreshToken = useSelector((state) => state.user.refreshToken);
 
   useEffect(() => {
     const getLocations = async () => {
       if (refreshed) {
         const stringifyRefreshToken = getStorageRefreshToken?.data?.refreshToken;
         // Making sure the access and refresh token is always up to date.
-        const newRefreshToken = await authService.verifyRefreshToken({ refreshToken: stringifyRefreshToken });
-        const { accessToken, refreshToken } = newRefreshToken.data;
-        setStorageRefreshToken(newRefreshToken);
-        setStorageAccessToken(accessToken);
-        dispatch(
-          addUser({
-            refreshToken,
-            accessToken,
-            avatarImage: getStorageAvatarImage,
-            loggedIn: getStorageLoggedIn,
-          })
-        );
-        setRefreshed(false);
+        console.log('local', stringifyRefreshToken, 'state', stateRefreshToken);
+        try {
+          // The refresh token will be found in either the local storage or in the redux state
+          const newRefreshToken = await authService.verifyRefreshToken({
+            refreshToken: stringifyRefreshToken || stateRefreshToken,
+          });
+          const { accessToken, refreshToken } = newRefreshToken.data;
+          setStorageRefreshToken(newRefreshToken);
+          setStorageAccessToken(accessToken);
+          dispatch(
+            addUser({
+              refreshToken,
+              accessToken,
+              avatarImage: getStorageAvatarImage,
+              loggedIn: getStorageLoggedIn,
+            })
+          );
+          setRefreshed(false);
+        } catch (error) {
+          console.log('Refresh token fetch Error', error);
+        }
       }
 
       try {

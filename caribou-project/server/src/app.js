@@ -20,20 +20,7 @@ const mapRouter = require('./routes/mapRouter');
 
 // Security Middle-wares
 app.use(hpp());
-app.use(
-  helmet({
-    crossOriginEmbedderPolicy: false,
-    crossOriginResourcePolicy: {
-      allowOrigins: ['*'],
-    },
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ['*'],
-        scriptSrc: ["* data: 'unsafe-eval' 'unsafe-inline' blob:"],
-      },
-    },
-  })
-);
+app.use(helmet());
 app.use(
   cors({
     origin: ['*', SERVER_URL, CLIENT_URL],
