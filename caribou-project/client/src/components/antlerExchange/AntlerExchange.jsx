@@ -4,8 +4,10 @@ import socket from '@services/websocket/webSocketIO';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaBroadcastTower } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 const AnterExchange = () => {
+  const user = useSelector((state) => state.user.email);
   const customId = 'custom-id-yes';
   const notify = (message) =>
     toast.success(message, {
@@ -20,9 +22,12 @@ const AnterExchange = () => {
       toastId: customId,
     });
 
+  const firstLetter = user.charAt(0).toUpperCase;
+  console.log(firstLetter);
+
   // Send broadcast
   const handleSendAntlerExchange = () => {
-    socket.emit('antler_exchange', { message: 'Caribou is ready to antler-exchange' });
+    socket.emit('antler_exchange', { message: `Secret Caribou known as "${firstLetter}" is ready to antler-exchange` });
     notify('Broadcast Sent!');
   };
 

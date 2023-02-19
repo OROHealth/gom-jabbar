@@ -15,9 +15,10 @@ const AppNavigation = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const deleteStorageAccessToken = useLocalStorage('access-token', 'delete');
+  const deleteStorageAccessToken = useLocalStorage('access-token', 'delete');
   const deleteStorageRefreshToken = useLocalStorage('refresh-token', 'delete');
   const deleteStorageAvatarImage = useLocalStorage('avatar-image', 'delete');
+  const deleteStorageEmail = useLocalStorage('app-email', 'delete');
   const [setStorageLoggedIn] = useLocalStorage('loggedIn', 'set');
 
   // Get the avatar image from local storage
@@ -30,9 +31,10 @@ const AppNavigation = () => {
   const handleLogOutUser = () => {
     try {
       dispatch(removeUser());
-      // deleteStorageAccessToken();
+      deleteStorageAccessToken();
       deleteStorageRefreshToken();
       deleteStorageAvatarImage();
+      deleteStorageEmail();
       setStorageLoggedIn(false);
       navigate('/');
     } catch (error) {

@@ -5,6 +5,7 @@ const initialState = {
   refreshToken: '',
   avatarImage: '',
   loggedIn: false,
+  email: '',
 };
 
 const userReducerSlice = createSlice({
@@ -12,17 +13,19 @@ const userReducerSlice = createSlice({
   initialState,
   reducers: {
     addUser: (state, action) => {
-      const { accessToken, refreshToken, avatarImage, loggedIn } = action.payload;
+      const { accessToken, refreshToken, avatarImage, loggedIn, email } = action.payload;
       state.accessToken = accessToken;
       state.refreshToken = refreshToken;
       state.avatarImage = avatarImage;
       state.loggedIn = loggedIn;
+      state.email = email;
     },
     removeUser: (state, _action) => {
       state.accessToken = '';
       state.refreshToken = '';
       state.avatarImage = '';
       state.loggedIn = false;
+      state.email = '';
     },
   },
 });

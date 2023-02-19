@@ -50,8 +50,10 @@ const Map = (props) => {
   const getStorageRefreshToken = useLocalStorage('refresh-token', 'get');
   const getStorageLoggedIn = useLocalStorage('loggedIn', 'get');
   const getStorageAvatarImage = useLocalStorage('avatar-image', 'get');
+  const setStorageEmail = useLocalStorage('email', 'get');
   const [setStorageRefreshToken] = useLocalStorage('refresh-token', 'set');
   const [setStorageAccessToken] = useLocalStorage('access-token', 'set');
+  const [setStorageLocationFound] = useLocalStorage('locations-found', 'set');
   const [refreshed, setRefreshed] = useState(true);
   const stateRefreshToken = useSelector((state) => state.user.refreshToken);
 
@@ -75,6 +77,7 @@ const Map = (props) => {
               accessToken,
               avatarImage: getStorageAvatarImage,
               loggedIn: getStorageLoggedIn,
+              email: setStorageEmail,
             })
           );
           setRefreshed(false);
@@ -88,9 +91,10 @@ const Map = (props) => {
           // console.log('res', res);
           if (res.data?.locations) {
             setAllMapLocations(res.data.locations);
+            console.log('locationSpotted', res.data?.locations.length);
+            setStorageLocationFound(res.data?.locations.length);
             return res.data?.locations;
           }
-          // console.log('locationSpotted', res.data?.locations);
         });
       } catch (error) {
         console.log(`Line 87:`, error);

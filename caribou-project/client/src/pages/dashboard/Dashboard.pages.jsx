@@ -18,6 +18,7 @@ const Dashboard = () => {
   const getStorageRefreshToken = useLocalStorage('refresh-token', 'get');
   const getStorageLoggedIn = useLocalStorage('loggedIn', 'get');
   const getStorageAvatarImage = useLocalStorage('avatar-image', 'get');
+  const getStorageEmail = useLocalStorage('app-email', 'get');
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -27,9 +28,17 @@ const Dashboard = () => {
         refreshToken: getStorageRefreshToken,
         avatarImage: getStorageAvatarImage,
         loggedIn: getStorageLoggedIn,
+        email: getStorageEmail,
       })
     );
-  }, [dispatch, getStorageAccessToken, getStorageRefreshToken, getStorageAvatarImage, getStorageLoggedIn]);
+  }, [
+    dispatch,
+    getStorageAccessToken,
+    getStorageRefreshToken,
+    getStorageAvatarImage,
+    getStorageLoggedIn,
+    getStorageEmail,
+  ]);
 
   return (
     <>

@@ -33,6 +33,7 @@ const SignInForm = () => {
   const [setStorageAccessToken] = useLocalStorage('access-token', 'set');
   const [setStorageRefreshToken] = useLocalStorage('refresh-token', 'set');
   const [setStorageLoggedIn] = useLocalStorage('loggedIn', 'set');
+  const [setStorageEmail] = useLocalStorage('app-email', 'set');
   const [setStorageAvatarImage] = useLocalStorage('avatar-image', 'set');
   const dispatch = useDispatch();
 
@@ -70,12 +71,14 @@ const SignInForm = () => {
           const accessToken = result.data.accessToken;
           const refreshToken = result.data.refreshToken;
           const avatarImage = result.data.avatarImage;
+          const email = result.data.email;
           dispatch(
             addUser({
               refreshToken,
               accessToken,
               avatarImage,
               loggedIn: true,
+              email,
             })
           );
 
@@ -84,6 +87,7 @@ const SignInForm = () => {
           setStorageAccessToken(accessToken);
           setStorageRefreshToken(refreshToken);
           setStorageAvatarImage(avatarImage);
+          setStorageEmail(email);
           setAlertType('alert-success');
           setHasMsg(true);
           setErrorMessages([]);

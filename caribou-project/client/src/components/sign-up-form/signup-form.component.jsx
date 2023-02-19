@@ -34,6 +34,8 @@ const SignUpForm = () => {
   const [setStorageRefreshToken] = useLocalStorage('refresh-token', 'set');
   const [setStorageAvatarImage] = useLocalStorage('avatar-image', 'set');
   const [setStorageLoggedIn] = useLocalStorage('loggedIn', 'set');
+  const [setStorageEmail] = useLocalStorage('app-email', 'set');
+  const deleteStorageEmail = useLocalStorage('app-email', 'delete');
   const deleteStorageAccessToken = useLocalStorage('access-token', 'delete');
   const deleteStorageRefreshToken = useLocalStorage('refresh-token', 'delete');
   const deleteStorageAvatarImage = useLocalStorage('avatar-image', 'delete');
@@ -90,11 +92,13 @@ const SignUpForm = () => {
           const accessToken = savedUser.data.accessToken;
           const refreshToken = savedUser.data.refreshToken;
           const avatarImage = savedUser.data.avatarImage;
+          const email = savedUser.data.email;
           dispatch(
             addUser({
               refreshToken,
               accessToken,
               avatarImage,
+              email,
             })
           );
 
@@ -104,6 +108,7 @@ const SignUpForm = () => {
           // save the token and refresh token to local storage
           setStorageAccessToken(accessToken);
           setStorageRefreshToken(refreshToken);
+          setStorageEmail(email);
           setStorageAvatarImage(avatarImage); // set avatarImage in local storage
           setStorageLoggedIn(true); // set logged in to true in local storage
 
@@ -128,6 +133,7 @@ const SignUpForm = () => {
       deleteStorageAccessToken();
       deleteStorageRefreshToken();
       deleteStorageAvatarImage();
+      deleteStorageEmail();
       setStorageLoggedIn(false);
 
       console.log(
