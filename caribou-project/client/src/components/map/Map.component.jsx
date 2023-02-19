@@ -97,16 +97,12 @@ const Map = (props) => {
     );
   }
 
-  const limeOptions = { color: 'lime' };
+  // const limeOptions = { color: 'lime' };
   // const purpleOptions = { color: 'purple' };
   // const fillBlueOptions = { fillColor: 'blue' };
   // const blackOptions = { color: 'black' };
-  // const redOptions = { color: 'red' };
+  const redOptions = { color: 'red' };
   // typeof Object.entries(marker)
-
-  // <CircleMarker center={circleMarkerPosition} pathOptions={redOptions} radius={30}>
-  // <Popup>Popup in CircleMarker</Popup>
-  // </CircleMarker>
 
   return (
     <div className="map-wrapper">
@@ -126,7 +122,7 @@ const Map = (props) => {
 
             return (
               <div key={`${marker.id}${marker.x}`}>
-                <CircleMarker center={[marker.y, marker.x]} pathOptions={limeOptions} radius={marker.trashingLevel}>
+                <CircleMarker center={[marker.y, marker.x]} pathOptions={redOptions} radius={marker.trashingLevel}>
                   <Popup>
                     <div>
                       <div>Trashing Level: {marker.trashingLevel}</div>

@@ -30,3 +30,15 @@
   background-color: #d4edda;
   border-color: #c3e6cb;
 }
+
+@media screen and (min-width: 1em) {
+  .sign-up-container {
+    margin-bottom: 30px;
+  }
+}
+
+@media screen and (min-width: 40em) {
+  .sign-up-container{
+    margin-right: 30px;
+  }
+}

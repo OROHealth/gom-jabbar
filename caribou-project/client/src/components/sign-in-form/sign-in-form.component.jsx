@@ -107,19 +107,26 @@ const SignInForm = () => {
       setLoading(false);
       setHasMsg(true);
       setAlertType('alert-error');
-      const errorCode = error.code;
-      const errorMessage = error.message;
+      const errorCode = error?.code;
+      const errorMessage = error?.message;
 
-      if (error) {
-        console.log('Error Logging in the user.', 'Error Code:', errorCode, 'Error Message:', errorMessage);
-      }
+      console.log(
+        'Error Logging in the user.',
+        'Error Code:',
+        errorCode,
+        'Error Message:',
+        errorMessage,
+        'Error',
+        error
+      );
+      setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message]);
     }
   };
 
   // console.log(alertType);
   return (
     <>
-      <div className="sign-up-container">
+      <div className="sign-up-container sign-in-container-edit">
         <h2>Already have an account?</h2>
         <span>
           <strong style={{ color: '#de006f' }}>Sign in</strong> with your email and password

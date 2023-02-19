@@ -20,15 +20,30 @@ const mapRouter = require('./routes/mapRouter');
 
 // Security Middle-wares
 app.use(hpp());
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: {
+      allowOrigins: ['*'],
+    },
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ['*'],
+        scriptSrc: ["* data: 'unsafe-eval' 'unsafe-inline' blob:"],
+      },
+    },
+  })
+);
 app.use(
   cors({
-    origin: [SERVER_URL, CLIENT_URL],
+    origin: ['*', SERVER_URL, CLIENT_URL],
     allRoutes: true,
     credentials: true,
     optionsSuccessStatus: 200,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     headers: 'content-type, Authorization',
+    crossOriginEmbedderPolicy: 'same-origin',
+    'Access-Control-Allow-Origin': '*',
   })
 );
 

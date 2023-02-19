@@ -12,7 +12,7 @@ import FormInput from '@components/form-input/formInput.component';
 import Button from '@components/button/Button';
 import ReactSpinner from '@components/react-spinner/react-spinner.component';
 import useLocalStorage from '@hooks/useLocalStorage';
-import { addUser } from '@redux/reducers/user/user.reducer';
+import { addUser, removeUser } from '@redux/reducers/user/user.reducer';
 
 const defaultFormFields = {
   email: '',
@@ -34,6 +34,9 @@ const SignUpForm = () => {
   const [setStorageRefreshToken] = useLocalStorage('refresh-token', 'set');
   const [setStorageAvatarImage] = useLocalStorage('avatar-image', 'set');
   const [setStorageLoggedIn] = useLocalStorage('loggedIn', 'set');
+  const deleteStorageAccessToken = useLocalStorage('access-token', 'delete');
+  const deleteStorageRefreshToken = useLocalStorage('refresh-token', 'delete');
+  const deleteStorageAvatarImage = useLocalStorage('avatar-image', 'delete');
   const dispatch = useDispatch();
 
   const resetFormFields = () => {
@@ -58,7 +61,7 @@ const SignUpForm = () => {
 
     // [] confirm that the password matches
     if (password !== confirmPassword) {
-      error.push('Passwords do not match. Wrong password.');
+      error.push('Passwords do not match. Try again.');
       setHasError(true);
       setAlertType('alert-error');
       setErrorMessages([error]);
@@ -71,61 +74,67 @@ const SignUpForm = () => {
     try {
       // Create avatarColor
       // create avatar Image
-      // console.log('Registering', email, password);
+      console.log('Line 74: Registering User, signUp-form-client');
       const color = avatarColor();
       const avatarImage = generateAvatar(email.charAt(0).toUpperCase(), color);
-      const result = await authService.signUp({
-        email,
-        password,
-        avatarImage,
-        loggedIn: true,
-      });
-
-      // console.log('Result that the server sent back:', result);
-      const errorMsg = result?.data[0]?.errorMsg;
-      if (errorMsg) {
-        setAlertType('alert-error');
-        setLoading(false);
-        setHasError(true);
-        return setErrorMessages([errorMsg]);
-      }
-
-      // save/dispatch the user to Redis
-      const accessToken = result.data.accessToken;
-      const refreshToken = result.data.refreshToken;
-      dispatch(
-        addUser({
-          refreshToken,
-          accessToken,
+      const result = await authService
+        .signUp({
+          email,
+          password,
           avatarImage,
+          loggedIn: true,
         })
-      );
-      // save the token and refresh token to local storage
-      setStorageAccessToken(accessToken);
-      setStorageRefreshToken(refreshToken);
-      setStorageLoggedIn(true); // set logged in to true in local storage
-      setStorageAvatarImage(avatarImage); // set avatarImage in local storage
+        .then((savedUser) => {
+          console.log('Result of the request:', savedUser);
 
-      setHasError(true);
-      setErrorMessages([]);
-      setAlertType('alert-success');
-      // set success Messages
-      const successMsg = result?.data?.success[0]?.successMsg;
-      setSuccessMessages([successMsg]);
-      // clear fields
-      resetFormFields();
-      setLoading(false);
-      if (!hasError) {
-        navigate('/app/dashboard');
-      }
+          const accessToken = savedUser.data.accessToken;
+          const refreshToken = savedUser.data.refreshToken;
+          const avatarImage = savedUser.data.avatarImage;
+          dispatch(
+            addUser({
+              refreshToken,
+              accessToken,
+              avatarImage,
+            })
+          );
+
+          console.log('Result that the server sent back:', savedUser);
+
+          // save/dispatch the user to Redis
+          // save the token and refresh token to local storage
+          setStorageAccessToken(accessToken);
+          setStorageRefreshToken(refreshToken);
+          setStorageAvatarImage(avatarImage); // set avatarImage in local storage
+          setStorageLoggedIn(true); // set logged in to true in local storage
+
+          setHasError(true);
+          setErrorMessages([]);
+          setAlertType('alert-success');
+          // set success Messages
+          const successMsg = result?.data?.success[0]?.successMsg;
+          setSuccessMessages([successMsg]);
+          // clear fields
+          resetFormFields();
+          setLoading(false);
+          if (!hasError) {
+            navigate('/app/dashboard');
+          }
+        });
     } catch (error) {
       setLoading(false);
       setHasError(true);
       setAlertType('alert-error');
       const errorCode = error.code;
       const errorMessage = error.message;
+      dispatch(removeUser());
+      deleteStorageAccessToken();
+      deleteStorageRefreshToken();
+      deleteStorageAvatarImage();
+      setStorageLoggedIn(false);
+      navigate('/');
 
-      console.log('Error Registering the user.', 'Error Code:', errorCode, 'Error Message:', errorMessage);
+      console.log('Error Registering the user.', 'Error Code:', errorCode, 'Error Message:', errorMessage, error);
+      setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message]);
     }
   };
 

@@ -121,25 +121,27 @@ const MapFormSpotHuman = () => {
     <>
       <form onSubmit={handleFormSubmit}>
         <div>
-          <h2 style={{ fontSize: 20, color: '#de106f', fontWeight: 900 }}> Did you spot a human?</h2>
-          <label htmlFor="human-presence">Find the area on the map then save it here &#x2714;</label>
-          {hasMsg && errorMessages && successMessages && (
-            <div className={`alerts ${alertType}`} role="alert">
-              {errorMessages}
-              {successMessages}
-            </div>
-          )}
-        </div>
-        <div>
-          <FormInput
-            id="human-presence"
-            label="Give a location.."
-            type="text"
-            required
-            onChange={handleFormInputChange}
-            name="labelName"
-            value={labelName}
-          />
+          <div>
+            <h2 style={{ fontSize: 20, color: '#de106f', fontWeight: 900 }}> Did you spot a human?</h2>
+            <label htmlFor="human-presence">Find the area on the map then save it here &#x2714;</label>
+            {hasMsg && errorMessages && successMessages && (
+              <div className={`alerts ${alertType}`} role="alert">
+                {errorMessages}
+                {successMessages}
+              </div>
+            )}
+          </div>
+          <div>
+            <FormInput
+              id="human-presence"
+              label="Give a location.."
+              type="text"
+              required
+              onChange={handleFormInputChange}
+              name="labelName"
+              value={labelName}
+            />
+          </div>
           <label htmlFor="trashingLevel">Trashing Level </label>
           <input
             id="trashingLevel"

@@ -37,25 +37,31 @@ const Dashboard = () => {
 
       <div className="app-map-section">
         {/* <Chatroom /> */}
-        <h1 className="app-dash-pages--map-title">Caribous Are The Best!</h1>
+        <h1 className="app-dash-pages--map-title">CARIBOUS are the BEST!</h1>
 
         <div className="app-dash-map-wrapper">
           <div className="app-dash-all-fields">
             <div className="app-dashboard-texts-field">
-              <MapFormSpotHuman />
+              <AntlerExchange />
             </div>
             <div className="app-dashboard-texts-field">
               <AntlerExchange />
             </div>
             <div className="app-dashboard-texts-field">
-              <MapFormSpotHuman />
+              <AntlerExchange />
+            </div>
+            <div className="app-dashboard-texts-field">
+              <AntlerExchange />
+            </div>
+            <div className="app-dashboard-texts-field">
+              <AntlerExchange />
             </div>
             <div className="app-dashboard-texts-field">
               <AntlerExchange />
             </div>
           </div>
           <div className="app-map">
-            <div>
+            <div className="map-wrapper-container">
               <Map />
             </div>
             <div className="app-dash-all-fields app-map-custom-wrapper">

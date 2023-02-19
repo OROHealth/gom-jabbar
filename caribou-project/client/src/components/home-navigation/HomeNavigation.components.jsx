@@ -19,7 +19,7 @@ const HomeNavigation = () => {
   return (
     <>
       <nav className="home-navbar-container">
-        <div className="home-navbar">
+        <div className="home-navbar home-nav-btn">
           <Button onClick={handleNavigateToDashboard}>Dashboard</Button>
         </div>
       </nav>
