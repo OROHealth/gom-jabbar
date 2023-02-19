@@ -54,8 +54,6 @@ const Map = (props) => {
   const [setStorageAccessToken] = useLocalStorage('access-token', 'set');
   const [refreshed, setRefreshed] = useState(true);
 
-  console.log(refreshed);
-
   useEffect(() => {
     const getLocations = async () => {
       if (refreshed) {
@@ -77,17 +75,16 @@ const Map = (props) => {
       }
 
       try {
-        const locationSpotted = await mapService.getAllLocations().then((res) => {
-          console.log('res', res);
+        await mapService.getAllLocations().then((res) => {
+          // console.log('res', res);
           if (res.data?.locations) {
             setAllMapLocations(res.data.locations);
             return res.data?.locations;
           }
+          // console.log('locationSpotted', res.data?.locations);
         });
-
-        console.log('locationSpotted', locationSpotted);
       } catch (error) {
-        console.log(error);
+        console.log(`Line 87:`, error);
       }
     };
     return getLocations;

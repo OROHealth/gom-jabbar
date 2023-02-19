@@ -27,11 +27,11 @@ const key2 = crypto.randomBytes(32).toString('hex');
 // JWT Tokens
 const signAccessToken = userData => {
   return new Promise((resolve, reject) => {
-    // Creating a new Promise.
+    // Creating a new Promise. expires in 720 = 30 days
     const payload = {}; // additional info to save in the token
     const secret = JWT_ACCESS_TOKEN_SECRET;
     const options = {
-      expiresIn: '5000',
+      expiresIn: '720h',
       issuer: 'https:localhost:3000',
       audience: userData,
     };
