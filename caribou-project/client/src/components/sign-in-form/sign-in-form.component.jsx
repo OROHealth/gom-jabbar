@@ -36,6 +36,7 @@ const SignInForm = () => {
   const [setStorageAvatarImage] = useLocalStorage('avatar-image', 'set');
   const dispatch = useDispatch();
 
+  // console.log(refreshToken);
   const { email, password } = inputFields;
   const navigate = useNavigate();
 
@@ -54,53 +55,45 @@ const SignInForm = () => {
     event.preventDefault();
 
     try {
-      // resetFormFields();
       // Post Request to the Server
-      const result = await authService.signIn({
-        email,
-        password,
-      });
-
-      const errorMsg = result?.data[0]?.errorMsg;
-      if (errorMsg) {
-        setAlertType('alert-error');
-        setLoading(false);
-        setHasMsg(true);
-        return setErrorMessages([errorMsg]);
-      }
-
-      // console.log('result:', result);
-      // set logged in to true in local storage
-      setStorageLoggedIn(true);
-      // save/dispatch the user to Redis
-      const accessToken = result.data.accessToken;
-      const refreshToken = result.data.refreshToken;
-      const avatarImage = result.data.avatarImage;
-      dispatch(
-        addUser({
-          refreshToken,
-          accessToken,
-          avatarImage,
-          loggedIn: true,
+      await authService
+        .signIn({
+          email,
+          password,
         })
-      );
-      resetFormFields();
-      // save the token and refresh token to local storage
-      setStorageAccessToken(accessToken);
-      setStorageRefreshToken(refreshToken);
-      setStorageAvatarImage(avatarImage);
+        .then((result) => {
+          console.log(`Line 69: Logging in the User ${result}, Sign-in-form`);
+          console.log('result:', result);
+          // set logged in to true in local storage
+          setStorageLoggedIn(true);
+          // save/dispatch the user to Redis
+          const accessToken = result.data.accessToken;
+          const refreshToken = result.data.refreshToken;
+          const avatarImage = result.data.avatarImage;
+          dispatch(
+            addUser({
+              refreshToken,
+              accessToken,
+              avatarImage,
+              loggedIn: true,
+            })
+          );
 
-      setAlertType('alert-success');
-      setHasMsg(true);
-      setErrorMessages([]);
-      // set success Messages
+          resetFormFields();
+          // save the token and refresh token to local storage
+          setStorageAccessToken(accessToken);
+          setStorageRefreshToken(refreshToken);
+          setStorageAvatarImage(avatarImage);
+          setAlertType('alert-success');
+          setHasMsg(true);
+          setErrorMessages([]);
+          // set success Messages
 
-      const successMsg = result.data?.success[0]?.successMsg;
-      setSuccessMessages([successMsg]);
-      resetFormFields();
-      setLoading(false);
-      navigate('/app/dashboard');
-
+          const successMsg = result.data?.success[0]?.successMsg;
+          setSuccessMessages([successMsg]);
+          resetFormFields();
+          setLoading(false);
+        });
       //
     } catch (error) {
       //
@@ -121,6 +114,7 @@ const SignInForm = () => {
       );
       setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message]);
     }
+    navigate('/app/dashboard');
   };
 
   // console.log(alertType);

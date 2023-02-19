@@ -9,6 +9,7 @@ const createError = require('http-errors');
 // @Method  POST
 // @Route   /api/v1/users
 async function registerUser(req, res) {
+  // if (req?.jwtExpired) return res.status().json({ errorMsg: `jwtExpired` });
   const { email, password, avatarImage } = req.body;
 
   let errors = [];
@@ -149,13 +150,16 @@ const logoutUser = async (req, res, next) => {
 const refreshUserToken = async (req, res, next) => {
   try {
     const { refreshToken } = req.body;
+    console.log(refreshToken, 'Refresh tokenFound ');
     if (!refreshToken) throw createError.BadRequest();
     const userId = await verifyRefreshToken(refreshToken);
 
     const newAccessToken = await signAccessToken(userId);
     const newRefreshToken = await signRefreshToken(userId);
-    res.status(200).json({ accessToken: newAccessToken, refreshToken: newRefreshToken });
+    res.status(201).json({ accessToken: newAccessToken, refreshToken: newRefreshToken });
   } catch (error) {
+    console.log(error);
+
     next(error);
   }
 };

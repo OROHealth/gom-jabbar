@@ -3,8 +3,10 @@ import { MapContainer, TileLayer, Popup, useMapEvents, CircleMarker, Tooltip } f
 import { mapBoxApiKey, googleApiKey } from '@services/utils/config';
 import { useDispatch } from 'react-redux';
 import { addLocationToMap } from '@redux/reducers/map/map.reducer';
+import useLocalStorage from '@hooks/useLocalStorage';
 
 // Api
+// import axios from 'axios';
 import { mapService } from '@services/api/map/map.service';
 
 // StyleSheets
@@ -13,6 +15,8 @@ import '../../../node_modules/leaflet-geosearch/dist/geosearch.css';
 
 // Map Geolocation Search Feature & Controller
 import { GoogleProvider, GeoSearchControl } from 'leaflet-geosearch';
+import { authService } from '@services/api/auth/auth.service';
+import { addUser } from '@redux/reducers/user/user.reducer';
 const provider = new GoogleProvider({
   apiKey: googleApiKey,
 });
@@ -43,20 +47,51 @@ const Map = (props) => {
   // const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const [allMapLocations, setAllMapLocations] = useState(AllMapLocationInitial);
+  const getStorageRefreshToken = useLocalStorage('refresh-token', 'get');
+  const getStorageLoggedIn = useLocalStorage('loggedIn', 'get');
+  const getStorageAvatarImage = useLocalStorage('avatar-image', 'get');
+  const [setStorageRefreshToken] = useLocalStorage('refresh-token', 'set');
+  const [setStorageAccessToken] = useLocalStorage('access-token', 'set');
+  const [refreshed, setRefreshed] = useState(true);
+
+  console.log(refreshed);
 
   useEffect(() => {
-    const getLocations = () => {
-      const locationSpotted = mapService.getAllLocations().then((res) => {
-        if (res.data?.locations) {
-          setAllMapLocations(res.data.locations);
-        }
-      });
-      return locationSpotted;
+    const getLocations = async () => {
+      if (refreshed) {
+        const stringifyRefreshToken = getStorageRefreshToken?.data?.refreshToken;
+        // Making sure the access and refresh token is always up to date.
+        const newRefreshToken = await authService.verifyRefreshToken({ refreshToken: stringifyRefreshToken });
+        const { accessToken, refreshToken } = newRefreshToken.data;
+        setStorageRefreshToken(newRefreshToken);
+        setStorageAccessToken(accessToken);
+        dispatch(
+          addUser({
+            refreshToken,
+            accessToken,
+            avatarImage: getStorageAvatarImage,
+            loggedIn: getStorageLoggedIn,
+          })
+        );
+        setRefreshed(false);
+      }
+
+      try {
+        const locationSpotted = await mapService.getAllLocations().then((res) => {
+          console.log('res', res);
+          if (res.data?.locations) {
+            setAllMapLocations(res.data.locations);
+            return res.data?.locations;
+          }
+        });
+
+        console.log('locationSpotted', locationSpotted);
+      } catch (error) {
+        console.log(error);
+      }
     };
     return getLocations;
-  }, [setAllMapLocations]);
-
-  // const position = [45.49898, -73.647124];
+  }, []);
 
   function LocationMarker() {
     const [position, setPosition] = useState(null);

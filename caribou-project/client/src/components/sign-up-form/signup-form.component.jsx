@@ -47,7 +47,6 @@ const SignUpForm = () => {
   const handleFormInputChange = async (event) => {
     const { name, value } = event.target;
     const formInput = { ...formFields, [name]: value };
-
     setFormFields(formInput);
     // console.log(formInput);
   };
@@ -69,15 +68,16 @@ const SignUpForm = () => {
       return;
     }
 
-    // Create the authenticated user with email and password. that we destructured off of our form fields.
+    // Create the authenticated user with email and password that was destructured to get the specific form fields.
     // this automatically logs in the user once signed up by default
     try {
       // Create avatarColor
-      // create avatar Image
+      // Create avatar Image
+
       console.log('Line 74: Registering User, signUp-form-client');
       const color = avatarColor();
       const avatarImage = generateAvatar(email.charAt(0).toUpperCase(), color);
-      const result = await authService
+      await authService
         .signUp({
           email,
           password,
@@ -85,7 +85,7 @@ const SignUpForm = () => {
           loggedIn: true,
         })
         .then((savedUser) => {
-          console.log('Result of the request:', savedUser);
+          console.log('Line 88: Result of the request:', savedUser);
 
           const accessToken = savedUser.data.accessToken;
           const refreshToken = savedUser.data.refreshToken;
@@ -98,7 +98,7 @@ const SignUpForm = () => {
             })
           );
 
-          console.log('Result that the server sent back:', savedUser);
+          console.log('Line 101: Result that the server sent back:', savedUser);
 
           // save/dispatch the user to Redis
           // save the token and refresh token to local storage
@@ -111,14 +111,11 @@ const SignUpForm = () => {
           setErrorMessages([]);
           setAlertType('alert-success');
           // set success Messages
-          const successMsg = result?.data?.success[0]?.successMsg;
+          const successMsg = savedUser?.data?.success[0]?.successMsg;
           setSuccessMessages([successMsg]);
           // clear fields
           resetFormFields();
           setLoading(false);
-          if (!hasError) {
-            navigate('/app/dashboard');
-          }
         });
     } catch (error) {
       setLoading(false);
@@ -126,16 +123,25 @@ const SignUpForm = () => {
       setAlertType('alert-error');
       const errorCode = error.code;
       const errorMessage = error.message;
+      // if error, Reset the State, and navigate the user to the home page.
       dispatch(removeUser());
       deleteStorageAccessToken();
       deleteStorageRefreshToken();
       deleteStorageAvatarImage();
       setStorageLoggedIn(false);
-      navigate('/');
 
-      console.log('Error Registering the user.', 'Error Code:', errorCode, 'Error Message:', errorMessage, error);
+      console.log(
+        'Line 133: Error Registering the user.',
+        'Error Code:',
+        errorCode,
+        'Error Message:',
+        errorMessage,
+        error
+      );
       setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message]);
+      navigate('/');
     }
+    navigate('/app/dashboard');
   };
 
   return (
