@@ -23,10 +23,11 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    // gap: 40px;
   }
 
 }
+
+
 @media screen and (min-width: 40em) {
   .authentication-container {
     display: flex;
