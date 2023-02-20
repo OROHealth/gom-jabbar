@@ -58,4 +58,4 @@ mapSchema.set('toJSON', {
 //   }
 // });
 
-module.exports = mongoose.model('map', mapSchema);
+module.exports = mongoose.model('map', mapSchema, 'HumanQuit');

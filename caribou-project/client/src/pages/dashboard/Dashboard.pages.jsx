@@ -12,6 +12,7 @@ import Map from '@components/map/Map.component';
 import MapFormSpotHuman from '@components/map-form-spot-human/MapFormSpotHuman.component';
 import AntlerExchange from '@components/antlerExchange/AntlerExchange';
 import ChatroomSlider from '@components/chatroom-slider/ChatroomSlider';
+import HumanQuit from '@components/HumanQuit/HumanQuit';
 
 const Dashboard = () => {
   const getStorageAccessToken = useLocalStorage('access-token', 'get');
@@ -43,6 +44,9 @@ const Dashboard = () => {
   return (
     <>
       <AppNavigation />
+      <div>
+        <HumanQuit />
+      </div>
 
       <div className="app-map-section">
         {/* <Chatroom /> */}

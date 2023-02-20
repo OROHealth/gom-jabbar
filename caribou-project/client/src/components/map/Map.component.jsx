@@ -62,7 +62,7 @@ const Map = (props) => {
       if (refreshed) {
         const stringifyRefreshToken = getStorageRefreshToken?.data?.refreshToken;
         // Making sure the access and refresh token is always up to date.
-        console.log('local', stringifyRefreshToken, 'state', stateRefreshToken);
+        // console.log('Line 65: local', stringifyRefreshToken, 'state', stateRefreshToken, 'Map Component');
         try {
           // The refresh token will be found in either the local storage or in the redux state
           const newRefreshToken = await authService.verifyRefreshToken({
@@ -89,11 +89,11 @@ const Map = (props) => {
       try {
         await mapService.getAllLocations().then((res) => {
           // console.log('res', res);
-          if (res.data?.locations) {
+          if (res?.data?.locations) {
             setAllMapLocations(res.data.locations);
-            console.log('locationSpotted', res.data?.locations.length);
+            console.log('Line 94: locationSpotted ->', res?.data?.locations.length, ' - Map Component');
             setStorageLocationFound(res.data?.locations.length);
-            return res.data?.locations;
+            return res?.data?.locations;
           }
         });
       } catch (error) {
@@ -142,6 +142,7 @@ const Map = (props) => {
     );
   }
 
+  // Color Options
   // const limeOptions = { color: 'lime' };
   // const purpleOptions = { color: 'purple' };
   // const fillBlueOptions = { fillColor: 'blue' };

@@ -124,6 +124,10 @@ io.on('connection', socket => {
     console.log(data);
     socket.broadcast.emit('antler_exchange_broadcast', data);
   });
+
+  socket.on('human-quite', data => {
+    socket.broadcast.emit('human_quite_received_broadcast', data);
+  });
 });
 
 handleExit();

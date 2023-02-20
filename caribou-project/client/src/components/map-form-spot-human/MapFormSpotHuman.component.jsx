@@ -9,6 +9,7 @@ import FormInput from '@components/form-input/formInput.component';
 import Button from '@components/button/Button';
 import ReactSpinner from '@components/react-spinner/react-spinner.component';
 import { removeMap } from '@redux/reducers/map/map.reducer';
+import useLocalStorage from '@hooks/useLocalStorage';
 
 const defaultFormFields = {
   labelName: '',
@@ -28,6 +29,8 @@ const MapFormSpotHuman = () => {
   const labelNameState = useSelector((state) => state?.map?.label);
   const xName = useSelector((state) => state.map?.x);
   const yName = useSelector((state) => state.map?.y);
+  const [setStorageLocationNumber] = useLocalStorage('location-number', 'set');
+  const getStorageLocationNumber = useLocalStorage('location-number', 'get');
   if (labelNameState) labelName = labelNameState;
 
   const timeLimitMessage = () => {
@@ -68,15 +71,10 @@ const MapFormSpotHuman = () => {
       setLoading(false);
       return setErrorMessages(['Name of location does not match']);
     }
-    // const { trashingLevel, labelName } = formFields;
-    // console.log('submited', trashingLevel);
-    // console.log('submited', labelName);
-    // console.log('submited', xName);
-    // console.log('submited', yName);
 
     try {
       // save location in database
-      console.log('Saving location in database', 'MapFormSpotHuman');
+      // console.log('Saving location in database', 'MapFormSpotHuman');
       const result = await mapService.saveLocation({
         excitementLevel,
         trashingLevel,
@@ -85,7 +83,7 @@ const MapFormSpotHuman = () => {
         yName,
       });
 
-      console.log('Result:', result, 'MapFormSpotHuman');
+      // console.log('Line 85: Result:', result, 'MapFormSpotHuman');
       if (result?.data?.errorMsg) {
         setHasMsg(true);
         timeLimitMessage();
@@ -98,16 +96,19 @@ const MapFormSpotHuman = () => {
       }
       dispatch(removeMap());
       setHasMsg(true);
-      timeLimitMessage();
+      timeLimitMessage(); // deactivates the message at this time
       setErrorMessages([]);
       setAlertType('alert-success');
       setSuccessMessages(['Location added successfully']);
+      // Set/Increase the number of locations created
+      setStorageLocationNumber(getStorageLocationNumber + 1);
       setLoading(false);
       resetFormFields();
       // dispatch(addLocationToMap({ trashingLevel, x: xName, y: yName, label: labelName }));
       setLoading(false);
     } catch (error) {
       console.log('Error Posting:', error?.response?.data[0].errorMsg, 'MapFormSpot');
+      setSuccessMessages([]);
       setHasMsg(true);
       timeLimitMessage();
       setAlertType('alert-error');

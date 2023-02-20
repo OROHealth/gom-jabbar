@@ -38,7 +38,7 @@ const ChatroomSlider = () => {
   return (
     <>
       <h2 style={{ fontSize: 24, color: '#de106f', fontWeight: 900 }}> Ready To Antler Exchange</h2>
-      <label htmlFor="human-presence">Notify the other Caribous! </label>
+      <label htmlFor="human-presence">Chatroom</label>
       <FaBroadcastTower style={{ fontSize: 60 }} />
       <div className="anter-exchange-container">
         <div className="loading-button">
