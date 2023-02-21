@@ -12,7 +12,7 @@ import FormInput from '@components/form-input/formInput.component';
 import Button from '@components/button/Button';
 import ReactSpinner from '@components/react-spinner/react-spinner.component';
 import useLocalStorage from '@hooks/useLocalStorage';
-import { addUser } from '@redux/reducers/user/user.reducer';
+import { addUser, removeUser } from '@redux/reducers/user/user.reducer';
 
 const defaultFormFields = {
   email: '',
@@ -34,6 +34,11 @@ const SignUpForm = () => {
   const [setStorageRefreshToken] = useLocalStorage('refresh-token', 'set');
   const [setStorageAvatarImage] = useLocalStorage('avatar-image', 'set');
   const [setStorageLoggedIn] = useLocalStorage('loggedIn', 'set');
+  const [setStorageEmail] = useLocalStorage('app-email', 'set');
+  const deleteStorageEmail = useLocalStorage('app-email', 'delete');
+  const deleteStorageAccessToken = useLocalStorage('access-token', 'delete');
+  const deleteStorageRefreshToken = useLocalStorage('refresh-token', 'delete');
+  const deleteStorageAvatarImage = useLocalStorage('avatar-image', 'delete');
   const dispatch = useDispatch();
 
   const resetFormFields = () => {
@@ -44,7 +49,6 @@ const SignUpForm = () => {
   const handleFormInputChange = async (event) => {
     const { name, value } = event.target;
     const formInput = { ...formFields, [name]: value };
-
     setFormFields(formInput);
     // console.log(formInput);
   };
@@ -52,13 +56,14 @@ const SignUpForm = () => {
   //
   //
   const handleFormSubmit = async (event) => {
+    const { email, password, confirmPassword } = formFields;
     setLoading(true);
     event.preventDefault();
     const error = [];
 
     // [] confirm that the password matches
     if (password !== confirmPassword) {
-      error.push('Passwords do not match. Wrong password.');
+      error.push('Passwords do not match. Try again.');
       setHasError(true);
       setAlertType('alert-error');
       setErrorMessages([error]);
@@ -66,67 +71,82 @@ const SignUpForm = () => {
       return;
     }
 
-    // Create the authenticated user with email and password. that we destructured off of our form fields.
-    // this automatically logs in the user once signed up by default
     try {
+      // console.log('Line 75: Registering User, signUp-form-client');
       // Create avatarColor
-      // create avatar Image
-      // console.log('Registering', email, password);
       const color = avatarColor();
+      // Create avatar Image
       const avatarImage = generateAvatar(email.charAt(0).toUpperCase(), color);
-      const result = await authService.signUp({
-        email,
-        password,
-        avatarImage,
-        loggedIn: true,
-      });
-
-      // console.log('Result that the server sent back:', result);
-      const errorMsg = result?.data[0]?.errorMsg;
-      if (errorMsg) {
-        setAlertType('alert-error');
-        setLoading(false);
-        setHasError(true);
-        return setErrorMessages([errorMsg]);
-      }
-
-      // save/dispatch the user to Redis
-      const accessToken = result.data.accessToken;
-      const refreshToken = result.data.refreshToken;
-      dispatch(
-        addUser({
-          refreshToken,
-          accessToken,
+      await authService
+        .signUp({
+          email,
+          password,
           avatarImage,
+          loggedIn: true,
         })
-      );
-      // save the token and refresh token to local storage
-      setStorageAccessToken(accessToken);
-      setStorageRefreshToken(refreshToken);
-      setStorageLoggedIn(true); // set logged in to true in local storage
-      setStorageAvatarImage(avatarImage); // set avatarImage in local storage
+        .then((savedUser) => {
+          // console.log('Line 88: Result of the request:', savedUser);
 
-      setHasError(true);
-      setErrorMessages([]);
-      setAlertType('alert-success');
-      // set success Messages
-      const successMsg = result?.data?.success[0]?.successMsg;
-      setSuccessMessages([successMsg]);
-      // clear fields
-      resetFormFields();
-      setLoading(false);
-      if (!hasError) {
-        navigate('/app/dashboard');
-      }
+          const accessToken = savedUser.data.accessToken;
+          const refreshToken = savedUser.data.refreshToken;
+          const avatarImage = savedUser.data.avatarImage;
+          const email = savedUser.data.email;
+          console.log(email);
+          dispatch(
+            addUser({
+              refreshToken,
+              accessToken,
+              avatarImage,
+              email,
+            })
+          );
+
+          // console.log('Line 104: Result that the server sent back:', savedUser);
+
+          // save/dispatch the user to Redis
+          // save the token and refresh token to local storage
+          setStorageAccessToken(accessToken);
+          setStorageRefreshToken(refreshToken);
+          setStorageEmail(email);
+          setStorageAvatarImage(avatarImage); // set avatarImage in local storage
+          setStorageLoggedIn(true); // set logged in to true in local storage
+
+          setHasError(true);
+          setErrorMessages([]);
+          setAlertType('alert-success');
+          // set success Messages
+          const successMsg = savedUser?.data?.success[0]?.successMsg;
+          setSuccessMessages([successMsg]);
+          // clear fields
+          resetFormFields();
+          setLoading(false);
+        });
     } catch (error) {
       setLoading(false);
       setHasError(true);
       setAlertType('alert-error');
       const errorCode = error.code;
       const errorMessage = error.message;
+      // if error, Reset the State, and navigate the user to the home page.
+      dispatch(removeUser());
+      deleteStorageAccessToken();
+      deleteStorageRefreshToken();
+      deleteStorageAvatarImage();
+      deleteStorageEmail();
+      setStorageLoggedIn(false);
 
-      console.log('Error Registering the user.', 'Error Code:', errorCode, 'Error Message:', errorMessage);
+      console.log(
+        'Line 133: Error Registering the user.',
+        'Error Code:',
+        errorCode,
+        'Error Message:',
+        errorMessage,
+        error
+      );
+      setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message]);
+      navigate('/');
     }
+    navigate('/app/dashboard');
   };
 
   return (

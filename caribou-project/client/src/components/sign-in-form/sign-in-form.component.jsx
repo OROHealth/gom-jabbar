@@ -25,6 +25,7 @@ const defaultSignInFields = {
 const SignInForm = () => {
   // State
   const [inputFields, setInputFields] = useState(defaultSignInFields);
+  const { email, password } = inputFields;
   const [loading, setLoading] = useState(false);
   const [alertType, setAlertType] = useState('');
   const [errorMessages, setErrorMessages] = useState([]);
@@ -33,93 +34,99 @@ const SignInForm = () => {
   const [setStorageAccessToken] = useLocalStorage('access-token', 'set');
   const [setStorageRefreshToken] = useLocalStorage('refresh-token', 'set');
   const [setStorageLoggedIn] = useLocalStorage('loggedIn', 'set');
+  const [setStorageEmail] = useLocalStorage('app-email', 'set');
   const [setStorageAvatarImage] = useLocalStorage('avatar-image', 'set');
   const dispatch = useDispatch();
 
-  const { email, password } = inputFields;
+  // Navigate User
   const navigate = useNavigate();
 
+  // Input Form Fields
   const handleSignInInputChange = (event) => {
     const { name, value } = event.target;
     setInputFields({ ...inputFields, [name]: value });
     // console.log(inputFields);
   };
 
+  // reset Form Fields
   const resetFormFields = () => {
     setInputFields(defaultSignInFields);
   };
 
+  // Submit Sign In Form
   const handleLoginWithEmailAndPasswordOnSubmit = async (event) => {
     setLoading(true);
     event.preventDefault();
 
     try {
-      // resetFormFields();
       // Post Request to the Server
-      const result = await authService.signIn({
-        email,
-        password,
-      });
-
-      const errorMsg = result?.data[0]?.errorMsg;
-      if (errorMsg) {
-        setAlertType('alert-error');
-        setLoading(false);
-        setHasMsg(true);
-        return setErrorMessages([errorMsg]);
-      }
-
-      // console.log('result:', result);
-      // set logged in to true in local storage
-      setStorageLoggedIn(true);
-      // save/dispatch the user to Redis
-      const accessToken = result.data.accessToken;
-      const refreshToken = result.data.refreshToken;
-      const avatarImage = result.data.avatarImage;
-      dispatch(
-        addUser({
-          refreshToken,
-          accessToken,
-          avatarImage,
-          loggedIn: true,
+      await authService
+        .signIn({
+          email,
+          password,
         })
-      );
-      resetFormFields();
-      // save the token and refresh token to local storage
-      setStorageAccessToken(accessToken);
-      setStorageRefreshToken(refreshToken);
-      setStorageAvatarImage(avatarImage);
+        .then((result) => {
+          console.log(`Line 69: Logging in the User ${result}, Sign-in-form`);
+          console.log('result:', result);
+          // set logged in to true in local storage
+          setStorageLoggedIn(true);
+          // save/dispatch the user to Redis
+          const accessToken = result.data.accessToken;
+          const refreshToken = result.data.refreshToken;
+          const avatarImage = result.data.avatarImage;
+          const email = result.data.email;
+          dispatch(
+            addUser({
+              refreshToken,
+              accessToken,
+              avatarImage,
+              loggedIn: true,
+              email,
+            })
+          );
 
-      setAlertType('alert-success');
-      setHasMsg(true);
-      setErrorMessages([]);
-      // set success Messages
+          resetFormFields();
+          // save the token and refresh token to local storage
+          setStorageAccessToken(accessToken);
+          setStorageRefreshToken(refreshToken);
+          setStorageAvatarImage(avatarImage);
+          setStorageEmail(email);
+          setAlertType('alert-success');
+          setHasMsg(true);
+          setErrorMessages([]);
+          // set success Messages
 
-      const successMsg = result.data?.success[0]?.successMsg;
-      setSuccessMessages([successMsg]);
-      resetFormFields();
-      setLoading(false);
-      navigate('/app/dashboard');
-
+          const successMsg = result.data?.success[0]?.successMsg;
+          setSuccessMessages([successMsg]);
+          resetFormFields();
+          setLoading(false);
+        });
       //
     } catch (error) {
       //
       setLoading(false);
       setHasMsg(true);
       setAlertType('alert-error');
-      const errorCode = error.code;
-      const errorMessage = error.message;
+      const errorCode = error?.code;
+      const errorMessage = error?.message;
 
-      if (error) {
-        console.log('Error Logging in the user.', 'Error Code:', errorCode, 'Error Message:', errorMessage);
-      }
+      console.log(
+        'Error Logging in the user.',
+        'Error Code:',
+        errorCode,
+        'Error Message:',
+        errorMessage,
+        'Error',
+        error
+      );
+      setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message]);
     }
+    navigate('/app/dashboard');
   };
 
-  // console.log(alertType);
   return (
     <>
-      <div className="sign-up-container">
+      <div className="sign-up-container sign-in-container-edit">
         <h2>Already have an account?</h2>
         <span>
           <strong style={{ color: '#de006f' }}>Sign in</strong> with your email and password

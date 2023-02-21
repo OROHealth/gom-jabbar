@@ -12,6 +12,11 @@ class AuthService {
     return response;
   }
 
+  async verifyRefreshToken(body) {
+    const response = axios.post('user/refresh-token', body);
+    return response;
+  }
+
   async forgotPassword(email) {
     const response = axios.post('forgot-password', { email });
     return response;

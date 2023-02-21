@@ -23,10 +23,11 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    gap: 40px;
   }
 
 }
+
+
 @media screen and (min-width: 40em) {
   .authentication-container {
     display: flex;
@@ -40,6 +41,6 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 90px;
+    // gap: 90px;
   }
 }

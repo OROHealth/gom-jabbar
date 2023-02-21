@@ -10,12 +10,16 @@ import '@pages/dashboard/Dashboard.styles.scss';
 import AppNavigation from '@components/app-navigation/AppNavigation.component';
 import Map from '@components/map/Map.component';
 import MapFormSpotHuman from '@components/map-form-spot-human/MapFormSpotHuman.component';
+import AntlerExchange from '@components/antlerExchange/AntlerExchange';
+// import ChatroomSlider from '@components/chatroom-slider/ChatroomSlider';
+import HumanQuit from '@components/HumanQuit/HumanQuit';
 
 const Dashboard = () => {
   const getStorageAccessToken = useLocalStorage('access-token', 'get');
   const getStorageRefreshToken = useLocalStorage('refresh-token', 'get');
   const getStorageLoggedIn = useLocalStorage('loggedIn', 'get');
   const getStorageAvatarImage = useLocalStorage('avatar-image', 'get');
+  const getStorageEmail = useLocalStorage('app-email', 'get');
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,25 +29,45 @@ const Dashboard = () => {
         refreshToken: getStorageRefreshToken,
         avatarImage: getStorageAvatarImage,
         loggedIn: getStorageLoggedIn,
+        email: getStorageEmail,
       })
     );
-  }, [dispatch, getStorageAccessToken, getStorageRefreshToken, getStorageAvatarImage, getStorageLoggedIn]);
+  }, [
+    dispatch,
+    getStorageAccessToken,
+    getStorageRefreshToken,
+    getStorageAvatarImage,
+    getStorageLoggedIn,
+    getStorageEmail,
+  ]);
 
   return (
     <>
       <AppNavigation />
+      <div>
+        <HumanQuit />
+      </div>
+
       <div className="app-map-section">
-        <h1 className="app-dash-pages--map-title">Caribous Are The Best!</h1>
+        {/* <Chatroom /> */}
+        <h1 className="app-dash-pages--map-title">CARIBOUS are the BEST!</h1>
 
         <div className="app-dash-map-wrapper">
           <div className="app-dash-all-fields">
             <div className="app-dashboard-texts-field">
-              <MapFormSpotHuman />
+              <AntlerExchange />
             </div>
           </div>
           <div className="app-map">
-            <p>Double click the map to get your current location.</p>
-            <Map />
+            <div className="map-wrapper-container">
+              <Map />
+            </div>
+            <div className="app-dash-all-fields app-map-custom-wrapper">
+              <div className="app-dashboard-texts-field app-map-custom-fields">
+                <MapFormSpotHuman />
+                <p style={{ fontSize: 13 }}>Double click the map to get your current location.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Popup, useMapEvents, CircleMarker, Tooltip } from 'react-leaflet';
 import { mapBoxApiKey, googleApiKey } from '@services/utils/config';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addLocationToMap } from '@redux/reducers/map/map.reducer';
+import useLocalStorage from '@hooks/useLocalStorage';
 
 // Api
+// import axios from 'axios';
 import { mapService } from '@services/api/map/map.service';
 
 // StyleSheets
@@ -13,6 +15,8 @@ import '../../../node_modules/leaflet-geosearch/dist/geosearch.css';
 
 // Map Geolocation Search Feature & Controller
 import { GoogleProvider, GeoSearchControl } from 'leaflet-geosearch';
+import { authService } from '@services/api/auth/auth.service';
+import { addUser } from '@redux/reducers/user/user.reducer';
 const provider = new GoogleProvider({
   apiKey: googleApiKey,
 });
@@ -43,20 +47,68 @@ const Map = (props) => {
   // const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const [allMapLocations, setAllMapLocations] = useState(AllMapLocationInitial);
+  const getStorageRefreshToken = useLocalStorage('refresh-token', 'get');
+  const getStorageLoggedIn = useLocalStorage('loggedIn', 'get');
+  const getStorageAvatarImage = useLocalStorage('avatar-image', 'get');
+  const getStorageEmail = useLocalStorage('app-email', 'get');
+  const [setStorageRefreshToken] = useLocalStorage('refresh-token', 'set');
+  const [setStorageAccessToken] = useLocalStorage('access-token', 'set');
+  const [refreshed, setRefreshed] = useState(true);
+  const stateRefreshToken = useSelector((state) => state.user.refreshToken);
+  // const [newData, setNewdata] = useState(null);
 
   useEffect(() => {
-    const getLocations = () => {
-      const locationSpotted = mapService.getAllLocations().then((res) => {
-        if (res.data?.locations) {
-          setAllMapLocations(res.data.locations);
-        }
-      });
-      return locationSpotted;
-    };
-    return getLocations;
-  }, [setAllMapLocations]);
+    let isCancelled = true;
 
-  // const position = [45.49898, -73.647124];
+    const getLocations = async () => {
+      if (refreshed) {
+        const stringifyRefreshToken = getStorageRefreshToken?.data?.refreshToken;
+        // Making sure the access and refresh token is always up to date.
+        // console.log('Line 65: local', stringifyRefreshToken, 'state', stateRefreshToken, 'Map Component');
+        try {
+          // The refresh token will be found in either the local storage or in the redux state
+          const newRefreshToken = await authService.verifyRefreshToken({
+            refreshToken: stringifyRefreshToken || stateRefreshToken,
+          });
+
+          const { accessToken, refreshToken } = newRefreshToken.data;
+          setStorageRefreshToken(newRefreshToken);
+          setStorageAccessToken(accessToken);
+          dispatch(
+            addUser({
+              refreshToken,
+              accessToken,
+              avatarImage: getStorageAvatarImage,
+              loggedIn: getStorageLoggedIn,
+              email: getStorageEmail,
+            })
+          );
+          setRefreshed(false);
+        } catch (error) {
+          console.log('Refresh token fetch Error', error);
+        }
+      }
+
+      try {
+        await mapService.getAllLocations().then((res) => {
+          // console.log('res', res);
+          if (isCancelled) {
+            if (res?.data?.locations) {
+              setAllMapLocations(res.data.locations);
+              // console.log('Line 98: locationSpotted ->', allMapLocations.length, ' - Map Component');
+              return res?.data?.locations;
+            }
+          }
+        });
+      } catch (error) {
+        console.log(`Line 87:`, error);
+      }
+    };
+    getLocations();
+    return () => {
+      isCancelled = false;
+    };
+  }, []);
 
   function LocationMarker() {
     const [position, setPosition] = useState(null);
@@ -97,19 +149,15 @@ const Map = (props) => {
     );
   }
 
-  const limeOptions = { color: 'lime' };
+  // Color Options
+  // const limeOptions = { color: 'lime' };
   // const purpleOptions = { color: 'purple' };
   // const fillBlueOptions = { fillColor: 'blue' };
   // const blackOptions = { color: 'black' };
-  // const redOptions = { color: 'red' };
-  // typeof Object.entries(marker)
-
-  // <CircleMarker center={circleMarkerPosition} pathOptions={redOptions} radius={30}>
-  // <Popup>Popup in CircleMarker</Popup>
-  // </CircleMarker>
+  const redOptions = { color: 'red' };
 
   return (
-    <div>
+    <div className="map-wrapper">
       <MapContainer
         className="map-container"
         position={[45.49898, -73.647124]}
@@ -126,7 +174,7 @@ const Map = (props) => {
 
             return (
               <div key={`${marker.id}${marker.x}`}>
-                <CircleMarker center={[marker.y, marker.x]} pathOptions={limeOptions} radius={marker.trashingLevel}>
+                <CircleMarker center={[marker.y, marker.x]} pathOptions={redOptions} radius={marker.trashingLevel}>
                   <Popup>
                     <div>
                       <div>Trashing Level: {marker.trashingLevel}</div>

@@ -12,29 +12,35 @@ const setupDatabase = async () => {
     .catch(error => {
       log('error', `Error connecting to MongoDB: ${error.message}`, 'setupDatabase');
     });
+  return mongoose;
 };
 
-// Checking The Mongoose Connection
 mongoose.connection.once('open', () => {
-  log('info', 'MongoDB Connection is Ready!', 'setupDatabase');
-});
-mongoose.connection.on('error', err => {
-  log('error', `Error Connecting to MongoDB: ${err}, ${err.message}`, 'setupDatabase');
+  log('info', 'Line 19: MongoDB Connection is Ready and Open!', 'setupDatabase');
 });
 
+mongoose.connection.on('error', err => {
+  log('error', `Error Connecting to MongoDB: ${err}, ${err?.message}`, 'setupDatabase');
+});
+mongoose.connection.on('connected', () => {
+  log('info', `Line 59: Connected to MongoDB`, 'setupDatabase');
+});
+mongoose.connection.on('disconnected', err => {
+  log('error', `Mongoose Connection is disconnected: ${err}, ${err?.message}`, 'setupDatabase');
+});
+
+// This event is fired when the application is terminated by pressing control + z
 process.on('SIGINT', () => {
-  mongoose.disconnect(() => {
+  mongoose.connection.close(() => {
     console.log('Mongoose default connection disconnected through app termination');
-    process.exit(0);
+    process.exit(0); // terminate the app with process of 0
   });
 });
 process.on('SIGTERM', () => {
-  mongoose.disconnect(() => {
+  mongoose.connection.close(() => {
     console.log('Mongoose default connection disconnected through app termination');
     process.exit(0);
   });
 });
 
-// mongoose.connection.on('disconnected', setupDatabase);
-
-module.exports = setupDatabase;
+module.exports = { setupDatabase };

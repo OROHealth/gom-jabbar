@@ -30,6 +30,12 @@ const MapFormSpotHuman = () => {
   const yName = useSelector((state) => state.map?.y);
   if (labelNameState) labelName = labelNameState;
 
+  const timeLimitMessage = () => {
+    setTimeout(() => {
+      setHasMsg(false);
+    }, 15000);
+  };
+
   const resetFormFields = () => {
     // Sets the form to it's initial state in the original object.
     setFormFields(defaultFormFields);
@@ -47,28 +53,25 @@ const MapFormSpotHuman = () => {
 
   const handleFormSubmit = async (event) => {
     setLoading(true);
-    // event.preventDefault();
+    event.preventDefault();
     if (!labelNameState) {
       setAlertType('alert-error');
       setHasMsg(true);
+      timeLimitMessage();
       setLoading(false);
       return setErrorMessages(['Please select the location on the map first to accurately save the coordinates.']);
     }
     if (labelName !== labelNameState) {
       setAlertType('alert-error');
       setHasMsg(true);
+      timeLimitMessage();
       setLoading(false);
       return setErrorMessages(['Name of location does not match']);
     }
-    // const { trashingLevel, labelName } = formFields;
-    // console.log('submited', trashingLevel);
-    // console.log('submited', labelName);
-    // console.log('submited', xName);
-    // console.log('submited', yName);
 
     try {
       // save location in database
-      console.log('Saving location in database', 'MapFormSpotHuman');
+      // console.log('Saving location in database', 'MapFormSpotHuman');
       const result = await mapService.saveLocation({
         excitementLevel,
         trashingLevel,
@@ -77,9 +80,10 @@ const MapFormSpotHuman = () => {
         yName,
       });
 
-      // console.log('Result:', result, 'MapFormSpotHuman');
+      // console.log('Line 85: Result:', result, 'MapFormSpotHuman');
       if (result?.data?.errorMsg) {
         setHasMsg(true);
+        timeLimitMessage();
         setAlertType('alert-error');
         setLoading(false);
         return setErrorMessages([result?.data?.errorMsg]);
@@ -89,6 +93,7 @@ const MapFormSpotHuman = () => {
       }
       dispatch(removeMap());
       setHasMsg(true);
+      timeLimitMessage(); // deactivates the message at this time
       setErrorMessages([]);
       setAlertType('alert-success');
       setSuccessMessages(['Location added successfully']);
@@ -97,72 +102,85 @@ const MapFormSpotHuman = () => {
       // dispatch(addLocationToMap({ trashingLevel, x: xName, y: yName, label: labelName }));
       setLoading(false);
     } catch (error) {
-      console.log('Error Posting:', error, 'MapFormSpot');
+      console.log('Error Posting:', error?.response?.data[0].errorMsg, 'MapFormSpot');
+      setSuccessMessages([]);
+      setHasMsg(true);
+      timeLimitMessage();
+      setAlertType('alert-error');
+      setLoading(false);
+      setErrorMessages([error?.response?.data[0].errorMsg]);
+      // setSuccessMessages(['Error']);
     }
   };
 
   return (
     <>
       <form onSubmit={handleFormSubmit}>
-        <h2 style={{ fontSize: 17, color: '#de106f', fontWeight: 900 }}> Did you spot a human?</h2>
-        <label htmlFor="human-presence">Find the area on the map then save it here &#x2714;</label>
-        {hasMsg && errorMessages && successMessages && (
-          <div className={`alerts ${alertType}`} role="alert">
-            {errorMessages}
-            {successMessages}
+        <div>
+          <div>
+            <h2 style={{ fontSize: 20, color: '#de106f', fontWeight: 900 }}> Did you spot a human?</h2>
+            <label htmlFor="human-presence">Find the area on the map then save it here &#x2714;</label>
+            {hasMsg && errorMessages && successMessages && (
+              <div className={`alerts ${alertType}`} role="alert">
+                {errorMessages}
+                {successMessages}
+              </div>
+            )}
           </div>
-        )}
-        <FormInput
-          id="human-presence"
-          label="Give a location.."
-          type="text"
-          required
-          onChange={handleFormInputChange}
-          name="labelName"
-          value={labelName}
-        />
-        <label htmlFor="trashingLevel">Trashing Level </label>
-        <input
-          id="trashingLevel"
-          type="range"
-          name="trashingLevel"
-          min="5"
-          max="30"
-          step="1"
-          onChange={handleFormInputChange}
-          value={trashingLevel}
-          list="markers"
-        />
-        <datalist id="markers">
-          <option value="5"></option>
-          <option value="10"></option>
-          <option value="15"></option>
-          <option value="20"></option>
-          <option value="25"></option>
-          <option value="30"></option>
-        </datalist>
-        <div style={{ fontSize: 20, color: '#de006f' }}>{trashingLevel}</div>
-        <label htmlFor="range">Excitement Level </label>
-        <input
-          id="excitementLevel"
-          type="range"
-          name="excitementLevel"
-          min="5"
-          max="30"
-          step="1"
-          onChange={handleFormInputChange}
-          value={excitementLevel}
-          list="markers"
-        />
-        <datalist id="markers">
-          <option value="5"></option>
-          <option value="10"></option>
-          <option value="15"></option>
-          <option value="20"></option>
-          <option value="25"></option>
-          <option value="30"></option>
-        </datalist>
-        <div style={{ fontSize: 20, color: '#de006f' }}>{excitementLevel}</div>
+          <div>
+            <FormInput
+              id="human-presence"
+              label="Give a location.."
+              type="text"
+              required
+              onChange={handleFormInputChange}
+              name="labelName"
+              value={labelName}
+            />
+          </div>
+          <label htmlFor="trashingLevel">Trashing Level </label>
+          <input
+            id="trashingLevel"
+            type="range"
+            name="trashingLevel"
+            min="5"
+            max="30"
+            step="1"
+            onChange={handleFormInputChange}
+            value={trashingLevel}
+            list="markers"
+          />
+          <datalist id="markers">
+            <option value="5"></option>
+            <option value="10"></option>
+            <option value="15"></option>
+            <option value="20"></option>
+            <option value="25"></option>
+            <option value="30"></option>
+          </datalist>
+          <div style={{ fontSize: 20, color: '#de006f' }}>{trashingLevel}</div>
+          <label htmlFor="range">Excitement Level </label>
+          <input
+            id="excitementLevel"
+            type="range"
+            name="excitementLevel"
+            min="5"
+            max="30"
+            step="1"
+            onChange={handleFormInputChange}
+            value={excitementLevel}
+            list="markers"
+          />
+          <datalist id="markers">
+            <option value="5"></option>
+            <option value="10"></option>
+            <option value="15"></option>
+            <option value="20"></option>
+            <option value="25"></option>
+            <option value="30"></option>
+          </datalist>
+          <div style={{ fontSize: 20, color: '#de006f' }}>{excitementLevel}</div>
+        </div>
         <div className="loading-button">
           <Button type="submit">{loading ? <ReactSpinner /> : `Save to the map`}</Button>
         </div>

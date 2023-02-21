@@ -1,16 +1,32 @@
 const http = require('http');
 const app = require('./app'); // express app
-const server = http.createServer(app); // instance of server
-const { SERVER_PORT, NODE_ENV } = require('./utils/config');
-const setupDatabase = require('./utils/setupDatabase');
+const { Server } = require('socket.io');
+const { SERVER_PORT, NODE_ENV, CLIENT_URL, SERVER_URL } = require('./utils/config');
+const { setupDatabase } = require('./utils/setupDatabase');
 const log = require('./utils/logger');
-const mongoose = require('mongoose');
+
+// webSocket Listeners
+const socketIOAntlerExchangeHandler = require('./utils/webSockets/antlerExchange');
+const { socketIOHumanQuitHandler } = require('./utils/webSockets/humanQuit');
+
+const startServer = async () => {
+  try {
+    const server = http.createServer(app); // instance of server
+    const io = await createSocketIO(server); // create socketIO
+    startHttpServer(server); // Server Starts listing
+    log('info', `Socket Connections`, 'index');
+    socketIOConnections(io); // SocketIO Connections
+  } catch (error) {
+    log('error', `Line 15: Error ${error}`, 'index');
+  }
+};
 
 // Starting server ~ Connect to mongo then start server
-async function startServer() {
+async function startHttpServer(server) {
   log('info', `Worker with process id of ${process.pid} has started...`, 'index');
   log('info', `Server has started with process ${process.pid}`, 'index');
   log('info', 'Connecting to the MongoDB Database', 'index');
+  // start database
   setupDatabase();
 
   server.listen(SERVER_PORT, () => {
@@ -18,7 +34,7 @@ async function startServer() {
   });
 
   server.on('listening', event => {
-    log('info', 'Ok, server is running :)', 'index');
+    log('info', 'Ok, server is Listening :)', 'index');
   });
 
   // Handling - Address already in use Error
@@ -40,12 +56,6 @@ const shutDownProperly = exitCode => {
   Promise.resolve()
     .then(() => {
       log('error', 'Shutdown In Progress...', 'index');
-
-      // Closing Mongoose
-      mongoose.disconnect(() => {
-        console.log('Mongoose default connection disconnected through app termination');
-        process.exit(0);
-      });
 
       // Closing Server
       log('error', 'Http Server closed', 'index');
@@ -91,6 +101,42 @@ const handleExit = () => {
   process.on('exit', code => {
     log('error', `Everything exited with code: ${code}`, 'index');
   });
+};
+
+// Setup SocketIO
+const createSocketIO = async server => {
+  const io = new Server(server, {
+    cors: {
+      origin: [SERVER_URL, CLIENT_URL],
+      allRoutes: true,
+      credentials: true,
+      optionsSuccessStatus: 200,
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      headers: 'content-type, Authorization',
+    },
+  });
+
+  // When socketIO disconnects
+  io.on('disconnect', () => {
+    log('info', `Connection disconnected`, 'index');
+  });
+
+  // Listening for events
+  io.on('connection', socket => {
+    // This Runs Whenever someone opens the website
+    // socket.id - this is the id of the user, each user has a different id
+    log('info', `Line 128: User connected, ${socket.id}`, 'index');
+  });
+
+  return io;
+};
+
+const socketIOConnections = io => {
+  const antlerExchangeSocketHandler = socketIOAntlerExchangeHandler(io);
+  const humanQuitSocketHandler = socketIOHumanQuitHandler(io);
+
+  antlerExchangeSocketHandler();
+  humanQuitSocketHandler();
 };
 
 handleExit();

@@ -1,5 +1,5 @@
 .app-navbar-container {
-  z-index: 1;
+  z-index: 9999;
   position: sticky;
   top: 0;
   width: 100vw;
@@ -23,6 +23,7 @@
     height: 80%;
     cursor: pointer;
     // border: 2px solid red;
+    position: relative;
 
     .app-nav-title{
       margin-right: 10px;
@@ -84,4 +85,36 @@
 
   }
 
+}
+
+
+@media screen and (min-width: 5em) {
+  .app-navbar-container {
+    .nav-items {
+      .app-dash-dropdown{
+        right: 20px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 10em) {
+
+  .app-navbar-container {
+    .nav-items {
+      .app-dash-dropdown{
+        right: -31px;
+      }
+    }
+  }
+}
+@media screen and (min-width: 20em) {
+
+  .app-navbar-container {
+    .nav-items {
+      .app-dash-dropdown{
+        right: 1px;
+      }
+    }
+  }
 }

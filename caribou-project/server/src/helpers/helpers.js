@@ -26,18 +26,18 @@ const key2 = crypto.randomBytes(32).toString('hex');
 // JWT Tokens
 const signAccessToken = userData => {
   return new Promise((resolve, reject) => {
-    // Creating a new Promise.
+    // Creating a new Promise. expires in 720 = 30 days
     const payload = {}; // additional info to save in the token
     const secret = JWT_ACCESS_TOKEN_SECRET;
     const options = {
-      expiresIn: '24h',
+      expiresIn: '720h',
       issuer: 'https:localhost:3000',
       audience: userData,
     };
 
     JWT.sign(payload, secret, options, (err, token) => {
       if (err) {
-        console.log('err.message', err.message);
+        log('error', `Line 40: Error signing Token: ${err.message}`, 'helpers');
         reject(createError.InternalServerError());
       }
       resolve(token);
@@ -45,7 +45,7 @@ const signAccessToken = userData => {
   });
 };
 
-const verifyAccessToken = (req, _res, next) => {
+const verifyAccessToken = (req, res, next) => {
   // check if authorization is present
   if (!req.headers['authorization']) return next(createError.Unauthorized());
 
@@ -61,11 +61,13 @@ const verifyAccessToken = (req, _res, next) => {
   JWT.verify(token, JWT_ACCESS_TOKEN_SECRET, (err, payload) => {
     // console.log('Payload Token Found JWT:', token, 'accessToken:', JWT_ACCESS_TOKEN_SECRET);
     if (err) {
-      log('Error:', err, 'Helpers');
+      log('error:', `Line 65: ${err}`, 'Helpers');
       if (err.name === 'JsonWebTokenError') {
+        log('error', `Line 66: Error verifying, JsonWebTokenError: ${err}`, 'helpers');
         return next(createError.Unauthorized());
       } else if (err) {
-        return next(createError.Unauthorized(err.message));
+        log('error', `Line 68: Error verifying token: ${err}`, 'helpers');
+        next(createError.Unauthorized(err.message));
       }
     }
     req.payload = payload;
@@ -88,7 +90,7 @@ const signRefreshToken = userData => {
 
     JWT.sign(payload, secret, options, (err, token) => {
       if (err) {
-        log('error', err.message, 'helpers');
+        log('error', `Line 93: Error Signing Refresh Token: ${err.message}`, 'helpers');
         reject(createError.InternalServerError());
       }
       resolve(token);
@@ -103,7 +105,7 @@ const verifyRefreshToken = refreshToken => {
 
     JWT.verify(refreshToken, secret, (err, payload) => {
       if (err) {
-        log('error', err.message, 'helpers');
+        log('error', `Line 108: Error Verifying Refresh Token: ${err.message}`, 'helpers');
         return reject(createError.Unauthorized());
       }
       const userId = payload.aud; // user uuid

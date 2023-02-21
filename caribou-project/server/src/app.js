@@ -23,12 +23,14 @@ app.use(hpp());
 app.use(helmet());
 app.use(
   cors({
-    origin: [SERVER_URL, CLIENT_URL],
+    origin: ['*', SERVER_URL, CLIENT_URL],
     allRoutes: true,
     credentials: true,
     optionsSuccessStatus: 200,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     headers: 'content-type, Authorization',
+    crossOriginEmbedderPolicy: 'same-origin',
+    'Access-Control-Allow-Origin': '*',
   })
 );
 
@@ -73,7 +75,7 @@ async () => {
 
   const value = await client.get('foo');
 
-  console.log('Redis', value);
+  // console.log('Redis', value);
 };
 
 // Global Error Handler
