@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import useLocalStorage from '@hooks/useLocalStorage';
 
@@ -23,6 +23,7 @@ const AppNavigation = () => {
 
   // Get the avatar image from local storage
   const avatarImage = useLocalStorage('avatar-image', 'get');
+  const userImage = useSelector((state) => state?.user?.avatarImage);
 
   const handleLogoDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -54,7 +55,7 @@ const AppNavigation = () => {
           <div className="app-flex">
             <div onClick={handleLogoDropdown} className="app-flex">
               <div className="image-wrapper">
-                <img src={avatarImage && avatarImage} alt="Avatar image" />{' '}
+                <img src={avatarImage.length > 0 ? avatarImage : userImage} alt="Avatar image" />{' '}
               </div>
               <FaAngleDown />
               {dropdownOpen && (

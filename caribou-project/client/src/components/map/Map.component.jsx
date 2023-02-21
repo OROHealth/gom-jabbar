@@ -62,14 +62,15 @@ const Map = (props) => {
 
     const getLocations = async () => {
       if (refreshed) {
-        const stringifyRefreshToken = getStorageRefreshToken?.data?.refreshToken;
+        const stringifyRefreshToken = getStorageRefreshToken;
         // Making sure the access and refresh token is always up to date.
-        // console.log('Line 65: local', stringifyRefreshToken, 'state', stateRefreshToken, 'Map Component');
+        console.log('Line 65: local:', stringifyRefreshToken, 'state:', stateRefreshToken, 'Map Component');
         try {
           // The refresh token will be found in either the local storage or in the redux state
           const newRefreshToken = await authService.verifyRefreshToken({
             refreshToken: stringifyRefreshToken || stateRefreshToken,
           });
+          console.log('Line 73: refreshToken Received from backend', newRefreshToken, 'Map Component');
 
           const { accessToken, refreshToken } = newRefreshToken.data;
           setStorageRefreshToken(newRefreshToken);
@@ -91,7 +92,7 @@ const Map = (props) => {
 
       try {
         await mapService.getAllLocations().then((res) => {
-          console.log('res', res);
+          console.log('Line 95: Result of Fetching locations: ', res, 'Map Component');
           if (isCancelled) {
             if (res?.data?.locations) {
               setAllMapLocations(res.data.locations);
@@ -101,7 +102,7 @@ const Map = (props) => {
           }
         });
       } catch (error) {
-        console.log(`Line 104:`, error, 'Map Component');
+        console.log(`Line 107: Error:`, error, 'Map Component');
       }
     };
     getLocations();
@@ -118,10 +119,10 @@ const Map = (props) => {
         map.locate();
       },
 
-      locationfound(e) {
+      locationfound(event) {
         // console.log('Found location Event: I Found You');
-        setPosition(e.latlng);
-        map.flyTo(e.latlng);
+        setPosition(event.latlng);
+        map.flyTo(event.latlng);
       },
     });
 

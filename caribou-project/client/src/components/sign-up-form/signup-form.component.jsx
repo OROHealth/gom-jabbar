@@ -132,6 +132,7 @@ const SignUpForm = () => {
       setLoading(false);
       setShowErrorMsg(true);
       setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message]);
+      timeLimitMessage();
       const errorCode = error.code;
       const errorMessage = error.message;
 
@@ -152,7 +153,6 @@ const SignUpForm = () => {
         error,
         'SignUp Form Component'
       );
-      navigate('/');
     }
     navigate('/app/dashboard');
   };

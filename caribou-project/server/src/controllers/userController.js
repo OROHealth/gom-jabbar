@@ -35,7 +35,7 @@ async function registerUser(req, res) {
   // console.log(email, password);
   if (errors.length > 0) {
     // If there is an issue then I want to rerender the registration form with the error message
-    return res.status(400).json(errors);
+    return res.status(401).json(errors);
   } else {
     if (errors.length < 1) {
       try {
@@ -93,7 +93,7 @@ async function registerUser(req, res) {
 // @Route   /api/v1/user/login
 // TODO Email and Password Login Start
 async function loginUser(req, res) {
-  console.log('Line 90: Request Data:', req.body);
+  console.log('Line 90: Request Data:', req.body.email, req.body.password);
   const { email, password } = req.body;
 
   const errors = [];
@@ -111,12 +111,17 @@ async function loginUser(req, res) {
     errors.push({ errorMsg: 'Humans are not allowed!' });
   }
 
+  // Check that passwords at least 6 characters
+  if (password.length < 6) {
+    errors.push({ errorMsg: 'Passwords should be at least 6 characters' });
+  }
+
   // Logic to respond with the error messages
   if (errors.length > 0) {
     // console.log('Errors:', errors);
     return res.status(401).json(errors).end();
   } else {
-    if (error.length < 1) {
+    if (errors.length < 1) {
       try {
         // Finding the user in the Database
         await UserModel.findOne({ email: email }).then(async user => {
@@ -127,10 +132,11 @@ async function loginUser(req, res) {
           } else {
             // If user is found - compare the password with the user in the Database // console.log('isValidPassword', isValidPassword); // returns true if valid
             const isValidPassword = await bcrypt.compare(password, user.password);
+            log('error', `Line 130: Is it a Valid Password? ${isValidPassword} `, 'userController');
 
             if (!isValidPassword) {
               errors.push({ errorMsg: 'Your Caribou username or password is not valid.' });
-              return res.status(401).json(errors);
+              return res.status(401).json(errors).end();
             }
 
             // Generate a new accessToken
@@ -144,21 +150,11 @@ async function loginUser(req, res) {
           }
         });
       } catch (error) {
-        console.log('Line 141: ', error, 'userController');
+        log('Line 147: ', `Line 153: Error  -> ${error}`, 'userController');
       }
     }
   }
 }
-
-const logoutUser = async (req, res, next) => {
-  try {
-    const { refreshToken, user } = req.body;
-    if (!refreshToken) throw createError.BadRequest();
-    const userId = await verifyRefreshToken(refreshToken);
-  } catch (error) {
-    next(error);
-  }
-};
 
 const refreshUserToken = async (req, res, next) => {
   try {
@@ -180,6 +176,5 @@ const refreshUserToken = async (req, res, next) => {
 module.exports = {
   registerUser,
   loginUser,
-  logoutUser,
   refreshUserToken,
 };
