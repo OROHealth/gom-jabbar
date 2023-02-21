@@ -32,7 +32,7 @@ const mapSchema = new mongoose.Schema(
       unique: false,
       trim: true,
     },
-    expiresAt: { type: Date, expires: '60', default: Date.now },
+    expiresAt: { type: Date, expires: '30', default: Date.now },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   },
   {
@@ -58,4 +58,4 @@ mapSchema.set('toJSON', {
 //   }
 // });
 
-module.exports = mongoose.model('map', mapSchema, 'HumanQuit');
+module.exports = mongoose.model('map', mapSchema);

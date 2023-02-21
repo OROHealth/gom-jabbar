@@ -75,7 +75,7 @@ async () => {
 
   const value = await client.get('foo');
 
-  console.log('Redis', value);
+  // console.log('Redis', value);
 };
 
 // Global Error Handler

@@ -4,7 +4,6 @@ const createError = require('http-errors');
 const { JWT_ACCESS_TOKEN_SECRET, JWT_REFRESH_TOKEN_SECRET } = require('../utils/config');
 // const HTTP_STATUS = require('http-status-codes');
 const log = require('../utils/logger');
-const { request } = require('http');
 
 const firstLetterUppercase = str => {
   const valueString = str.toLowerCase();

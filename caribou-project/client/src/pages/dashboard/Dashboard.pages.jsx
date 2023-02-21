@@ -11,7 +11,7 @@ import AppNavigation from '@components/app-navigation/AppNavigation.component';
 import Map from '@components/map/Map.component';
 import MapFormSpotHuman from '@components/map-form-spot-human/MapFormSpotHuman.component';
 import AntlerExchange from '@components/antlerExchange/AntlerExchange';
-import ChatroomSlider from '@components/chatroom-slider/ChatroomSlider';
+// import ChatroomSlider from '@components/chatroom-slider/ChatroomSlider';
 import HumanQuit from '@components/HumanQuit/HumanQuit';
 
 const Dashboard = () => {
@@ -56,9 +56,6 @@ const Dashboard = () => {
           <div className="app-dash-all-fields">
             <div className="app-dashboard-texts-field">
               <AntlerExchange />
-            </div>
-            <div className="app-dashboard-texts-field">
-              <ChatroomSlider />
             </div>
           </div>
           <div className="app-map">

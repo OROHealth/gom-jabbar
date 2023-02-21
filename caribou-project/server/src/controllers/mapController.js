@@ -27,7 +27,7 @@ async function postAMapLocation(req, res) {
   const { excitementLevel, trashingLevel, labelName, xName, yName } = req.body;
 
   // log('info', req.payload.aud, 'mapController');
-  log('info', `Line 30: ${req.body}`, 'mapController');
+  // log('info', `Line 30: ${req.body}`, 'mapController');
   let errors = [];
 
   if (!excitementLevel && !trashingLevel && !labelName && !xName && !yName) {
@@ -41,20 +41,18 @@ async function postAMapLocation(req, res) {
 
   // Find the user who made the request and
   const user = await UserModel.findOneAndUpdate({ uuid: req.payload.aud });
-  log('info', `Line 42: User: ${user}`, 'mapController');
+  // log('info', `Line 42: User: ${user}`, 'mapController');
 
   // If no user found
   if (user === null || !user) {
-    //
-    log('info', `Line 45: No User: ${user}`, 'mapController');
-
+    // log('info', `Line 45: No User: ${user}`, 'mapController');
     errors.push({ errorMsg: 'There is no account associated with this post. Please Log out, and log back in to continue!' });
     return res.status(400).json(errors).end();
   }
 
   // Saving
   await MapModel.findOne({ labelName: labelName }).then(async foundLabel => {
-    log('Info', `Line 56: foundLabel: ${labelName}`, 'mapController');
+    // log('Info', `Line 56: foundLabel: ${labelName}`, 'mapController');
 
     if (foundLabel !== null) {
       // If location name Already Exists.
@@ -74,33 +72,32 @@ async function postAMapLocation(req, res) {
       await newLocation
         .save()
         .then(async locationSaved => {
-          log('info', `Line 74: LocationSaved: ${locationSaved}`, 'userController');
+          // log('info', `Line 74: LocationSaved: ${locationSaved}`, 'userController');
 
           // Check if a user is found. > If there is no User
           if (!user.location) {
-            log('error', `Line: 81: Error Saving new Location`, 'userController');
+            log('error', `Line: 81: Error Saving new Location`, 'mapController');
             errors.push({ errorMsg: 'Error saving new location! Please sign in again to resolve' });
             return res.status(400).json(errors).end();
           }
           await user.location.push(locationSaved);
           user.save();
+          return res.status(201).json({
+            labelName,
+            trashingLevel,
+            excitementLevel,
+            x: xName,
+            y: yName,
+          });
         })
         .catch(err => {
-          log('error', `Line: 89: Error Saving newLocation: ${err}`, 'userController');
-          errors.push({ errorMsg: 'Error Saving new Location!' });
+          log('error', `Line: 89: Error Saving newLocation: ${err}, with errorCode ${err.code}`, 'mapController');
+          if (err.code === 11000) {
+            log('error', `Line: 92:  Duplicate Location Error`, 'mapController');
+            errors.push({ errorMsg: 'Duplicate Location! Please try another location' });
+            return res.status(400).json(errors).end();
+          }
         });
-
-      if (errors > 0) {
-        return res.json(errors).end();
-      } else {
-        return res.status(201).json({
-          labelName,
-          trashingLevel,
-          excitementLevel,
-          x: xName,
-          y: yName,
-        });
-      }
     }
   });
 }

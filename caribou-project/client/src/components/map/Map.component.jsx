@@ -50,14 +50,16 @@ const Map = (props) => {
   const getStorageRefreshToken = useLocalStorage('refresh-token', 'get');
   const getStorageLoggedIn = useLocalStorage('loggedIn', 'get');
   const getStorageAvatarImage = useLocalStorage('avatar-image', 'get');
-  const setStorageEmail = useLocalStorage('email', 'get');
+  const getStorageEmail = useLocalStorage('app-email', 'get');
   const [setStorageRefreshToken] = useLocalStorage('refresh-token', 'set');
   const [setStorageAccessToken] = useLocalStorage('access-token', 'set');
-  const [setStorageLocationFound] = useLocalStorage('locations-found', 'set');
   const [refreshed, setRefreshed] = useState(true);
   const stateRefreshToken = useSelector((state) => state.user.refreshToken);
+  // const [newData, setNewdata] = useState(null);
 
   useEffect(() => {
+    let isCancelled = true;
+
     const getLocations = async () => {
       if (refreshed) {
         const stringifyRefreshToken = getStorageRefreshToken?.data?.refreshToken;
@@ -68,6 +70,7 @@ const Map = (props) => {
           const newRefreshToken = await authService.verifyRefreshToken({
             refreshToken: stringifyRefreshToken || stateRefreshToken,
           });
+
           const { accessToken, refreshToken } = newRefreshToken.data;
           setStorageRefreshToken(newRefreshToken);
           setStorageAccessToken(accessToken);
@@ -77,7 +80,7 @@ const Map = (props) => {
               accessToken,
               avatarImage: getStorageAvatarImage,
               loggedIn: getStorageLoggedIn,
-              email: setStorageEmail,
+              email: getStorageEmail,
             })
           );
           setRefreshed(false);
@@ -89,18 +92,22 @@ const Map = (props) => {
       try {
         await mapService.getAllLocations().then((res) => {
           // console.log('res', res);
-          if (res?.data?.locations) {
-            setAllMapLocations(res.data.locations);
-            console.log('Line 94: locationSpotted ->', res?.data?.locations.length, ' - Map Component');
-            setStorageLocationFound(res.data?.locations.length);
-            return res?.data?.locations;
+          if (isCancelled) {
+            if (res?.data?.locations) {
+              setAllMapLocations(res.data.locations);
+              // console.log('Line 98: locationSpotted ->', allMapLocations.length, ' - Map Component');
+              return res?.data?.locations;
+            }
           }
         });
       } catch (error) {
         console.log(`Line 87:`, error);
       }
     };
-    return getLocations;
+    getLocations();
+    return () => {
+      isCancelled = false;
+    };
   }, []);
 
   function LocationMarker() {
@@ -148,7 +155,6 @@ const Map = (props) => {
   // const fillBlueOptions = { fillColor: 'blue' };
   // const blackOptions = { color: 'black' };
   const redOptions = { color: 'red' };
-  // typeof Object.entries(marker)
 
   return (
     <div className="map-wrapper">

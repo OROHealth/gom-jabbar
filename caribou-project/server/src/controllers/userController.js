@@ -32,7 +32,7 @@ async function registerUser(req, res) {
     errors.push({ errorMsg: 'Passwords should be at least 6 characters' });
   }
 
-  console.log(email, password);
+  // console.log(email, password);
   if (errors.length > 0) {
     // If there is an issue then I want to rerender the registration form with the error message
     return res.status(400).json(errors);
@@ -129,9 +129,10 @@ async function loginUser(req, res) {
         const accessToken = await signAccessToken(user.uuId);
         const refreshToken = await signRefreshToken(user.uuId);
         const avatarImage = user.avatarImage;
+        const email = user.email;
 
         success.push({ successMsg: 'Welcome Caribou. Logging in was successful.' });
-        return res.status(201).json({ accessToken, refreshToken, avatarImage, success });
+        return res.status(201).json({ accessToken, refreshToken, avatarImage, email, success });
       }
     });
   }
@@ -150,7 +151,7 @@ const logoutUser = async (req, res, next) => {
 const refreshUserToken = async (req, res, next) => {
   try {
     const { refreshToken } = req.body;
-    console.log(refreshToken, 'Refresh tokenFound ');
+    // console.log(refreshToken, 'Line 153: Refresh tokenFound ');
     if (!refreshToken) throw createError.BadRequest();
     const userId = await verifyRefreshToken(refreshToken);
 

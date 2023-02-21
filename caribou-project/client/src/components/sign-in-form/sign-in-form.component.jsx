@@ -25,6 +25,7 @@ const defaultSignInFields = {
 const SignInForm = () => {
   // State
   const [inputFields, setInputFields] = useState(defaultSignInFields);
+  const { email, password } = inputFields;
   const [loading, setLoading] = useState(false);
   const [alertType, setAlertType] = useState('');
   const [errorMessages, setErrorMessages] = useState([]);
@@ -37,20 +38,22 @@ const SignInForm = () => {
   const [setStorageAvatarImage] = useLocalStorage('avatar-image', 'set');
   const dispatch = useDispatch();
 
-  // console.log(refreshToken);
-  const { email, password } = inputFields;
+  // Navigate User
   const navigate = useNavigate();
 
+  // Input Form Fields
   const handleSignInInputChange = (event) => {
     const { name, value } = event.target;
     setInputFields({ ...inputFields, [name]: value });
     // console.log(inputFields);
   };
 
+  // reset Form Fields
   const resetFormFields = () => {
     setInputFields(defaultSignInFields);
   };
 
+  // Submit Sign In Form
   const handleLoginWithEmailAndPasswordOnSubmit = async (event) => {
     setLoading(true);
     event.preventDefault();
@@ -121,7 +124,6 @@ const SignInForm = () => {
     navigate('/app/dashboard');
   };
 
-  // console.log(alertType);
   return (
     <>
       <div className="sign-up-container sign-in-container-edit">

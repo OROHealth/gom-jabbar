@@ -9,7 +9,6 @@ import FormInput from '@components/form-input/formInput.component';
 import Button from '@components/button/Button';
 import ReactSpinner from '@components/react-spinner/react-spinner.component';
 import { removeMap } from '@redux/reducers/map/map.reducer';
-import useLocalStorage from '@hooks/useLocalStorage';
 
 const defaultFormFields = {
   labelName: '',
@@ -29,8 +28,6 @@ const MapFormSpotHuman = () => {
   const labelNameState = useSelector((state) => state?.map?.label);
   const xName = useSelector((state) => state.map?.x);
   const yName = useSelector((state) => state.map?.y);
-  const [setStorageLocationNumber] = useLocalStorage('location-number', 'set');
-  const getStorageLocationNumber = useLocalStorage('location-number', 'get');
   if (labelNameState) labelName = labelNameState;
 
   const timeLimitMessage = () => {
@@ -100,8 +97,6 @@ const MapFormSpotHuman = () => {
       setErrorMessages([]);
       setAlertType('alert-success');
       setSuccessMessages(['Location added successfully']);
-      // Set/Increase the number of locations created
-      setStorageLocationNumber(getStorageLocationNumber + 1);
       setLoading(false);
       resetFormFields();
       // dispatch(addLocationToMap({ trashingLevel, x: xName, y: yName, label: labelName }));

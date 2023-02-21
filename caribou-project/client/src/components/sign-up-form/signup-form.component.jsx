@@ -56,6 +56,7 @@ const SignUpForm = () => {
   //
   //
   const handleFormSubmit = async (event) => {
+    const { email, password, confirmPassword } = formFields;
     setLoading(true);
     event.preventDefault();
     const error = [];
@@ -70,14 +71,11 @@ const SignUpForm = () => {
       return;
     }
 
-    // Create the authenticated user with email and password that was destructured to get the specific form fields.
-    // this automatically logs in the user once signed up by default
     try {
+      // console.log('Line 75: Registering User, signUp-form-client');
       // Create avatarColor
-      // Create avatar Image
-
-      console.log('Line 74: Registering User, signUp-form-client');
       const color = avatarColor();
+      // Create avatar Image
       const avatarImage = generateAvatar(email.charAt(0).toUpperCase(), color);
       await authService
         .signUp({
@@ -87,12 +85,13 @@ const SignUpForm = () => {
           loggedIn: true,
         })
         .then((savedUser) => {
-          console.log('Line 88: Result of the request:', savedUser);
+          // console.log('Line 88: Result of the request:', savedUser);
 
           const accessToken = savedUser.data.accessToken;
           const refreshToken = savedUser.data.refreshToken;
           const avatarImage = savedUser.data.avatarImage;
           const email = savedUser.data.email;
+          console.log(email);
           dispatch(
             addUser({
               refreshToken,
@@ -102,7 +101,7 @@ const SignUpForm = () => {
             })
           );
 
-          console.log('Line 101: Result that the server sent back:', savedUser);
+          // console.log('Line 104: Result that the server sent back:', savedUser);
 
           // save/dispatch the user to Redis
           // save the token and refresh token to local storage
