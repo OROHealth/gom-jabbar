@@ -85,13 +85,13 @@ const Map = (props) => {
           );
           setRefreshed(false);
         } catch (error) {
-          console.log('Refresh token fetch Error', error);
+          console.log('Line 88: Refresh token fetch Error', error, 'Map Component');
         }
       }
 
       try {
         await mapService.getAllLocations().then((res) => {
-          // console.log('res', res);
+          console.log('res', res);
           if (isCancelled) {
             if (res?.data?.locations) {
               setAllMapLocations(res.data.locations);
@@ -101,7 +101,7 @@ const Map = (props) => {
           }
         });
       } catch (error) {
-        console.log(`Line 87:`, error);
+        console.log(`Line 104:`, error, 'Map Component');
       }
     };
     getLocations();

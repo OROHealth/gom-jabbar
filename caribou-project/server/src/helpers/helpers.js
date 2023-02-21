@@ -71,7 +71,7 @@ const verifyAccessToken = (req, res, next) => {
       }
     }
     req.payload = payload;
-    // console.log('payload:', payload);
+    console.log('payload:', payload);
     next();
   });
 };

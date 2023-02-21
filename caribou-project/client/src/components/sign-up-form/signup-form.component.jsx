@@ -25,21 +25,28 @@ const SignUpForm = () => {
   const { email, password, confirmPassword } = formFields;
   //  State
   const [loading, setLoading] = useState(false);
-  const [alertType, setAlertType] = useState('');
   const [errorMessages, setErrorMessages] = useState([]);
+  const [showErrorMsg, setShowErrorMsg] = useState(false);
   const [successMessages, setSuccessMessages] = useState([]);
-  const [hasError, setHasError] = useState(false);
+  const [showSuccessMsg, setShowSuccessMsg] = useState(false);
   const navigate = useNavigate();
   const [setStorageAccessToken] = useLocalStorage('access-token', 'set');
   const [setStorageRefreshToken] = useLocalStorage('refresh-token', 'set');
   const [setStorageAvatarImage] = useLocalStorage('avatar-image', 'set');
-  const [setStorageLoggedIn] = useLocalStorage('loggedIn', 'set');
   const [setStorageEmail] = useLocalStorage('app-email', 'set');
+  const [setStorageLoggedIn] = useLocalStorage('loggedIn', 'set');
   const deleteStorageEmail = useLocalStorage('app-email', 'delete');
   const deleteStorageAccessToken = useLocalStorage('access-token', 'delete');
   const deleteStorageRefreshToken = useLocalStorage('refresh-token', 'delete');
   const deleteStorageAvatarImage = useLocalStorage('avatar-image', 'delete');
   const dispatch = useDispatch();
+
+  const timeLimitMessage = () => {
+    setTimeout(() => {
+      setShowSuccessMsg(false);
+      setShowErrorMsg(false);
+    }, 15000);
+  };
 
   const resetFormFields = () => {
     // Sets the form to it's initial state in the original object.
@@ -59,15 +66,17 @@ const SignUpForm = () => {
     const { email, password, confirmPassword } = formFields;
     setLoading(true);
     event.preventDefault();
+
     const error = [];
 
     // [] confirm that the password matches
     if (password !== confirmPassword) {
       error.push('Passwords do not match. Try again.');
-      setHasError(true);
-      setAlertType('alert-error');
-      setErrorMessages([error]);
+      setShowSuccessMsg(false);
       setLoading(false);
+      setShowErrorMsg(true);
+      setErrorMessages([error]);
+      timeLimitMessage();
       return;
     }
 
@@ -85,49 +94,48 @@ const SignUpForm = () => {
           loggedIn: true,
         })
         .then((savedUser) => {
-          // console.log('Line 88: Result of the request:', savedUser);
+          console.log('Line 97: Result of the request:', savedUser, 'signup form component');
+          if (savedUser.data) {
+            // clear fields
+            resetFormFields();
+            const accessToken = savedUser.data.accessToken;
+            const refreshToken = savedUser.data.refreshToken;
+            const avatarImage = savedUser.data.avatarImage;
+            const email = savedUser.data.email;
+            console.log(email, accessToken, refreshToken, avatarImage);
+            dispatch(
+              addUser({
+                refreshToken,
+                accessToken,
+                avatarImage,
+                email,
+              })
+            );
+            console.log('Line 112: Result that the server sent back:', savedUser);
+            // save/dispatch the user to Redis
+            // save the token and refresh token to local storage
+            setLoading(false);
+            setShowErrorMsg(false);
+            const successMsg = savedUser?.data?.success[0]?.successMsg;
+            setSuccessMessages([successMsg]);
+            setShowSuccessMsg(true);
 
-          const accessToken = savedUser.data.accessToken;
-          const refreshToken = savedUser.data.refreshToken;
-          const avatarImage = savedUser.data.avatarImage;
-          const email = savedUser.data.email;
-          console.log(email);
-          dispatch(
-            addUser({
-              refreshToken,
-              accessToken,
-              avatarImage,
-              email,
-            })
-          );
-
-          // console.log('Line 104: Result that the server sent back:', savedUser);
-
-          // save/dispatch the user to Redis
-          // save the token and refresh token to local storage
-          setStorageAccessToken(accessToken);
-          setStorageRefreshToken(refreshToken);
-          setStorageEmail(email);
-          setStorageAvatarImage(avatarImage); // set avatarImage in local storage
-          setStorageLoggedIn(true); // set logged in to true in local storage
-
-          setHasError(true);
-          setErrorMessages([]);
-          setAlertType('alert-success');
-          // set success Messages
-          const successMsg = savedUser?.data?.success[0]?.successMsg;
-          setSuccessMessages([successMsg]);
-          // clear fields
-          resetFormFields();
-          setLoading(false);
+            setStorageAccessToken(accessToken);
+            setStorageRefreshToken(refreshToken);
+            setStorageEmail(email);
+            setStorageAvatarImage(avatarImage); // set avatarImage in local storage
+            setStorageLoggedIn(true); // set logged in to true in local storage
+          }
         });
     } catch (error) {
+      setShowSuccessMsg(false);
       setLoading(false);
-      setHasError(true);
-      setAlertType('alert-error');
+      setShowErrorMsg(true);
+      setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message]);
       const errorCode = error.code;
       const errorMessage = error.message;
-      // if error, Reset the State, and navigate the user to the home page.
+
+      // If error, Reset the State, and navigate the user to the home page.
       dispatch(removeUser());
       deleteStorageAccessToken();
       deleteStorageRefreshToken();
@@ -136,14 +144,14 @@ const SignUpForm = () => {
       setStorageLoggedIn(false);
 
       console.log(
-        'Line 133: Error Registering the user.',
+        'Line 139: Error Registering the user.',
         'Error Code:',
         errorCode,
         'Error Message:',
         errorMessage,
-        error
+        error,
+        'SignUp Form Component'
       );
-      setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message]);
       navigate('/');
     }
     navigate('/app/dashboard');
@@ -157,10 +165,14 @@ const SignUpForm = () => {
           <strong style={{ color: '#de006f' }}>Sign up</strong> with your email and password
         </span>
         <div>
-          {hasError && errorMessages && successMessages && (
-            <div className={`alerts ${alertType}`} role="alert">
-              {errorMessages}
+          {showSuccessMsg && successMessages && (
+            <div className={`alerts alert-success`} role="alert">
               {successMessages}
+            </div>
+          )}
+          {showErrorMsg && errorMessages && (
+            <div className={`alerts alert-error`} role="alert">
+              {errorMessages}
             </div>
           )}
         </div>

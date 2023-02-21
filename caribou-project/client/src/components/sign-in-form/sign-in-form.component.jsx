@@ -27,10 +27,10 @@ const SignInForm = () => {
   const [inputFields, setInputFields] = useState(defaultSignInFields);
   const { email, password } = inputFields;
   const [loading, setLoading] = useState(false);
-  const [alertType, setAlertType] = useState('');
   const [errorMessages, setErrorMessages] = useState([]);
+  const [showErrorMsg, setShowErrorMsg] = useState(false);
   const [successMessages, setSuccessMessages] = useState([]);
-  const [hasMsg, setHasMsg] = useState(false);
+  const [showSuccessMsg, setShowSuccessMsg] = useState(false);
   const [setStorageAccessToken] = useLocalStorage('access-token', 'set');
   const [setStorageRefreshToken] = useLocalStorage('refresh-token', 'set');
   const [setStorageLoggedIn] = useLocalStorage('loggedIn', 'set');
@@ -57,6 +57,8 @@ const SignInForm = () => {
   const handleLoginWithEmailAndPasswordOnSubmit = async (event) => {
     setLoading(true);
     event.preventDefault();
+    const { email, password } = inputFields;
+    console.log(`Line 61: Logging in the User ${email} ${password}, Sign-in-form`);
 
     try {
       // Post Request to the Server
@@ -69,49 +71,51 @@ const SignInForm = () => {
           console.log(`Line 69: Logging in the User ${result}, Sign-in-form`);
           console.log('result:', result);
           // set logged in to true in local storage
-          setStorageLoggedIn(true);
-          // save/dispatch the user to Redis
-          const accessToken = result.data.accessToken;
-          const refreshToken = result.data.refreshToken;
-          const avatarImage = result.data.avatarImage;
-          const email = result.data.email;
-          dispatch(
-            addUser({
-              refreshToken,
-              accessToken,
-              avatarImage,
-              loggedIn: true,
-              email,
-            })
-          );
+          if (result.helllo) {
+            // save/dispatch the user to Redis
+            const accessToken = result.data.accessToken;
+            const refreshToken = result.data.refreshToken;
+            const avatarImage = result.data.avatarImage;
+            const email = result.data.email;
+            dispatch(
+              addUser({
+                refreshToken,
+                accessToken,
+                avatarImage,
+                loggedIn: true,
+                email,
+              })
+            );
 
-          resetFormFields();
-          // save the token and refresh token to local storage
-          setStorageAccessToken(accessToken);
-          setStorageRefreshToken(refreshToken);
-          setStorageAvatarImage(avatarImage);
-          setStorageEmail(email);
-          setAlertType('alert-success');
-          setHasMsg(true);
-          setErrorMessages([]);
-          // set success Messages
+            resetFormFields();
+            // save the token and refresh token to local storage
+            setStorageAccessToken(accessToken);
+            setStorageRefreshToken(refreshToken);
+            setStorageAvatarImage(avatarImage);
+            setStorageEmail(email);
+            setStorageLoggedIn(true);
 
-          const successMsg = result.data?.success[0]?.successMsg;
-          setSuccessMessages([successMsg]);
-          resetFormFields();
-          setLoading(false);
+            setShowErrorMsg(false);
+            setShowSuccessMsg(true);
+            // set success Messages
+
+            setLoading(false);
+            const successMsg = result?.data?.success[0]?.successMsg;
+            setSuccessMessages([successMsg]);
+            resetFormFields();
+          }
         });
       //
     } catch (error) {
       //
       setLoading(false);
-      setHasMsg(true);
-      setAlertType('alert-error');
+      setShowSuccessMsg(false);
+      setShowErrorMsg(true);
       const errorCode = error?.code;
       const errorMessage = error?.message;
 
       console.log(
-        'Error Logging in the user.',
+        'Line 117: Sign-in -> Error Logging in the user.',
         'Error Code:',
         errorCode,
         'Error Message:',
@@ -119,7 +123,7 @@ const SignInForm = () => {
         'Error',
         error
       );
-      setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message]);
+      setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message || error?.response?.data?.message]);
     }
     navigate('/app/dashboard');
   };
@@ -132,13 +136,18 @@ const SignInForm = () => {
           <strong style={{ color: '#de006f' }}>Sign in</strong> with your email and password
         </span>
         <div>
-          {hasMsg && errorMessages && successMessages && (
-            <div className={`alerts ${alertType}`} role="alert">
-              {errorMessages}
+          {showSuccessMsg && successMessages && (
+            <div className={`alerts alert-success`} role="alert">
               {successMessages}
             </div>
           )}
+          {showErrorMsg && errorMessages && (
+            <div className={`alerts alert-error`} role="alert">
+              {errorMessages}
+            </div>
+          )}
         </div>
+
         <form onSubmit={handleLoginWithEmailAndPasswordOnSubmit}>
           <FormInput
             label="Email"

@@ -37,48 +37,54 @@ async function registerUser(req, res) {
     // If there is an issue then I want to rerender the registration form with the error message
     return res.status(400).json(errors);
   } else {
-    // [] Check if user already exists in the database
-    await UserModel.findOne({ email: email }).then(async user => {
-      if (user) {
-        // If User Already Exists. Then we displayed in the frontend a message
-        errors.push({ errorMsg: "I'm sorry this Caribou already exists!" });
-        return res.status(401).json(errors);
-      } else {
-        // [] Encrypt password - Hash the password before saving it to the database
-        // Generate a salt in order to create a hash
-        // returns the encrypted password, of the newUser that just registered.
-        const salt = await bcrypt.genSalt(12);
-        const hashedPassword = await bcrypt.hash(password, salt);
-        const uuId = new mongoose.Types.ObjectId();
+    if (errors.length < 1) {
+      try {
+        // [] Check if user already exists in the database
+        await UserModel.findOne({ email: email }).then(async user => {
+          if (user) {
+            // If User Already Exists. Then we displayed in the frontend a message
+            errors.push({ errorMsg: "I'm sorry this Caribou already exists!" });
+            return res.status(401).json(errors);
+          } else {
+            // [] Encrypt password - Hash the password before saving it to the database
+            // Generate a salt in order to create a hash
+            // returns the encrypted password, of the newUser that just registered.
+            const salt = await bcrypt.genSalt(12);
+            const hashedPassword = await bcrypt.hash(password, salt);
+            const uuId = new mongoose.Types.ObjectId();
 
-        // Created a new instance of the user, but haven't saved it yet
-        const newUser = new UserModel({
-          email: lowerCase(email),
-          password: hashedPassword,
-          avatarImage,
-          uuId,
+            // Created a new instance of the user, but haven't saved it yet
+            const newUser = new UserModel({
+              email: lowerCase(email),
+              password: hashedPassword,
+              avatarImage,
+              uuId,
+            });
+
+            // set the new user's password to the encrypted password version
+            newUser.password = hashedPassword;
+
+            // save the newUser to the Database
+            await newUser
+              .save()
+              .then(userSaved => {
+                log('info', `Line 71: ${req.body}, ${userSaved}, user Controller`, 'userController');
+                success.push({ successMsg: 'Welcome fellow Caribou.' });
+              })
+              .catch(err => {
+                log('error', `Error Saving newUser: ${err}`, 'userController');
+              });
+
+            const accessToken = await signAccessToken(newUser.uuId);
+            const refreshToken = await signRefreshToken(newUser.uuId);
+            // response with an object, to get it in json format
+            res.status(201).json({ accessToken, refreshToken, avatarImage, email, success });
+          }
         });
-
-        // set the new user's password to the encrypted password version
-        newUser.password = hashedPassword;
-
-        // save the newUser to the Database
-        await newUser
-          .save()
-          .then(userSaved => {
-            // log('info', req.body, 'userController');
-            success.push({ successMsg: 'Welcome fellow Caribou.' });
-          })
-          .catch(err => {
-            log('error', `Error Saving newUser: ${err}`, 'userController');
-          });
-
-        const accessToken = await signAccessToken(newUser.uuId);
-        const refreshToken = await signRefreshToken(newUser.uuId);
-        // response with an object, to get it in json format
-        res.status(201).json({ accessToken, refreshToken, avatarImage, email, success });
+      } catch (error) {
+        log('error', `Line 86: Error Saving newUser: ${err}`, 'userController');
       }
-    });
+    }
   }
 }
 
@@ -87,7 +93,7 @@ async function registerUser(req, res) {
 // @Route   /api/v1/user/login
 // TODO Email and Password Login Start
 async function loginUser(req, res) {
-  // console.log('Request Data:', req.body);
+  console.log('Line 90: Request Data:', req.body);
   const { email, password } = req.body;
 
   const errors = [];
@@ -110,31 +116,37 @@ async function loginUser(req, res) {
     // console.log('Errors:', errors);
     return res.status(401).json(errors).end();
   } else {
-    // Finding the user in the Database
-    await UserModel.findOne({ email: email }).then(async user => {
-      // checks if there is a user
-      if (!user) {
-        errors.push({ errorMsg: 'This Caribou does not exist. Are you a Human?' });
-        return res.status(401).json(errors);
-      } else {
-        // If user is found - compare the password with the user in the Database // console.log('isValidPassword', isValidPassword); // returns true if valid
-        const isValidPassword = await bcrypt.compare(password, user.password);
+    if (error.length < 1) {
+      try {
+        // Finding the user in the Database
+        await UserModel.findOne({ email: email }).then(async user => {
+          // checks if there is a user
+          if (!user) {
+            errors.push({ errorMsg: 'This Caribou does not exist. Are you a Human?' });
+            return res.status(401).json(errors);
+          } else {
+            // If user is found - compare the password with the user in the Database // console.log('isValidPassword', isValidPassword); // returns true if valid
+            const isValidPassword = await bcrypt.compare(password, user.password);
 
-        if (!isValidPassword) {
-          errors.push({ errorMsg: 'Your Caribou username or password is not valid.' });
-          return res.status(401).json(errors);
-        }
+            if (!isValidPassword) {
+              errors.push({ errorMsg: 'Your Caribou username or password is not valid.' });
+              return res.status(401).json(errors);
+            }
 
-        // Generate a new accessToken
-        const accessToken = await signAccessToken(user.uuId);
-        const refreshToken = await signRefreshToken(user.uuId);
-        const avatarImage = user.avatarImage;
-        const email = user.email;
+            // Generate a new accessToken
+            const accessToken = await signAccessToken(user.uuId);
+            const refreshToken = await signRefreshToken(user.uuId);
+            const avatarImage = user.avatarImage;
+            const email = user.email;
 
-        success.push({ successMsg: 'Welcome Caribou. Logging in was successful.' });
-        return res.status(201).json({ accessToken, refreshToken, avatarImage, email, success });
+            success.push({ successMsg: 'Welcome Caribou. Logging in was successful.' });
+            return res.status(201).json({ accessToken, refreshToken, avatarImage, email, success });
+          }
+        });
+      } catch (error) {
+        console.log('Line 141: ', error, 'userController');
       }
-    });
+    }
   }
 }
 

@@ -9,7 +9,7 @@
     "install:both": "npm run install-server && npm run install-client",
     "start:server": "npm run start:dev --prefix server",
     "start:client": "npm start --prefix client",
-    "start:both": "npm run server & npm run client",
+    "start:both": "npm run start:server & npm run start:client",
     "test": "npm run test --prefix server && npm run test --prefix client"
   },
   "keywords": [],
