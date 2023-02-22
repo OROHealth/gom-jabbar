@@ -26,7 +26,7 @@ async function getAllMapLocations(_req, res) {
 async function postAMapLocation(req, res) {
   const { excitementLevel, trashingLevel, labelName, xName, yName } = req.body;
 
-  // log('info', req.payload.aud, 'mapController');
+  // log('info', `Line 29: Req Payload: ${req.payload}`, 'mapController');
   // log('info', `Line 30: ${req.body}`, 'mapController');
   let errors = [];
 
@@ -41,7 +41,7 @@ async function postAMapLocation(req, res) {
 
   // Find the user who made the request and
   const user = await UserModel.findOneAndUpdate({ uuid: req.payload.aud });
-  // log('info', `Line 42: User: ${user}`, 'mapController');
+  // log('info', `Line 43: User: ${user}`, 'mapController');
 
   // If no user found
   if (user === null || !user) {

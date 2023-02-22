@@ -9,6 +9,9 @@ import useLocalStorage from '@hooks/useLocalStorage';
 // import axios from 'axios';
 import { mapService } from '@services/api/map/map.service';
 
+// Socket IO
+import socket from '@services/websocket/webSocketIO';
+
 // StyleSheets
 import '@components/map/Map.styles.scss';
 import '../../../node_modules/leaflet-geosearch/dist/geosearch.css';
@@ -17,6 +20,7 @@ import '../../../node_modules/leaflet-geosearch/dist/geosearch.css';
 import { GoogleProvider, GeoSearchControl } from 'leaflet-geosearch';
 import { authService } from '@services/api/auth/auth.service';
 import { addUser } from '@redux/reducers/user/user.reducer';
+import { addLocationsFound } from '@redux/reducers/locationsFound/locationsFound.reducer';
 const provider = new GoogleProvider({
   apiKey: googleApiKey,
 });
@@ -55,53 +59,71 @@ const Map = (props) => {
   const [setStorageAccessToken] = useLocalStorage('access-token', 'set');
   const [refreshed, setRefreshed] = useState(true);
   const stateRefreshToken = useSelector((state) => state.user.refreshToken);
-  // const [newData, setNewdata] = useState(null);
+  const [humanAdded, setHumanAdded] = useState(false);
 
   useEffect(() => {
     let isCancelled = true;
 
     const getLocations = async () => {
       if (refreshed) {
-        const stringifyRefreshToken = getStorageRefreshToken?.data?.refreshToken;
+        const stringifyRefreshToken = getStorageRefreshToken;
         // Making sure the access and refresh token is always up to date.
-        // console.log('Line 65: local', stringifyRefreshToken, 'state', stateRefreshToken, 'Map Component');
+        // console.log(
+        //   'Line 68: local:',
+        //   stringifyRefreshToken,
+        //   'refreshToken',
+        //   stringifyRefreshToken?.data?.refreshToken,
+        //   'state:',
+        //   stateRefreshToken,
+        //   'Map Component - Client'
+        // );
         try {
-          // The refresh token will be found in either the local storage or in the redux state
-          const newRefreshToken = await authService.verifyRefreshToken({
-            refreshToken: stringifyRefreshToken || stateRefreshToken,
-          });
+          if (isCancelled) {
+            // The refresh token will be found in either the local storage or in the redux state
+            const newRefreshToken = await authService.verifyRefreshToken({
+              refreshToken: stringifyRefreshToken?.data?.refreshToken || stringifyRefreshToken || stateRefreshToken,
+            });
+            // console.log('Line 82: refreshToken Received from backend', newRefreshToken, 'Map Component');
 
-          const { accessToken, refreshToken } = newRefreshToken.data;
-          setStorageRefreshToken(newRefreshToken);
-          setStorageAccessToken(accessToken);
-          dispatch(
-            addUser({
-              refreshToken,
-              accessToken,
-              avatarImage: getStorageAvatarImage,
-              loggedIn: getStorageLoggedIn,
-              email: getStorageEmail,
-            })
-          );
-          setRefreshed(false);
+            const { accessToken, refreshToken } = newRefreshToken.data;
+            setStorageRefreshToken(newRefreshToken);
+            setStorageAccessToken(accessToken);
+            dispatch(
+              addUser({
+                refreshToken,
+                accessToken,
+                avatarImage: getStorageAvatarImage,
+                loggedIn: getStorageLoggedIn,
+                email: getStorageEmail,
+              })
+            );
+            setRefreshed(false);
+          }
         } catch (error) {
-          console.log('Line 88: Refresh token fetch Error', error, 'Map Component');
+          console.log('Line 103: Refresh token fetch Error', error, 'Map Component');
         }
       }
 
       try {
+        // Get initial Locations on first Render
         await mapService.getAllLocations().then((res) => {
-          console.log('res', res);
+          // console.log('Line 105: Result of Fetching locations: ', res, 'Map Component');
           if (isCancelled) {
             if (res?.data?.locations) {
               setAllMapLocations(res.data.locations);
-              // console.log('Line 98: locationSpotted ->', allMapLocations.length, ' - Map Component');
+              dispatch(addLocationsFound([res.data.locations]));
+              console.log(
+                'Line 115: Initial locationSpotted State first Render->',
+                allMapLocations,
+                ' - Map Component'
+              );
+              console.log('Line 116: Initial locationSpotted Data on first Rerender->', res.data, ' - Map Component');
               return res?.data?.locations;
             }
           }
         });
       } catch (error) {
-        console.log(`Line 104:`, error, 'Map Component');
+        console.log(`Line 115: Error:`, error, 'Map Component');
       }
     };
     getLocations();
@@ -110,6 +132,49 @@ const Map = (props) => {
     };
   }, []);
 
+  // User Added Fetch new users - Run a fetch when locations are added
+  if (humanAdded) {
+    const getLocations = async () => {
+      try {
+        await mapService.getAllLocations().then((res) => {
+          // console.log('Line 105: Result of Fetching locations: ', res, 'Map Component');
+
+          if (res?.data?.locations) {
+            setAllMapLocations(res.data.locations);
+            dispatch(addLocationsFound(res.data.locations));
+            console.log('Line 141: locationSpotted ->', allMapLocations, ' - Map Component');
+            console.log('Line 142: locationSpotted ->', res.data, ' - Map Component');
+            console.log('Line 143: locationSpotted ->', res.data.locations, ' - Map Component');
+            console.log('Line 144: locationSpotted ->', res.data.locations[0], ' - Map Component');
+            return res?.data?.locations;
+          }
+        });
+      } catch (error) {
+        console.log(`Line 115: Error:`, error, 'Map Component');
+      }
+      setHumanAdded(false);
+    };
+    getLocations();
+  }
+
+  // Handle Receive New Map Location Added Signal and Starts fetching the new Data
+  useEffect(() => {
+    let isCancelled = true;
+    if (isCancelled) {
+      socket.on('location_added_broadcast', (data) => {
+        // console.log('socket LocationAdded Data:', data);
+        setHumanAdded(true);
+      });
+    }
+    return () => {
+      isCancelled = false;
+    };
+  }, []);
+
+  //
+  //
+  //
+  // Map Event Listeners, Markers & Search
   function LocationMarker() {
     const [position, setPosition] = useState(null);
 
@@ -118,10 +183,10 @@ const Map = (props) => {
         map.locate();
       },
 
-      locationfound(e) {
+      locationfound(event) {
         // console.log('Found location Event: I Found You');
-        setPosition(e.latlng);
-        map.flyTo(e.latlng);
+        setPosition(event.latlng);
+        map.flyTo(event.latlng);
       },
     });
 
@@ -140,7 +205,7 @@ const Map = (props) => {
     });
 
     return position === null ? null : (
-      <CircleMarker center={position} pathOptions={{ color: 'blue' }} radius={50}>
+      <CircleMarker center={position} pathOptions={{ color: 'blue' }} radius={30}>
         <Popup>You are around here.</Popup>
         <Tooltip direction="top" offset={[-10, -10]} opacity={1}>
           <p>You are around here somewhere.</p>
@@ -149,13 +214,7 @@ const Map = (props) => {
     );
   }
 
-  // Color Options
-  // const limeOptions = { color: 'lime' };
-  // const purpleOptions = { color: 'purple' };
-  // const fillBlueOptions = { fillColor: 'blue' };
-  // const blackOptions = { color: 'black' };
   const redOptions = { color: 'red' };
-
   return (
     <div className="map-wrapper">
       <MapContainer
@@ -173,8 +232,8 @@ const Map = (props) => {
             exDate1 = exDate1.toLocaleString('en-US').toString();
 
             return (
-              <div key={`${marker.id}${marker.x}`}>
-                <CircleMarker center={[marker.y, marker.x]} pathOptions={redOptions} radius={marker.trashingLevel}>
+              <div key={`${marker.id || id}${marker.x}`}>
+                <CircleMarker center={[marker.y, marker.x]} pathOptions={redOptions} radius={marker.trashingLevel * 2}>
                   <Popup>
                     <div>
                       <div>Trashing Level: {marker.trashingLevel}</div>

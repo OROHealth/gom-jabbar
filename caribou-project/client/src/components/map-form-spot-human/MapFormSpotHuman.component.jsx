@@ -9,11 +9,12 @@ import FormInput from '@components/form-input/formInput.component';
 import Button from '@components/button/Button';
 import ReactSpinner from '@components/react-spinner/react-spinner.component';
 import { removeMap } from '@redux/reducers/map/map.reducer';
+// import { addLocationsFound } from '@redux/reducers/locationsFound/locationsFound.reducer';
 
 const defaultFormFields = {
   labelName: '',
-  trashingLevel: 0,
-  excitementLevel: 0,
+  trashingLevel: 5,
+  excitementLevel: 5,
 };
 
 const MapFormSpotHuman = () => {
@@ -46,7 +47,6 @@ const MapFormSpotHuman = () => {
     setHasMsg(false);
     const { name, value } = event.target;
     const formInput = { ...formFields, [name]: value };
-
     setFormFields(formInput);
     // console.log(event.target.value);
   };
@@ -54,6 +54,7 @@ const MapFormSpotHuman = () => {
   const handleFormSubmit = async (event) => {
     setLoading(true);
     event.preventDefault();
+
     if (!labelNameState) {
       setAlertType('alert-error');
       setHasMsg(true);
@@ -71,45 +72,51 @@ const MapFormSpotHuman = () => {
 
     try {
       // save location in database
-      // console.log('Saving location in database', 'MapFormSpotHuman');
-      const result = await mapService.saveLocation({
-        excitementLevel,
-        trashingLevel,
-        labelName,
-        xName,
-        yName,
-      });
+      // console.log('Line 75: Saving location in database', 'MapFormSpotHuman');
+      await mapService
+        .saveLocation({
+          excitementLevel,
+          trashingLevel,
+          labelName,
+          xName,
+          yName,
+        })
+        .then((result) => {
+          if (result.data) {
+            // console.log('Line 86: Result:', result, 'MapFormSpotHuman');
+            if (result?.data?.errorMsg) {
+              setHasMsg(true);
+              timeLimitMessage();
+              setAlertType('alert-error');
+              setLoading(false);
+              return setErrorMessages([result?.data?.errorMsg]);
+            }
 
-      // console.log('Line 85: Result:', result, 'MapFormSpotHuman');
-      if (result?.data?.errorMsg) {
-        setHasMsg(true);
-        timeLimitMessage();
-        setAlertType('alert-error');
-        setLoading(false);
-        return setErrorMessages([result?.data?.errorMsg]);
-      }
-      if (hasMsg) {
-        labelName = '';
-      }
-      dispatch(removeMap());
-      setHasMsg(true);
-      timeLimitMessage(); // deactivates the message at this time
-      setErrorMessages([]);
-      setAlertType('alert-success');
-      setSuccessMessages(['Location added successfully']);
-      setLoading(false);
-      resetFormFields();
-      // dispatch(addLocationToMap({ trashingLevel, x: xName, y: yName, label: labelName }));
-      setLoading(false);
+            if (hasMsg) {
+              labelName = '';
+            }
+
+            dispatch(removeMap());
+            // dispatch(addLocationsFound([{ excitementLevel, trashingLevel, labelName, xName, yName }]));
+            setHasMsg(true);
+            timeLimitMessage(); // deactivates the message at this time
+            setErrorMessages([]);
+            setAlertType('alert-success');
+            setSuccessMessages(['Location added successfully']);
+            setLoading(false);
+            resetFormFields();
+            // dispatch(addLocationToMap({ trashingLevel, x: xName, y: yName, label: labelName }));
+            setLoading(false);
+          }
+        });
     } catch (error) {
-      console.log('Error Posting:', error?.response?.data[0].errorMsg, 'MapFormSpot');
+      console.log('Error Posting:', error?.response?.data[0]?.errorMsg, 'error:', error, 'MapFormSpot');
       setSuccessMessages([]);
       setHasMsg(true);
       timeLimitMessage();
       setAlertType('alert-error');
       setLoading(false);
-      setErrorMessages([error?.response?.data[0].errorMsg]);
-      // setSuccessMessages(['Error']);
+      setErrorMessages([error?.response?.data[0]?.errorMsg || error?.response?.data?.message || error?.message]);
     }
   };
 

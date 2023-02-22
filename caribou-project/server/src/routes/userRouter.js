@@ -1,5 +1,5 @@
 const userRouter = require('express').Router();
-const { registerUser, loginUser, logoutUser, refreshUserToken } = require('../controllers/userController');
+const { registerUser, loginUser, refreshUserToken } = require('../controllers/userController');
 
 // @Desc    Register/create a user with email and password
 // @Method  POST
@@ -10,10 +10,6 @@ userRouter.post('/register', registerUser);
 // @Method  POST
 // @Route   /api/v1/user/login
 userRouter.post('/login', loginUser);
-
-// @Desc    Log User out of the application
-// @Route   /api/v1/user/logout
-userRouter.delete('/logout', logoutUser);
 
 // @Desc    refresh the user Token
 // @Method  GET

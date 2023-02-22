@@ -48,6 +48,13 @@ const SignInForm = () => {
     // console.log(inputFields);
   };
 
+  const timeLimitMessage = () => {
+    setTimeout(() => {
+      setShowSuccessMsg(false);
+      setShowErrorMsg(false);
+    }, 15000);
+  };
+
   // reset Form Fields
   const resetFormFields = () => {
     setInputFields(defaultSignInFields);
@@ -58,9 +65,19 @@ const SignInForm = () => {
     setLoading(true);
     event.preventDefault();
     const { email, password } = inputFields;
-    console.log(`Line 61: Logging in the User ${email} ${password}, Sign-in-form`);
+
+    // Check that passwords at least 6 characters
+    if (password.length < 6) {
+      setLoading(false);
+      setShowSuccessMsg(false);
+      setShowErrorMsg(true);
+      timeLimitMessage();
+      setErrorMessages(['Password must be at least 6 characters']);
+      return;
+    }
 
     try {
+      // console.log(`Line 65: Logging in the User ${email} ${password}, Sign-in-form`);
       // Post Request to the Server
       await authService
         .signIn({
@@ -68,15 +85,26 @@ const SignInForm = () => {
           password,
         })
         .then((result) => {
-          console.log(`Line 69: Logging in the User ${result}, Sign-in-form`);
-          console.log('result:', result);
+          console.log('Line 80: Result:', result, `Sign-in-form`);
+          // console.log(`Line 81: Logging in the User ${result.data}, Sign-in-form`);
           // set logged in to true in local storage
-          if (result.helllo) {
-            // save/dispatch the user to Redis
+          if (result.data) {
+            // save/dispatch the user to redux
             const accessToken = result.data.accessToken;
             const refreshToken = result.data.refreshToken;
             const avatarImage = result.data.avatarImage;
             const email = result.data.email;
+            console.log(
+              'Line 90: result:',
+              email,
+              'AccessToken:',
+              accessToken,
+              'refreshToken:',
+              refreshToken,
+              'avatarImage: ',
+              avatarImage,
+              `Sign-in-form`
+            );
             dispatch(
               addUser({
                 refreshToken,
@@ -87,45 +115,46 @@ const SignInForm = () => {
               })
             );
 
+            // set success Messages
+            const successMsg = result?.data?.success[0]?.successMsg;
+            setShowErrorMsg(false);
+            setShowSuccessMsg(true);
+            setLoading(false);
+            setSuccessMessages([successMsg]);
+            timeLimitMessage();
             resetFormFields();
+
             // save the token and refresh token to local storage
             setStorageAccessToken(accessToken);
             setStorageRefreshToken(refreshToken);
             setStorageAvatarImage(avatarImage);
             setStorageEmail(email);
             setStorageLoggedIn(true);
-
-            setShowErrorMsg(false);
-            setShowSuccessMsg(true);
-            // set success Messages
-
-            setLoading(false);
-            const successMsg = result?.data?.success[0]?.successMsg;
-            setSuccessMessages([successMsg]);
-            resetFormFields();
           }
         });
+      navigate('/app/dashboard');
       //
     } catch (error) {
-      //
       setLoading(false);
       setShowSuccessMsg(false);
       setShowErrorMsg(true);
+      timeLimitMessage();
       const errorCode = error?.code;
       const errorMessage = error?.message;
 
       console.log(
-        'Line 117: Sign-in -> Error Logging in the user.',
+        'Line 117: -> Error Logging in the user.',
         'Error Code:',
         errorCode,
         'Error Message:',
         errorMessage,
         'Error',
-        error
+        error,
+        'Sign-in-form component '
       );
-      setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message || error?.response?.data?.message]);
+      // setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message || error?.response?.data?.message]);
+      setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message]);
     }
-    navigate('/app/dashboard');
   };
 
   return (

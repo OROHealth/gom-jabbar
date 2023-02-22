@@ -1,19 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  locationsAcc: 0,
-};
+const initialState = [];
 
 const locationsFoundSlice = createSlice({
-  name: 'locationsAcc',
+  name: 'locationsFound',
   initialState,
   reducers: {
-    locationsAcc: (state, action) => {
-      const { locationsAcc } = action.payload;
-      state.locationsAcc = locationsAcc;
+    addLocationsFound: (state, { payload }) => {
+      console.log('payload Redux:', payload);
+      state.push(payload);
     },
   },
+  extraReducers: () => {},
 });
 
-export const { locationsAcc } = locationsFoundSlice.actions;
+export const { addLocationsFound } = locationsFoundSlice.actions;
 export default locationsFoundSlice.reducer;

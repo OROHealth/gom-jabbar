@@ -52,8 +52,8 @@ app.use(morgan('combined'));
 
 // Routes Middle-wares
 app.use('/api/v1/user', userRouter);
-app.use('/api/v1/map', mapRouter); // test without token
-// app.use('/api/v1/map', verifyAccessToken, mapRouter);
+// app.use('/api/v1/map', mapRouter); // test without token
+app.use('/api/v1/map', verifyAccessToken, mapRouter);
 
 // Health check route - endpoint that returns a 200 status code if your application is running
 app.get('/_health', (req, res) => {

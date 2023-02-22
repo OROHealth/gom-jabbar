@@ -80,6 +80,16 @@ const SignUpForm = () => {
       return;
     }
 
+    // Check that passwords at least 6 characters
+    if (password.length < 6) {
+      setLoading(false);
+      setShowSuccessMsg(false);
+      setShowErrorMsg(true);
+      timeLimitMessage();
+      setErrorMessages(['Password must be at least 6 characters']);
+      return;
+    }
+
     try {
       // console.log('Line 75: Registering User, signUp-form-client');
       // Create avatarColor
@@ -125,6 +135,7 @@ const SignUpForm = () => {
             setStorageEmail(email);
             setStorageAvatarImage(avatarImage); // set avatarImage in local storage
             setStorageLoggedIn(true); // set logged in to true in local storage
+            navigate('/app/dashboard');
           }
         });
     } catch (error) {
@@ -132,6 +143,7 @@ const SignUpForm = () => {
       setLoading(false);
       setShowErrorMsg(true);
       setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message]);
+      timeLimitMessage();
       const errorCode = error.code;
       const errorMessage = error.message;
 
@@ -152,9 +164,7 @@ const SignUpForm = () => {
         error,
         'SignUp Form Component'
       );
-      navigate('/');
     }
-    navigate('/app/dashboard');
   };
 
   return (

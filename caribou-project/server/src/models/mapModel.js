@@ -32,7 +32,7 @@ const mapSchema = new mongoose.Schema(
       unique: false,
       trim: true,
     },
-    expiresAt: { type: Date, expires: '30', default: Date.now },
+    expiresAt: { type: Date, expires: '1200', default: Date.now },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   },
   {
