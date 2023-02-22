@@ -23,6 +23,10 @@ export const AppRouter = () => {
           path: 'secret-meeting-room',
           element: <ChatMeetingRoom />,
         },
+        {
+          path: ':chatroom',
+          element: <ChatMeetingRoom />,
+        },
       ],
     },
   ]);

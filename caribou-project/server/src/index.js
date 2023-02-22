@@ -9,6 +9,7 @@ const log = require('./utils/logger');
 const { socketIOAntlerExchangeHandler } = require('./utils/webSockets/antlerExchange');
 const { socketIOHumanQuitHandler } = require('./utils/webSockets/humanQuit');
 const { socketIOLocationAddedHandler } = require('./utils/webSockets/insertedLocation');
+const { socketIOChatMessageHandler } = require('./utils/webSockets/chatMessages');
 
 const startServer = async () => {
   try {
@@ -136,10 +137,12 @@ const socketIOConnections = io => {
   const antlerExchangeSocketHandler = socketIOAntlerExchangeHandler(io);
   const humanQuitSocketHandler = socketIOHumanQuitHandler(io);
   const locationAddedSocketHandler = socketIOLocationAddedHandler(io);
+  const chatroomSocketHandler = socketIOChatMessageHandler(io);
 
   antlerExchangeSocketHandler();
   humanQuitSocketHandler();
   locationAddedSocketHandler();
+  chatroomSocketHandler();
 };
 
 handleExit();

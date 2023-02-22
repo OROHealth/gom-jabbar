@@ -1,10 +1,83 @@
-# Starting the App
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/uzochukwueddie/chatty/tree/develop.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/uzochukwueddie/chatty/tree/develop)
+[![codecov](https://codecov.io/gh/uzochukwueddie/chatty/branch/develop/graph/badge.svg?token=D6GX9SDN6M)](https://codecov.io/gh/uzochukwueddie/chatty)
+
+|||||
+|:-:|:-:|:-:|:-:|
+|![First Image](https://res.cloudinary.com/dyamr9ym3/image/upload/v1662482775/github_readme_images/react_dzmcqt.png)|![Second Image](https://res.cloudinary.com/dyamr9ym3/image/upload/v1662483177/github_readme_images/axios_jlnlcn.png)|![Third Image](https://res.cloudinary.com/dyamr9ym3/image/upload/v1662483316/github_readme_images/sass_yxqpyf.png)
+
+|||||
+|:-:|:-:|:-:|:-:|
+|![First Image](https://res.cloudinary.com/dyamr9ym3/image/upload/v1662483732/github_readme_images/redux-toolkit_nxvzow.png)|![Second Image](https://res.cloudinary.com/dyamr9ym3/image/upload/v1662482745/github_readme_images/socketio_lcyu8y.jpg)
+
+||
+|:-:|
+![First Image](https://res.cloudinary.com/dyamr9ym3/image/upload/v1662565384/github_readme_images/react-app-rewired_iw8y1f.png)
+
+
+## Overview
+Since the dawn of time, Caribou have been pretending to be stupid mammals but secretly observing the evolution of those
+trashy unruly specimen of biped not optimality called humans.
+
+Recently though, the Committee to Avoid Humans At All Point (CAHAAP) has discovered that it was becoming very difficult
+to continue gather and exchange valuable intel using their encrypted antlers patterns.
+
+To help them, we, the Assembly of Inter-Human-Caribou Harmony  (IHCH), have decided to provide them with the full
+service of a modern experience while using their CaribouPhones (an Android variant, obviously)
+
+## Features
+1. SignUp and signIn authentication
+2. Create broadcast to be open for messages.
+3. Post map locations
+4. Private chat messaging
+5. In-app notification
+6. Custom components
+7. Unit tests
+8. Redux implementation using redux-toolkit
+
+## Main Tools
+- Create react app
+- React
+- Redux-toolkit
+- Axios
+- React redux
+- React router DOM
+- SocketIO
+- MapBox API
+- Google Maps Search
+- Leaflet
+- React icons
+- SASS
+- Jest
+- React testing library
+- ESLint and Prettier
+- React app rewired
+- Mock service worker
+
+
+## Requirements
+- Node 16.x or higher - currently used v16.15.1
+
+- Google Maps API key. You can create an account and obtain a key [here](https://developers.giphy.com/)
+- MapBox Api Key. Create an account here and get the key [here](https://www.mapbox.com/)
+- MongoDB Url. Sign up for mongoDb - create a cluster and connect to it through the app
+
+
+- You'll need to copy the contents of `.env.develop`, add it to `.env` file and update with the necessary information.
+
+- There are many different branches.
+
+
+## Starting the App
 - Change Directory into the ** caribou-project ** and then run inside the terminal:
 
+```
 npm run install:both
 npm run start:both
+```
 
 - These two commands will install all the packages for both the client and the server and also start both applications in the terminal.
+
+
 
 # Environment Variables Needed ** Very Important
 ## For The Server
@@ -29,18 +102,6 @@ COOKIE_KEY_TWO=
 REACT_APP_MAPBOX_API_KEY=
 REACT_APP_GOOGLE_API_KEY=
 
-## Overview
-Since the dawn of time, Caribou have been pretending to be stupid mammals but secretly observing the evolution of those
-trashy unruly specimen of biped unoptimality called humans.
-
-Recently though, the Committee to Avoid Humans At All Point (CAHAAP) has discovered that it was becoming very difficult
-to continue gather and exchange valuable intel using their encrypted antlers patterns.
-
-To help them, we, the Assembly of Inter-Human-Caribou Harmony  (IHCH), have decided to provide them with the full
-service of a modern experience while using their CaribouPhones (an Android variant, obviously)
-
-# Technology: React, Redux Toolkit, WebSockets, MongoDB, Google Map API, MapBox API
-# Features: Authentication, Google Maps Search, MapBox,
 
 
 ## Task
@@ -77,9 +138,11 @@ Bonus/Optional
 
 
 
-
+### Before Starting a Build
+Make sure you run the installation first then start.
 
 
 ## What I would have implemented
 > Sign up would have included the first name and last name
-> I would add tooltip to show when a user create a pin on the map
+> Profile page so the user can update their information.
+> Add Giphy API to allow more content to send
