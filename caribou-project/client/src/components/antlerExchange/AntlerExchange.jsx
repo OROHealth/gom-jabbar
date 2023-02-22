@@ -11,6 +11,7 @@ import socket from '@services/websocket/webSocketIO';
 
 // Redux
 import { useSelector } from 'react-redux';
+import { antlerExchangeService } from '@services/api/antlerExchangeRoom/antlerExchangeRoom.service';
 
 const AnterExchange = () => {
   const user = useSelector((state) => state?.user?.email);
@@ -59,6 +60,21 @@ const AnterExchange = () => {
   const handleSendAntlerExchange = () => {
     socket.emit('antler_exchange', { message: `Secret Caribou known as "${firstLetter}" is ready to antler-exchange` });
     setSetShowN(true);
+
+    try {
+      const saveAntlerExchangeUser = async () => {
+        await antlerExchangeService
+          .saveAntlerExchangeCaribou({
+            email: user,
+          })
+          .then((result) => {
+            console.log('Line 67: Saving Caribou who want too antler Exchange: ', result, 'AntlerExchange');
+          });
+      };
+      saveAntlerExchangeUser();
+    } catch (error) {
+      console.log(`Line 72: Error Saving antler exchange Caribou`, error, 'AntlerExchange');
+    }
   };
 
   // Handle Sent Antler Exchange BroadCast Sign

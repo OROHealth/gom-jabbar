@@ -95,17 +95,17 @@ const SignInForm = () => {
             const refreshToken = result.data.refreshToken;
             const avatarImage = result.data.avatarImage;
             const email = result.data.email;
-            console.log(
-              'Line 90: result:',
-              email,
-              'AccessToken:',
-              accessToken,
-              'refreshToken:',
-              refreshToken,
-              'avatarImage: ',
-              avatarImage,
-              `Sign-in-form`
-            );
+            // console.log(
+            //   'Line 90: result:',
+            //   email,
+            //   'AccessToken:',
+            //   accessToken,
+            //   'refreshToken:',
+            //   refreshToken,
+            //   'avatarImage: ',
+            //   avatarImage,
+            //   `Sign-in-form`
+            // );
             dispatch(
               addUser({
                 refreshToken,

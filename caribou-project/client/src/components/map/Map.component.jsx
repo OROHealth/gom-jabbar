@@ -102,12 +102,12 @@ const Map = (props) => {
             if (res?.data?.locations) {
               setAllMapLocations(res.data.locations);
               dispatch(addLocationsFound([res.data.locations]));
-              console.log(
-                'Line 115: Initial locationSpotted State first Render->',
-                allMapLocations,
-                ' - Map Component'
-              );
-              console.log('Line 116: Initial locationSpotted Data on first Rerender->', res.data, ' - Map Component');
+              // console.log(
+              //   'Line 115: Initial locationSpotted State first Render->',
+              //   allMapLocations,
+              //   ' - Map Component'
+              // );
+              // console.log('Line 116: Initial locationSpotted Data on first Rerender->', res.data, ' - Map Component');
               return res?.data?.locations;
             }
           }

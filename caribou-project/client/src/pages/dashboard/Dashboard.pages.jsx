@@ -11,8 +11,8 @@ import AppNavigation from '@components/app-navigation/AppNavigation.component';
 import Map from '@components/map/Map.component';
 import MapFormSpotHuman from '@components/map-form-spot-human/MapFormSpotHuman.component';
 import AntlerExchange from '@components/antlerExchange/AntlerExchange';
-// import ChatroomSlider from '@components/chatroom-slider/ChatroomSlider';
 import HumanQuit from '@components/HumanQuit/HumanQuit';
+import ChatroomSlider from '@components/chatroom-slider/ChatroomSlider';
 
 const Dashboard = () => {
   const getStorageAccessToken = useLocalStorage('access-token', 'get');
@@ -49,13 +49,15 @@ const Dashboard = () => {
       </div>
 
       <div className="app-map-section">
-        {/* <Chatroom /> */}
         <h1 className="app-dash-pages--map-title">CARIBOUS are the BEST!</h1>
 
         <div className="app-dash-map-wrapper">
           <div className="app-dash-all-fields">
             <div className="app-dashboard-texts-field">
               <AntlerExchange />
+            </div>
+            <div className="app-dashboard-texts-field">
+              <ChatroomSlider />
             </div>
           </div>
           <div className="app-map">

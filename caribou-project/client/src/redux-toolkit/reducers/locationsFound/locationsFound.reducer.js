@@ -7,7 +7,6 @@ const locationsFoundSlice = createSlice({
   initialState,
   reducers: {
     addLocationsFound: (state, { payload }) => {
-      console.log('payload Redux:', payload);
       state.push(payload);
     },
   },

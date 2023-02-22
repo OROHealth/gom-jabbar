@@ -2,37 +2,18 @@ const mongoose = require('mongoose');
 
 const mapSchema = new mongoose.Schema(
   {
-    labelName: {
+    email: {
       type: String,
-      required: false,
+      required: [true, 'Please add a email'],
       unique: true,
       trim: true,
     },
-    trashingLevel: {
-      type: Number,
-      required: false,
-      unique: false,
-      trim: true,
-    },
-    excitementLevel: {
-      type: Number,
-      required: false,
-      unique: false,
-      trim: true,
-    },
-    y: {
-      type: Number,
+    uuId: {
+      type: String,
       required: true,
-      unique: true,
-      trim: true,
+      select: true,
     },
-    x: {
-      type: Number,
-      required: true,
-      unique: false,
-      trim: true,
-    },
-    expiresAt: { type: Date, expires: '8h', default: Date.now },
+    expiresAt: { type: Date, expires: '24h', default: Date.now },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   },
   {
