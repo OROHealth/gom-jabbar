@@ -61,7 +61,7 @@ const verifyAccessToken = (req, res, next) => {
   JWT.verify(token, JWT_ACCESS_TOKEN_SECRET, (err, payload) => {
     // console.log('Payload Token Found JWT:', token, 'accessToken:', JWT_ACCESS_TOKEN_SECRET);
     if (err) {
-      log('error:', `Line 65: ${err}`, 'Helpers');
+      // log('error:', `Line 65: ${err}`, 'Helpers');
       if (err.name === 'JsonWebTokenError') {
         log('error', `Line 66: Error verifying, JsonWebTokenError: ${err}`, 'helpers');
         return next(createError.Unauthorized());
@@ -71,7 +71,7 @@ const verifyAccessToken = (req, res, next) => {
       }
     }
     req.payload = payload;
-    console.log('payload:', payload);
+    // log('info', `Line 74: payload ${payload}`, 'helpers');
     next();
   });
 };

@@ -38,16 +38,17 @@ const SignInForm = () => {
   const [setStorageAvatarImage] = useLocalStorage('avatar-image', 'set');
   const dispatch = useDispatch();
 
-  // Navigate User
+  // Navigating the User
   const navigate = useNavigate();
 
-  // Input Form Fields
+  // Handle Input Form Fields
   const handleSignInInputChange = (event) => {
     const { name, value } = event.target;
     setInputFields({ ...inputFields, [name]: value });
     // console.log(inputFields);
   };
 
+  // handle the messages popup
   const timeLimitMessage = () => {
     setTimeout(() => {
       setShowSuccessMsg(false);
@@ -55,7 +56,7 @@ const SignInForm = () => {
     }, 15000);
   };
 
-  // reset Form Fields
+  // Reset Form Fields
   const resetFormFields = () => {
     setInputFields(defaultSignInFields);
   };
@@ -66,7 +67,7 @@ const SignInForm = () => {
     event.preventDefault();
     const { email, password } = inputFields;
 
-    // Check that passwords at least 6 characters
+    // Check that passwords are at least 6 characters
     if (password.length < 6) {
       setLoading(false);
       setShowSuccessMsg(false);
@@ -77,7 +78,7 @@ const SignInForm = () => {
     }
 
     try {
-      // console.log(`Line 65: Logging in the User ${email} ${password}, Sign-in-form`);
+      // console.log(`Line 81: Logging in the User ${email} ${password}, Sign-in-form`);
       // Post Request to the Server
       await authService
         .signIn({
@@ -86,7 +87,7 @@ const SignInForm = () => {
         })
         .then((result) => {
           console.log('Line 80: Result:', result, `Sign-in-form`);
-          // console.log(`Line 81: Logging in the User ${result.data}, Sign-in-form`);
+          // console.log(`Line 90: Logging in the User ${result.data}, Sign-in-form`);
           // set logged in to true in local storage
           if (result.data) {
             // save/dispatch the user to redux

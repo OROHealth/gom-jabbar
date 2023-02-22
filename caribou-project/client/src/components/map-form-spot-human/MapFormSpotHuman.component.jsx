@@ -37,8 +37,8 @@ const MapFormSpotHuman = () => {
     }, 15000);
   };
 
+  // Sets the form to it's initial state in the original object.
   const resetFormFields = () => {
-    // Sets the form to it's initial state in the original object.
     setFormFields(defaultFormFields);
   };
 
@@ -99,13 +99,12 @@ const MapFormSpotHuman = () => {
             dispatch(removeMap());
             // dispatch(addLocationsFound([{ excitementLevel, trashingLevel, labelName, xName, yName }]));
             setHasMsg(true);
-            timeLimitMessage(); // deactivates the message at this time
+            timeLimitMessage(); // deactivates the message popups at this specific time
             setErrorMessages([]);
             setAlertType('alert-success');
             setSuccessMessages(['Location added successfully']);
             setLoading(false);
             resetFormFields();
-            // dispatch(addLocationToMap({ trashingLevel, x: xName, y: yName, label: labelName }));
             setLoading(false);
           }
         });

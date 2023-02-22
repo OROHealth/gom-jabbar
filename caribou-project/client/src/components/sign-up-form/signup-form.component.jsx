@@ -48,11 +48,12 @@ const SignUpForm = () => {
     }, 15000);
   };
 
+  // Sets the form to it's initial state in the original object.
   const resetFormFields = () => {
-    // Sets the form to it's initial state in the original object.
     setFormFields(defaultFormFields);
   };
 
+  // Handle input fields
   const handleFormInputChange = async (event) => {
     const { name, value } = event.target;
     const formInput = { ...formFields, [name]: value };
@@ -60,8 +61,7 @@ const SignUpForm = () => {
     // console.log(formInput);
   };
 
-  //
-  //
+  // Handle Form submission
   const handleFormSubmit = async (event) => {
     const { email, password, confirmPassword } = formFields;
     setLoading(true);
@@ -69,7 +69,7 @@ const SignUpForm = () => {
 
     const error = [];
 
-    // [] confirm that the password matches
+    // Confirm that the passwords matches
     if (password !== confirmPassword) {
       error.push('Passwords do not match. Try again.');
       setShowSuccessMsg(false);
@@ -80,7 +80,7 @@ const SignUpForm = () => {
       return;
     }
 
-    // Check that passwords at least 6 characters
+    // Check that passwords are at least 6 characters
     if (password.length < 6) {
       setLoading(false);
       setShowSuccessMsg(false);
@@ -91,7 +91,8 @@ const SignUpForm = () => {
     }
 
     try {
-      // console.log('Line 75: Registering User, signUp-form-client');
+      // console.log('Line 94: Registering User, signUp-form-client');
+
       // Create avatarColor
       const color = avatarColor();
       // Create avatar Image
@@ -104,7 +105,7 @@ const SignUpForm = () => {
           loggedIn: true,
         })
         .then((savedUser) => {
-          console.log('Line 97: Result of the request:', savedUser, 'signup form component');
+          // console.log('Line 108: Result of the request:', savedUser, 'signup form component');
           if (savedUser.data) {
             // clear fields
             resetFormFields();
@@ -121,7 +122,7 @@ const SignUpForm = () => {
                 email,
               })
             );
-            console.log('Line 112: Result that the server sent back:', savedUser);
+            // console.log('Line 125: Result that the server sent back:', savedUser);
             // save/dispatch the user to Redis
             // save the token and refresh token to local storage
             setLoading(false);
@@ -156,7 +157,7 @@ const SignUpForm = () => {
       setStorageLoggedIn(false);
 
       console.log(
-        'Line 139: Error Registering the user.',
+        'Line 160: Error Registering the user.',
         'Error Code:',
         errorCode,
         'Error Message:',
