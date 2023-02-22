@@ -40,7 +40,7 @@ const AnterExchange = () => {
   const receiveNotify = (message) => {
     toast.success(message, {
       position: 'bottom-right',
-      autoClose: 5000,
+      autoClose: 10000,
       hideProgressBar: true,
       closeOnClick: false,
       pauseOnHover: true,

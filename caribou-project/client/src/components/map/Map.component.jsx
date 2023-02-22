@@ -48,7 +48,6 @@ const AllMapLocationInitial = [
 ];
 
 const Map = (props) => {
-  // const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const [allMapLocations, setAllMapLocations] = useState(AllMapLocationInitial);
   const getStorageRefreshToken = useLocalStorage('refresh-token', 'get');
@@ -68,15 +67,6 @@ const Map = (props) => {
       if (refreshed) {
         const stringifyRefreshToken = getStorageRefreshToken;
         // Making sure the access and refresh token is always up to date.
-        // console.log(
-        //   'Line 68: local:',
-        //   stringifyRefreshToken,
-        //   'refreshToken',
-        //   stringifyRefreshToken?.data?.refreshToken,
-        //   'state:',
-        //   stateRefreshToken,
-        //   'Map Component - Client'
-        // );
         try {
           if (isCancelled) {
             // The refresh token will be found in either the local storage or in the redux state
@@ -142,10 +132,6 @@ const Map = (props) => {
           if (res?.data?.locations) {
             setAllMapLocations(res.data.locations);
             dispatch(addLocationsFound(res.data.locations));
-            console.log('Line 141: locationSpotted ->', allMapLocations, ' - Map Component');
-            console.log('Line 142: locationSpotted ->', res.data, ' - Map Component');
-            console.log('Line 143: locationSpotted ->', res.data.locations, ' - Map Component');
-            console.log('Line 144: locationSpotted ->', res.data.locations[0], ' - Map Component');
             return res?.data?.locations;
           }
         });
@@ -162,7 +148,6 @@ const Map = (props) => {
     let isCancelled = true;
     if (isCancelled) {
       socket.on('location_added_broadcast', (data) => {
-        // console.log('socket LocationAdded Data:', data);
         setHumanAdded(true);
       });
     }
@@ -171,9 +156,6 @@ const Map = (props) => {
     };
   }, []);
 
-  //
-  //
-  //
   // Map Event Listeners, Markers & Search
   function LocationMarker() {
     const [position, setPosition] = useState(null);
@@ -183,18 +165,17 @@ const Map = (props) => {
         map.locate();
       },
 
+      // Gets the Location of the current user
       locationfound(event) {
-        // console.log('Found location Event: I Found You');
         setPosition(event.latlng);
         map.flyTo(event.latlng);
       },
     });
 
+    // Search feature with Google Maps GeoLocation API
     map.addControl(searchControl);
     map.on('geosearch/showlocation', (event) => {
       const { location } = event;
-      // setNewLocationToMap({ ...newLocationToMap, y: location.y, x: location.x, label: location.label });
-      // console.log('Map event', location, 'Map.component');
       dispatch(
         addLocationToMap({
           y: location.y,
