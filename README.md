@@ -119,8 +119,8 @@ Function to allow the user to:
 ## Requirements
 - an API that allows :
   - [✔] to signal the presence of a human in a specific location with trashing level and level of excitement
-  - [] to request if the presence of a human was signaled in a specific location
-  - [] to signal a Caribou is ready to antler-exchange
+  - [✔] to request if the presence of a human was signaled in a specific location
+  - [✔] to signal a Caribou is ready to antler-exchange
   - [✔] is highly secured
 
 - a Single Page Application that

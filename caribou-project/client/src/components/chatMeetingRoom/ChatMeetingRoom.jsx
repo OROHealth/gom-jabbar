@@ -10,6 +10,7 @@ import AppNavigation from '@components/app-navigation/AppNavigation.component';
 import { antlerExchangeService } from '@services/api/antlerExchangeRoom/antlerExchangeRoom.service';
 import { FaAngleLeft } from 'react-icons/fa';
 import { addAntlerExchangeCaribouToMeeting } from '@redux/reducers/antlerExchangeCaribousMeeting/antlerExchangeMeeting.reducer';
+import Chatroom from '@components/chatroom/Chatroom';
 
 const ChatMeetingRoom = () => {
   const [allAntlerExchangeMeetings, setAllAntlerExchangeMeetings] = useState(null);
@@ -25,7 +26,7 @@ const ChatMeetingRoom = () => {
         await antlerExchangeService.getAntlerExchangeCaribous().then((allCaribousForAntlerExchange) => {
           if (isCancelled) {
             const { allAntlerExchangeCaribous } = allCaribousForAntlerExchange?.data;
-            console.log('result', allCaribousForAntlerExchange.data.allAntlerExchangeCaribous);
+            // console.log('result', allCaribousForAntlerExchange.data.allAntlerExchangeCaribous);
 
             // Saving to useState and Dispatching to redux
             setAllAntlerExchangeMeetings(allAntlerExchangeCaribous);
@@ -47,6 +48,7 @@ const ChatMeetingRoom = () => {
     <div>
       <AppNavigation />
       <main>
+        <Chatroom />
         <div className="Chat-meeting-container">
           <button className="chatroom-meeting-backBtn" onClick={() => navigate('/app/dashboard')}>
             <FaAngleLeft /> Back to Home
@@ -65,7 +67,8 @@ const ChatMeetingRoom = () => {
                     <img src={caribous.avatarImage} alt="" />
                     <div className="caribou-card-text">
                       <p>
-                        Join the Secret meeting with: <span>&quot;{caribous.email.charAt(0).toUpperCase()}&quot;</span>
+                        Join the Secret meeting with:{' '}
+                        <span>&quot;{caribous.email.slice(0, 4).toUpperCase()}&quot;</span>
                       </p>
                       <p>
                         Expires in: <span>{iSODate.getMinutes()}</span> mins
