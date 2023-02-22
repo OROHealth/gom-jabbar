@@ -19,9 +19,10 @@ const AnterExchange = () => {
   const [successMessages, setSuccessMessages] = useState([]);
   const [showSuccessMsg, setShowSuccessMsg] = useState(false);
   const userEmailFound = useSelector((state) => state?.user?.email);
-  console.log('Line 20: redux User', userEmailFound, 'component');
   const userImage = useSelector((state) => state?.user?.avatarImage);
   const [showN, setSetShowN] = useState(false);
+
+  console.log('Line 22: redux User', userEmailFound, 'component');
 
   // handle the messages popup
   const timeLimitMessage = () => {
@@ -84,17 +85,19 @@ const AnterExchange = () => {
         .then((result) => {
           if (result.data) {
             console.log(
-              'Line 67: Saving Caribou who want too antler Exchange: ',
+              'Line 87: Saving Caribou who want too antler Exchange: ',
               result.data.success[0].successMsg,
               'AntlerExchange component'
             );
+            setShowErrorMsg(false);
+            setShowSuccessMsg(true);
             const successMsg = result?.data?.success[0]?.successMsg;
             setSuccessMessages([successMsg]);
           }
         });
     } catch (error) {
       console.log(`Line 72: Error Saving antler exchange Caribou`, error, 'AntlerExchange component');
-
+      setShowSuccessMsg(false);
       setShowErrorMsg(true);
       setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message]);
       timeLimitMessage();
@@ -142,7 +145,9 @@ const AnterExchange = () => {
         </div>
       )}
       <label htmlFor="human-presence">Notify the other Caribous! </label>
-      <FaBroadcastTower style={{ fontSize: 60 }} />
+      <div>
+        <FaBroadcastTower style={{ fontSize: 60 }} />
+      </div>
       <div className="anter-exchange-container">
         <div className="loading-button">
           <button type="submit" className="button" onClick={handleSendAntlerExchange}>

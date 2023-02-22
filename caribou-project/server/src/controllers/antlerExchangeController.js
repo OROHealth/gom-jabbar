@@ -58,7 +58,7 @@ async function saveAntlerExchangeCaribou(req, res) {
 
         await AntlerExchangeModel.findOne({ email: lowerCaseEmail }).then(async caribouExist => {
           if (caribouExist) {
-            errors.push({ errorMsg: 'You were are already added.' });
+            errors.push({ errorMsg: 'You were already added.' });
             return res.status(401).json(errors).end();
           } else {
             await newAntlerExchangeCaribou

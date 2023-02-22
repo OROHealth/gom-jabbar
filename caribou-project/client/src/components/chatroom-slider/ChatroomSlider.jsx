@@ -19,7 +19,9 @@ const ChatroomSlider = () => {
     <>
       <h2 style={{ fontSize: 24, color: '#de106f', fontWeight: 900 }}> Antler Exchange Meeting Room</h2>
       <label htmlFor="human-presence">Checkout all the Caribous who want to antler exchange</label>
-      <FaRocketchat style={{ fontSize: 60 }} />
+      <div>
+        <FaRocketchat style={{ fontSize: 60 }} />
+      </div>
       <div className="anter-exchange-container">
         <div className="loading-button">
           <button type="submit" className="button" onClick={handleSendAntlerExchange}>
