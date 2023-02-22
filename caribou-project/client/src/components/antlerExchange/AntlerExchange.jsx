@@ -14,8 +14,22 @@ import { useSelector } from 'react-redux';
 import { antlerExchangeService } from '@services/api/antlerExchangeRoom/antlerExchangeRoom.service';
 
 const AnterExchange = () => {
-  const user = useSelector((state) => state?.user?.email);
+  const [errorMessages, setErrorMessages] = useState([]);
+  const [showErrorMsg, setShowErrorMsg] = useState(false);
+  const [successMessages, setSuccessMessages] = useState([]);
+  const [showSuccessMsg, setShowSuccessMsg] = useState(false);
+  const userEmailFound = useSelector((state) => state?.user?.email);
+  console.log('Line 20: redux User', userEmailFound, 'component');
+  const userImage = useSelector((state) => state?.user?.avatarImage);
   const [showN, setSetShowN] = useState(false);
+
+  // handle the messages popup
+  const timeLimitMessage = () => {
+    setTimeout(() => {
+      setShowErrorMsg(false);
+      setShowSuccessMsg(false);
+    }, 15000);
+  };
 
   // Toast
   const customId = 'custom-id-yes';
@@ -56,24 +70,34 @@ const AnterExchange = () => {
   };
 
   // Send broadcast
-  const firstLetter = user?.charAt(0)?.toUpperCase();
-  const handleSendAntlerExchange = () => {
+  const firstLetter = userEmailFound?.charAt(0)?.toUpperCase();
+  const handleSendAntlerExchange = async () => {
     socket.emit('antler_exchange', { message: `Secret Caribou known as "${firstLetter}" is ready to antler-exchange` });
     setSetShowN(true);
 
     try {
-      const saveAntlerExchangeUser = async () => {
-        await antlerExchangeService
-          .saveAntlerExchangeCaribou({
-            email: user,
-          })
-          .then((result) => {
-            console.log('Line 67: Saving Caribou who want too antler Exchange: ', result, 'AntlerExchange');
-          });
-      };
-      saveAntlerExchangeUser();
+      await antlerExchangeService
+        .saveAntlerExchangeCaribou({
+          email: userEmailFound,
+          userImage,
+        })
+        .then((result) => {
+          if (result.data) {
+            console.log(
+              'Line 67: Saving Caribou who want too antler Exchange: ',
+              result.data.success[0].successMsg,
+              'AntlerExchange component'
+            );
+            const successMsg = result?.data?.success[0]?.successMsg;
+            setSuccessMessages([successMsg]);
+          }
+        });
     } catch (error) {
-      console.log(`Line 72: Error Saving antler exchange Caribou`, error, 'AntlerExchange');
+      console.log(`Line 72: Error Saving antler exchange Caribou`, error, 'AntlerExchange component');
+
+      setShowErrorMsg(true);
+      setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message]);
+      timeLimitMessage();
     }
   };
 
@@ -107,6 +131,16 @@ const AnterExchange = () => {
   return (
     <>
       <h2 style={{ fontSize: 24, color: '#de106f', fontWeight: 900 }}> Ready To Antler Exchange</h2>
+      {showSuccessMsg && successMessages && (
+        <div className={`alerts alert-success`} role="alert">
+          {successMessages}
+        </div>
+      )}
+      {showErrorMsg && errorMessages && (
+        <div className={`alerts alert-error`} role="alert">
+          {errorMessages}
+        </div>
+      )}
       <label htmlFor="human-presence">Notify the other Caribous! </label>
       <FaBroadcastTower style={{ fontSize: 60 }} />
       <div className="anter-exchange-container">

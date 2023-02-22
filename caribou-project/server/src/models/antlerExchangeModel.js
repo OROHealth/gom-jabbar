@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const mapSchema = new mongoose.Schema(
+const antlerExchangeSchema = new mongoose.Schema(
   {
     email: {
       type: String,
@@ -8,20 +8,24 @@ const mapSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
+    avatarImage: {
+      type: String,
+      required: true,
+      select: true,
+    },
     uuId: {
       type: String,
       required: true,
       select: true,
     },
-    expiresAt: { type: Date, expires: '24h', default: Date.now },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    expiresAt: { type: Date, expires: '1h', default: Date.now },
   },
   {
     timestamps: true,
   }
 );
 
-mapSchema.set('toJSON', {
+antlerExchangeSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
@@ -29,4 +33,4 @@ mapSchema.set('toJSON', {
   },
 });
 
-module.exports = mongoose.model('map', mapSchema);
+module.exports = mongoose.model('antlerExchange', antlerExchangeSchema);

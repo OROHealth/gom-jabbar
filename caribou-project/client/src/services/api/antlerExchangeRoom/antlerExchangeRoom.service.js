@@ -20,6 +20,11 @@ class AntlerExchangeService {
     const response = axios.post('/antler-exchange', body, LocalToken());
     return response;
   }
+
+  async getAntlerExchangeCaribous() {
+    const response = axios.get('/antler-exchange', LocalToken());
+    return response;
+  }
 }
 
 export const antlerExchangeService = new AntlerExchangeService();

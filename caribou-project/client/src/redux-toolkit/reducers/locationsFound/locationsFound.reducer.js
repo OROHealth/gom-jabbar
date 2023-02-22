@@ -10,7 +10,6 @@ const locationsFoundSlice = createSlice({
       state.push(payload);
     },
   },
-  extraReducers: () => {},
 });
 
 export const { addLocationsFound } = locationsFoundSlice.actions;

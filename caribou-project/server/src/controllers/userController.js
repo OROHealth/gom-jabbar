@@ -67,8 +67,8 @@ async function registerUser(req, res) {
             // save the newUser to the Database
             await newUser
               .save()
-              .then(userSaved => {
-                log('info', `Line 71: ${req.body}, ${userSaved}, user Controller`, 'userController');
+              .then(_userSaved => {
+                // log('info', `Line 71: ${req.body}, ${userSaved}, user Controller`, 'userController');
                 success.push({ successMsg: 'Welcome fellow Caribou.' });
               })
               .catch(err => {
@@ -93,7 +93,7 @@ async function registerUser(req, res) {
 // @Route   /api/v1/user/login
 // TODO Email and Password Login Start
 async function loginUser(req, res) {
-  console.log('Line 90: Request Data:', req.body.email, req.body.password);
+  // console.log('Line 96: Request Data:', req.body.email, req.body.password);
   const { email, password } = req.body;
 
   const errors = [];
@@ -106,7 +106,7 @@ async function loginUser(req, res) {
 
   // Check Regular Expression for email
   const regex = /^[\w-\.]+-carib@([\w-]+\.)+[\w-]{2,4}$/g;
-  const found = email.match(regex);
+  const found = lowerCaseEmail.match(regex);
   if (!found) {
     errors.push({ errorMsg: 'Humans are not allowed!' });
   }
@@ -123,8 +123,11 @@ async function loginUser(req, res) {
   } else {
     if (errors.length < 1) {
       try {
+        // Lowercase the email
+        const lowerCaseEmail = lowerCase(email);
+
         // Finding the user in the Database
-        await UserModel.findOne({ email: email }).then(async user => {
+        await UserModel.findOne({ email: lowerCaseEmail }).then(async user => {
           // checks if there is a user
           if (!user) {
             errors.push({ errorMsg: 'This Caribou does not exist. Are you a Human?' });
@@ -167,14 +170,26 @@ const refreshUserToken = async (req, res, next) => {
     const newRefreshToken = await signRefreshToken(userId);
     res.status(201).json({ accessToken: newAccessToken, refreshToken: newRefreshToken });
   } catch (error) {
-    console.log(error);
-
+    log('error', `${error}`, 'userController');
     next(error);
   }
 };
+
+async function getUser(req, res) {
+  const { email } = req.body;
+  try {
+    await userModel.findOne({ email: email }).then(user => {
+      // console.log(user);
+      res.status(200).json({ user });
+    });
+  } catch (error) {
+    log('error', `Error Getting User ${error}`, 'userController');
+  }
+}
 
 module.exports = {
   registerUser,
   loginUser,
   refreshUserToken,
+  getUser,
 };

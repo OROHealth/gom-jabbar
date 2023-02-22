@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 // const mapSchema = require('./mapModel');
 const userSchema = new mongoose.Schema(
   {
