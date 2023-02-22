@@ -66,6 +66,16 @@ const SignInForm = () => {
     event.preventDefault();
     const { email, password } = inputFields;
 
+    // Check that passwords at least 6 characters
+    if (password.length < 6) {
+      setLoading(false);
+      setShowSuccessMsg(false);
+      setShowErrorMsg(true);
+      timeLimitMessage();
+      setErrorMessages(['Password must be at least 6 characters']);
+      return;
+    }
+
     try {
       // console.log(`Line 65: Logging in the User ${email} ${password}, Sign-in-form`);
       // Post Request to the Server
@@ -122,6 +132,7 @@ const SignInForm = () => {
             setStorageLoggedIn(true);
           }
         });
+      navigate('/app/dashboard');
       //
     } catch (error) {
       setLoading(false);
@@ -144,7 +155,6 @@ const SignInForm = () => {
       // setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message || error?.response?.data?.message]);
       setErrorMessages([error?.response?.data[0]?.errorMsg || error?.message]);
     }
-    navigate('/app/dashboard');
   };
 
   return (

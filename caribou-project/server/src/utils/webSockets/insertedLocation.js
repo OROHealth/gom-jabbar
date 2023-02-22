@@ -1,9 +1,9 @@
 const log = require('../logger');
 const mongoose = require('mongoose');
 
-const socketIOHumanQuitHandler = io => {
+const socketIOLocationAddedHandler = io => {
   const listen = () => {
-    log('info', `Listening for Human Quite`, 'index');
+    log('info', `Listening for Locations Added`, 'index');
 
     mongoose.connection.once('open', () => {
       // log('info', 'Line 11: Setting Up Change Stream! ...', 'setupDatabase');
@@ -16,9 +16,15 @@ const socketIOHumanQuitHandler = io => {
         // log('info', 'Line 31: Change Stream Triggered!', 'setupDatabase');
 
         switch (change.operationType) {
-          case 'delete':
-            // log('info', 'Line 35: Location Was deleted!', 'setupDatabase');
-            io.volatile.emit('human_quite_received_broadcast', { message: `Some Humans just quit a location` });
+          case 'insert':
+            log('info', 'Line 35: Location Was added!', 'setupDatabase');
+
+            io.emit('location_added_broadcast', { message: `New location added` });
+          // io.on('connection', socket => {
+          //   socket.on('location_added_broadcast', data => {
+          //     socket.emit('location_added_broadcast', { message: `New location added` });
+          //   });
+          // });
         }
       });
 
@@ -29,4 +35,4 @@ const socketIOHumanQuitHandler = io => {
   return listen;
 };
 
-module.exports = { socketIOHumanQuitHandler };
+module.exports = { socketIOLocationAddedHandler };

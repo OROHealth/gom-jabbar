@@ -55,7 +55,7 @@ const AppNavigation = () => {
           <div className="app-flex">
             <div onClick={handleLogoDropdown} className="app-flex">
               <div className="image-wrapper">
-                <img src={avatarImage.length > 0 ? avatarImage : userImage} alt="Avatar image" />{' '}
+                <img src={avatarImage.length > 0 ? userImage : avatarImage} alt="Avatar image" />{' '}
               </div>
               <FaAngleDown />
               {dropdownOpen && (
