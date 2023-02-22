@@ -18,7 +18,7 @@ const antlerExchangeSchema = new mongoose.Schema(
       required: true,
       select: true,
     },
-    expiresAt: { type: Date, expires: '1h', default: Date.now },
+    expiresAt: { type: Date, expires: '4m', default: Date.now },
   },
   {
     timestamps: true,

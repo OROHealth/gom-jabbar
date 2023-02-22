@@ -11,6 +11,7 @@ const setupDatabase = async () => {
     })
     .catch(error => {
       log('error', `Error connecting to MongoDB: ${error.message}`, 'setupDatabase');
+      return process.exit(1);
     });
   return mongoose;
 };
@@ -26,7 +27,8 @@ mongoose.connection.on('connected', () => {
   log('info', `Line 59: Connected to MongoDB`, 'setupDatabase');
 });
 mongoose.connection.on('disconnected', err => {
-  log('error', `Mongoose Connection is disconnected: ${err}, ${err?.message}`, 'setupDatabase');
+  log('error', `Mongoose Connection is disconnected`, 'setupDatabase');
+  return connect;
 });
 
 // This event is fired when the application is terminated by pressing control + z

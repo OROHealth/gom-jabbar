@@ -1,0 +1,71 @@
+.Chat-meeting-container{
+  // border: 2px solid rgb(174, 255, 0);
+  width: 95%;
+  max-width: 1500px;
+  padding: 0 20px;
+}
+
+.grid-card-wrapper{
+  // border: 2px solid rgb(0, 34, 255);
+
+  // set to grid
+  display: grid;
+  gap: 2rem;
+
+  // clean code to specify columns by using repeat - 1fr 1fr = 2 columns
+  // grid-template-columns: repeat(2, 1fr);
+
+  // setting a minimum width - but its overflows
+  // grid-template-columns: repeat(2, minmax(200px, 1fr));
+
+  // implementing implicit grid - dynamic - lets the algorithm figure out cols/rows
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))
+
+}
+
+.caribou-card{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction:column;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  padding: 8px 8px;
+  border-radius: 15px;;
+  transition: all 500ms;
+  overflow: hidden;
+  box-shadow: rgba(3,8,20,0.1) 0px 0.15rem 0.5rem, rgba(2,8,20,0.1) 0px 0.0175rem 0.175rem;
+
+  img {
+    height: 100%;
+    width: 100%;
+    border-radius: 15px 15px 0 0;
+    margin-bottom: 1rem;
+  }
+
+  .caribou-card-text{
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+
+
+    span{
+      color: #de006f;
+    }
+
+  }
+  button {
+    margin-bottom: .5rem;
+  }
+}
+
+.caribou-card:hover {
+  box-shadow: rgba(3,8,20,0.1) 0px 0.35em 1.175em, rgba(2,8,20,0.08) 0px 0.0175rem 0.5rem;
+  transform: translateY(-3px) scale(1.1);
+}
+
+@media screen and (min-width: 20em) {
+
+
+}
