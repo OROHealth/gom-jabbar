@@ -1,71 +1,126 @@
-.Chat-meeting-container{
-  // border: 2px solid rgb(174, 255, 0);
-  width: 95%;
+
+.Chat-meeting-container {
+  position: relative;
+  width: 95vw;
+  height: 100%;
   max-width: 1500px;
   padding: 0 20px;
-}
+  min-height: 600px;
+  margin: 0 auto;
 
-.grid-card-wrapper{
-  // border: 2px solid rgb(0, 34, 255);
-
-  // set to grid
-  display: grid;
-  gap: 2rem;
-
-  // clean code to specify columns by using repeat - 1fr 1fr = 2 columns
-  // grid-template-columns: repeat(2, 1fr);
-
-  // setting a minimum width - but its overflows
-  // grid-template-columns: repeat(2, minmax(200px, 1fr));
-
-  // implementing implicit grid - dynamic - lets the algorithm figure out cols/rows
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))
-
-}
-
-.caribou-card{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction:column;
-  background-color: transparent;
-  width: 100%;
-  height: 100%;
-  padding: 8px 8px;
-  border-radius: 15px;;
-  transition: all 500ms;
-  overflow: hidden;
-  box-shadow: rgba(3,8,20,0.1) 0px 0.15rem 0.5rem, rgba(2,8,20,0.1) 0px 0.0175rem 0.175rem;
-
-  img {
-    height: 100%;
+  .chatroom-meeting-backBtn{
+    background-color: rgb(255, 255, 255);
+    border-radius: 25px;
+    padding: 15px 17px;
+    border: 2px solid rgb(228, 228, 228);
+    box-shadow: rgba(3,8,20,0.1) 0px 0.15rem 0.5rem, rgba(2,8,20,0.1) 0px 0.0175rem 0.175rem;
+    font-size: 1.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
     width: 100%;
-    border-radius: 15px 15px 0 0;
-    margin-bottom: 1rem;
+    transition: all .2s ease-in-out;;
+
+    &:hover {
+      box-shadow: rgba(3,8,20,0.1) 0px 0.35em 1.175em, rgba(2,8,20,0.08) 0px 0.0175rem 0.5rem;
+      transform: translateY(-3px) scale(1.05);
+      cursor: pointer;
+    }
   }
 
-  .caribou-card-text{
-    font-weight: 600;
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
+  .grid-card-wrapper {
+    // set to grid
+    display: grid;
+    gap: 2rem;
+    margin-top: 25px;
+    margin-bottom: 4rem;
+
+    .caribou-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction:column;
+      background-color: transparent;
+      width: 100%;
+      height: 100%;
+      padding: 8px 8px;
+      border-radius: 15px;;
+      transition: all 500ms ease-in-out;
+      overflow: hidden;
+      box-shadow: rgba(3,8,20,0.1) 0px 0.15rem 0.5rem, rgba(2,8,20,0.1) 0px 0.0175rem 0.175rem;
+
+      img {
+        // height: 100%;
+        width: 100%;
+        border-radius: 15px 15px 0 0;
+        margin-bottom: 1rem;
+      }
+
+      .caribou-card-text{
+        font-weight: 600;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+
+        span{
+          color: #de006f;
+        }
+      }
+
+      button {
+        margin-bottom: .5rem;
+      }
+    }
+    .caribou-card:hover {
+      box-shadow: rgba(3,8,20,0.1) 0px 0.35em 1.175em, rgba(2,8,20,0.08) 0px 0.0175rem 0.5rem;
+      transform: translateY(-3px) scale(1.04);
+    }
+  }
+}
+
+@media screen and (min-width: 15em) {
+
+  .Chat-meeting-container {
+
+      .chatroom-meeting-backBtn {
+        width: 100%;
+        max-width: 15rem;
+      }
+
+      .grid-card-wrapper {
+        // set to grid
+        display: grid;
+        gap: 2rem;
+      }
+    }
+}
 
 
-    span{
-      color: #de006f;
+@media screen and (min-width: 25em) {
+
+  .Chat-meeting-container {
+    .chatroom-meeting-backBtn{
+      width: 100%;
+      max-width: 15rem;
     }
 
-  }
-  button {
-    margin-bottom: .5rem;
+    .grid-card-wrapper {
+      // Implementing implicit grid - dynamic - lets the algorithm figure out cols/rows
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+
+    }
   }
 }
 
-.caribou-card:hover {
-  box-shadow: rgba(3,8,20,0.1) 0px 0.35em 1.175em, rgba(2,8,20,0.08) 0px 0.0175rem 0.5rem;
-  transform: translateY(-3px) scale(1.1);
-}
 
-@media screen and (min-width: 20em) {
+@media screen and (min-width: 40em) {
+  .Chat-meeting-container {
 
+    .grid-card-wrapper {
+      // Implementing implicit grid - dynamic - lets the algorithm figure out cols/rows
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      margin-top: 50px;
+    }
+  }
 
 }

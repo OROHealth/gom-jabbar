@@ -8,7 +8,7 @@ import '@components/chatMeetingRoom/ChatMeetingRoom.styles.scss';
 // components
 import AppNavigation from '@components/app-navigation/AppNavigation.component';
 import { antlerExchangeService } from '@services/api/antlerExchangeRoom/antlerExchangeRoom.service';
-import { FaStepBackward } from 'react-icons/fa';
+import { FaAngleLeft } from 'react-icons/fa';
 import { addAntlerExchangeCaribouToMeeting } from '@redux/reducers/antlerExchangeCaribousMeeting/antlerExchangeMeeting.reducer';
 
 const ChatMeetingRoom = () => {
@@ -48,18 +48,17 @@ const ChatMeetingRoom = () => {
       <AppNavigation />
       <main>
         <div className="Chat-meeting-container">
-          <button onClick={() => navigate('/app/dashboard')}>
-            <FaStepBackward />
+          <button className="chatroom-meeting-backBtn" onClick={() => navigate('/app/dashboard')}>
+            <FaAngleLeft /> Back to Home
           </button>
           <div className="grid-card-wrapper">
             {allAntlerExchangeMeetings &&
               allAntlerExchangeMeetings.map((caribous) => {
                 // Gets the ISO-8601 date and converts it to local Date and transforms it to a string and save.
                 const iSODate = new Date(caribous.expiresAt);
-                const nowDate = new Date();
-
+                /* const nowDate = new Date(); */
                 // Converting the time to minutes
-                const expireTimeInMinutes = iSODate.getMinutes() - nowDate.getMinutes();
+                /* const expireTimeInMinutes = nowDate.getMinutes() - iSODate.getMinutes(); */
 
                 return (
                   <div className="caribou-card" key={caribous.id}>
@@ -69,7 +68,7 @@ const ChatMeetingRoom = () => {
                         Join the Secret meeting with: <span>&quot;{caribous.email.charAt(0).toUpperCase()}&quot;</span>
                       </p>
                       <p>
-                        Expires in: <span>{expireTimeInMinutes}</span> mins
+                        Expires in: <span>{iSODate.getMinutes()}</span> mins
                       </p>
                     </div>
                     <button className="button" onClick={HandleJoinChatOnClick}>
