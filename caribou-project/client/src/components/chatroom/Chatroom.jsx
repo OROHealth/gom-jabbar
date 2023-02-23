@@ -8,12 +8,13 @@ import useLocalStorage from '@hooks/useLocalStorage';
 
 // StyleSheet
 import '@components/chatroom/Chatroom.styles.scss';
+import { FaTimesCircle } from 'react-icons/fa';
 
 const initialState = {
   sender: '',
 };
 
-const Chatroom = ({ openChat, setOpenChat, refClickOutside }) => {
+const Chatroom = ({ customRoomNumber, setOpenChat }) => {
   const [formField, setFormField] = useState(initialState);
   const [receivedResponse, setReceivedResponse] = useState('');
   const [receivedResponseUsername, setReceivedResponseUsername] = useState('');
@@ -70,16 +71,24 @@ const Chatroom = ({ openChat, setOpenChat, refClickOutside }) => {
     clearFields();
   };
 
+  const handleCloseMessage = () => {
+    setOpenChat(false);
+  };
+
   return (
-    <div ref={refClickOutside} className="chat-container">
+    <div className="chat-container">
+      <button onClick={handleCloseMessage}>
+        <FaTimesCircle />
+      </button>
+      <p>{customRoomNumber}</p>
       <div className="chat-content">
         <div className="chat-context-messages">
           <span>{userConnected}</span>
           <span>{userDisconnected}</span>
-          <span>
+          <p>
             {receivedUsername && receivedResponseUsername} {receivedResponse}
-          </span>
-          <span>{sentMessage && `${username} ${sentMessage}`}</span>
+          </p>
+          <p>{sentMessage && `${username} ${sentMessage}`}</p>
         </div>
         <div className="chat-form">
           <form onSubmit={handleMessageSubmit}>

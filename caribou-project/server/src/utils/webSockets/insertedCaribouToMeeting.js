@@ -18,7 +18,7 @@ const socketIOHumanQuitHandler = io => {
         switch (change.operationType) {
           case 'insert':
             // log('info', 'Line 35: Location Was deleted!', 'setupDatabase');
-            io.volatile.emit('secret_meeting_received_broadcast', { message: `Some Humans just quit a location` });
+            io.volatile.emit('secret_meeting_received_broadcast', { message: `Caribou added to meeting` });
         }
       });
 

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -14,30 +14,16 @@ import Chatroom from '@components/chatroom/Chatroom';
 
 const ChatMeetingRoom = () => {
   const [allAntlerExchangeMeetings, setAllAntlerExchangeMeetings] = useState(null);
+  const [customRoomNumber, setCustomRoomNumber] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [openChat, setOpenChat] = useState(true);
+  const [openChat, setOpenChat] = useState(false);
 
-  // user clicking outside the message
-  const refClickOutside = useRef(null);
-
-  const closeOpenMenus = useCallback(
-    (event) => {
-      if (!refClickOutside.current.contains(event.target)) {
-        setOpenChat(false);
-      }
-    },
-    [openChat]
-  );
-
-  const HandleJoinChatOnClick = (event) => {
-    setOpenChat(true);
-    closeOpenMenus(event);
+  // handle joining a room
+  const HandleJoinChatOnClick = (room) => {
+    setCustomRoomNumber(room);
+    setOpenChat(!openChat);
   };
-
-  useEffect(() => {
-    document.addEventListener('mousedown', closeOpenMenus);
-  }, [closeOpenMenus]);
 
   useEffect(() => {
     let isCancelled = true;
@@ -48,7 +34,7 @@ const ChatMeetingRoom = () => {
         await antlerExchangeService.getAntlerExchangeCaribous().then((allCaribousForAntlerExchange) => {
           if (isCancelled) {
             const { allAntlerExchangeCaribous } = allCaribousForAntlerExchange?.data;
-            // console.log('result', allCaribousForAntlerExchange.data.allAntlerExchangeCaribous);
+            console.log('result', allCaribousForAntlerExchange.data.allAntlerExchangeCaribous);
 
             // Saving to useState and Dispatching to redux
             setAllAntlerExchangeMeetings(allAntlerExchangeCaribous);
@@ -68,7 +54,7 @@ const ChatMeetingRoom = () => {
     <div>
       <AppNavigation />
       <main>
-        {openChat && <Chatroom setOpenChat={setOpenChat} openChat={openChat} refClickOutside={refClickOutside} />}
+        {openChat && <Chatroom customRoomNumber={customRoomNumber} setOpenChat={setOpenChat} />}
         <div className="Chat-meeting-container">
           <button className="chatroom-meeting-backBtn" onClick={() => navigate('/app/dashboard')}>
             <FaAngleLeft /> Back to Home
@@ -77,7 +63,9 @@ const ChatMeetingRoom = () => {
             {allAntlerExchangeMeetings &&
               allAntlerExchangeMeetings.map((caribous) => {
                 // Gets the ISO-8601 date and converts it to local Date and transforms it to a string and save.
-                const iSODate = new Date(caribous.expiresAt);
+
+                /* const iSODate = new Date(caribous.expiresAt); */
+
                 /* const nowDate = new Date(); */
                 // Converting the time to minutes
                 /* const expireTimeInMinutes = nowDate.getMinutes() - iSODate.getMinutes(); */
@@ -90,11 +78,11 @@ const ChatMeetingRoom = () => {
                         Join the Secret meeting with:{' '}
                         <span>&quot;{caribous.email.slice(0, 4).toUpperCase()}&quot;</span>
                       </p>
-                      <p>
+                      {/* <p>
                         Expires in: <span>{iSODate.getMinutes()}</span> mins
-                      </p>
+                      </p> */}
                     </div>
-                    <button className="button" onClick={HandleJoinChatOnClick}>
+                    <button className="button" onClick={() => HandleJoinChatOnClick(caribous.customRoomNumber)}>
                       Join
                     </button>
                   </div>

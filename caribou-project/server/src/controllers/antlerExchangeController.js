@@ -21,9 +21,9 @@ async function getAntlerExchangeCaribous(req, res) {
 // @Method  POST
 // @Route   /api/v1/antler-exchange
 async function saveAntlerExchangeCaribou(req, res) {
-  const { email, userImage } = req.body;
+  const { email, userImage, customRoomNumber } = req.body;
   // log('info', email, 'antlerExchange Controller');
-  // log('info', userImage, 'antlerExchange Controller');
+  log('info', `custom room number: ${customRoomNumber}`, 'antlerExchange Controller');
 
   let errors = [];
   const success = [];
@@ -54,6 +54,7 @@ async function saveAntlerExchangeCaribou(req, res) {
           email: lowerCaseEmail,
           uuId,
           avatarImage: userImage,
+          customRoomNumber,
         });
 
         await AntlerExchangeModel.findOne({ email: lowerCaseEmail }).then(async caribouExist => {

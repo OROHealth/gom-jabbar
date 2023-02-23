@@ -18,12 +18,20 @@ const antlerExchangeSchema = new mongoose.Schema(
       required: true,
       select: true,
     },
-    expiresAt: { type: Date, expires: '7200', default: Date.now },
+    customRoomNumber: {
+      type: String,
+      required: true,
+      select: true,
+    },
+    // expiresAt: { type: Date, expires: '7200', default: Date.now },
+    myCustomTTLField: { type: Date },
   },
   {
     timestamps: true,
   }
 );
+
+antlerExchangeSchema.path('myCustomTTLField').index({ expires: 7200 });
 
 antlerExchangeSchema.set('toJSON', {
   transform: (document, returnedObject) => {

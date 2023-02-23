@@ -13,7 +13,11 @@ import socket from '@services/websocket/webSocketIO';
 import { useSelector } from 'react-redux';
 import { antlerExchangeService } from '@services/api/antlerExchangeRoom/antlerExchangeRoom.service';
 
-const AnterExchange = () => {
+// const userRoomInitialState = {
+//   customRoom: '',
+// };
+
+const AntlerExchange = () => {
   const [errorMessages, setErrorMessages] = useState([]);
   const [showErrorMsg, setShowErrorMsg] = useState(false);
   const [successMessages, setSuccessMessages] = useState([]);
@@ -22,7 +26,7 @@ const AnterExchange = () => {
   const userImage = useSelector((state) => state?.user?.avatarImage);
   const [showN, setSetShowN] = useState(false);
 
-  console.log('Line 22: redux User', userEmailFound, 'component');
+  // console.log('Line 22: redux User', userEmailFound, 'Antler exchange component');
 
   // handle the messages popup
   const timeLimitMessage = () => {
@@ -70,25 +74,50 @@ const AnterExchange = () => {
     return toast;
   };
 
+  // Generating random numbers
+  const generateRandomIntegers = (integerLength) => {
+    const characters = '0123ABCDEFGHIJKLMNOPQRSTUVWXYZ456789';
+    let result = ' ';
+    const charactersLength = characters.length;
+    for (let i = 0; i < integerLength; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    // return parseInt(result, 10);
+    return result;
+  };
+
   // Send broadcast
   const firstLetter = userEmailFound?.charAt(0)?.toUpperCase();
   const handleSendAntlerExchange = async () => {
+    // const { customRoom } = customRoomNumber;
     socket.emit('antler_exchange', { message: `Secret Caribou known as "${firstLetter}" is ready to antler-exchange` });
     setSetShowN(true);
+
+    const getRoom = () => {
+      const roomNumber = generateRandomIntegers(12);
+      // console.log(roomNumber);
+
+      return roomNumber;
+    };
+
+    const theCustomRoomNumber = getRoom();
+
+    console.log('theCustomRoomNumber', theCustomRoomNumber);
 
     try {
       await antlerExchangeService
         .saveAntlerExchangeCaribou({
           email: userEmailFound,
           userImage,
+          customRoomNumber: theCustomRoomNumber,
         })
         .then((result) => {
           if (result.data) {
-            console.log(
-              'Line 87: Saving Caribou who want too antler Exchange: ',
-              result.data.success[0].successMsg,
-              'AntlerExchange component'
-            );
+            // console.log(
+            //   'Line 87: Saving Caribou who want too antler Exchange: ',
+            //   result.data.success[0].successMsg,
+            //   'AntlerExchange component'
+            // );
             setShowErrorMsg(false);
             setShowSuccessMsg(true);
             const successMsg = result?.data?.success[0]?.successMsg;
@@ -173,4 +202,4 @@ const AnterExchange = () => {
   );
 };
 
-export default AnterExchange;
+export default AntlerExchange;
