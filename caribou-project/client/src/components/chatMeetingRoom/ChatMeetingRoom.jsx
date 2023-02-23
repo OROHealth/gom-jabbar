@@ -16,6 +16,7 @@ const ChatMeetingRoom = () => {
   const [allAntlerExchangeMeetings, setAllAntlerExchangeMeetings] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [openChat, setOpenChat] = useState(true);
 
   useEffect(() => {
     let isCancelled = true;
@@ -42,13 +43,15 @@ const ChatMeetingRoom = () => {
     };
   }, [dispatch]);
 
-  const HandleJoinChatOnClick = () => {};
+  const HandleJoinChatOnClick = () => {
+    setOpenChat(true);
+  };
 
   return (
     <div>
       <AppNavigation />
       <main>
-        <Chatroom />
+        {openChat && <Chatroom setOpenChat={setOpenChat} />}
         <div className="Chat-meeting-container">
           <button className="chatroom-meeting-backBtn" onClick={() => navigate('/app/dashboard')}>
             <FaAngleLeft /> Back to Home

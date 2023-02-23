@@ -1,18 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+
+// web Sockets
 import socket from '@services/websocket/webSocketIO';
+
+// local storage
 import useLocalStorage from '@hooks/useLocalStorage';
+
+// StyleSheet
+import '@components/chatroom/Chatroom.styles.scss';
 
 const initialState = {
   sender: '',
 };
 
-const Chatroom = () => {
+const Chatroom = ({ setOpenChat }) => {
   const [formField, setFormField] = useState(initialState);
   const [receivedResponse, setReceivedResponse] = useState('');
   const [receivedResponseUsername, setReceivedResponseUsername] = useState('');
   const [sentMessage, setSentMessage] = useState('');
   const getStorageEmail = useLocalStorage('app-email', 'get');
   const username = getStorageEmail.slice(0, 4);
+
+  // user clicking outside the message
+  const refClickOutside = useRef();
 
   // user connected or disconnected
   const [userConnected, setUserConnected] = useState(null);
@@ -42,36 +52,45 @@ const Chatroom = () => {
     });
 
     socket.on('user-connected', (data) => {
+      console.log(data);
       setUserConnected(data);
     });
+
     socket.on('user-disconnected', (data) => {
       setUserDisconnected(data);
+      console.log(data);
     });
   }, []);
 
   // Sending - Submission of the form
-  const handleMessageSubmit = (event) => {
+  const handleMessageSubmit = async (event) => {
     event.preventDefault();
     setSentMessage(sender);
 
     // Emitting/Sending a message to the backend
-    socket.emit('send_chat_message', { message: sender, username });
-    socket.emit('new-user', { username });
+    await socket.emit('send_chat_message', { message: sender, username });
+    await socket.emit('new-user', { username });
     clearFields();
   };
 
   return (
-    <div className="chat-container">
-      <span>{userConnected}</span>
-      <span>{userDisconnected}</span>
-      <span>
-        {receivedUsername && receivedResponseUsername} {receivedResponse}
-      </span>
-      <span>{sentMessage && `${username} ${sentMessage}`}</span>
-      <form onSubmit={handleMessageSubmit}>
-        <input type="text" name="sender" id="sender" value={sender} onChange={inputMessageOnChangeHandler} />
-        <button type="submit">Submit</button>
-      </form>
+    <div ref={refClickOutside} className="chat-container">
+      <div className="chat-content">
+        <div className="chat-context-messages">
+          <span>{userConnected}</span>
+          <span>{userDisconnected}</span>
+          <span>
+            {receivedUsername && receivedResponseUsername} {receivedResponse}
+          </span>
+          <span>{sentMessage && `${username} ${sentMessage}`}</span>
+        </div>
+        <div className="chat-form">
+          <form onSubmit={handleMessageSubmit}>
+            <input type="text" name="sender" id="sender" value={sender} onChange={inputMessageOnChangeHandler} />
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };
