@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -17,6 +17,27 @@ const ChatMeetingRoom = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [openChat, setOpenChat] = useState(true);
+
+  // user clicking outside the message
+  const refClickOutside = useRef(null);
+
+  const closeOpenMenus = useCallback(
+    (event) => {
+      if (!refClickOutside.current.contains(event.target)) {
+        setOpenChat(false);
+      }
+    },
+    [openChat]
+  );
+
+  const HandleJoinChatOnClick = (event) => {
+    setOpenChat(true);
+    closeOpenMenus(event);
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', closeOpenMenus);
+  }, [closeOpenMenus]);
 
   useEffect(() => {
     let isCancelled = true;
@@ -43,15 +64,11 @@ const ChatMeetingRoom = () => {
     };
   }, [dispatch]);
 
-  const HandleJoinChatOnClick = () => {
-    setOpenChat(true);
-  };
-
   return (
     <div>
       <AppNavigation />
       <main>
-        {openChat && <Chatroom setOpenChat={setOpenChat} />}
+        {openChat && <Chatroom setOpenChat={setOpenChat} openChat={openChat} refClickOutside={refClickOutside} />}
         <div className="Chat-meeting-container">
           <button className="chatroom-meeting-backBtn" onClick={() => navigate('/app/dashboard')}>
             <FaAngleLeft /> Back to Home

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 // web Sockets
 import socket from '@services/websocket/webSocketIO';
@@ -13,16 +13,13 @@ const initialState = {
   sender: '',
 };
 
-const Chatroom = ({ setOpenChat }) => {
+const Chatroom = ({ openChat, setOpenChat, refClickOutside }) => {
   const [formField, setFormField] = useState(initialState);
   const [receivedResponse, setReceivedResponse] = useState('');
   const [receivedResponseUsername, setReceivedResponseUsername] = useState('');
   const [sentMessage, setSentMessage] = useState('');
   const getStorageEmail = useLocalStorage('app-email', 'get');
   const username = getStorageEmail.slice(0, 4);
-
-  // user clicking outside the message
-  const refClickOutside = useRef();
 
   // user connected or disconnected
   const [userConnected, setUserConnected] = useState(null);
