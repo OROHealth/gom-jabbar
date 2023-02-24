@@ -28,7 +28,7 @@ mongoose.connection.on('connected', () => {
 });
 mongoose.connection.on('disconnected', err => {
   log('error', `Mongoose Connection is disconnected`, 'setupDatabase');
-  return connect;
+  return setupDatabase;
 });
 
 // This event is fired when the application is terminated by pressing control + z

@@ -35,7 +35,11 @@ const Chatroom = () => {
 
   // all messages
   const [messages, setMessages] = useState(messagesInitialState);
-  console.log('type Of:', Object.entries(messages));
+  console.log('Data', messages);
+  // const gettingTheMsgs = Object.entries(messages).map((item) => {
+  //   return item[1].data;
+  // });
+  // console.log('Type Of:', gettingTheMsgs);
 
   // user connected or disconnected
   // const [userConnected, setUserConnected] = useState(null);
@@ -50,7 +54,7 @@ const Chatroom = () => {
 
   // Fetching the chatroom id from the params
   const { chatroom } = useParams();
-  console.log('chatRoom:', chatroom);
+  // console.log('chatRoom:', chatroom);
 
   useEffect(() => {
     let isCancelled = true;
@@ -105,8 +109,8 @@ const Chatroom = () => {
             messageId: chatroom,
           };
           await chatRoomService.getAllMessages(newMessage).then((result) => {
-            console.log('Messages', result);
-            setMessages([result]);
+            console.log('Messages', result.data[0].messages);
+            setMessages(result?.data[0]?.messages);
           });
         }
       };
@@ -140,7 +144,7 @@ const Chatroom = () => {
         };
         await chatRoomService.getAllMessages(newMessage).then((result) => {
           console.log('Messages', result);
-          setMessages([result]);
+          setMessages(result?.data[0]?.messages);
         });
       };
       gettingMessages();
@@ -196,7 +200,6 @@ const Chatroom = () => {
     clearFields();
   };
 
-  console.log('Messages:', messages);
   return (
     <div className="chat-container">
       <button className="chatroom-meeting-backBtn" onClick={() => navigate('/app/secret-meeting-room')}>
@@ -205,10 +208,9 @@ const Chatroom = () => {
       <p>{customRoomNumber}</p>
       <div className="chat-content">
         <div className="chat-context-messages">
-          {/* {messages.map((msg) => {
-            console.log(msg);
-            return msg;
-          })} */}
+          {messages.map((msg, id) => {
+            return <div key={id}>{msg}</div>;
+          })}
         </div>
         <div className="chat-form">
           <form onSubmit={handleMessageSubmit}>

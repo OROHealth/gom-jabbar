@@ -107,19 +107,19 @@ async function getAllMsgs(req, res) {
   try {
     const messagesFound = await ChatroomMsgModel.find({});
     let found = false;
+    let theItem = null;
     const foundChat = messagesFound.map(item => {
-      console.log('Item:', item.chatroomMsgId);
-      console.log('Item message:', messageId);
+      // console.log('Item:', item.chatroomMsgId);
+      // console.log('Item message:', messageId);
 
       if (item.chatroomMsgId == messageId) {
-        return res.status(200).json([item]).end();
+        return (theItem = item);
       }
       found = true;
     });
 
-    if (found) {
-      return res.status(200).json([{}]);
-    }
+    // console.log('theItem ->', theItem);
+    return res.status(200).json([theItem]).end();
   } catch (error) {
     log('error', `Line 111: Error getting Messages: ${error}`, 'chatroomRouter');
   }
