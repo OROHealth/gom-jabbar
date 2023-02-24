@@ -105,34 +105,24 @@ async function getAllMsgs(req, res) {
   const { messageId } = req.body;
   log('info', `Line 105: Message Id: ${messageId}`, 'chatroomRouter');
   try {
-    const filter = { chatroomMsgId: messageId };
     const messagesFound = await ChatroomMsgModel.find({});
-
+    let found = false;
     const foundChat = messagesFound.map(item => {
       console.log('Item:', item.chatroomMsgId);
       console.log('Item message:', messageId);
 
       if (item.chatroomMsgId == messageId) {
-        return res.status(200).json([{ chat: item }]);
+        return res.status(200).json([item]).end();
       }
+      found = true;
     });
 
-    return res.status(200).json([{ chat: '' }]);
+    if (found) {
+      return res.status(200).json([{}]);
+    }
   } catch (error) {
     log('error', `Line 111: Error getting Messages: ${error}`, 'chatroomRouter');
   }
-}
-
-// @Desc     Display all Locations on the map
-// @Method   GET
-// @Route    /api/v1/map + /query=Map-Locations
-async function getAllMapLocations(_req, res) {
-  // populate, instead of showing the id, it will show the user name
-  log('info', 'App Currently Getting all the Map Marker Locations in the Database', 'mapController');
-  const locations = await MapModel.find({}).populate({ path: 'user', model: 'User' });
-  log('info', 'Locations Found, Sent them to the Frontend :)', 'mapController');
-  res.status(200).json({ locations });
-  return;
 }
 
 module.exports = { getRoomRouter, postMessageRouter, postRoomIdRouter, getAllMsgs };

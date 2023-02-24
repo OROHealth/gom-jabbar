@@ -44,10 +44,8 @@ class ChatRoomService {
   // @ DESC    Get all Messages
   // @ METHOD  Get
   // @ ROUTE   /api/v1/chatroom/:messageId
-  async setAllMessages(data) {
+  async getAllMessages(data) {
     const { messageId } = data;
-
-    console.log('Sending', messageId);
     const response = axios.post(`/chatroom/${messageId}`, data, LocalToken());
     return response;
   }

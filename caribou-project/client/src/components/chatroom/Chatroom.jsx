@@ -19,7 +19,7 @@ const initialState = {
   sender: '',
 };
 
-// const messagesInitialState = [];
+const messagesInitialState = [];
 
 const Chatroom = () => {
   const [formField, setFormField] = useState(initialState);
@@ -34,7 +34,8 @@ const Chatroom = () => {
   const [customRoomNumber, setCustomRoomNumber] = useState(null);
 
   // all messages
-  // const [messages, setMessages] = useState(messagesInitialState);
+  const [messages, setMessages] = useState(messagesInitialState);
+  console.log('type Of:', Object.entries(messages));
 
   // user connected or disconnected
   // const [userConnected, setUserConnected] = useState(null);
@@ -103,8 +104,9 @@ const Chatroom = () => {
           const newMessage = {
             messageId: chatroom,
           };
-          await chatRoomService.setAllMessages(newMessage).then((result) => {
+          await chatRoomService.getAllMessages(newMessage).then((result) => {
             console.log('Messages', result);
+            setMessages([result]);
           });
         }
       };
@@ -130,33 +132,39 @@ const Chatroom = () => {
   // keep track of the received message
   // };
 
+  const fetchFreshMessages = () => {
+    try {
+      const gettingMessages = async () => {
+        const newMessage = {
+          messageId: chatroom,
+        };
+        await chatRoomService.getAllMessages(newMessage).then((result) => {
+          console.log('Messages', result);
+          setMessages([result]);
+        });
+      };
+      gettingMessages();
+    } catch (error) {
+      console.log(`Error fetching Messages ${error}`);
+    }
+  };
+
   // ** With every Socket Request, send the chat room number
   // Listening for The Message Response from websocket when we receive a message
   useEffect(() => {
-    socket.on('chat_message_received_broadcast', (data) => {
-      // console.log('received data Back from the server:', data);
-      // settingMessages(data);
-      // const newMessage = {
-      //   username,
-      //   senderMsg: data.message,
-      // };
-      // // keep track of the message that was sent by the initial sender
-      // setMessages(messages.concat(newMessage));
-      // messages.map((data) => {
-      // });
-      // setReceivedResponse(data.message);
-      // setReceivedResponseUsername(data.username);
-      // setReceivedUsername(true);
+    socket.on('messages_was_updated', (data) => {
+      fetchFreshMessages();
     });
+    socket.on('chat_message_received_broadcast', (data) => {});
 
     socket.on('username-of-user-connected', (data) => {
       // setUserConnected(data);
     });
 
-    socket.on('user-disconnected', (data) => {
-      // setUserDisconnected(data);
-      // console.log(data);
-    });
+    // socket.on('user-disconnected', (data) => {
+    //   // setUserDisconnected(data);
+    //   // console.log(data);
+    // });
   }, []);
   // console.log('Messages After Update:', messages);
 
@@ -187,8 +195,8 @@ const Chatroom = () => {
 
     clearFields();
   };
-  // console.log('Messages:', messages);
 
+  console.log('Messages:', messages);
   return (
     <div className="chat-container">
       <button className="chatroom-meeting-backBtn" onClick={() => navigate('/app/secret-meeting-room')}>
@@ -197,8 +205,9 @@ const Chatroom = () => {
       <p>{customRoomNumber}</p>
       <div className="chat-content">
         <div className="chat-context-messages">
-          {/* {messages.map((msg)=>{
-            re
+          {/* {messages.map((msg) => {
+            console.log(msg);
+            return msg;
           })} */}
         </div>
         <div className="chat-form">
