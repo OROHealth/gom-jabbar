@@ -1,5 +1,4 @@
 const log = require('../utils/logger');
-const UserModel = require('../models/userModel');
 const AntlerExchangeModel = require('../models/antlerExchangeModel');
 
 // Base = '/api/v1/chatroom'
@@ -7,6 +6,7 @@ const AntlerExchangeModel = require('../models/antlerExchangeModel');
 const rooms = {};
 log('info', `Line 8:All Rooms Posted: ${rooms}`, 'chatroomRouter');
 
+// Good
 // @Desc    Gets all the chatRooms
 // @Method  GET
 // @Route   /api/v1/chatroom
@@ -20,8 +20,9 @@ async function getRoomRouter(req, res) {
 // @Method  POST
 // @Route   /api/v1/chatroom/roomId
 async function postRoomIdRouter(req, res) {
-  log('info', `Line 23: Posting a chat room number: ${req.body.room}`, 'chatroomRouter');
+  log('info', `Line 24: Posting a chat room number: ${req.body.room}`, 'chatroomRouter');
 
+  // if room doesn't equal null, that means the room was already created
   if (rooms[req.body.room] != null) {
     return res.status(400).json({ errorMsg: 'Room has already been created' });
   }

@@ -13,14 +13,13 @@ import { addAntlerExchangeCaribouToMeeting } from '@redux/reducers/antlerExchang
 
 const ChatMeetingRoom = () => {
   const [allAntlerExchangeMeetings, setAllAntlerExchangeMeetings] = useState(null);
-  // const [customRoomNumber, setCustomRoomNumber] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // handle joining a room
+  // Handle joining a room
   const HandleJoinChatOnClick = (room) => {
+    // console.log('/app/secret-meeting-room/' + `${room}`);
     navigate('/app/secret-meeting-room/' + `${room}`);
-    console.log('/app/secret-meeting-room/' + `${room}`);
   };
 
   useEffect(() => {
@@ -60,9 +59,7 @@ const ChatMeetingRoom = () => {
             {allAntlerExchangeMeetings &&
               allAntlerExchangeMeetings.map((caribous) => {
                 // Gets the ISO-8601 date and converts it to local Date and transforms it to a string and save.
-
                 /* const iSODate = new Date(caribous.expiresAt); */
-
                 /* const nowDate = new Date(); */
                 // Converting the time to minutes
                 /* const expireTimeInMinutes = nowDate.getMinutes() - iSODate.getMinutes(); */

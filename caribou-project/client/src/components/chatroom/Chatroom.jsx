@@ -9,7 +9,7 @@ import useLocalStorage from '@hooks/useLocalStorage';
 
 // StyleSheet
 import '@components/chatroom/Chatroom.styles.scss';
-import { FaTimesCircle } from 'react-icons/fa';
+import { FaAngleLeft } from 'react-icons/fa';
 
 // API
 import { chatRoomService } from '@services/api/chatroom/chatroom.service';
@@ -19,24 +19,34 @@ const initialState = {
   sender: '',
 };
 
-const Chatroom = ({ customRoomNumber, setOpenChat }) => {
+// const messagesInitialState = [
+//   {
+//     currentSender: {},
+//     receiver: {},
+//   },
+// ];
+
+const Chatroom = () => {
   const [formField, setFormField] = useState(initialState);
-  const [receivedResponse, setReceivedResponse] = useState('');
-  const [receivedResponseUsername, setReceivedResponseUsername] = useState('');
-  const [sentMessage, setSentMessage] = useState('');
+  const { sender } = formField;
+  // const [receivedResponse, setReceivedResponse] = useState('');
+  // const [receivedResponseUsername, setReceivedResponseUsername] = useState('');
+  // const [sentMessage, setSentMessage] = useState('');
   const getStorageEmail = useLocalStorage('app-email', 'get');
   const username = getStorageEmail.slice(0, 4);
   const navigate = useNavigate();
   const [didNotFindRoomInServer, setDidNotFindRoomInServer] = useState(false);
+  const [customRoomNumber, setCustomRoomNumber] = useState(null);
+
+  // all messages
+  // const [messages, setMessages] = useState(messagesInitialState);
 
   // user connected or disconnected
-  const [userConnected, setUserConnected] = useState(null);
-  const [userDisconnected, setUserDisconnected] = useState(null);
+  // const [userConnected, setUserConnected] = useState(null);
+  // const [userDisconnected, setUserDisconnected] = useState(null);
 
-  // received th username and saves it in state
-  const [receivedUsername, setReceivedUsername] = useState(false);
-
-  const { sender } = formField;
+  // received the username and saved it in state
+  // const [receivedUsername, setReceivedUsername] = useState(false);
 
   const clearFields = () => {
     setFormField(initialState);
@@ -44,6 +54,7 @@ const Chatroom = ({ customRoomNumber, setOpenChat }) => {
 
   // Fetching the chatroom id from the params
   const { chatroom } = useParams();
+  // setCustomRoomNumber(chatroom);
 
   useEffect(() => {
     let isCancelled = true;
@@ -70,8 +81,9 @@ const Chatroom = ({ customRoomNumber, setOpenChat }) => {
             });
             // If the room was not in the server or in the database - redirect the user back to the meeting page
             if (!result) {
-              navigate('/app/secret-meeting-room');
+              return navigate('/app/secret-meeting-room');
             }
+            setCustomRoomNumber(chatroom);
           }
         });
       }
@@ -89,55 +101,56 @@ const Chatroom = ({ customRoomNumber, setOpenChat }) => {
     setFormField({ ...formField, [name]: value });
   };
 
+  const settingMessages = (data) => {
+    console.log('data Received', data);
+    // console.log('hello');
+    // setMessages([...data]);
+  };
+
+  // ** With every Socket Request, send the chat room number
   // Listening for The Message Response from websocket when we receive a message
   useEffect(() => {
-    socket.on('chat_message_received_broadcast', (data) => {
-      setReceivedResponse(data.message);
-      setReceivedResponseUsername(data.username);
-      setReceivedUsername(true);
+    socket.on('username-of-user-connected', (data) => {
+      // setUserConnected(data);
     });
 
-    socket.on('user-connected', (data) => {
-      console.log(data);
-      setUserConnected(data);
+    socket.on('chat_message_received_broadcast', (data) => {
+      settingMessages(data);
+
+      // messages.map((data) => {
+      // });
+      // setReceivedResponse(data.message);
+      // setReceivedResponseUsername(data.username);
+      // setReceivedUsername(true);
     });
 
     socket.on('user-disconnected', (data) => {
-      setUserDisconnected(data);
-      console.log(data);
+      // setUserDisconnected(data);
+      // console.log(data);
     });
   }, []);
+  // console.log('Messages After Update:', messages);
 
+  //
   // Sending - Submission of the form
   const handleMessageSubmit = async (event) => {
     event.preventDefault();
-    setSentMessage(sender);
+    // setSentMessage(sender);
 
-    // Emitting/Sending a message to the backend
-    await socket.emit('send_chat_message', { message: sender, username });
-    await socket.emit('new-user', { username });
+    // Emitting/Sending the message that the caribou typed to the backend along with the room number
+    socket.emit('new-user', customRoomNumber, { username });
+    socket.emit('send_chat_message', customRoomNumber, { message: sender, username });
     clearFields();
-  };
-
-  const handleCloseMessage = () => {
-    setOpenChat(false);
   };
 
   return (
     <div className="chat-container">
-      <button onClick={handleCloseMessage}>
-        <FaTimesCircle />
+      <button className="chatroom-meeting-backBtn" onClick={() => navigate('/app/secret-meeting-room')}>
+        <FaAngleLeft /> Back to Home
       </button>
       <p>{customRoomNumber}</p>
       <div className="chat-content">
-        <div className="chat-context-messages">
-          <span>{userConnected}</span>
-          <span>{userDisconnected}</span>
-          <p>
-            {receivedUsername && receivedResponseUsername} {receivedResponse}
-          </p>
-          <p>{sentMessage && `${username} ${sentMessage}`}</p>
-        </div>
+        <div className="chat-context-messages"></div>
         <div className="chat-form">
           <form onSubmit={handleMessageSubmit}>
             <input type="text" name="sender" id="sender" value={sender} onChange={inputMessageOnChangeHandler} />
