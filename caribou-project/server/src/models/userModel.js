@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       select: true,
     },
-    location: [{ type: mongoose.Schema.Types.ObjectId, ref: 'map' }],
+    location: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Map' }],
   },
   {
     timestamps: true,

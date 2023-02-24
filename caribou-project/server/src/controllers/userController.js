@@ -106,7 +106,7 @@ async function loginUser(req, res) {
 
   // Check Regular Expression for email
   const regex = /^[\w-\.]+-carib@([\w-]+\.)+[\w-]{2,4}$/g;
-  const found = lowerCaseEmail.match(regex);
+  const found = email.match(regex);
   if (!found) {
     errors.push({ errorMsg: 'Humans are not allowed!' });
   }

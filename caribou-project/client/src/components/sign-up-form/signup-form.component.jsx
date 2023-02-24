@@ -116,7 +116,7 @@ const SignUpForm = () => {
             const refreshToken = savedUser.data.refreshToken;
             const avatarImage = savedUser.data.avatarImage;
             const email = savedUser.data.email;
-            console.log(email, accessToken, refreshToken, avatarImage);
+            // console.log(email, accessToken, refreshToken, avatarImage);
             dispatch(
               addUser({
                 refreshToken,
