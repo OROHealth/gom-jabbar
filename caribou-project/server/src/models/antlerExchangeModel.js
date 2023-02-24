@@ -23,16 +23,24 @@ const antlerExchangeSchema = new mongoose.Schema(
       required: true,
       select: true,
     },
+    messages: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ChatroomMsg',
+        required: false,
+        select: true,
+      },
+    ],
     createdAt: { type: Date, immutable: true, default: () => Date.now() }, // by default it should be the current date
     updatedAt: { type: Date, immutable: true, default: () => Date.now() },
-    expiresAt: { type: Date, expires: '2h', default: Date.now },
+    expiresAt: { type: Date, expires: '5h', default: Date.now },
   }
   // {
   //   timestamps: true,
   // }
 );
 
-antlerExchangeSchema.index({ createdAt: 1 }, { expireAfterSeconds: 3600 * 60 });
+antlerExchangeSchema.index({ createdAt: 1 }, { expireAfterSeconds: 3600 * 5 });
 
 antlerExchangeSchema.set('toJSON', {
   transform: (document, returnedObject) => {

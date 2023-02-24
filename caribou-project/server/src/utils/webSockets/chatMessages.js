@@ -35,13 +35,14 @@ const socketIOChatMessageHandler = io => {
 
       // Listens for message and broadcast to the opposite sockets connected
       socket.on('send_chat_message', (room, data) => {
+        console.log('Line 38: Received Message', data, 'Room:', room);
         // The "data" contains the "message" that was send from the input and the username of the sender.
 
         socket.join(room);
 
-        console.log('Line 42: Send Chat Message:', data);
+        console.log('Line 42: Send Chat Message:', data, 'to:', room);
         // Sending back the message and the users Name = { message: 'how u doing', username: 'giov' } User: giov
-        socket.to(room).emit('chat_message_received_broadcast', { ...data });
+        io.to(room).emit('chat_message_received_broadcast', data);
       });
 
       // Signal the user is disconnected from the chat

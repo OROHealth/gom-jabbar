@@ -1,22 +1,27 @@
 const chatroomRouter = require('express').Router();
-const { getRoomRouter, postRoomRouter, postRoomIdRouter } = require('../controllers/chatroomRouter');
+const { getRoomRouter, postMessageRouter, postRoomIdRouter, getAllMsgs } = require('../controllers/chatroomRouter');
 
 // Base = '/api/v1/chatroom'
 
-// @Desc    Gets all the chatrooms
-// @Method  GET
-// @Route   /api/v1/chatroom
-chatroomRouter.get('/', getRoomRouter);
-
 // good
-// @Desc   post a chatroom Id
+// @Desc   post/create a chatroom Id
 // @Method  POST
 // @Route   /api/v1/chatroom/roomId
 chatroomRouter.post('/roomId', postRoomIdRouter);
 
-// @Desc    get the chat room based on the id
+// @Desc   Post messages
+// @Method  POST
+// @Route   /api/v1/chatroom/message
+chatroomRouter.post('/message', postMessageRouter);
+
+// @Desc    get The specific message
 // @Method  GET
-// @Route   /api/v1/chatroom/:roomId
-chatroomRouter.get('/:roomId', postRoomRouter);
+// @Route   /api/v1/chatroom/:messageId
+chatroomRouter.post('/:messageId', getAllMsgs);
+
+// @Desc    Gets all the chatRooms
+// @Method  GET
+// @Route   /api/v1/chatroom
+chatroomRouter.get('/', getRoomRouter);
 
 module.exports = chatroomRouter;

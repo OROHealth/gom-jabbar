@@ -16,7 +16,7 @@ async function getAllMapLocations(_req, res) {
   log('info', 'App Currently Getting all the Map Marker Locations in the Database', 'mapController');
   const locations = await MapModel.find({}).populate({ path: 'user', model: 'User' });
   log('info', 'Locations Found, Sent them to the Frontend :)', 'mapController');
-  res.json({ locations });
+  res.status(200).json({ locations });
   return;
 }
 

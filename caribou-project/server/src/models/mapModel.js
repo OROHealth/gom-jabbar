@@ -34,7 +34,7 @@ const mapSchema = new mongoose.Schema(
     },
     createdAt: { type: Date, immutable: true, default: () => Date.now() }, // by default it should be the current date
     updatedAt: { type: Date, immutable: true, default: () => Date.now() },
-    expiresAt: { type: Date, expires: '2h', default: Date.now },
+    expiresAt: { type: Date, expires: '5h', default: Date.now },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   }
   // {
@@ -42,7 +42,7 @@ const mapSchema = new mongoose.Schema(
   // }
 );
 
-mapSchema.index({ createdAt: 1 }, { expireAfterSeconds: 3600 * 60 });
+mapSchema.index({ createdAt: 1 }, { expireAfterSeconds: 3600 * 5 });
 
 mapSchema.set('toJSON', {
   transform: (document, returnedObject) => {

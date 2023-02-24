@@ -103,7 +103,7 @@ const AntlerExchange = () => {
 
     // sending the room to the database
     // socket.emit('new_room_created', { message: theCustomRoomNumber });
-    console.log('Line 107:, Antler-Exchange-component ->  The CustomRoomNumber is:', theCustomRoomNumber);
+    // console.log('Line 107:, Antler-Exchange-component ->  The CustomRoomNumber is:', theCustomRoomNumber);
 
     try {
       await antlerExchangeService
@@ -122,7 +122,7 @@ const AntlerExchange = () => {
         })
         .then(async () => {
           await chatRoomService.createChatRoom({ room: theCustomRoomNumber }).then((newRoomCreated) => {
-            console.log('Line 125: Antler Exchange and Room was Created', newRoomCreated);
+            // console.log('Line 125: Antler Exchange and Room was Created', newRoomCreated);
           });
         });
     } catch (error) {

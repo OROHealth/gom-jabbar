@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema(
       select: true,
     },
     location: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Map' }],
+    antlerExchange: [{ type: mongoose.Schema.Types.ObjectId, ref: 'AntlerExchange' }],
   },
   {
     timestamps: true,

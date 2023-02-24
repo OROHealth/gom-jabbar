@@ -13,14 +13,7 @@ const LocalToken = () => {
 };
 
 class ChatRoomService {
-  // @ DESC    Save caribous that want to antler exchange
-  // @ METHOD  POST
-  // @ ROUTE   /api/v1/chatroom/:roomId
-  async saveChatRoom(roomId) {
-    const response = axios.post('/chatroom/:roomId', roomId, LocalToken());
-    return response;
-  }
-
+  // good
   // @ DESC    GET all the chatRooms
   // @ METHOD  GET
   // @ ROUTE   /api/v1/chatroom
@@ -35,6 +28,27 @@ class ChatRoomService {
   // @ ROUTE   /api/v1/chatroom/roomId
   async createChatRoom(body) {
     const response = axios.post('/chatroom/roomId', body, LocalToken());
+    return response;
+  }
+
+  // good
+  // @ DESC    Save caribous that want to antler exchange
+  // @ METHOD  POST
+  // @ ROUTE   /api/v1/chatroom/message
+  async saveChatRoomMsgs(data) {
+    const response = axios.post(`/chatroom/message`, data, LocalToken());
+    return response;
+  }
+
+  //
+  // @ DESC    Get all Messages
+  // @ METHOD  Get
+  // @ ROUTE   /api/v1/chatroom/:messageId
+  async setAllMessages(data) {
+    const { messageId } = data;
+
+    console.log('Sending', messageId);
+    const response = axios.post(`/chatroom/${messageId}`, data, LocalToken());
     return response;
   }
 }

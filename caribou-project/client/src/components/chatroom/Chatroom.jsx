@@ -19,12 +19,7 @@ const initialState = {
   sender: '',
 };
 
-// const messagesInitialState = [
-//   {
-//     currentSender: {},
-//     receiver: {},
-//   },
-// ];
+// const messagesInitialState = [];
 
 const Chatroom = () => {
   const [formField, setFormField] = useState(initialState);
@@ -54,7 +49,7 @@ const Chatroom = () => {
 
   // Fetching the chatroom id from the params
   const { chatroom } = useParams();
-  // setCustomRoomNumber(chatroom);
+  console.log('chatRoom:', chatroom);
 
   useEffect(() => {
     let isCancelled = true;
@@ -68,6 +63,7 @@ const Chatroom = () => {
           if (allRooms.data[chatroom] == null) {
             setDidNotFindRoomInServer(true);
           }
+          setCustomRoomNumber(chatroom);
         }
       });
 
@@ -86,14 +82,41 @@ const Chatroom = () => {
             setCustomRoomNumber(chatroom);
           }
         });
+        setDidNotFindRoomInServer(false);
       }
     };
     gettingRoom();
 
     return () => {
       isCancelled = false;
+      setDidNotFindRoomInServer(false);
     };
-  }, [chatroom, navigate, didNotFindRoomInServer]);
+  }, []);
+
+  // Getting all the messages
+  useEffect(() => {
+    let isCancelled = true;
+
+    try {
+      const gettingMessages = async () => {
+        if (isCancelled) {
+          const newMessage = {
+            messageId: chatroom,
+          };
+          await chatRoomService.setAllMessages(newMessage).then((result) => {
+            console.log('Messages', result);
+          });
+        }
+      };
+      gettingMessages();
+    } catch (error) {
+      console.log(`Error fetching Messages ${error}`);
+    }
+
+    return () => {
+      isCancelled = false;
+    };
+  }, []);
 
   // handle Input change
   const inputMessageOnChangeHandler = (event) => {
@@ -101,27 +124,33 @@ const Chatroom = () => {
     setFormField({ ...formField, [name]: value });
   };
 
-  const settingMessages = (data) => {
-    console.log('data Received', data);
-    // console.log('hello');
-    // setMessages([...data]);
-  };
+  // const settingMessages = (data) => {
+  // console.log('data Received', data);
+
+  // keep track of the received message
+  // };
 
   // ** With every Socket Request, send the chat room number
   // Listening for The Message Response from websocket when we receive a message
   useEffect(() => {
-    socket.on('username-of-user-connected', (data) => {
-      // setUserConnected(data);
-    });
-
     socket.on('chat_message_received_broadcast', (data) => {
-      settingMessages(data);
-
+      // console.log('received data Back from the server:', data);
+      // settingMessages(data);
+      // const newMessage = {
+      //   username,
+      //   senderMsg: data.message,
+      // };
+      // // keep track of the message that was sent by the initial sender
+      // setMessages(messages.concat(newMessage));
       // messages.map((data) => {
       // });
       // setReceivedResponse(data.message);
       // setReceivedResponseUsername(data.username);
       // setReceivedUsername(true);
+    });
+
+    socket.on('username-of-user-connected', (data) => {
+      // setUserConnected(data);
     });
 
     socket.on('user-disconnected', (data) => {
@@ -135,13 +164,30 @@ const Chatroom = () => {
   // Sending - Submission of the form
   const handleMessageSubmit = async (event) => {
     event.preventDefault();
-    // setSentMessage(sender);
+    // console.log('Sent Message', sender);
+    const newMessage = {
+      roomId: chatroom,
+      user: username,
+      message: sender,
+    };
+    try {
+      const saveMessages = async () => {
+        await chatRoomService.saveChatRoomMsgs(newMessage).then((result) => {
+          // console.log('Saved Message', result);
+        });
+      };
+      saveMessages();
+    } catch (error) {
+      console.log(error);
+    }
 
     // Emitting/Sending the message that the caribou typed to the backend along with the room number
     socket.emit('new-user', customRoomNumber, { username });
     socket.emit('send_chat_message', customRoomNumber, { message: sender, username });
+
     clearFields();
   };
+  // console.log('Messages:', messages);
 
   return (
     <div className="chat-container">
@@ -150,7 +196,11 @@ const Chatroom = () => {
       </button>
       <p>{customRoomNumber}</p>
       <div className="chat-content">
-        <div className="chat-context-messages"></div>
+        <div className="chat-context-messages">
+          {/* {messages.map((msg)=>{
+            re
+          })} */}
+        </div>
         <div className="chat-form">
           <form onSubmit={handleMessageSubmit}>
             <input type="text" name="sender" id="sender" value={sender} onChange={inputMessageOnChangeHandler} />
