@@ -16,10 +16,6 @@ import { useSelector } from 'react-redux';
 import { antlerExchangeService } from '@services/api/antlerExchangeRoom/antlerExchangeRoom.service';
 import { chatRoomService } from '@services/api/chatroom/chatroom.service';
 
-// const userRoomInitialState = {
-//   customRoom: '',
-// };
-
 const AntlerExchange = () => {
   const [errorMessages, setErrorMessages] = useState([]);
   const [showErrorMsg, setShowErrorMsg] = useState(false);
@@ -95,18 +91,19 @@ const AntlerExchange = () => {
     socket.emit('antler_exchange', { message: `Secret Caribou known as "${letter}" is ready to antler-exchange` });
     setSetShowN(true);
 
+    // generate a random string
     const getRoom = () => {
       const roomNumber = generateRandomIntegers(12);
-      console.log('Params:', roomNumber);
+      // console.log('Params:', roomNumber);
       return roomNumber;
     };
 
-    // the custom room generated
+    // call the Custom Room Id Generator
     const theCustomRoomNumber = getRoom();
 
     // sending the room to the database
-    socket.emit('new_room_created', { message: theCustomRoomNumber });
-    console.log('Line 110:, Antler Exchange:  theCustomRoomNumber', theCustomRoomNumber);
+    // socket.emit('new_room_created', { message: theCustomRoomNumber });
+    console.log('Line 107:, Antler-Exchange-component ->  The CustomRoomNumber is:', theCustomRoomNumber);
 
     try {
       await antlerExchangeService
@@ -117,13 +114,16 @@ const AntlerExchange = () => {
         })
         .then(async (result) => {
           if (result.data) {
-            await chatRoomService.createChatRoom({ room: theCustomRoomNumber }).then((newRoomCreated) => {
-              setShowErrorMsg(false);
-              setShowSuccessMsg(true);
-              const successMsg = result?.data?.success[0]?.successMsg;
-              setSuccessMessages([successMsg]);
-            });
+            setShowErrorMsg(false);
+            setShowSuccessMsg(true);
+            const successMsg = result?.data?.success[0]?.successMsg;
+            setSuccessMessages([successMsg]);
           }
+        })
+        .then(async () => {
+          await chatRoomService.createChatRoom({ room: theCustomRoomNumber }).then((newRoomCreated) => {
+            console.log('Line 125: Antler Exchange and Room was Created', newRoomCreated);
+          });
         });
     } catch (error) {
       console.log(`Line 72: Error Saving antler exchange Caribou`, error, 'AntlerExchange component');

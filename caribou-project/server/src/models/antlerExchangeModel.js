@@ -25,8 +25,7 @@ const antlerExchangeSchema = new mongoose.Schema(
     },
     createdAt: { type: Date, immutable: true, default: () => Date.now() }, // by default it should be the current date
     updatedAt: { type: Date, immutable: true, default: () => Date.now() },
-    expiresAt: { type: Date, expires: '1h', default: Date.now },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    expiresAt: { type: Date, expires: '2h', default: Date.now },
   }
   // {
   //   timestamps: true,

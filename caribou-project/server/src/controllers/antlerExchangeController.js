@@ -23,7 +23,7 @@ async function getAntlerExchangeCaribous(req, res) {
 async function saveAntlerExchangeCaribou(req, res) {
   const { email, userImage, customRoomNumber } = req.body;
   // log('info', email, 'antlerExchange Controller');
-  log('info', `custom room number: ${customRoomNumber}`, 'antlerExchange Controller');
+  log('info', `Line 26: custom room number: ${customRoomNumber}`, 'antlerExchange Controller');
 
   let errors = [];
   const success = [];
