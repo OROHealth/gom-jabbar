@@ -57,6 +57,13 @@ async function saveAntlerExchangeCaribou(req, res) {
           customRoomNumber,
         });
 
+        await AntlerExchangeModel.findOne({ customRoomNumber: customRoomNumber }).then(roomsAlreadyCreated => {
+          if (roomsAlreadyCreated) {
+            errors.push({ errorMsg: 'Sorry this meeting room number was already created. Please try again.' });
+            return res.status(401).json(errors).end();
+          }
+        });
+
         await AntlerExchangeModel.findOne({ email: lowerCaseEmail }).then(async caribouExist => {
           if (caribouExist) {
             errors.push({ errorMsg: 'You were already added.' });

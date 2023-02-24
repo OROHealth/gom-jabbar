@@ -11,7 +11,10 @@ import socket from '@services/websocket/webSocketIO';
 
 // Redux
 import { useSelector } from 'react-redux';
+
+// API
 import { antlerExchangeService } from '@services/api/antlerExchangeRoom/antlerExchangeRoom.service';
+import { chatRoomService } from '@services/api/chatroom/chatroom.service';
 
 // const userRoomInitialState = {
 //   customRoom: '',
@@ -77,7 +80,7 @@ const AntlerExchange = () => {
   // Generating random numbers
   const generateRandomIntegers = (integerLength) => {
     const characters = '0123ABCDEFGHIJKLMNOPQRSTUVWXYZ456789';
-    let result = ' ';
+    let result = '';
     const charactersLength = characters.length;
     for (let i = 0; i < integerLength; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -87,22 +90,23 @@ const AntlerExchange = () => {
   };
 
   // Send broadcast
-  const firstLetter = userEmailFound?.charAt(0)?.toUpperCase();
+  const letter = userEmailFound?.slice(0, 4)?.toUpperCase();
   const handleSendAntlerExchange = async () => {
-    // const { customRoom } = customRoomNumber;
-    socket.emit('antler_exchange', { message: `Secret Caribou known as "${firstLetter}" is ready to antler-exchange` });
+    socket.emit('antler_exchange', { message: `Secret Caribou known as "${letter}" is ready to antler-exchange` });
     setSetShowN(true);
 
     const getRoom = () => {
       const roomNumber = generateRandomIntegers(12);
-      // console.log(roomNumber);
-
+      console.log('Params:', roomNumber);
       return roomNumber;
     };
 
+    // the custom room generated
     const theCustomRoomNumber = getRoom();
 
-    console.log('theCustomRoomNumber', theCustomRoomNumber);
+    // sending the room to the database
+    socket.emit('new_room_created', { message: theCustomRoomNumber });
+    console.log('Line 110:, Antler Exchange:  theCustomRoomNumber', theCustomRoomNumber);
 
     try {
       await antlerExchangeService
@@ -111,17 +115,14 @@ const AntlerExchange = () => {
           userImage,
           customRoomNumber: theCustomRoomNumber,
         })
-        .then((result) => {
+        .then(async (result) => {
           if (result.data) {
-            // console.log(
-            //   'Line 87: Saving Caribou who want too antler Exchange: ',
-            //   result.data.success[0].successMsg,
-            //   'AntlerExchange component'
-            // );
-            setShowErrorMsg(false);
-            setShowSuccessMsg(true);
-            const successMsg = result?.data?.success[0]?.successMsg;
-            setSuccessMessages([successMsg]);
+            await chatRoomService.createChatRoom({ room: theCustomRoomNumber }).then((newRoomCreated) => {
+              setShowErrorMsg(false);
+              setShowSuccessMsg(true);
+              const successMsg = result?.data?.success[0]?.successMsg;
+              setSuccessMessages([successMsg]);
+            });
           }
         });
     } catch (error) {

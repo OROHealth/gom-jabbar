@@ -204,21 +204,22 @@ const Map = (props) => {
           allMapLocations.map((marker, id) => {
             // Gets the ISO-8601 date and converts it to local Date and transforms it to a string and save.
             let exDate1 = new Date(marker.expiresAt);
+
             exDate1 = exDate1.toLocaleString('en-US').toString();
 
             return (
-              <div key={`${marker.id || id}${marker.x}`}>
+              <div key={`${marker.id}`}>
                 <CircleMarker center={[marker.y, marker.x]} pathOptions={redOptions} radius={marker.trashingLevel * 2}>
-                  <Popup>
+                  <Tooltip>
                     <div>
                       <div>Trashing Level: {marker.trashingLevel}</div>
                       <div>Excitement Level: {marker.excitementLevel}</div>
                       <div>Expires at: {exDate1}</div>
                     </div>
-                    <Tooltip direction="top" offset={[-10, -10]} opacity={1}>
+                    <Popup direction="top" offset={[-10, -10]} opacity={1}>
                       <p>Humans Are Here! So Stay Away.</p>
-                    </Tooltip>
-                  </Popup>
+                    </Popup>
+                  </Tooltip>
                 </CircleMarker>
               </div>
             );

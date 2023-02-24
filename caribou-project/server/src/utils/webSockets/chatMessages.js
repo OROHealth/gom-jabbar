@@ -2,11 +2,17 @@ const log = require('../logger');
 
 const socketIOChatMessageHandler = io => {
   const users = {};
+  const rooms = {};
 
   const listen = () => {
     log('info', `Listening for Chat Messages`, 'index');
 
     io.on('connection', socket => {
+      socket.on('new_room_created', theCustomRoomNumber => {
+        console.log('Line 9: New User', theCustomRoomNumber);
+        // socket.broadcast.emit('user-connected', username); // emitting a user is connected
+      });
+
       // Signal the that a new User is connected to the chat
       socket.on('new-user', ({ username }) => {
         console.log('Line 9: New User', username);

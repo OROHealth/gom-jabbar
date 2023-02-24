@@ -32,13 +32,17 @@ const mapSchema = new mongoose.Schema(
       unique: false,
       trim: true,
     },
-    expiresAt: { type: Date, expires: '7200', default: Date.now },
+    createdAt: { type: Date, immutable: true, default: () => Date.now() }, // by default it should be the current date
+    updatedAt: { type: Date, immutable: true, default: () => Date.now() },
+    expiresAt: { type: Date, expires: '1h', default: Date.now },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  },
-  {
-    timestamps: true,
   }
+  // {
+  //   timestamps: true,
+  // }
 );
+
+mapSchema.index({ createdAt: 1 }, { expireAfterSeconds: 3600 * 60 });
 
 mapSchema.set('toJSON', {
   transform: (document, returnedObject) => {
@@ -48,4 +52,4 @@ mapSchema.set('toJSON', {
   },
 });
 
-module.exports = mongoose.model('map', mapSchema);
+module.exports = mongoose.model('Map', mapSchema);

@@ -23,15 +23,17 @@ const antlerExchangeSchema = new mongoose.Schema(
       required: true,
       select: true,
     },
-    // expiresAt: { type: Date, expires: '7200', default: Date.now },
-    myCustomTTLField: { type: Date },
+    // myCustomTTLField: { type: Date },
+    createdAt: { type: Date, immutable: true, default: () => Date.now() }, // by default it should be the current date
+    updatedAt: { type: Date, immutable: true, default: () => Date.now() },
+    expires: { type: Date, expires: '7200', default: Date.now },
   },
   {
     timestamps: true,
   }
 );
 
-antlerExchangeSchema.path('myCustomTTLField').index({ expires: 7200 });
+// antlerExchangeSchema.path('myCustomTTLField').index({ expires: 7200 });
 
 antlerExchangeSchema.set('toJSON', {
   transform: (document, returnedObject) => {
@@ -41,4 +43,4 @@ antlerExchangeSchema.set('toJSON', {
   },
 });
 
-module.exports = mongoose.model('antlerExchange', antlerExchangeSchema);
+module.exports = mongoose.model('AntlerExchange', antlerExchangeSchema);

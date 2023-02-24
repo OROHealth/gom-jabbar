@@ -10,19 +10,17 @@ import AppNavigation from '@components/app-navigation/AppNavigation.component';
 import { antlerExchangeService } from '@services/api/antlerExchangeRoom/antlerExchangeRoom.service';
 import { FaAngleLeft } from 'react-icons/fa';
 import { addAntlerExchangeCaribouToMeeting } from '@redux/reducers/antlerExchangeCaribousMeeting/antlerExchangeMeeting.reducer';
-import Chatroom from '@components/chatroom/Chatroom';
 
 const ChatMeetingRoom = () => {
   const [allAntlerExchangeMeetings, setAllAntlerExchangeMeetings] = useState(null);
-  const [customRoomNumber, setCustomRoomNumber] = useState(null);
+  // const [customRoomNumber, setCustomRoomNumber] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [openChat, setOpenChat] = useState(false);
 
   // handle joining a room
   const HandleJoinChatOnClick = (room) => {
-    setCustomRoomNumber(room);
-    setOpenChat(!openChat);
+    navigate('/app/secret-meeting-room/' + `${room}`);
+    console.log('/app/secret-meeting-room/' + `${room}`);
   };
 
   useEffect(() => {
@@ -34,7 +32,7 @@ const ChatMeetingRoom = () => {
         await antlerExchangeService.getAntlerExchangeCaribous().then((allCaribousForAntlerExchange) => {
           if (isCancelled) {
             const { allAntlerExchangeCaribous } = allCaribousForAntlerExchange?.data;
-            console.log('result', allCaribousForAntlerExchange.data.allAntlerExchangeCaribous);
+            // console.log('result', allCaribousForAntlerExchange.data.allAntlerExchangeCaribous);
 
             // Saving to useState and Dispatching to redux
             setAllAntlerExchangeMeetings(allAntlerExchangeCaribous);
@@ -54,7 +52,6 @@ const ChatMeetingRoom = () => {
     <div>
       <AppNavigation />
       <main>
-        {openChat && <Chatroom customRoomNumber={customRoomNumber} setOpenChat={setOpenChat} />}
         <div className="Chat-meeting-container">
           <button className="chatroom-meeting-backBtn" onClick={() => navigate('/app/dashboard')}>
             <FaAngleLeft /> Back to Home

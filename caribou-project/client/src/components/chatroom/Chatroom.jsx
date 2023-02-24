@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 
 // web Sockets
 import socket from '@services/websocket/webSocketIO';
@@ -9,6 +10,9 @@ import useLocalStorage from '@hooks/useLocalStorage';
 // StyleSheet
 import '@components/chatroom/Chatroom.styles.scss';
 import { FaTimesCircle } from 'react-icons/fa';
+
+// API
+import { chatRoomService } from '@services/api/chatroom/chatroom.service';
 
 const initialState = {
   sender: '',
@@ -21,6 +25,7 @@ const Chatroom = ({ customRoomNumber, setOpenChat }) => {
   const [sentMessage, setSentMessage] = useState('');
   const getStorageEmail = useLocalStorage('app-email', 'get');
   const username = getStorageEmail.slice(0, 4);
+  const navigate = useNavigate();
 
   // user connected or disconnected
   const [userConnected, setUserConnected] = useState(null);
@@ -34,6 +39,22 @@ const Chatroom = ({ customRoomNumber, setOpenChat }) => {
   const clearFields = () => {
     setFormField(initialState);
   };
+
+  // Fetching the chatroom id from the params
+  const { chatroom } = useParams();
+
+  useEffect(() => {
+    // Functions to redirect a user if they enter into a wrongs Chatroom Url
+    const gettingRoom = async () => {
+      await chatRoomService.getAllChatRooms().then((allRooms) => {
+        // console.log('All Rooms from the database', allRooms.data[chatroom]);
+        if (!allRooms.data[chatroom]) {
+          navigate('/app/secret-meeting-room');
+        }
+      });
+    };
+    gettingRoom();
+  }, [chatroom, navigate]);
 
   // handle Input change
   const inputMessageOnChangeHandler = (event) => {

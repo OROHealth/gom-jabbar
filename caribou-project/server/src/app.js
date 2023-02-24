@@ -18,6 +18,7 @@ const client = require('./helpers/initRedis');
 const userRouter = require('./routes/userRouter');
 const mapRouter = require('./routes/mapRouter');
 const antlerExchangeRouter = require('./routes/antlerExchangeRouter');
+const chatroomRouter = require('./routes/chatroomRouter');
 
 // Security Middle-wares
 app.use(hpp());
@@ -56,6 +57,7 @@ app.use('/api/v1/user', userRouter);
 // app.use('/api/v1/map', mapRouter); // test without token
 app.use('/api/v1/map', verifyAccessToken, mapRouter);
 app.use('/api/v1/antler-exchange', verifyAccessToken, antlerExchangeRouter);
+app.use('/api/v1/chatroom', verifyAccessToken, chatroomRouter);
 
 // Health check route - endpoint that returns a 200 status code if your application is running
 app.get('/_health', (req, res) => {
