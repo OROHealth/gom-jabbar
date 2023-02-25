@@ -17,7 +17,7 @@ const socketIOLocationAddedHandler = io => {
 
         switch (change.operationType) {
           case 'insert':
-            log('info', 'Line 35: Location Was added!', 'setupDatabase');
+            // log('info', 'Line 35: Location Was added!', 'setupDatabase');
 
             io.emit('location_added_broadcast', { message: `New location added` });
           // io.on('connection', socket => {

@@ -16,7 +16,7 @@ class MapService {
   // @ METHOD  POST
   // @ ROUTE   /api/v1/map/post=location
   async saveLocation(body) {
-    const response = axios.post('map/post=location', body, LocalToken());
+    const response = axios.post('/map/post=location', body, LocalToken());
     return response;
   }
 
@@ -24,7 +24,7 @@ class MapService {
   // @ METHOD  GET
   // @METHOD   /api/v1/map + /query=Map-Locations
   async getAllLocations() {
-    const response = axios.get('map/query=Map-Locations', LocalToken());
+    const response = axios.get('/map/query=Map-Locations', LocalToken());
     return response;
   }
 }

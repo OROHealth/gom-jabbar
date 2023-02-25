@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 // const mapSchema = require('./mapModel');
 const userSchema = new mongoose.Schema(
   {
@@ -24,7 +25,8 @@ const userSchema = new mongoose.Schema(
       required: true,
       select: true,
     },
-    location: [{ type: mongoose.Schema.Types.ObjectId, ref: 'map' }],
+    location: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Map' }],
+    antlerExchange: [{ type: mongoose.Schema.Types.ObjectId, ref: 'AntlerExchange' }],
   },
   {
     timestamps: true,
@@ -39,4 +41,4 @@ userSchema.set('toJSON', {
   },
 });
 
-module.exports = mongoose.model('user', userSchema);
+module.exports = mongoose.model('User', userSchema);

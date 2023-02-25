@@ -95,8 +95,11 @@ const SignUpForm = () => {
 
       // Create avatarColor
       const color = avatarColor();
+
       // Create avatar Image
       const avatarImage = generateAvatar(email.charAt(0).toUpperCase(), color);
+
+      // Signing up caribou
       await authService
         .signUp({
           email,
@@ -113,7 +116,7 @@ const SignUpForm = () => {
             const refreshToken = savedUser.data.refreshToken;
             const avatarImage = savedUser.data.avatarImage;
             const email = savedUser.data.email;
-            console.log(email, accessToken, refreshToken, avatarImage);
+            // console.log(email, accessToken, refreshToken, avatarImage);
             dispatch(
               addUser({
                 refreshToken,

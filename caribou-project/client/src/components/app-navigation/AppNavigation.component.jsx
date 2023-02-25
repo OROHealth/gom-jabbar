@@ -7,7 +7,6 @@ import useLocalStorage from '@hooks/useLocalStorage';
 import '@components/app-navigation/AppNavigation.styles.scss';
 
 // Components
-// import Button from '@components/button/Button';
 import { FaAngleDown } from 'react-icons/fa';
 import { removeUser } from '@redux/reducers/user/user.reducer';
 
@@ -20,8 +19,6 @@ const AppNavigation = () => {
   const deleteStorageAvatarImage = useLocalStorage('avatar-image', 'delete');
   const deleteStorageEmail = useLocalStorage('app-email', 'delete');
   const [setStorageLoggedIn] = useLocalStorage('loggedIn', 'set');
-
-  // Get the avatar image from local storage
   const avatarImage = useLocalStorage('avatar-image', 'get');
   const userImage = useSelector((state) => state?.user?.avatarImage);
 
@@ -47,7 +44,7 @@ const AppNavigation = () => {
     <>
       <nav className="app-navbar-container">
         <span className="nav-items">
-          <div className="app-nav-title">
+          <div onClick={() => navigate('/app/dashboard')} className="app-nav-title">
             <span>
               <strong>Welcome Caribou</strong>
             </span>
@@ -55,7 +52,7 @@ const AppNavigation = () => {
           <div className="app-flex">
             <div onClick={handleLogoDropdown} className="app-flex">
               <div className="image-wrapper">
-                <img src={avatarImage.length > 0 ? userImage : avatarImage} alt="Avatar image" />{' '}
+                <img src={userImage || avatarImage} alt="Avatar image" />{' '}
               </div>
               <FaAngleDown />
               {dropdownOpen && (
