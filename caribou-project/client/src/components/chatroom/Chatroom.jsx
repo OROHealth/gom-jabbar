@@ -195,10 +195,10 @@ const Chatroom = () => {
                     console.log(theUser === username);
                     if (theUser === username) {
                       return (
-                        <div className="each-msg-text you" key={id}>
+                        <p className="each-msg-text you" key={id}>
                           {/* display only the names of the other user  */}
                           <p>{msg.split(' ').slice(1).join(' ')}</p>
-                        </div>
+                        </p>
                       );
                     } else {
                       return (
@@ -209,12 +209,21 @@ const Chatroom = () => {
                     }
                   })}
               </div>
-              <div className="chat-form-container">
-                <form onSubmit={handleMessageSubmit}>
-                  <input type="text" name="sender" id="sender" value={sender} onChange={inputMessageOnChangeHandler} />
-                  <button type="submit">Submit</button>
-                </form>
-              </div>
+
+              <form className="chat-box" onSubmit={handleMessageSubmit}>
+                <textarea
+                  className="chat-message-Input"
+                  type="text"
+                  name="sender"
+                  id="sender"
+                  value={sender}
+                  placeholder="Write something..."
+                  onChange={inputMessageOnChangeHandler}
+                />
+                <button className="chat-message-button" type="submit">
+                  Send
+                </button>
+              </form>
             </div>
           </div>
         </div>

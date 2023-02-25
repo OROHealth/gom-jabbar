@@ -49,38 +49,65 @@
           display: flex;
           flex-direction: column;
           gap: 15px;
-          justify-content: flex-end;
           align-items: flex-start;
+          overflow-y: scroll;
+
 
           .each-msg-text{
-            background-color: #717171;
-            color: #ffffff;
+            background-color: #e7e7e7;
+            color: #000000;
             max-width: 250px;
             border-radius: 20px;
-            padding: 10px;
+            padding: 13px;
             align-items: flex-start;
+            box-shadow: rgba(3,8,20,0.1) 0px 0.15rem 0.5rem, rgba(2,8,20,0.1) 0px 0.0175rem 0.175rem;
+            border: none;
           }
         }
 
         .chat-context-messages .you{
           padding: 13px 14px;
           background-color: #1877f2;
+          color: #ffffff;
           max-width: 250px;
           align-self: flex-end;
+          box-shadow: rgba(3, 8, 20, 0.291) 0px 0.15rem 0.5rem, rgba(3, 9, 21, 0.294) 0px 0.0175rem 0.175rem;
+          border: none;
         }
 
         .chat-context-messages{
           width: 100%;
-          height: 80%;
+          height: 78%;
+
         }
 
       }
 
-      .chat-form-container{
+      .chat-box{
         border: 2px solid #18f240;
         width: 100%;
         height: 20%;
         margin-top: 10px;
+        margin-top: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .chat-message-Input{
+          width: 80%;
+          height: 90%;
+        }
+
+        .chat-message-button{
+          width: 70px;
+          height: 40px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          background-color: teal;
+          color: #ffffff;
+
+        }
 
         form {
           width: 100%;
@@ -90,9 +117,7 @@
             font-size: 12px;
           }
         }
-
       }
-
     }
 
 
