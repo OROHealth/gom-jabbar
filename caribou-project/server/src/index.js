@@ -49,6 +49,10 @@ async function startHttpServer(server) {
       log('error', `Emitted 'error' event on Socket instance at ${SERVER_PORT}`, 'index');
       shutDownProperly(1);
     }
+    if (error.code === 'EACCES') {
+      log('error', `Error: Requires elevated privileges ${SERVER_PORT}`, 'index');
+      shutDownProperly(1);
+    }
     log('info', `HERE IS THE ERROR: Code: ${error.code} Error: ${error} PID: ${process.pid}`, 'index');
   });
 }

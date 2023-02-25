@@ -9,9 +9,10 @@
     "lint:fix": "eslint 'src/**/*.js' --fix",
     "prettier:check": "prettier --check 'src/**/*.{js,json}'",
     "prettier:fix": "prettier --write 'src/**/*.{js,json}'",
-    "start": "NODE_ENV=production node src/index.js | ./node_modules/.bin/bunyan",
+    "start": "NODE_ENV=production pm2 start ./src/index.js -i -5 --attach --watch -f | ./node_modules/.bin/bunyan ",
     "start:dev": "NODE_ENV=development nodemon src/index.js | ./node_modules/.bin/bunyan",
-    "cluster": "pm2 start index.js -i max"
+    "cluster": "pm2 start index.js -i max",
+    "build:prod": ""
   },
   "keywords": [],
   "author": "",
