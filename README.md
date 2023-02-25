@@ -1,6 +1,3 @@
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/uzochukwueddie/chatty/tree/develop.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/uzochukwueddie/chatty/tree/develop)
-[![codecov](https://codecov.io/gh/uzochukwueddie/chatty/branch/develop/graph/badge.svg?token=D6GX9SDN6M)](https://codecov.io/gh/uzochukwueddie/chatty)
-
 |||||
 |:-:|:-:|:-:|:-:|
 |![First Image](https://res.cloudinary.com/dyamr9ym3/image/upload/v1662482775/github_readme_images/react_dzmcqt.png)|![Second Image](https://res.cloudinary.com/dyamr9ym3/image/upload/v1662483177/github_readme_images/axios_jlnlcn.png)|![Third Image](https://res.cloudinary.com/dyamr9ym3/image/upload/v1662483316/github_readme_images/sass_yxqpyf.png)
