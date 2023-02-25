@@ -7,15 +7,6 @@ const socketIOLocationAddedHandler = io => {
 
     mongoose.connection.once('open', () => {
       // Now I need to access the collection I will monitor for changes.
-      // function closeChangeStream(timeInMs = 60000, changeStream) {
-      //   return new Promise(resolve => {
-      //     setTimeout(() => {
-      //       console.log('Closing the change stream');
-      //       resolve(humanQuitChangeStream.close());
-      //     }, timeInMs);
-      //   });
-      // }
-
       const humanQuitChangeStream = mongoose.connection.collection('maps').watch();
 
       // Create a change stream by using Collection's watch()
