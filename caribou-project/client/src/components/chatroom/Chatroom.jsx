@@ -178,12 +178,12 @@ const Chatroom = () => {
   return (
     <>
       <AppNavigation />
-      <main>
+      <main className="chat-main-wrapper">
         {/*  */}
+        <button className="chatroom-msg-backBtn" onClick={() => navigate('/app/secret-meeting-room')}>
+          <FaAngleLeft /> Meetings
+        </button>
         <div className="chatroom-container">
-          <button className="chatroom-msg-backBtn" onClick={() => navigate('/app/secret-meeting-room')}>
-            <FaAngleLeft /> Meetings
-          </button>
           {/* <p>{customRoomNumber}</p> */}
           <div className="msg-container">
             <div className="chat-msg-wrapper">
