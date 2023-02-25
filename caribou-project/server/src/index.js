@@ -48,6 +48,7 @@ async function startHttpServer(server) {
     }
     if (error.code === 'EPIPE') {
       log('error', `Emitted 'error' event on Socket instance at ${SERVER_PORT}`, 'index');
+
       shutDownProperly(1);
     }
     if (error.code === 'EACCES') {
@@ -102,6 +103,12 @@ const handleExit = () => {
   process.on('exit', code => {
     log('error', `Everything exited with code: ${code}`, 'index');
   });
+
+  process.stdout.on('error', function (err) {
+    if (err.code == 'EPIPE') {
+      process.exit(0);
+    }
+  });
 };
 
 // Setup SocketIO
@@ -120,6 +127,7 @@ const createSocketIO = async server => {
   // When socketIO disconnects
   io.once('disconnect', () => {
     log('info', `Connection disconnected`, 'index');
+    socket;
   });
 
   // Listening for events
@@ -127,6 +135,12 @@ const createSocketIO = async server => {
     // This Runs Whenever someone opens the website
     // socket.id - this is the id of the user, each user has a different id
     log('info', `Line 128: User connected, ${socket.id}`, 'index');
+  });
+
+  io.on('error', function (ex) {
+    console.log('handled error');
+    console.log(ex);
+    socket.close();
   });
 
   io.sockets.setMaxListeners(17);

@@ -89,7 +89,8 @@ const Chatroom = () => {
       isCancelled = false;
       setDidNotFindRoomInServer(false);
     };
-  }, []);
+    // eslint-disable-next-line
+  }, [navigate]);
 
   // Getting all the messages
   useEffect(() => {
@@ -115,6 +116,7 @@ const Chatroom = () => {
     return () => {
       isCancelled = false;
     };
+    // eslint-disable-next-line
   }, []);
 
   // handle Input change
@@ -146,6 +148,7 @@ const Chatroom = () => {
       fetchFreshMessages();
     });
     socket.on('chat_message_received_broadcast', (data) => {});
+    // eslint-disable-next-line
   }, []);
 
   // Sending - Submission of the form

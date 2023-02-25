@@ -20,8 +20,6 @@ const lowerCase = str => {
 // Generating keys for the access token
 const key1 = crypto.randomBytes(32).toString('hex');
 const key2 = crypto.randomBytes(32).toString('hex');
-// console.log(key1); // To generate the access token
-// console.log(key2);
 
 // JWT Tokens
 const signAccessToken = userData => {
@@ -55,13 +53,11 @@ const verifyAccessToken = (req, res, next) => {
   const getToken = bearerToken[1]; // the actual token
 
   const token = postToken ? postToken : getToken;
-  // console.log('Payload Token Found:', token);
 
   // Now verify the token
   JWT.verify(token, JWT_ACCESS_TOKEN_SECRET, (err, payload) => {
     // console.log('Payload Token Found JWT:', token, 'accessToken:', JWT_ACCESS_TOKEN_SECRET);
     if (err) {
-      // log('error:', `Line 65: ${err}`, 'Helpers');
       if (err.name === 'JsonWebTokenError') {
         log('error', `Line 66: Error verifying, JsonWebTokenError: ${err}`, 'helpers');
         return next(createError.Unauthorized());
@@ -71,7 +67,6 @@ const verifyAccessToken = (req, res, next) => {
       }
     }
     req.payload = payload;
-    // log('info', `Line 74: payload ${payload}`, 'helpers');
     next();
   });
 };

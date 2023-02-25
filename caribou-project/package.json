@@ -7,10 +7,18 @@
     "install-server": "npm install --prefix server",
     "install-client": "npm install --prefix client",
     "install:both": "npm run install-server && npm run install-client",
-    "start:server": "npm run start:dev --prefix server",
+
+    "start:serverProd": "npm run start --prefix server",
+    "start:serverDev": "npm run start:dev --prefix server",
+    "stop:server": "npm run stop --prefix server && npm run deleteAll:processes --prefix server",
+
     "start:client": "npm start --prefix client",
-    "start:both": "npm run start:server & npm run start:client",
-    "test": "npm run test --prefix server && npm run test --prefix client"
+
+    "start:both": "npm run start:serverProd & npm run start:client",
+    "stop:serverProd": "npm run stop:server",
+
+    "start:bothDev": "npm run start:serverDev & npm run start:client"
+
   },
   "keywords": [],
   "author": "Giovanni Reid",

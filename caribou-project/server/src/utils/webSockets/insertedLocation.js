@@ -7,14 +7,14 @@ const socketIOLocationAddedHandler = io => {
 
     mongoose.connection.once('open', () => {
       // Now I need to access the collection I will monitor for changes.
-      function closeChangeStream(timeInMs = 60000, changeStream) {
-        return new Promise(resolve => {
-          setTimeout(() => {
-            console.log('Closing the change stream');
-            resolve(humanQuitChangeStream.close());
-          }, timeInMs);
-        });
-      }
+      // function closeChangeStream(timeInMs = 60000, changeStream) {
+      //   return new Promise(resolve => {
+      //     setTimeout(() => {
+      //       console.log('Closing the change stream');
+      //       resolve(humanQuitChangeStream.close());
+      //     }, timeInMs);
+      //   });
+      // }
 
       const humanQuitChangeStream = mongoose.connection.collection('maps').watch();
 
@@ -23,7 +23,6 @@ const socketIOLocationAddedHandler = io => {
         switch (change.operationType) {
           case 'insert':
             io.emit('location_added_broadcast', { message: `New location added` });
-            closeChangeStream((timeInMs = 60000), humanQuitChangeStream);
         }
       });
     });
