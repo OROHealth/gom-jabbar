@@ -6,7 +6,6 @@ const { lowerCase } = require('../helpers/helpers');
 
 async function getAntlerExchangeCaribous(req, res) {
   try {
-    // log('info', "App Currently Getting all Antler Exchange caribou's in the Database", 'antlerExchangeController');
     const allAntlerExchangeCaribous = await AntlerExchangeModel.find({});
     res.status(200).json({ allAntlerExchangeCaribous });
   } catch (error) {
@@ -22,8 +21,6 @@ async function getAntlerExchangeCaribous(req, res) {
 // @Route   /api/v1/antler-exchange
 async function saveAntlerExchangeCaribou(req, res) {
   const { email, userImage, customRoomNumber } = req.body;
-  // log('info', email, 'antlerExchange Controller');
-  log('info', `Line 26: custom room number: ${customRoomNumber}`, 'antlerExchange Controller');
 
   let errors = [];
   const success = [];
@@ -38,10 +35,8 @@ async function saveAntlerExchangeCaribou(req, res) {
     // Lowercase the email
     const lowerCaseEmail = lowerCase(email);
 
-    // log('info', `Email sent by client: ${email}`, 'antlerExchangeController');
     // save the caribou to the antler exchange list
     await UserModel.findOne({ email: lowerCaseEmail }).then(async user => {
-      // console.log(user);
       if (!user) {
         errors.push({ errorMsg: 'Error: Caribou was not found.  Unable to let you join. Please Sign up! ' });
         return res.status(401).json(errors).end();
@@ -72,7 +67,6 @@ async function saveAntlerExchangeCaribou(req, res) {
             await newAntlerExchangeCaribou
               .save()
               .then(_caribouExchangeSaved => {
-                // log('info', `Line 71: Caribou saved: ${caribouExchangeSaved}`, 'caribouController');
                 success.push({ successMsg: 'You were added successfully' });
                 return res.status(201).json({ email, uuId, avatarImage: userImage, success });
               })

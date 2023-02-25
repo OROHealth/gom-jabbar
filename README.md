@@ -1,6 +1,3 @@
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/uzochukwueddie/chatty/tree/develop.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/uzochukwueddie/chatty/tree/develop)
-[![codecov](https://codecov.io/gh/uzochukwueddie/chatty/branch/develop/graph/badge.svg?token=D6GX9SDN6M)](https://codecov.io/gh/uzochukwueddie/chatty)
-
 |||||
 |:-:|:-:|:-:|:-:|
 |![First Image](https://res.cloudinary.com/dyamr9ym3/image/upload/v1662482775/github_readme_images/react_dzmcqt.png)|![Second Image](https://res.cloudinary.com/dyamr9ym3/image/upload/v1662483177/github_readme_images/axios_jlnlcn.png)|![Third Image](https://res.cloudinary.com/dyamr9ym3/image/upload/v1662483316/github_readme_images/sass_yxqpyf.png)
@@ -25,14 +22,15 @@ To help them, we, the Assembly of Inter-Human-Caribou Harmony  (IHCH), have deci
 service of a modern experience while using their CaribouPhones (an Android variant, obviously)
 
 ## Features
-1. SignUp and signIn authentication
+1. SignUp and signIn authentication.
 2. Create broadcast to be open for messages.
-3. Post map locations
-4. Private chat messaging
-5. In-app notification
-6. Custom components
-7. Unit tests
-8. Redux implementation using redux-toolkit
+3. Post map locations.
+4. Real-Time updates when locations are added to the map.
+5. Real-Time Live Chat Messaging feature.
+6. In-app Real-time notifications.
+7. Custom components.
+8. A Fully Mobile First responsive design.
+9. Redux implementation using redux-toolkit.
 
 ## Main Tools
 - Create react app
@@ -47,11 +45,10 @@ service of a modern experience while using their CaribouPhones (an Android varia
 - Leaflet
 - React icons
 - SASS
-- Jest
-- React testing library
 - ESLint and Prettier
 - React app rewired
-- Mock service worker
+- MongoDB Atlas
+- Local Storage
 
 
 ## Requirements
@@ -75,25 +72,46 @@ npm run install:both
 npm run start:both
 ```
 
-- These two commands will install all the packages for both the client and the server and also start both applications in the terminal.
+- These two commands will install all the packages for both the client and the server and also start both applications in the terminal. Note the server will run in production mode.
 
 
+- If you ran the Production server - which is by default with the code above
+- Once Finished and you want to close. ** Make sure to 'Close' the pm2 Processes by running:
 
-# Environment Variables Needed ** Very Important
+```
+npm run stop:serverProd
+```
+- This will kill/disable all the pm2 processes and then delete all of them.
+
+
+Note:
+- You can run the development server with the client by running:
+
+```
+npm run start:bothDev
+```
+
+
+## Environment Variables Needed ** Very Important
 ## For The Server
-### Environment
+- Environment
 NODE_ENV=
-### Port Backend
+
+- Port Backend
 SERVER_PORT=
-### Client Url
+
+- Client Url
 CLIENT_URL=
 SERVER_URL=
-### Database or DATABASE_URL=
+
+- Database or DATABASE_URL=
 MONGODB_URL=
-### Token
+
+- Token
 JWT_ACCESS_TOKEN=
 JWT_REFRESH_TOKEN=
-### Session Keys
+
+- Session Keys
 COOKIE_KEY_ONE=
 COOKIE_KEY_TWO=
 
@@ -127,7 +145,7 @@ Function to allow the user to:
   - [✔] displays a map of the current vicinity and display the zone where human are currently actively trashing the world
   - [✔] signals when a human has quit the zone
   - [✔] allows them to signal the presence of human and rate its trashing level
-  - [] presents a live-chat to allow Antler-exchange using the highly secure Caribou algorithm: every vowel is replaced by
+  - [1/2] presents a live-chat to allow Antler-exchange using the highly secure Caribou algorithm: every vowel is replaced by
     'muu' and every consonant is replaced by 'grm'
   - [✔] is secured to only allow signing up with addresses that are Cariboued (they contain 'carib' at the end of the
     username, like bruno-carib@orohealth.me is my Caribou address, yes, I am a secret Caribou agent)

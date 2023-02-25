@@ -9,7 +9,6 @@ const createError = require('http-errors');
 // @Method  POST
 // @Route   /api/v1/users
 async function registerUser(req, res) {
-  // if (req?.jwtExpired) return res.status().json({ errorMsg: `jwtExpired` });
   const { email, password, avatarImage } = req.body;
 
   let errors = [];
@@ -32,7 +31,6 @@ async function registerUser(req, res) {
     errors.push({ errorMsg: 'Passwords should be at least 6 characters' });
   }
 
-  // console.log(email, password);
   if (errors.length > 0) {
     // If there is an issue then I want to rerender the registration form with the error message
     return res.status(401).json(errors);
@@ -68,7 +66,6 @@ async function registerUser(req, res) {
             await newUser
               .save()
               .then(_userSaved => {
-                // log('info', `Line 71: ${req.body}, ${userSaved}, user Controller`, 'userController');
                 success.push({ successMsg: 'Welcome fellow Caribou.' });
               })
               .catch(err => {
@@ -93,7 +90,6 @@ async function registerUser(req, res) {
 // @Route   /api/v1/user/login
 // TODO Email and Password Login Start
 async function loginUser(req, res) {
-  // console.log('Line 96: Request Data:', req.body.email, req.body.password);
   const { email, password } = req.body;
 
   const errors = [];
@@ -118,7 +114,6 @@ async function loginUser(req, res) {
 
   // Logic to respond with the error messages
   if (errors.length > 0) {
-    // console.log('Errors:', errors);
     return res.status(401).json(errors).end();
   } else {
     if (errors.length < 1) {
@@ -162,7 +157,7 @@ async function loginUser(req, res) {
 const refreshUserToken = async (req, res, next) => {
   try {
     const { refreshToken } = req.body;
-    // console.log(refreshToken, 'Line 153: Refresh tokenFound ');
+
     if (!refreshToken) throw createError.BadRequest();
     const userId = await verifyRefreshToken(refreshToken);
 
@@ -179,7 +174,6 @@ async function getUser(req, res) {
   const { email } = req.body;
   try {
     await userModel.findOne({ email: email }).then(user => {
-      // console.log(user);
       res.status(200).json({ user });
     });
   } catch (error) {

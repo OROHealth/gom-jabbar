@@ -114,7 +114,8 @@ const Map = (props) => {
     return () => {
       isCancelled = false;
     };
-  }, []);
+    // eslint-disable-next-line
+  }, [dispatch]);
 
   // User Added Fetch new users - Run a fetch when locations are added
   if (humanAdded) {

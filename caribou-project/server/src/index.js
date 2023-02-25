@@ -1,3 +1,5 @@
+require('events').EventEmitter.prototype._maxListeners = 70;
+require('events').defaultMaxListeners = 70;
 const http = require('http');
 const app = require('./app'); // express app
 const { Server } = require('socket.io');
@@ -16,7 +18,6 @@ const startServer = async () => {
     const server = http.createServer(app); // instance of server
     const io = await createSocketIO(server); // create socketIO
     startHttpServer(server); // Server Starts listing
-    log('info', `Socket Connections`, 'index');
     socketIOConnections(io); // SocketIO Connections
   } catch (error) {
     log('error', `Line 15: Error ${error}`, 'index');
@@ -40,13 +41,18 @@ async function startHttpServer(server) {
   });
 
   // Handling - Address already in use Error
-  server.on('error', error => {
+  server.once('error', error => {
     if (error.code === 'EADDRINUSE') {
       log('error', `PORT Already in use ${SERVER_PORT}`, 'index');
       shutDownProperly(1);
     }
     if (error.code === 'EPIPE') {
       log('error', `Emitted 'error' event on Socket instance at ${SERVER_PORT}`, 'index');
+
+      shutDownProperly(1);
+    }
+    if (error.code === 'EACCES') {
+      log('error', `Error: Requires elevated privileges ${SERVER_PORT}`, 'index');
       shutDownProperly(1);
     }
     log('info', `HERE IS THE ERROR: Code: ${error.code} Error: ${error} PID: ${process.pid}`, 'index');
@@ -58,12 +64,6 @@ const shutDownProperly = exitCode => {
   Promise.resolve()
     .then(() => {
       log('error', 'Shutdown In Progress...', 'index');
-
-      // Closing Server
-      log('error', 'Http Server closed', 'index');
-      server.close(() => {
-        process.exit(0);
-      });
 
       log('error', 'Exiting Processes', 'index');
       process.kill(process.pid, 'SIGINT');
@@ -103,6 +103,12 @@ const handleExit = () => {
   process.on('exit', code => {
     log('error', `Everything exited with code: ${code}`, 'index');
   });
+
+  process.stdout.on('error', function (err) {
+    if (err.code == 'EPIPE') {
+      process.exit(0);
+    }
+  });
 };
 
 // Setup SocketIO
@@ -119,8 +125,9 @@ const createSocketIO = async server => {
   });
 
   // When socketIO disconnects
-  io.on('disconnect', () => {
+  io.once('disconnect', () => {
     log('info', `Connection disconnected`, 'index');
+    socket;
   });
 
   // Listening for events
@@ -129,6 +136,14 @@ const createSocketIO = async server => {
     // socket.id - this is the id of the user, each user has a different id
     log('info', `Line 128: User connected, ${socket.id}`, 'index');
   });
+
+  io.on('error', function (ex) {
+    console.log('handled error');
+    console.log(ex);
+    socket.close();
+  });
+
+  io.sockets.setMaxListeners(17);
 
   return io;
 };

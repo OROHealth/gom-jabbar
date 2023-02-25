@@ -9,7 +9,7 @@ Accept: application/json
 withCredentials: true
 
 {
-  "email": "secrestssss-carib@hotmail.com",
+  "email": "secresthssss-carib@hotmail.com",
   "password": "123s4567",
   "avatarImage": "<add-a-base64-encoded-string>"
 }
