@@ -191,14 +191,12 @@ const Chatroom = () => {
                 {messages &&
                   messages.map((msg, id) => {
                     const theUser = msg.split(' ')[0].slice(0, 4);
-                    console.log(theUser);
-                    console.log(theUser === username);
                     if (theUser === username) {
                       return (
-                        <p className="each-msg-text you" key={id}>
+                        <div className="each-msg-text you" key={id}>
                           {/* display only the names of the other user  */}
                           <p>{msg.split(' ').slice(1).join(' ')}</p>
-                        </p>
+                        </div>
                       );
                     } else {
                       return (
