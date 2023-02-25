@@ -22,14 +22,15 @@ To help them, we, the Assembly of Inter-Human-Caribou Harmony  (IHCH), have deci
 service of a modern experience while using their CaribouPhones (an Android variant, obviously)
 
 ## Features
-1. SignUp and signIn authentication
+1. SignUp and signIn authentication.
 2. Create broadcast to be open for messages.
-3. Post map locations
-4. Private chat messaging
-5. In-app notification
-6. Custom components
-7. Unit tests
-8. Redux implementation using redux-toolkit
+3. Post map locations.
+4. Real-Time updates when locations are added to the map.
+5. Real-Time Live Chat Messaging feature.
+6. In-app Real-time notifications.
+7. Custom components.
+8. A Fully Mobile First responsive design.
+9. Redux implementation using redux-toolkit.
 
 ## Main Tools
 - Create react app
@@ -44,11 +45,10 @@ service of a modern experience while using their CaribouPhones (an Android varia
 - Leaflet
 - React icons
 - SASS
-- Jest
-- React testing library
 - ESLint and Prettier
 - React app rewired
-- Mock service worker
+- MongoDB Atlas
+- Local Storage
 
 
 ## Requirements
@@ -72,8 +72,24 @@ npm run install:both
 npm run start:both
 ```
 
-- These two commands will install all the packages for both the client and the server and also start both applications in the terminal.
+- These two commands will install all the packages for both the client and the server and also start both applications in the terminal. Note the server will run in production mode.
 
+
+- If you ran the Production server - which is by default with the code above
+- Once Finished and you want to close. ** Make sure to 'Close' the pm2 Processes by running:
+
+```
+npm run stop:serverProd
+```
+- This will kill/disable all the pm2 processes and then delete all of them.
+
+
+Note:
+- You can run the development server with the client by running:
+
+```
+npm run start:bothDev
+```
 
 
 ## Environment Variables Needed ** Very Important
