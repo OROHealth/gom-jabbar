@@ -6,7 +6,6 @@ const socketIOAntlerExchangeHandler = io => {
 
     io.on('connection', socket => {
       socket.on('antler_exchange', data => {
-        // console.log('Line 9: Antler Exchange', data);
         io.volatile.emit('antler_exchange_broadcast', data);
       });
     });

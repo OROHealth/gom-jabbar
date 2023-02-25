@@ -12,7 +12,6 @@ const log = require('./utils/logger');
 const morgan = require('morgan');
 const { COOKIE_KEY_ONE, COOKIE_KEY_TWO, CLIENT_URL, NODE_ENV, SERVER_URL } = require('./utils/config');
 const { verifyAccessToken } = require('./helpers/helpers');
-const client = require('./helpers/initRedis');
 
 // Routers
 const userRouter = require('./routes/userRouter');
@@ -54,10 +53,12 @@ app.use(morgan('combined'));
 
 // Routes Middle-wares
 app.use('/api/v1/user', userRouter);
-// app.use('/api/v1/map', mapRouter); // test without token
 app.use('/api/v1/map', verifyAccessToken, mapRouter);
 app.use('/api/v1/antler-exchange', verifyAccessToken, antlerExchangeRouter);
 app.use('/api/v1/chatroom', verifyAccessToken, chatroomRouter);
+
+// Testing middle-ware
+// app.use('/api/v1/map', mapRouter); // test without token
 
 // Health check route - endpoint that returns a 200 status code if your application is running
 app.get('/_health', (req, res) => {
@@ -70,17 +71,6 @@ app.use(
     uriPath: '/api-monitoring',
   })
 );
-
-// Redis
-async () => {
-  await client.connect();
-
-  await client.SET('foo', 'bar');
-
-  const value = await client.get('foo');
-
-  // console.log('Redis', value);
-};
 
 // Global Error Handler
 app.all('*', (req, res) => {

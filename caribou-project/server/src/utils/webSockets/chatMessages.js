@@ -15,7 +15,6 @@ const socketIOChatMessageHandler = io => {
       // Signal the that a new User is connected to the chat - receives the username from data and the room
       socket.on('new-user', (room, data) => {
         console.log('Line 22: New User', data, 'Room:', room);
-        // console.log('Line 23: Room:', room);
 
         socket.join(room);
 
@@ -29,7 +28,6 @@ const socketIOChatMessageHandler = io => {
 
       // Listens for message and broadcast to the opposite sockets connected
       socket.on('send_chat_message', (room, data) => {
-        console.log('Line 38: Received Message', data, 'Room:', room);
         // The "data" contains the "message" that was send from the input and the username of the sender.
 
         socket.join(room);
@@ -41,21 +39,16 @@ const socketIOChatMessageHandler = io => {
 
       // Listening for updates
       mongoose.connection.once('open', () => {
-        // log('info', 'Line 11: Setting Up Change Stream! ...', 'setupDatabase');
-
         // Now I need to access the collection I will monitor for changes.
         const ChatMessageStream = mongoose.connection.collection('chatroommsgs').watch();
 
         // Create a change stream by using Collection's watch()
         ChatMessageStream.on('change', change => {
-          // log('info', 'Line 31: Change Stream Triggered!', 'setupDatabase');
           switch (change.operationType) {
             case 'update':
-              // io.emit('location_added_broadcast', { message: `New location added` });
               io.emit('messages_was_updated', { message: `messages_was_updated` });
 
             case 'insert':
-              // io.emit('location_added_broadcast', { message: `New location added` });
               io.emit('messages_was_updated', { message: `messages_was_updated` });
           }
         });

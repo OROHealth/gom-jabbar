@@ -10,6 +10,8 @@
     "prettier:check": "prettier --check 'src/**/*.{js,json}'",
     "prettier:fix": "prettier --write 'src/**/*.{js,json}'",
     "start": "NODE_ENV=production pm2 start ./src/index.js -i -5 --attach --watch -f | ./node_modules/.bin/bunyan ",
+    "stop": "NODE_ENV=production pm2 stop ./src/index.js -i max --attach --watch -f",
+    "deleteAll:processes": "NODE_ENV=production pm2 delete all",
     "start:dev": "NODE_ENV=development nodemon src/index.js | ./node_modules/.bin/bunyan",
     "cluster": "pm2 start index.js -i max",
     "build:prod": ""
