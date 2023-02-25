@@ -61,7 +61,7 @@ app.use('/api/v1/chatroom', verifyAccessToken, chatroomRouter);
 // app.use('/api/v1/map', mapRouter); // test without token
 
 // Health check route - endpoint that returns a 200 status code if your application is running
-app.get('/_health', (req, res) => {
+app.get('/_health', (_req, res) => {
   res.status(200).send('ok');
 });
 

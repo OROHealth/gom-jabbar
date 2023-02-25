@@ -79,21 +79,26 @@ npm run start:both
 
 
 
-# Environment Variables Needed ** Very Important
+## Environment Variables Needed ** Very Important
 ## For The Server
-### Environment
+- Environment
 NODE_ENV=
-### Port Backend
+
+- Port Backend
 SERVER_PORT=
-### Client Url
+
+- Client Url
 CLIENT_URL=
 SERVER_URL=
-### Database or DATABASE_URL=
+
+- Database or DATABASE_URL=
 MONGODB_URL=
-### Token
+
+- Token
 JWT_ACCESS_TOKEN=
 JWT_REFRESH_TOKEN=
-### Session Keys
+
+- Session Keys
 COOKIE_KEY_ONE=
 COOKIE_KEY_TWO=
 
@@ -127,7 +132,7 @@ Function to allow the user to:
   - [✔] displays a map of the current vicinity and display the zone where human are currently actively trashing the world
   - [✔] signals when a human has quit the zone
   - [✔] allows them to signal the presence of human and rate its trashing level
-  - [] presents a live-chat to allow Antler-exchange using the highly secure Caribou algorithm: every vowel is replaced by
+  - [1/2] presents a live-chat to allow Antler-exchange using the highly secure Caribou algorithm: every vowel is replaced by
     'muu' and every consonant is replaced by 'grm'
   - [✔] is secured to only allow signing up with addresses that are Cariboued (they contain 'carib' at the end of the
     username, like bruno-carib@orohealth.me is my Caribou address, yes, I am a secret Caribou agent)
