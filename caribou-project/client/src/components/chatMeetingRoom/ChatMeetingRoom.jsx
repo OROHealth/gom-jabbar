@@ -55,6 +55,7 @@ const ChatMeetingRoom = () => {
           <button className="chatroom-meeting-backBtn" onClick={() => navigate('/app/dashboard')}>
             <FaAngleLeft /> Back to Home
           </button>
+
           <div className="grid-card-wrapper">
             {allAntlerExchangeMeetings &&
               allAntlerExchangeMeetings.map((caribous) => {

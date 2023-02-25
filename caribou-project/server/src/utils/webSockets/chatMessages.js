@@ -39,28 +39,12 @@ const socketIOChatMessageHandler = io => {
         io.to(room).emit('chat_message_received_broadcast', data);
       });
 
-      // Signal the user is disconnected from the chat
-      // socket.on('disconnect', () => {
-      //   // this will remove the user from all the rooms
-      //   getUserRooms(socket).forEach(room => {
-      //     // console.log('Line 47: User Disconnected');
-      //     socket.to(room).emit('user-disconnected', rooms[room].users[socket.id]);
-      //     delete rooms[room].users[socket.id]; // deleting the user from the object above
-      //   });
-      // });
-
       // Listening for updates
       mongoose.connection.once('open', () => {
         // log('info', 'Line 11: Setting Up Change Stream! ...', 'setupDatabase');
 
-        let updateOps = {
-          $match: {
-            $and: [{ 'updateDescription.updatedFields.messages': { $gte: 1 } }, { operationType: 'update' }],
-          },
-        };
-
         // Now I need to access the collection I will monitor for changes.
-        const ChatMessageStream = mongoose.connection.collection('chatroommsgs').watch([updateOps]);
+        const ChatMessageStream = mongoose.connection.collection('chatroommsgs').watch();
 
         // Create a change stream by using Collection's watch()
         ChatMessageStream.on('change', change => {
@@ -68,23 +52,14 @@ const socketIOChatMessageHandler = io => {
           switch (change.operationType) {
             case 'update':
               // io.emit('location_added_broadcast', { message: `New location added` });
-              io.volatile.emit('messages_was_updated', { message: `messages_was_updated` });
+              io.emit('messages_was_updated', { message: `messages_was_updated` });
+
+            case 'insert':
+              // io.emit('location_added_broadcast', { message: `New location added` });
+              io.emit('messages_was_updated', { message: `messages_was_updated` });
           }
         });
-
-        // log('info', 'Line 29: Finish Setting Up Change Stream!', 'setupDatabase');
       });
-      // console.log('Line 52: Rooms', rooms);
-
-      // function getUserRooms(socket) {
-      //   // This will check all the names and users and return the all the rooms that the user is apart of
-      //   return Object.entries(rooms).reduce((names, [name, room]) => {
-      //     if (room.users[socket.id] != null) {
-      //       names.push(name);
-      //     }
-      //     return names;
-      //   }, []);
-      // }
     });
   };
 

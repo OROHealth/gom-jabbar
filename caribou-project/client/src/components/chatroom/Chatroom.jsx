@@ -14,6 +14,7 @@ import { FaAngleLeft } from 'react-icons/fa';
 // API
 import { chatRoomService } from '@services/api/chatroom/chatroom.service';
 import { antlerExchangeService } from '@services/api/antlerExchangeRoom/antlerExchangeRoom.service';
+import AppNavigation from '@components/app-navigation/AppNavigation.component';
 
 const initialState = {
   sender: '',
@@ -24,9 +25,6 @@ const messagesInitialState = [];
 const Chatroom = () => {
   const [formField, setFormField] = useState(initialState);
   const { sender } = formField;
-  // const [receivedResponse, setReceivedResponse] = useState('');
-  // const [receivedResponseUsername, setReceivedResponseUsername] = useState('');
-  // const [sentMessage, setSentMessage] = useState('');
   const getStorageEmail = useLocalStorage('app-email', 'get');
   const username = getStorageEmail.slice(0, 4);
   const navigate = useNavigate();
@@ -35,18 +33,6 @@ const Chatroom = () => {
 
   // all messages
   const [messages, setMessages] = useState(messagesInitialState);
-  console.log('Data', messages);
-  // const gettingTheMsgs = Object.entries(messages).map((item) => {
-  //   return item[1].data;
-  // });
-  // console.log('Type Of:', gettingTheMsgs);
-
-  // user connected or disconnected
-  // const [userConnected, setUserConnected] = useState(null);
-  // const [userDisconnected, setUserDisconnected] = useState(null);
-
-  // received the username and saved it in state
-  // const [receivedUsername, setReceivedUsername] = useState(false);
 
   const clearFields = () => {
     setFormField(initialState);
@@ -60,34 +46,41 @@ const Chatroom = () => {
     let isCancelled = true;
     // Functions to redirect a user if they enter into a wrongs Chatroom Url
     const gettingRoom = async () => {
-      // Getting all the rooms from the server
-      await chatRoomService.getAllChatRooms().then((allRooms) => {
-        // console.log('found in server');
-        if (isCancelled) {
-          // console.log('All Rooms from the Server', allRooms.data);
-          if (allRooms.data[chatroom] == null) {
-            setDidNotFindRoomInServer(true);
-          }
-          setCustomRoomNumber(chatroom);
-        }
-      });
-
-      // If the room wasn't found in the server, look in the database
-      if (didNotFindRoomInServer) {
-        await antlerExchangeService.getAntlerExchangeCaribous().then((allMeetingsInDB) => {
+      try {
+        // Getting all the rooms from the server
+        await chatRoomService.getAllChatRooms().then((allRooms) => {
+          // console.log('found in server');
           if (isCancelled) {
-            // Find will return the items that match the criteria
-            const result = allMeetingsInDB.data.allAntlerExchangeCaribous.find((items) => {
-              return items.customRoomNumber === chatroom;
-            });
-            // If the room was not in the server or in the database - redirect the user back to the meeting page
-            if (!result) {
-              return navigate('/app/secret-meeting-room');
+            // console.log('All Rooms from the Server', allRooms.data);
+            if (allRooms.data[chatroom] == null) {
+              setDidNotFindRoomInServer(true);
             }
             setCustomRoomNumber(chatroom);
           }
         });
-        setDidNotFindRoomInServer(false);
+
+        // If the room wasn't found in the server, look in the database
+        if (didNotFindRoomInServer) {
+          await antlerExchangeService.getAntlerExchangeCaribous().then((allMeetingsInDB) => {
+            if (isCancelled) {
+              // Find will return the items that match the criteria
+              const result = allMeetingsInDB.data.allAntlerExchangeCaribous.find((items) => {
+                // Emitting/Sending the message that the caribou typed to the backend along with the room number
+                socket.emit('new-user', customRoomNumber, { username });
+                socket.emit('send_chat_message', customRoomNumber, { message: sender, username });
+                return items.customRoomNumber === chatroom;
+              });
+              // If the room was not in the server or in the database - redirect the user back to the meeting page
+              if (!result) {
+                return navigate('/app/secret-meeting-room');
+              }
+              setCustomRoomNumber(chatroom);
+            }
+          });
+          setDidNotFindRoomInServer(false);
+        }
+      } catch (error) {
+        console.log(error);
       }
     };
     gettingRoom();
@@ -109,7 +102,7 @@ const Chatroom = () => {
             messageId: chatroom,
           };
           await chatRoomService.getAllMessages(newMessage).then((result) => {
-            console.log('Messages', result.data[0].messages);
+            // console.log('Messages', result.data[0].messages);
             setMessages(result?.data[0]?.messages);
           });
         }
@@ -130,12 +123,6 @@ const Chatroom = () => {
     setFormField({ ...formField, [name]: value });
   };
 
-  // const settingMessages = (data) => {
-  // console.log('data Received', data);
-
-  // keep track of the received message
-  // };
-
   const fetchFreshMessages = () => {
     try {
       const gettingMessages = async () => {
@@ -143,7 +130,6 @@ const Chatroom = () => {
           messageId: chatroom,
         };
         await chatRoomService.getAllMessages(newMessage).then((result) => {
-          console.log('Messages', result);
           setMessages(result?.data[0]?.messages);
         });
       };
@@ -160,19 +146,8 @@ const Chatroom = () => {
       fetchFreshMessages();
     });
     socket.on('chat_message_received_broadcast', (data) => {});
-
-    socket.on('username-of-user-connected', (data) => {
-      // setUserConnected(data);
-    });
-
-    // socket.on('user-disconnected', (data) => {
-    //   // setUserDisconnected(data);
-    //   // console.log(data);
-    // });
   }, []);
-  // console.log('Messages After Update:', messages);
 
-  //
   // Sending - Submission of the form
   const handleMessageSubmit = async (event) => {
     event.preventDefault();
@@ -201,25 +176,51 @@ const Chatroom = () => {
   };
 
   return (
-    <div className="chat-container">
-      <button className="chatroom-meeting-backBtn" onClick={() => navigate('/app/secret-meeting-room')}>
-        <FaAngleLeft /> Back to Home
-      </button>
-      <p>{customRoomNumber}</p>
-      <div className="chat-content">
-        <div className="chat-context-messages">
-          {messages.map((msg, id) => {
-            return <div key={id}>{msg}</div>;
-          })}
+    <>
+      <AppNavigation />
+      <main>
+        {/*  */}
+        <div className="chatroom-container">
+          <button className="chatroom-msg-backBtn" onClick={() => navigate('/app/secret-meeting-room')}>
+            <FaAngleLeft /> Meetings
+          </button>
+          {/* <p>{customRoomNumber}</p> */}
+          <div className="msg-container">
+            <div className="chat-msg-wrapper">
+              <div className="chat-context-messages">
+                {messages &&
+                  messages.map((msg, id) => {
+                    const theUser = msg.split(' ')[0].slice(0, 4);
+                    console.log(theUser);
+                    console.log(theUser === username);
+                    if (theUser === username) {
+                      return (
+                        <div className="each-msg-text you" key={id}>
+                          {/* display only the names of the other user  */}
+                          <p>{msg.split(' ').slice(1).join(' ')}</p>
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <p className="each-msg-text" key={id}>
+                          {msg}
+                        </p>
+                      );
+                    }
+                  })}
+              </div>
+              <div className="chat-form-container">
+                <form onSubmit={handleMessageSubmit}>
+                  <input type="text" name="sender" id="sender" value={sender} onChange={inputMessageOnChangeHandler} />
+                  <button type="submit">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="chat-form">
-          <form onSubmit={handleMessageSubmit}>
-            <input type="text" name="sender" id="sender" value={sender} onChange={inputMessageOnChangeHandler} />
-            <button type="submit">Submit</button>
-          </form>
-        </div>
-      </div>
-    </div>
+        {/*  */}
+      </main>
+    </>
   );
 };
 
