@@ -94,31 +94,31 @@ npm run start:bothDev
 
 ## Environment Variables Needed ** Very Important
 ## For The Server
-- Environment
-NODE_ENV=
+Environment
+- NODE_ENV=
 
-- Port Backend
-SERVER_PORT=
+Port Backend
+- SERVER_PORT=
 
-- Client Url
-CLIENT_URL=
-SERVER_URL=
+Client Url
+- CLIENT_URL=
+- SERVER_URL=
 
-- Database or DATABASE_URL=
-MONGODB_URL=
+Database or DATABASE_URL=
+- MONGODB_URL=
 
-- Token
-JWT_ACCESS_TOKEN=
-JWT_REFRESH_TOKEN=
+Token
+- JWT_ACCESS_TOKEN=
+- JWT_REFRESH_TOKEN=
 
-- Session Keys
-COOKIE_KEY_ONE=
-COOKIE_KEY_TWO=
+Session Keys
+- COOKIE_KEY_ONE=
+- COOKIE_KEY_TWO=
 
 
 ## For The Client
-REACT_APP_MAPBOX_API_KEY=
-REACT_APP_GOOGLE_API_KEY=
+- REACT_APP_MAPBOX_API_KEY=
+- REACT_APP_GOOGLE_API_KEY=
 
 
 
