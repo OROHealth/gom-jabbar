@@ -11,13 +11,13 @@ require('express-async-errors');
 const log = require('./utils/logger');
 const morgan = require('morgan');
 const { COOKIE_KEY_ONE, COOKIE_KEY_TWO, CLIENT_URL, NODE_ENV, SERVER_URL } = require('./utils/config');
-// const { verifyAccessToken } = require('./helpers/helpers');
+const { verifyAccessToken } = require('./helpers/helpers');
 
 // Routers
 const userRouter = require('./routes/userRouter');
 const mapRouter = require('./routes/mapRouter');
 const antlerExchangeRouter = require('./routes/antlerExchangeRouter');
-// const chatroomRouter = require('./routes/chatroomRouter');
+const chatroomRouter = require('./routes/chatroomRouter');
 
 // Security Middle-wares
 app.use(hpp());
@@ -53,13 +53,13 @@ app.use(morgan('combined'));
 
 // Routes Middle-wares
 app.use('/api/v1/user', userRouter);
-// app.use('/api/v1/map', verifyAccessToken, mapRouter);
-// app.use('/api/v1/antler-exchange', verifyAccessToken, antlerExchangeRouter);
-// app.use('/api/v1/chatroom', verifyAccessToken, chatroomRouter);
+app.use('/api/v1/map', verifyAccessToken, mapRouter);
+app.use('/api/v1/antler-exchange', verifyAccessToken, antlerExchangeRouter);
+app.use('/api/v1/chatroom', verifyAccessToken, chatroomRouter);
 
 // Testing middle-ware
-app.use('/api/v1/map', mapRouter); // test without token
-app.use('/api/v1/antler-exchange', antlerExchangeRouter);
+// app.use('/api/v1/map', mapRouter); // test without token
+// app.use('/api/v1/antler-exchange', antlerExchangeRouter);
 
 // Health check route - endpoint that returns a 200 status code if your application is running
 app.use('/_health', (_req, res) => {

@@ -6,7 +6,7 @@ const socketIOChatMessageHandler = io => {
     log('info', `Listening for Chat Messages`, 'index');
 
     io.on('connection', socket => {
-      const rooms = {
+      let rooms = {
         room: {
           users: {},
         },
@@ -24,6 +24,7 @@ const socketIOChatMessageHandler = io => {
 
         // Sending back the name of the user as an object
         socket.to(room).emit('username-of-user-connected', data); // emitting a user is connected
+        return (rooms = {});
       });
 
       // Listens for message and broadcast to the opposite sockets connected

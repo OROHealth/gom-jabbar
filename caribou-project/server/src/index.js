@@ -10,10 +10,10 @@ const dotenv = require('dotenv');
 dotenv.config({});
 
 // webSocket Listeners
-// const { socketIOAntlerExchangeHandler } = require('./utils/webSockets/antlerExchange');
-// const { socketIOHumanQuitHandler } = require('./utils/webSockets/humanQuit');
-// const { socketIOLocationAddedHandler } = require('./utils/webSockets/insertedLocation');
-// const { socketIOChatMessageHandler } = require('./utils/webSockets/chatMessages');
+const { socketIOAntlerExchangeHandler } = require('./utils/webSockets/antlerExchange');
+const { socketIOHumanQuitHandler } = require('./utils/webSockets/humanQuit');
+const { socketIOLocationAddedHandler } = require('./utils/webSockets/insertedLocation');
+const { socketIOChatMessageHandler } = require('./utils/webSockets/chatMessages');
 
 const startServer = async () => {
   try {
@@ -152,14 +152,14 @@ const createSocketIO = async server => {
 };
 
 const socketIOConnections = io => {
-  //   const antlerExchangeSocketHandler = socketIOAntlerExchangeHandler(io);
-  //   const humanQuitSocketHandler = socketIOHumanQuitHandler(io);
-  //   const locationAddedSocketHandler = socketIOLocationAddedHandler(io);
-  //   const chatroomSocketHandler = socketIOChatMessageHandler(io);
-  //   antlerExchangeSocketHandler();
-  //   humanQuitSocketHandler();
-  //   locationAddedSocketHandler();
-  //   chatroomSocketHandler();
+  const antlerExchangeSocketHandler = socketIOAntlerExchangeHandler(io);
+  const humanQuitSocketHandler = socketIOHumanQuitHandler(io);
+  const locationAddedSocketHandler = socketIOLocationAddedHandler(io);
+  const chatroomSocketHandler = socketIOChatMessageHandler(io);
+  antlerExchangeSocketHandler();
+  humanQuitSocketHandler();
+  locationAddedSocketHandler();
+  chatroomSocketHandler();
 };
 
 handleExit();
