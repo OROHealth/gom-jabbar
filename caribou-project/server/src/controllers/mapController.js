@@ -25,11 +25,13 @@ async function postAMapLocation(req, res) {
 
   if (!excitementLevel && !trashingLevel && !labelName && !xName && !yName) {
     errors.push({ errorMsg: 'Something went wrong!' });
-    return res.status(400).json(errors).end();
+    res.status(400).json(errors).end();
+    return (errors = []);
   }
 
   if (errors.length > 0) {
-    return res.status(400).json(errors).end();
+    res.status(400).json(errors).end();
+    return (errors = []);
   }
 
   // Find the user who made the request and
@@ -38,7 +40,8 @@ async function postAMapLocation(req, res) {
   // If no user found
   if (user === null || !user) {
     errors.push({ errorMsg: 'There is no account associated with this post. Please Log out, and log back in to continue!' });
-    return res.status(400).json(errors).end();
+    res.status(400).json(errors).end();
+    return (errors = []);
   }
 
   // Saving
@@ -46,7 +49,8 @@ async function postAMapLocation(req, res) {
     if (foundLabel !== null) {
       // If location name Already Exists.
       errors.push({ errorMsg: 'These coordinates already exists!' });
-      return res.status(400).json(errors).end();
+      res.status(400).json(errors).end();
+      return (errors = []);
     } else {
       // Preparing to save the new location
       const newLocation = new MapModel({
@@ -64,7 +68,8 @@ async function postAMapLocation(req, res) {
           // Check if a user is found. > If there is no User
           if (!user.location) {
             errors.push({ errorMsg: 'Error saving new location! Please sign in again to resolve' });
-            return res.status(400).json(errors).end();
+            res.status(400).json(errors).end();
+            return (errors = []);
           }
           await user.location.push(locationSaved);
           user.save();
@@ -81,7 +86,8 @@ async function postAMapLocation(req, res) {
           if (err.code === 11000) {
             log('error', `Line: 92:  Duplicate Location Error`, 'mapController');
             errors.push({ errorMsg: 'Duplicate Location! Please try another location' });
-            return res.status(400).json(errors).end();
+            res.status(400).json(errors).end();
+            return (errors = []);
           }
         });
     }

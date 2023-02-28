@@ -32,9 +32,11 @@ const MapFormSpotHuman = () => {
   if (labelNameState) labelName = labelNameState;
 
   const timeLimitMessage = () => {
-    setTimeout(() => {
+    const resWithTimeout = setTimeout(() => {
       setHasMsg(false);
     }, 15000);
+
+    clearTimeout(resWithTimeout);
   };
 
   // Sets the form to it's initial state in the original object.

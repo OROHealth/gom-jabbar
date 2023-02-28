@@ -50,10 +50,12 @@ const SignInForm = () => {
 
   // handle the messages popup
   const timeLimitMessage = () => {
-    setTimeout(() => {
+    const resWithTimeout = setTimeout(() => {
       setShowSuccessMsg(false);
       setShowErrorMsg(false);
     }, 15000);
+
+    clearTimeout(resWithTimeout);
   };
 
   // Reset Form Fields

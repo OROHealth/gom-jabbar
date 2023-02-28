@@ -15,11 +15,13 @@ const Authentication = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => {
+    const resWithTimeout = setTimeout(() => {
       if (loggedIn) {
         navigate('/app/dashboard');
       }
     }, 500);
+
+    clearTimeout(resWithTimeout);
   }, [navigate, loggedIn]);
 
   return (

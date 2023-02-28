@@ -30,7 +30,7 @@ const useLocalStorage = (key, type) => {
     }
     //
   } catch (error) {
-    console.log(error);
+    console.log('error', error, 'useLocalStorage');
   }
 };
 

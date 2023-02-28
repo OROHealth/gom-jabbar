@@ -42,10 +42,12 @@ const SignUpForm = () => {
   const dispatch = useDispatch();
 
   const timeLimitMessage = () => {
-    setTimeout(() => {
+    const resWithTimeout = setTimeout(() => {
       setShowSuccessMsg(false);
       setShowErrorMsg(false);
     }, 15000);
+
+    clearTimeout(resWithTimeout);
   };
 
   // Sets the form to it's initial state in the original object.

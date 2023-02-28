@@ -29,10 +29,12 @@ const AntlerExchange = () => {
 
   // handle the messages popup
   const timeLimitMessage = () => {
-    setTimeout(() => {
+    const resWithTimeout = setTimeout(() => {
       setShowErrorMsg(false);
       setShowSuccessMsg(false);
     }, 15000);
+
+    clearTimeout(resWithTimeout);
   };
 
   // Toast

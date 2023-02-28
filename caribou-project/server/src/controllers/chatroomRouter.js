@@ -66,7 +66,7 @@ async function postMessageRouter(req, res) {
 
           return update;
         });
-        console.log('returnedUpdate', returnedUpdate);
+        log('info', `returnedUpdate, returnedUpdate`, 'chatroomRouter');
 
         const filter = { chatroomMsgId: roomId };
         let doc = await ChatroomMsgModel.findOneAndUpdate(filter, ...returnedUpdate, { new: true });

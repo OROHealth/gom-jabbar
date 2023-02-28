@@ -14,7 +14,7 @@ const socketIOChatMessageHandler = io => {
 
       // Signal the that a new User is connected to the chat - receives the username from data and the room
       socket.on('new-user', (room, data) => {
-        console.log('Line 22: New User', data, 'Room:', room);
+        log('info', `Line 22: New User, ${data}, Room: ${room}`, 'chatMessages');
 
         socket.join(room);
 
@@ -32,7 +32,7 @@ const socketIOChatMessageHandler = io => {
 
         socket.join(room);
 
-        console.log('Line 42: Send Chat Message:', data, 'to:', room);
+        log('info', `Line 42: Send Chat Message: ${data}, to: ${room}`, 'chatMessages');
         // Sending back the message and the users Name = { message: 'how u doing', username: 'giov' } User: giov
         io.to(room).emit('chat_message_received_broadcast', data);
       });
@@ -46,10 +46,10 @@ const socketIOChatMessageHandler = io => {
         ChatMessageStream.on('change', change => {
           switch (change.operationType) {
             case 'update':
-              io.emit('messages_was_updated', { message: `messages_was_updated` });
+              io.volatile.emit('messages_was_updated', { message: `messages_was_updated` });
 
             case 'insert':
-              io.emit('messages_was_updated', { message: `messages_was_updated` });
+              io.volatile.emit('messages_was_updated', { message: `messages_was_updated` });
           }
         });
       });

@@ -1,3 +1,5 @@
+const log = require('./utils/logger');
+
 // this session is just the browser session. Once the user opens the application, as long as the user is still on the application and signed in. That property will still be available in the session. But once they close the session, that property will be deleted.
 
 // the type will be either get set or delete
@@ -31,7 +33,7 @@ const useSessionStorage = (key, type) => {
     }
     //
   } catch (error) {
-    console.log(error);
+    log('error', error, 'useSessionStorage');
   }
 };
 

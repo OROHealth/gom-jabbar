@@ -1,7 +1,9 @@
-require('dotenv').config();
+// require('dotenv').config({});
+const dotenv = require('dotenv');
+dotenv.config({});
 
 const MONGODB_URL = process.env.MONGODB_URL;
-const SERVER_PORT = process.env.SERVER_PORT;
+const SERVER_PORT = process.env.PORT || process.env.SERVER_PORT;
 const SERVER_PORT_TWO = process.env.SERVER_PORT_TWO;
 const NODE_ENV = process.env.NODE_ENV;
 const COOKIE_KEY_ONE = process.env.COOKIE_KEY_ONE;
