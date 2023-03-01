@@ -47,6 +47,8 @@ service of a modern experience while using their CaribouPhones (an Android varia
 ## Main Tools
 - Create react app
 - React
+- Node
+- express
 - Redux-toolkit
 - Axios
 - React redux
@@ -77,18 +79,17 @@ service of a modern experience while using their CaribouPhones (an Android varia
 
 
 ## Starting the App
-- Change Directory into the ** caribou-project ** and then run inside the terminal:
+- Change Directory/Move into the ** caribou-project ** folder and then inside the terminal run:
 
 ```
 npm run install:both
-npm run start:both
+npm run start:bothDev
 ```
 
-- These two commands will install all the packages for both the client and the server and also start both applications in the terminal. Note the server will run in production mode.
+- These two commands will install all the packages for both the client and the server and also start both applications in the terminal. Note the server will run in development mode, so you can use it on local host..
 
 
-- If you ran the Production server - which is by default with the code above
-- Once Finished and you want to close. ** Make sure to 'Close' the pm2 Processes by running:
+- If you ran the server in Production mode. Once Finished *** Make sure to 'Close' the pm2 Processes by running:
 
 ```
 npm run stop:serverProd
@@ -102,6 +103,11 @@ Note:
 ```
 npm run start:bothDev
 ```
+
+### NOTE:
+- Running 'npm start' in the frontend or backend will run the apps in production mode.
+
+This will make the API communication not work as they will be sending requests to the deployed server route.
 
 
 ## Environment Variables Needed ** Very Important
