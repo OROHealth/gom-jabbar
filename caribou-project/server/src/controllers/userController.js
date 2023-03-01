@@ -142,7 +142,6 @@ async function loginUser(req, res) {
           } else {
             // If user is found - compare the password with the user in the Database // console.log('isValidPassword', isValidPassword); // returns true if valid
             const isValidPassword = await bcrypt.compare(password, user.password);
-            log('error', `Line 130: Is it a Valid Password? ${isValidPassword} `, 'userController');
 
             if (!isValidPassword) {
               errors.push({ errorMsg: 'Your Caribou username or password is not valid.' });

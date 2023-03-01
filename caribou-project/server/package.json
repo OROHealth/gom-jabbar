@@ -13,7 +13,7 @@
     "stop": "NODE_ENV=production pm2 stop src/index.js -i max --attach --watch -f",
     "deleteAll:processes": "NODE_ENV=production pm2 delete all",
     "start:monit": "NODE_ENV=develop pm2 monit",
-    "start:dev": "NODE_ENV=development nodemon src/index.js | ./node_modules/.bin/bunyan",
+    "start:dev": "NODE_ENV=development nodemon --max-old-space-size=16000 src/index.js | ./node_modules/.bin/bunyan",
     "cluster": "pm2 start index.js -i max"
   },
   "keywords": [],

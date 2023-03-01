@@ -24,7 +24,7 @@ app.use(hpp());
 app.use(helmet());
 app.use(
   cors({
-    origin: ['*', 'https://caribou-newproject.fly.dev', SERVER_URL, CLIENT_URL],
+    origin: ['*', 'http://localhost:3001', SERVER_URL, CLIENT_URL],
     allRoutes: true,
     credentials: true,
     optionsSuccessStatus: 200,
@@ -57,16 +57,12 @@ app.use('/api/v1/map', verifyAccessToken, mapRouter);
 app.use('/api/v1/antler-exchange', verifyAccessToken, antlerExchangeRouter);
 app.use('/api/v1/chatroom', verifyAccessToken, chatroomRouter);
 
-// Testing middle-ware
+// Testing middle-wares and end-points
 // app.use('/api/v1/map', mapRouter); // test without token
 // app.use('/api/v1/antler-exchange', antlerExchangeRouter);
 
 // Health check route - endpoint that returns a 200 status code if your application is running
 app.use('/_health', (_req, res) => {
-  res.status(200).json({ message: 'ok' });
-});
-
-app.use('/', (_req, res) => {
   res.status(200).json({ message: 'ok' });
 });
 
@@ -76,6 +72,10 @@ app.use(
     uriPath: '/api-monitoring',
   })
 );
+
+app.use('/', (_req, res) => {
+  res.status(200).json({ message: 'ok' });
+});
 
 // Global Error Handler
 app.use('/*', (req, res) => {

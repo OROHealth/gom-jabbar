@@ -1,5 +1,6 @@
 // require('events').EventEmitter.prototype._maxListeners = 70;
 // require('events').defaultMaxListeners = 70;
+'--use strict';
 const http = require('http');
 const app = require('./app'); // express app
 const { Server } = require('socket.io');
@@ -161,6 +162,22 @@ const socketIOConnections = io => {
   locationAddedSocketHandler();
   chatroomSocketHandler();
 };
+
+// rss stands for Resident Set Size, it is the total memory allocated for the process execution. A running program is always represented through some space allocated in memory. This space is called Resident Set. Heap: a memory segment dedicated to storing reference types like objects, strings and closures. HeapTotal is the total allocated heap space by the underlying V8 engine, for dynamic allocations. heapUsed is the memory used within that total space. Both are managed by V8, and are subject to grow/shrink whenever necessary.
+// heapTotal is the total size of the allocated heap
+// heapUsed is the actual memory used during the execution of our process
+// external is, according to the documentation, the memory used by "C++ objects bound to JavaScript objects managed by V8"
+const memory = process.memoryUsage();
+
+log(
+  'info',
+  `Memory External: ${Math.round((memory.external / 1024 / 1024) * 100) / 100} MB, Memory heapTotal: ${
+    Math.round((memory.heapTotal / 1024 / 1024) * 100) / 100
+  } MB, Memory heapUsed: ${Math.round(((memory.heapUsed / 1024 / 1024) * 100) / 100)} MB, Memory rss: ${
+    Math.round((memory.rss / 1024 / 1024) * 100) / 100
+  } MB`,
+  'app.js'
+);
 
 handleExit();
 startServer();

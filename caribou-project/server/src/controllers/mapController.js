@@ -11,7 +11,7 @@ async function getAllMapLocations(_req, res) {
   log('info', 'App Currently Getting all the Map Marker Locations in the Database', 'mapController');
   const locations = await MapModel.find({}).populate({ path: 'user', model: 'User' });
   log('info', 'Locations Found, Sent them to the Frontend :)', 'mapController');
-  res.status(200).json({ locations });
+  res.status(200).json({ locations }).end();
   return;
 }
 
@@ -82,9 +82,9 @@ async function postAMapLocation(req, res) {
           });
         })
         .catch(err => {
-          log('error', `Line: 89: Error Saving newLocation: ${err}, with errorCode ${err.code}`, 'mapController');
+          log('error', `Line: 85: Error Saving newLocation: ${err}, with errorCode ${err.code}`, 'mapController');
           if (err.code === 11000) {
-            log('error', `Line: 92:  Duplicate Location Error`, 'mapController');
+            log('error', `Line: 87:  Duplicate Location Error`, 'mapController');
             errors.push({ errorMsg: 'Duplicate Location! Please try another location' });
             res.status(400).json(errors).end();
             return (errors = []);

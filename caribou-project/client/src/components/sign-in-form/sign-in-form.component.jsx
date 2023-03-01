@@ -88,7 +88,7 @@ const SignInForm = () => {
           password,
         })
         .then((result) => {
-          console.log('Line 80: Result:', result, `Sign-in-form`);
+          // console.log('Line 91: Result:', result, `Sign-in-form`);
           // console.log(`Line 90: Logging in the User ${result.data}, Sign-in-form`);
           // set logged in to true in local storage
           if (result.data) {

@@ -9,15 +9,14 @@
     "install:both": "npm run install-server && npm run install-client",
 
     "start:serverProd": "npm run start --prefix server",
+    "stop:serverProd": "npm run stop --prefix server && npm run deleteAll:processes --prefix server",
     "start:serverDev": "npm run start:dev --prefix server",
-    "stop:server": "npm run stop --prefix server && npm run deleteAll:processes --prefix server",
 
-    "start:client": "npm start --prefix client",
+    "start:clientProd": "npm start --prefix client",
+    "start:clientDev": "npm run start:dev --prefix client",
 
-    "start:both": "npm run start:serverProd & npm run start:client",
-    "stop:serverProd": "npm run stop:server",
-
-    "start:bothDev": "npm run start:serverDev & npm run start:client"
+    "start:bothProd": "npm run start:serverProd & npm run start:clientProd",
+    "start:bothDev": "npm run start:serverDev & npm run start:clientDev"
 
   },
   "keywords": [],

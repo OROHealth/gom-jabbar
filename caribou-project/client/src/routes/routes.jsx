@@ -5,6 +5,7 @@ import Dashboard from '@pages/dashboard/Dashboard.pages';
 import ProtectedRoutes from '@pages/protectedRoutes/ProtectedRoutes.pages';
 import ChatMeetingRoom from '@components/chatMeetingRoom/ChatMeetingRoom';
 import Chatroom from '@components/chatroom/Chatroom';
+import Error from '@pages/error/Error';
 
 export const AppRouter = () => {
   const elements = useRoutes([
@@ -29,6 +30,10 @@ export const AppRouter = () => {
           element: <Chatroom />,
         },
       ],
+    },
+    {
+      path: '*',
+      element: <Error />,
     },
   ]);
 

@@ -47,10 +47,12 @@ const socketIOChatMessageHandler = io => {
         ChatMessageStream.on('change', change => {
           switch (change.operationType) {
             case 'update':
-              io.volatile.emit('messages_was_updated', { message: `messages_was_updated` });
+              io.emit('messages_was_updated', { message: `messages was updated` });
+          }
 
+          switch (change.operationType) {
             case 'insert':
-              io.volatile.emit('messages_was_updated', { message: `messages_was_updated` });
+              io.emit('messages_was_updated', { message: `messages was updated` });
           }
         });
       });
