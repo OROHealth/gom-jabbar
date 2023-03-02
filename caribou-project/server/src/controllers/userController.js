@@ -23,7 +23,7 @@ async function registerUser(req, res) {
   const regex = /^[\w-\.]+-carib@([\w-]+\.)+[\w-]{2,4}$/g;
   const found = email.match(regex);
   if (!found) {
-    errors.push({ errorMsg: 'Humans are not allowed!' });
+    errors.push({ errorMsg: "Humans are not allowed! Caribou emails should end with '-carib@....com'" });
   }
 
   // Check that passwords at least 6 characters

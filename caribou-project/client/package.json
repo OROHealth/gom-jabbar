@@ -12,6 +12,7 @@
     "leaflet": "^1.9.3",
     "leaflet-geosearch": "^3.7.0",
     "lodash": "^4.17.21",
+    "msw": "^1.1.0",
     "react": "^18.2.0",
     "react-app-rewire-alias": "^1.1.7",
     "react-app-rewired": "^2.2.1",
@@ -75,5 +76,45 @@
     "prettier": "^2.8.4",
     "prettier-eslint": "^15.0.1",
     "react-app-alias": "^2.2.2"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/**/test/*.js?(x)",
+      "!**/node_modules/**"
+    ],
+    "coverageReporters": [
+      "text-summary",
+      "lcov"
+    ],
+    "moduleNameMapper": {
+      "@assets/(.*)": [
+        "<rootDir>/src/assets/$1"
+      ],
+      "@components/(.*)": [
+        "<rootDir>/src/components/$1"
+      ],
+      "@pages/(.*)": [
+        "<rootDir>/src/pages/$1"
+      ],
+      "@redux/(.*)": [
+        "<rootDir>/src/redux-toolkit/$1"
+      ],
+      "@routes/(.*)": [
+        "<rootDir>/src/routes/$1"
+      ],
+      "@services/(.*)": [
+        "<rootDir>/src/services/$1"
+      ],
+      "@hooks/(.*)": [
+        "<rootDir>/src/hooks/$1"
+      ],
+      "@mocks/(.*)": [
+        "<rootDir>/src/mocks/$1"
+      ],
+      "@root/(.*)": [
+        "<rootDir>/src/$1"
+      ]
+    }
   }
 }
