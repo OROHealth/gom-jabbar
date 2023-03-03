@@ -201,6 +201,17 @@ const SignInForm = () => {
             <Button type="submit">{loading ? <ReactSpinner /> : `Sign In`}</Button>
           </div>
         </form>
+        <div className="test-app-signIn">
+          <span>
+            <strong style={{ color: '#de006f' }}>NOTE:</strong> <p>To test the app, Please sign in with:</p>
+          </span>
+          <p>
+            Email: <strong style={{ color: '#de006f' }}>test-carib@hotmail.com</strong>
+          </p>
+          <p>
+            Password: <strong style={{ color: '#de006f' }}>1234567</strong>
+          </p>
+        </div>
       </div>
     </>
   );
