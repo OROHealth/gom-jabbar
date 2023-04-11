@@ -201,7 +201,7 @@ const SignInForm = () => {
             <Button type="submit">{loading ? <ReactSpinner /> : `Sign In`}</Button>
           </div>
         </form>
-        <div className="test-app-signIn">
+        {/* <div className="test-app-signIn">
           <span>
             <strong style={{ color: '#de006f' }}>NOTE:</strong> <p>To test the app, Please sign in with:</p>
           </span>
@@ -211,7 +211,7 @@ const SignInForm = () => {
           <p>
             Password: <strong style={{ color: '#de006f' }}>1234567</strong>
           </p>
-        </div>
+        </div> */}
       </div>
     </>
   );

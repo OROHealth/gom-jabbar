@@ -27,8 +27,8 @@ const Authentication = () => {
   return (
     <>
       <HomeNavigation />
-      <div className="authentication-container">
-        <div className="auth-wrapper">
+      <div className="authentication-container ">
+        <div className="auth-wrapper ">
           <SignInForm />
           <SignUpForm />
         </div>
