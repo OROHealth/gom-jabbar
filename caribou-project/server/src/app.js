@@ -24,7 +24,7 @@ app.use(hpp());
 app.use(helmet());
 app.use(
   cors({
-    origin: ['*', SERVER_URL, CLIENT_URL],
+    origin: ['*', 'http://localhost:3001', SERVER_URL, CLIENT_URL],
     allRoutes: true,
     credentials: true,
     optionsSuccessStatus: 200,
@@ -57,12 +57,13 @@ app.use('/api/v1/map', verifyAccessToken, mapRouter);
 app.use('/api/v1/antler-exchange', verifyAccessToken, antlerExchangeRouter);
 app.use('/api/v1/chatroom', verifyAccessToken, chatroomRouter);
 
-// Testing middle-ware
+// Testing middle-wares and end-points
 // app.use('/api/v1/map', mapRouter); // test without token
+// app.use('/api/v1/antler-exchange', antlerExchangeRouter);
 
 // Health check route - endpoint that returns a 200 status code if your application is running
-app.get('/_health', (_req, res) => {
-  res.status(200).send('ok');
+app.use('/_health', (_req, res) => {
+  res.status(200).json({ message: 'ok' });
 });
 
 // Api Monitoring
@@ -72,21 +73,20 @@ app.use(
   })
 );
 
-// Global Error Handler
-app.all('*', (req, res) => {
-  // catches all unFound urls
-  res.status(HTTP_STATUS.StatusCodes.NOT_FOUND).json({ message: `${req.originalUrl} not found` });
+app.use('/', (_req, res) => {
+  res.status(200).json({ message: 'ok' });
 });
 
-app.get('/*', (req, res) => {
+// Global Error Handler
+app.use('/*', (req, res) => {
   // catches all unFound urls
-  res.status(HTTP_STATUS.StatusCodes.NOT_FOUND).json({ message: `${req.originalUrl} not found` });
+  return res.status(HTTP_STATUS.StatusCodes.NOT_FOUND).json({ message: `${req.originalUrl} not found` });
 });
 
 app.use((error, _req, res, next) => {
   log('error', error, 'app.js');
   if (error) {
-    console.log('There is a error:', error);
+    log('error', `There is a error: ${error}`, 'app.js');
     return res.status(HTTP_STATUS.StatusCodes.NOT_FOUND).json({ message: 'Page not found' });
   }
   next();

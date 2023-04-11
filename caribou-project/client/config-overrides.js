@@ -8,6 +8,7 @@ const aliasMap = {
   '@routes': 'src/routes',
   '@services': 'src/services',
   '@hooks': 'src/hooks',
+  '@mocks': 'src/mocks',
   '@root': 'src',
 };
 

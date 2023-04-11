@@ -23,7 +23,7 @@ async function registerUser(req, res) {
   const regex = /^[\w-\.]+-carib@([\w-]+\.)+[\w-]{2,4}$/g;
   const found = email.match(regex);
   if (!found) {
-    errors.push({ errorMsg: 'Humans are not allowed!' });
+    errors.push({ errorMsg: "Humans are not allowed! Caribou emails should end with '-carib@....com'" });
   }
 
   // Check that passwords at least 6 characters
@@ -33,7 +33,10 @@ async function registerUser(req, res) {
 
   if (errors.length > 0) {
     // If there is an issue then I want to rerender the registration form with the error message
-    return res.status(401).json(errors);
+
+    res.status(401).json(errors);
+    success = [];
+    return (errors = []);
   } else {
     if (errors.length < 1) {
       try {
@@ -42,7 +45,9 @@ async function registerUser(req, res) {
           if (user) {
             // If User Already Exists. Then we displayed in the frontend a message
             errors.push({ errorMsg: "I'm sorry this Caribou already exists!" });
-            return res.status(401).json(errors);
+            res.status(401).json(errors);
+            success = [];
+            return (errors = []);
           } else {
             // [] Encrypt password - Hash the password before saving it to the database
             // Generate a salt in order to create a hash
@@ -76,6 +81,9 @@ async function registerUser(req, res) {
             const refreshToken = await signRefreshToken(newUser.uuId);
             // response with an object, to get it in json format
             res.status(201).json({ accessToken, refreshToken, avatarImage, email, success });
+
+            errors = [];
+            return (success = []);
           }
         });
       } catch (error) {
@@ -114,7 +122,9 @@ async function loginUser(req, res) {
 
   // Logic to respond with the error messages
   if (errors.length > 0) {
-    return res.status(401).json(errors).end();
+    res.status(401).json(errors).end();
+    success = [];
+    return (errors = []);
   } else {
     if (errors.length < 1) {
       try {
@@ -126,11 +136,12 @@ async function loginUser(req, res) {
           // checks if there is a user
           if (!user) {
             errors.push({ errorMsg: 'This Caribou does not exist. Are you a Human?' });
-            return res.status(401).json(errors);
+            res.status(401).json(errors);
+            success = [];
+            return (errors = []);
           } else {
             // If user is found - compare the password with the user in the Database // console.log('isValidPassword', isValidPassword); // returns true if valid
             const isValidPassword = await bcrypt.compare(password, user.password);
-            log('error', `Line 130: Is it a Valid Password? ${isValidPassword} `, 'userController');
 
             if (!isValidPassword) {
               errors.push({ errorMsg: 'Your Caribou username or password is not valid.' });
@@ -144,7 +155,9 @@ async function loginUser(req, res) {
             const email = user.email;
 
             success.push({ successMsg: 'Welcome Caribou. Logging in was successful.' });
-            return res.status(201).json({ accessToken, refreshToken, avatarImage, email, success });
+            res.status(201).json({ accessToken, refreshToken, avatarImage, email, success });
+            success = [];
+            return (errors = []);
           }
         });
       } catch (error) {

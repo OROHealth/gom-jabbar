@@ -4,7 +4,7 @@ import '@components/home-navigation/HomeNavigation.styles.scss';
 const HomeNavigation = () => {
   return (
     <>
-      <nav className="home-navbar-container"></nav>
+      <nav className="home-navbar-container candy-mesh"></nav>
     </>
   );
 };

@@ -3,7 +3,7 @@ const { getAllMapLocations, postAMapLocation } = require('../controllers/mapCont
 // Base Route - /api/v1/map
 
 // @Desc    Save Map location
-// @Method  GET
+// @Method  POST
 // @Route   /api/v1/map/post=location
 mapRouter.post('/post=location', postAMapLocation);
 

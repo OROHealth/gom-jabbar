@@ -4,7 +4,7 @@ const log = require('../utils/logger');
 const client = redis.createClient();
 
 // To see if a client is connected
-client.on('connect', () => {
+client.once('connect', () => {
   log('info', 'Client connected to redis...', 'initRedis');
 });
 
@@ -12,7 +12,7 @@ client.on('error', err => {
   log('error', err.message, 'initRedis');
 });
 
-client.on('ready', () => {
+client.once('ready', () => {
   log('info', 'Client connected to redis and Ready to use..', 'initRedis');
 });
 

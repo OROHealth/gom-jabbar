@@ -2,9 +2,7 @@ const log = require('../utils/logger');
 const ChatroomMsgModel = require('../models/chatroomMsgModel');
 
 // Base = '/api/v1/chatroom'
-
 const rooms = {};
-// log('info', `Line 8:All Rooms Posted: ${rooms}`, 'chatroomRouter');
 
 // Good
 // @Desc    Gets all the chatRooms
@@ -46,7 +44,7 @@ async function postMessageRouter(req, res) {
         newMessage.users.push(user);
         newMessage.messages.push(`${user}: ${message}`);
 
-        await newMessage.save().then(savedMessage => {});
+        await newMessage.save();
 
         return res.status(201).json({ message: newMessage }).end();
       } else if (result.length > 0) {
@@ -66,12 +64,13 @@ async function postMessageRouter(req, res) {
 
           return update;
         });
-        console.log('returnedUpdate', returnedUpdate);
+        log('info', `returnedUpdate, returnedUpdate`, 'chatroomRouter');
 
         const filter = { chatroomMsgId: roomId };
         let doc = await ChatroomMsgModel.findOneAndUpdate(filter, ...returnedUpdate, { new: true });
 
-        return res.status(201).json({ message: doc });
+        res.status(201).json({ message: doc }).end();
+        return;
       }
     });
   } catch (error) {
@@ -87,16 +86,15 @@ async function getAllMsgs(req, res) {
   log('info', `Line 105: Message Id: ${messageId}`, 'chatroomRouter');
   try {
     const messagesFound = await ChatroomMsgModel.find({});
-    let found = false;
     let theItem = null;
-    const foundChat = messagesFound.map(item => {
+    messagesFound.map(item => {
       if (item.chatroomMsgId == messageId) {
         return (theItem = item);
       }
-      found = true;
     });
 
-    return res.status(200).json([theItem]).end();
+    res.status(200).json([theItem]).end();
+    return (theItem = null);
   } catch (error) {
     log('error', `Line 115: Error getting Messages: ${error}`, 'chatroomRouter');
   }

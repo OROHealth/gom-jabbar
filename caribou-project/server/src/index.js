@@ -1,11 +1,14 @@
-require('events').EventEmitter.prototype._maxListeners = 70;
-require('events').defaultMaxListeners = 70;
+// require('events').EventEmitter.prototype._maxListeners = 70;
+// require('events').defaultMaxListeners = 70;
+'--use strict';
 const http = require('http');
 const app = require('./app'); // express app
 const { Server } = require('socket.io');
 const { SERVER_PORT, NODE_ENV, CLIENT_URL, SERVER_URL } = require('./utils/config');
 const { setupDatabase } = require('./utils/setupDatabase');
 const log = require('./utils/logger');
+const dotenv = require('dotenv');
+dotenv.config({});
 
 // webSocket Listeners
 const { socketIOAntlerExchangeHandler } = require('./utils/webSockets/antlerExchange');
@@ -36,7 +39,7 @@ async function startHttpServer(server) {
     log('info', `Server running on port: ${SERVER_PORT} in '${NODE_ENV}' mode`, 'index');
   });
 
-  server.on('listening', event => {
+  server.once('listening', event => {
     log('info', 'Ok, server is Listening :)', 'index');
   });
 
@@ -64,14 +67,15 @@ const shutDownProperly = exitCode => {
   Promise.resolve()
     .then(() => {
       log('error', 'Shutdown In Progress...', 'index');
-
-      log('error', 'Exiting Processes', 'index');
       process.kill(process.pid, 'SIGINT');
       process.kill(process.pid, 'SIGTERM');
       log('error', 'Shutdown Completed', 'index');
-      setTimeout(() => {
-        process.exit(0);
+
+      const resWithTimeout = setTimeout(() => {
+        process.exit(exitCode);
       }, 1000).unref();
+
+      clearTimeout(resWithTimeout);
     })
     .catch(error => {
       log('error', `Catch Error during shutdown: ${error}`, 'index');
@@ -131,19 +135,19 @@ const createSocketIO = async server => {
   });
 
   // Listening for events
-  io.on('connection', socket => {
+  io.once('connection', socket => {
     // This Runs Whenever someone opens the website
     // socket.id - this is the id of the user, each user has a different id
     log('info', `Line 128: User connected, ${socket.id}`, 'index');
   });
 
   io.on('error', function (ex) {
-    console.log('handled error');
-    console.log(ex);
+    log('info', 'handled error', 'index');
+    log('info', ex, 'index');
     socket.close();
   });
 
-  io.sockets.setMaxListeners(17);
+  // io.sockets.setMaxListeners(20);
 
   return io;
 };
@@ -153,12 +157,27 @@ const socketIOConnections = io => {
   const humanQuitSocketHandler = socketIOHumanQuitHandler(io);
   const locationAddedSocketHandler = socketIOLocationAddedHandler(io);
   const chatroomSocketHandler = socketIOChatMessageHandler(io);
-
   antlerExchangeSocketHandler();
   humanQuitSocketHandler();
   locationAddedSocketHandler();
   chatroomSocketHandler();
 };
+
+// rss stands for Resident Set Size, it is the total memory allocated for the process execution. A running program is always represented through some space allocated in memory. This space is called Resident Set. Heap: a memory segment dedicated to storing reference types like objects, strings and closures. HeapTotal is the total allocated heap space by the underlying V8 engine, for dynamic allocations. heapUsed is the memory used within that total space. Both are managed by V8, and are subject to grow/shrink whenever necessary.
+// heapTotal is the total size of the allocated heap
+// heapUsed is the actual memory used during the execution of our process
+// external is, according to the documentation, the memory used by "C++ objects bound to JavaScript objects managed by V8"
+const memory = process.memoryUsage();
+
+log(
+  'info',
+  `Memory External: ${Math.round((memory.external / 1024 / 1024) * 100) / 100} MB, Memory heapTotal: ${
+    Math.round((memory.heapTotal / 1024 / 1024) * 100) / 100
+  } MB, Memory heapUsed: ${Math.round(((memory.heapUsed / 1024 / 1024) * 100) / 100)} MB, Memory rss: ${
+    Math.round((memory.rss / 1024 / 1024) * 100) / 100
+  } MB`,
+  'app.js'
+);
 
 handleExit();
 startServer();

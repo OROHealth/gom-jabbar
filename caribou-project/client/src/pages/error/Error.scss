@@ -1,0 +1,63 @@
+.error-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+
+  .oops {
+    font-weight: 700;
+    color: black;
+    font-size: 3rem;
+    text-transform: uppercase;
+  }
+
+  .not-found {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: black;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .back-button {
+    color: black;
+    border-color: 2px solid #de006f;
+    display: block;
+    margin-top: 40px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+}
+
+@media screen and (min-width: 20em) {
+
+  .error-container {
+    .oops {
+      font-size: 4rem;
+      text-transform: uppercase;
+    }
+
+    .not-found {
+      font-size: 2rem;
+      margin-bottom: 25px;
+    }
+
+  }
+}
+@media screen and (min-width: 30em) {
+
+  .error-container {
+    .oops {
+      font-size: 10rem;
+      text-transform: uppercase;
+    }
+
+    .not-found {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+  }
+}

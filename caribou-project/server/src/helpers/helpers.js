@@ -18,8 +18,8 @@ const lowerCase = str => {
 };
 
 // Generating keys for the access token
-const key1 = crypto.randomBytes(32).toString('hex');
-const key2 = crypto.randomBytes(32).toString('hex');
+// const key1 = crypto.randomBytes(32).toString('hex');
+// const key2 = crypto.randomBytes(32).toString('hex');
 
 // JWT Tokens
 const signAccessToken = userData => {

@@ -15,18 +15,20 @@ const Authentication = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => {
+    const resWithTimeout = setTimeout(() => {
       if (loggedIn) {
         navigate('/app/dashboard');
       }
     }, 500);
+
+    clearTimeout(resWithTimeout);
   }, [navigate, loggedIn]);
 
   return (
     <>
       <HomeNavigation />
-      <div className="authentication-container">
-        <div className="auth-wrapper">
+      <div className="authentication-container ">
+        <div className="auth-wrapper ">
           <SignInForm />
           <SignUpForm />
         </div>

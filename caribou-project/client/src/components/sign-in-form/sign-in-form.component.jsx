@@ -50,10 +50,12 @@ const SignInForm = () => {
 
   // handle the messages popup
   const timeLimitMessage = () => {
-    setTimeout(() => {
+    const resWithTimeout = setTimeout(() => {
       setShowSuccessMsg(false);
       setShowErrorMsg(false);
     }, 15000);
+
+    clearTimeout(resWithTimeout);
   };
 
   // Reset Form Fields
@@ -86,7 +88,7 @@ const SignInForm = () => {
           password,
         })
         .then((result) => {
-          console.log('Line 80: Result:', result, `Sign-in-form`);
+          // console.log('Line 91: Result:', result, `Sign-in-form`);
           // console.log(`Line 90: Logging in the User ${result.data}, Sign-in-form`);
           // set logged in to true in local storage
           if (result.data) {
@@ -199,6 +201,17 @@ const SignInForm = () => {
             <Button type="submit">{loading ? <ReactSpinner /> : `Sign In`}</Button>
           </div>
         </form>
+        {/* <div className="test-app-signIn">
+          <span>
+            <strong style={{ color: '#de006f' }}>NOTE:</strong> <p>To test the app, Please sign in with:</p>
+          </span>
+          <p>
+            Email: <strong style={{ color: '#de006f' }}>test-carib@hotmail.com</strong>
+          </p>
+          <p>
+            Password: <strong style={{ color: '#de006f' }}>1234567</strong>
+          </p>
+        </div> */}
       </div>
     </>
   );
