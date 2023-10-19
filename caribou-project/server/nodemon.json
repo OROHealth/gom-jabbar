@@ -1,0 +1,21 @@
+{
+  "watch": ["src"],
+  "verbose": true,
+  "ext": "ts,js,json",
+  "ignore": ["node_modules", "coverage", "dist"],
+  "exec": "node src/index.js",
+  "delay": "5000ms",
+  "restartable": "rs",
+  "signal": "SIGHUP",
+  "events": {
+      "restart": "osascript -e 'display notification \"app restarted\" with title \"nodemon\"'"
+    },
+   "execMap": {
+    "ts": "typescript",
+    "js": "node",
+    "pde": "processing --sketch={{pwd}} --run"
+  },
+  "env": {
+    "NODE_ENV": "development"
+  }
+}

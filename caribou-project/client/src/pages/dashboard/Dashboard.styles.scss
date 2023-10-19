@@ -1,0 +1,674 @@
+.app-map-section{
+  // border: 1px solid red;
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .app-dash-pages--map-title{
+    text-align: center;
+    font-size: 36px;
+    font-weight: 900;
+    color: #de006f;
+  }
+
+  .app-dash-map-wrapper{
+    // position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 30px;
+    // width: 70%;
+    flex-direction: column;
+
+    .app-dash-all-fields {
+      overflow: scroll;
+      display: flex;
+      gap: 15px;
+      justify-content: flex-start;
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+
+    .app-dashboard-texts-field {
+      flex: 1 0 270px;
+      // width: 100%;
+      text-align: center;
+      padding: 20px;
+      border: 2px solid #eeeeee;
+      box-shadow: 0 0 20px 0 rgb(44 101 144 / 10%);
+      border-radius: 25px;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: space-between;
+
+    }
+
+    .app-map{
+      display: flex;
+      gap: 20px;
+      flex: 1;
+      margin: 0 auto;
+      // position: sticky;
+      // top: 5rem;
+      // left: 50px;
+    }
+  }
+
+}
+
+@media screen and (min-width: 1em ) {
+
+  // .app-dash-map-wrapper{
+  //   // border: 2px solid rgb(128, 0, 0);
+  //   align-items: center;
+  //   // margin-top: 30px;
+  //   flex-direction: column;
+  //   width: 80%;
+  //   margin-bottom: 32px;
+  //   margin: 0 auto;
+
+  //   .app-dashboard-texts-field {
+  //     // border: 1px solid red;
+  //     width: 100%;
+  //     max-width: 300px;
+  //     margin: 0 auto;
+  //   }
+  //   .app-map{
+  //     display: flex;
+  //     flex-direction: column;
+  //     width: 100%;
+  //     height: 100%;
+  //   }
+  // }
+  .app-map-section {
+    margin: 0  auto 120px;
+
+    .app-dash-map-wrapper {
+      // border: 2px solid rgb(34, 0, 128);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 95vw;
+
+      .app-dash-all-fields {
+        width: 100%;
+        // height: 281px // Changed
+      }
+
+      .app-map {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px;
+        display: flex;
+        height: 100%;
+        width: 100%;
+        flex-direction: column;
+
+        .app-dash-all-fields {
+          width: 30%;
+          height: 425px;
+          max-height: 425px;
+        }
+
+        .map-wrapper-container {
+          width: 100%;
+          min-width: 19%;
+          max-width: 182px;
+          height: 300px;
+          max-height: 610px;
+          flex-grow: 1;
+
+          .map-wrapper {
+            height: 100%;
+            width: 100%;
+
+            .map-container {
+              width: 100%;
+              max-width: 100%;
+              height: 100%;
+              max-height: 100%;
+            }
+          }
+        }
+
+        .app-map-custom-wrapper {
+          // border: 1px solid #b61414;
+          width: 100%;
+          min-width: 30%;
+          max-width: 100%;
+          height: 100%;
+          max-height: 600px;
+          // margin: 0;
+
+          .app-map-custom-fields {
+            display: flex;
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #dbdbdb;
+            border-radius: 25px;
+            width: 33.3%;
+            height: 475px;
+            max-height: 600px;
+            margin: 0 auto;
+
+            form {
+              flex-direction: column;
+              display: flex;
+              align-items: center;
+              flex-grow: 1;
+              justify-content: space-around
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
+
+@media screen and (min-width: 15em ) {
+
+  .app-dash-map-wrapper{
+    .app-dashboard-texts-field {
+      border: 1px solid red;
+      width: 100%;
+      max-width: 300px;
+      margin: 0;
+    }
+  }
+}
+
+
+@media screen and (min-width: 17em ) {
+  .app-map-section {
+    margin: 0  auto 120px;
+    .app-dash-map-wrapper {
+      // border: 2px solid rgb(0, 11, 128);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 100px;
+      width: 95%;
+
+      .app-dashboard-texts-field {
+        // border: 1px solid red;
+        width: 100%;
+        max-width: 300px;
+        margin-top: 0 ;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+      }
+
+      .app-map{
+        flex-direction: row;
+        width: 100%;
+        height: 100%;
+      }
+
+      .app-dash-all-fields {
+        width: 100%;
+        // height: 281px // Changed
+      }
+    }
+  }
+
+  .app-map-section {
+    margin: 0  auto 120px;
+
+    .app-dash-map-wrapper {
+      // border: 2px solid rgb(34, 0, 128);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .app-map {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px;
+        display: flex;
+        height: 100%;
+        width: 100%;
+        flex-direction: column;
+
+        .app-dash-all-fields {
+          width: 30%;
+          height: 425px;
+          max-height: 425px;
+        }
+
+        .map-wrapper-container {
+          width: 100%;
+          min-width: 30%;
+          max-width: 760px;
+          height: 300px;
+          max-height: 610px;
+          flex-grow: 1;
+
+          .map-wrapper {
+            height: 100%;
+            width: 100%;
+
+            .map-container {
+              width: 100%;
+              max-width: 100%;
+              height: 100%;
+              max-height: 100%;
+            }
+          }
+        }
+
+        .app-map-custom-wrapper {
+          // border: 1px solid #b61414;
+          width: 100%;
+          min-width: 30%;
+          max-width: 100%;
+          height: 100%;
+          max-height: 600px;
+          // margin: 0;
+
+          .app-map-custom-fields {
+            display: flex;
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #dbdbdb;
+            border-radius: 25px;
+            width: 33.3%;
+            height: 475px;
+            max-height: 600px;
+            margin: 0 auto;
+
+            form {
+              flex-direction: column;
+              display: flex;
+              align-items: center;
+              flex-grow: 1;
+              justify-content: space-around
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 51em ) {
+  .app-map-section {
+    margin: 0  auto 120px;
+
+    .app-dash-map-wrapper{
+      // border: 2px solid rgb(0, 11, 128);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .app-map{
+        flex-direction: row;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  .app-map-section {
+    margin: 0  auto 120px;
+
+    .app-dash-map-wrapper {
+      // border: 2px solid rgb(34, 0, 128);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+
+      .app-dash-all-fields{
+        width: 100%;
+        height: 425px;
+        max-height: 425px;
+      }
+
+      .app-map {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px;
+        display: flex;
+        height: 100%;
+        width: 100%;
+        flex-direction: row;
+
+        .app-dash-all-fields {
+          width: 30%;
+          height: 425px;
+          max-height: 425px;
+        }
+
+        .map-wrapper-container {
+          width: 70%;
+          min-width: 30%;
+          max-width: 760px;
+          height: 600px;
+          max-height: 610px;
+          flex-grow: 1;
+
+          .map-wrapper {
+            height: 100%;
+            width: 100%;
+
+            .map-container {
+              width: 100%;
+              max-width: 100%;
+              height: 100%;
+              max-height: 100%;
+            }
+          }
+        }
+
+        .app-map-custom-wrapper {
+          // border: 1px solid #b61414;
+          width: 45%;
+          min-width: 30%;
+          max-width: 100%;
+          height: 100%;
+          max-height: 600px;
+
+          .app-map-custom-fields {
+            display: flex;
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #dbdbdb;
+            border-radius: 25px;
+            width: 33.3%;
+            height: 475px;
+            max-height: 600px;
+
+            form {
+              flex-direction: column;
+              display: flex;
+              align-items: center;
+              flex-grow: 1;
+              justify-content: space-around
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
+
+@media screen and (min-width: 58em ) {
+
+  .app-map-section {
+    .app-dash-map-wrapper {
+      // border: 2px solid green;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .app-dash-all-fields{
+        width: 100%;
+        height: 425px;
+        max-height: 425px;
+      }
+
+      .app-map {
+        padding: 5px;
+        display: flex;
+        height: 100%;
+        width: 100%;
+        justify-content: flex-start;
+        align-items: center;
+
+        .app-dash-all-fields {
+          width: 30%;
+          height: 425px;
+          max-height: 425px;
+        }
+
+        .map-wrapper-container {
+          width: 50%;
+          min-width: 30%;
+          max-width: 450px;
+          height: 600px;
+          max-height: 610px;
+          flex-grow: 1;
+          min-width: 60%;
+          max-width: 760px;
+
+          .map-wrapper {
+            height: 100%;
+            width: 100%;
+
+            .map-container {
+              width: 100%;
+              max-width: 100%;
+              height: 100%;
+              max-height: 100%;
+            }
+          }
+        }
+
+        .app-map-custom-wrapper {
+          // border: 1px solid #b61414;
+          width: 40%;
+          height: 100%;
+          max-width: 100%;
+          max-height: 600px;
+
+          .app-map-custom-fields {
+            display: flex;
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #dbdbdb;
+            border-radius: 25px;
+            width: 33.3%;
+            height: 475px;
+            max-height: 600px;
+
+            form {
+              flex-direction: column;
+              display: flex;
+              align-items: center;
+              flex-grow: 1;
+              justify-content: space-around
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+@media screen and (min-width: 64em) {
+  .app-map-section {
+    .app-dash-map-wrapper {
+      // border: 2px solid rgb(255, 0, 195);
+
+      .app-dash-all-fields{
+        width: 100%;
+        height: 425px;
+        max-height: 425px;
+      }
+      .app-map {
+        padding: 5px;
+        display: flex;
+        height: 100%;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+
+        .app-dash-all-fields {
+          width: 30%;
+          height: 425px;
+          max-height: 425px;
+        }
+
+        .map-wrapper-container {
+          width: 50%;
+          min-width: 60%; // 30%
+          max-width: 760px; // max
+          height: 600px;
+          max-height: 610px;
+          flex-grow: 1;
+
+          .map-wrapper {
+            height: 100%;
+            width: 100%;
+
+            .map-container {
+              width: 100%;
+              max-width: 100%;
+              height: 100%;
+              max-height: 100%;
+            }
+          }
+        }
+
+        .app-map-custom-wrapper {
+          // border: 1px solid #b61414;
+          width: 30%;
+          height: 100%;
+          max-width: 100%;
+          max-height: 600px;
+
+          .app-map-custom-fields {
+            display: flex;
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #dbdbdb;
+            border-radius: 25px;
+            width: 33.3%;
+            height: 475px;
+            max-height: 600px;
+
+            form {
+              flex-direction: column;
+              display: flex;
+              align-items: center;
+              flex-grow: 1;
+              justify-content: space-around
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// “If [device width] is greater than or equal to 600px, then do {…}”
+@media screen and (min-width: 95em ) {
+  .app-map-section {
+    // border: 1px solid red;
+    width: 100vw;
+    display: flex;
+
+    .app-dash-map-wrapper{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      max-width: 1700px;
+      width: 90%;
+      justify-content: center;
+      margin: 30px auto;
+      // border: 2px solid red;
+
+      .app-dash-all-fields {
+        display: flex;
+        // border: 2px solid pink;
+        width: 33.3%;
+        height: 475px;
+        max-height: 600px;
+        height: 425px;
+        max-height: 425px;
+
+        .app-dashboard-texts-field {
+          form {
+            flex-direction: column;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-grow: 1;
+          }
+        }
+      }
+
+      .app-map {
+        padding: 5px;
+
+        display: flex;
+        height: 100%;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+
+        .app-dash-all-fields {
+          width: 30%;
+          height: 425px;
+          max-height: 425px;
+        }
+
+        .map-wrapper-container {
+          width: 50%;
+          min-width: 70%;
+          max-width: 760px;
+          height: 600px;
+          max-height: 610px;
+          flex-grow: 1;
+
+          .map-wrapper {
+            height: 100%;
+            width: 100%;
+
+            .map-container {
+              width: 100%;
+              max-width: 100%;
+              height: 100%;
+              max-height: 100%;
+            }
+          }
+        }
+
+        .app-map-custom-wrapper {
+          // border: 1px solid #b61414;
+          width: 100%;
+          height: 100%;
+          max-width: 100%;
+          max-height: 600px;
+
+          .app-map-custom-fields {
+            display: flex;
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #dbdbdb;
+            border-radius: 25px;
+            width: 33.3%;
+            height: 475px;
+            max-height: 600px;
+
+            form {
+              flex-direction: column;
+              display: flex;
+              align-items: center;
+              flex-grow: 1;
+              justify-content: space-around
+            }
+          }
+        }
+      }
+
+    }
+  }
+}

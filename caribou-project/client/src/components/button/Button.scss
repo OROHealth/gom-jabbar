@@ -1,0 +1,40 @@
+.button {
+  // padding: 6px 8px;
+  border: 2px solid #de006f;
+  border-radius: 5px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 22px;
+  width: 100%;
+  min-width: 100px;
+  background-color: transparent;
+  color: hsl(330, 100%, 44%);
+  height: 40px;
+  cursor: pointer
+  ;
+
+  &:hover {
+    background-color: hsla(330, 100%, 44%, 0.152);
+  }
+}
+
+@media screen and (min-width: 8em) {
+  .button {
+    margin-left: 0;
+  }
+}
+
+@media screen and (min-width: 40em) {
+  .button {
+    max-width: 280px;
+  }
+}
+
+@media screen and (min-width: 40em) {
+  .button {
+    max-width: 280px;
+  }
+  .home-nav-btn{
+    max-width: 200px;
+  }
+}
